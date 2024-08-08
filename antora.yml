@@ -1,0 +1,9 @@
+name: k3s
+title: K3s
+version: main
+display_version: 'Latest'
+start_page: en:introduction.adoc
+nav:
+- modules/en/nav.adoc
+- modules/ko/nav.adoc
+- modules/zh/nav.adoc
