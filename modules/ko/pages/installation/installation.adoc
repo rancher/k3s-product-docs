@@ -1,17 +1,17 @@
 = Installation
 
-This section contains instructions for installing K3s in various environments. Please ensure you have met the xref:requirements.adoc[Requirements] before you begin installing K3s.
+This section contains instructions for installing K3s in various environments. Please ensure you have met the xref:./requirements.adoc[Requirements] before you begin installing K3s.
 
-xref:configuration.adoc[Configuration Options] provides guidance on the options available to you when installing K3s.
+xref:./configuration.adoc[Configuration Options] provides guidance on the options available to you when installing K3s.
 
-xref:private-registry.adoc[Private Registry Configuration] covers use of `registries.yaml` to configure container image registry mirrors.
+xref:./private-registry.adoc[Private Registry Configuration] covers use of `registries.yaml` to configure container image registry mirrors.
 
-xref:registry-mirror.adoc[Embedded Mirror] shows how to enable the embedded distributed image registry mirror.
+xref:./registry-mirror.adoc[Embedded Mirror] shows how to enable the embedded distributed image registry mirror.
 
-xref:airgap.adoc[Air-Gap Install] details how to set up K3s in environments that do not have direct access to the Internet.
+xref:./airgap.adoc[Air-Gap Install] details how to set up K3s in environments that do not have direct access to the Internet.
 
-xref:server-roles.adoc[Managing Server Roles] details how to set up K3s with dedicated `control-plane` or `etcd` servers.
+xref:./server-roles.adoc[Managing Server Roles] details how to set up K3s with dedicated `control-plane` or `etcd` servers.
 
-xref:packaged-components.adoc[Managing Packaged Components] details how to disable packaged components, or install your own using auto-deploying manifests.
+xref:./packaged-components.adoc[Managing Packaged Components] details how to disable packaged components, or install your own using auto-deploying manifests.
 
-xref:uninstall.adoc[Uninstalling K3s] details how to remove K3s from a host.
+xref:./uninstall.adoc[Uninstalling K3s] details how to remove K3s from a host.

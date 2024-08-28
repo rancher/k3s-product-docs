@@ -4,5 +4,5 @@
 
 以下文档适用于 CIS Kubernetes Benchmark v1.23。
 
-* xref:hardening-guide.adoc[强化指南]
-* xref:self-assessment-1.23.adoc[CIS Benchmark 自我评估指南]
+* xref:./hardening-guide.adoc[强化指南]
+* xref:./self-assessment-1.23.adoc[CIS Benchmark 自我评估指南]

@@ -10,7 +10,7 @@ When upgrading, upgrade server nodes first one at a time, then any agent nodes.
 
 == Release Channels
 
-Upgrades performed via the installation script or using our xref:automated.adoc[automated upgrades] feature can be tied to different release channels. The following channels are available:
+Upgrades performed via the installation script or using our xref:./automated.adoc[automated upgrades] feature can be tied to different release channels. The following channels are available:
 
 |===
 | Channel | Description

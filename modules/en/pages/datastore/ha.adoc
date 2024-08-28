@@ -23,7 +23,7 @@ Setting up an HA cluster requires the following steps:
 
 === 1. Create an External Datastore
 
-You will first need to create an external datastore for the cluster. See the xref:datastore.adoc[Cluster Datastore Options] documentation for more details.
+You will first need to create an external datastore for the cluster. See the xref:./datastore.adoc[Cluster Datastore Options] documentation for more details.
 
 === 2. Launch Server Nodes
 
