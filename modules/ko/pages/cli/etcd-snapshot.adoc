@@ -79,7 +79,7 @@ In this example there are 3 servers, `S1`, `S2`, and `S3`. The snapshot is locat
 --
 ======
 
-==== Options
+=== Options
 
 These options can be passed in with the command line, or in the link:../installation/configuration.md#configuration-file[configuration file,] which may be easier to use.
 
@@ -105,7 +105,7 @@ These options can be passed in with the command line, or in the link:../installa
 | Path to snapshot file to be restored
 |===
 
-==== S3 Compatible API Support
+=== S3 Compatible API Support
 
 K3s supports writing etcd snapshots to and restoring etcd snapshots from systems with S3-compatible APIs. S3 support is available for both on-demand and scheduled snapshots.
 
@@ -167,7 +167,7 @@ k3s server \
   --etcd-s3-secret-key=<S3-SECRET-KEY>
 ----
 
-==== Etcd Snapshot and Restore Subcommands
+=== Etcd Snapshot and Restore Subcommands
 
 k3s supports a set of subcommands for working with your etcd snapshots.
 

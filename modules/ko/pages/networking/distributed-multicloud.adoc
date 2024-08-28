@@ -13,8 +13,7 @@ The latency between nodes will increase as external connectivity requires more h
 Embedded etcd is not supported in this type of deployment. If using embedded etcd, all server nodes must be reachable to each other via their private IPs. Agents may be distributed over multiple networks, but all servers should be in the same location.
 ====
 
-
-=== Embedded k3s multicloud solution
+== Embedded k3s multicloud solution
 
 K3s uses wireguard to establish a VPN mesh for cluster traffic. Nodes must each have a unique IP through which they can be reached (usually a public IP). K3s supervisor traffic will use a websocket tunnel, and cluster (CNI) traffic will use a wireguard tunnel.
 
@@ -48,8 +47,7 @@ systemctl restart k3s
 ----
 ====
 
-
-=== Integration with the Tailscale VPN provider (experimental)
+== Integration with the Tailscale VPN provider (experimental)
 
 Available in v1.27.3, v1.26.6, v1.25.11 and newer.
 

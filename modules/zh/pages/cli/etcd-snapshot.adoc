@@ -80,7 +80,7 @@ systemctl start k3s
 --
 ======
 
-==== 选项
+=== 选项
 
 你可以通过命令行或者link:../installation/configuration.md#配置文件[配置文件]（可能更容易使用）传入这些选项。
 
@@ -106,7 +106,7 @@ systemctl start k3s
 | 要恢复的快照文件路径
 |===
 
-==== S3 兼容 API 支持
+=== S3 兼容 API 支持
 
 K3s 支持向具有 S3 兼容 API 的系统写入 etcd 快照和从系统中恢复 etcd 快照。S3 支持按需和计划快照。
 
@@ -168,7 +168,7 @@ k3s server \
   --etcd-s3-secret-key=<S3-SECRET-KEY>
 ----
 
-==== Etcd 快照和恢复子命令
+=== Etcd 快照和恢复子命令
 
 K3s 支持用于处理 etcd 快照的一组子命令。
 
