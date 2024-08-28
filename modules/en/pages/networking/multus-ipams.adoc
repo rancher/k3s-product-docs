@@ -21,15 +21,62 @@ An IPAM plugin is required to assign IP addresses on the extra interfaces create
 ======
 Tab host-local::
 +
-The host-local IPAM plugin allocates ip addresses out of a set of address ranges. It stores the state locally on the host filesystem, hence ensuring uniqueness of IP addresses on a single host. Therefore, we don't recommend it for multi-node clusters. This IPAM plugin does not require any extra deployment. For more information: https://www.cni.dev/plugins/current/ipam/host-local/. To use the host-local plugin, please create a file called `multus-values.yaml` with the following content: ``` config: cni_conf: confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d binDir: /var/lib/rancher/k3s/data/current/bin/ kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig ``` 
+--
+The host-local IPAM plugin allocates ip addresses out of a set of address ranges. It stores the state locally on the host filesystem, hence ensuring uniqueness of IP addresses on a single host. Therefore, we don't recommend it for multi-node clusters. This IPAM plugin does not require any extra deployment. For more information: https://www.cni.dev/plugins/current/ipam/host-local/.
+
+To use the host-local plugin, please create a file called `multus-values.yaml` with the following content:
+
+[,yaml]
+----
+config:
+  cni_conf:
+    confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+    binDir: /var/lib/rancher/k3s/data/current/bin/
+    kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
+----
+--
 
 Tab Whereabouts::
 +
-[Whereabouts](https://github.com/k8snetworkplumbingwg/whereabouts) is an IP Address Management (IPAM) CNI plugin that assigns IP addresses cluster-wide. To use the Whereabouts IPAM plugin, please create a file called `multus-values.yaml` with the following content: ``` config: cni_conf: confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d binDir: /var/lib/rancher/k3s/data/current/bin/ kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig rke2-whereabouts: fullnameOverride: whereabouts enabled: true cniConf: confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d binDir: /var/lib/rancher/k3s/data/current/bin/ ``` 
+--
+https://github.com/k8snetworkplumbingwg/whereabouts[Whereabouts] is an IP Address Management (IPAM) CNI plugin that assigns IP addresses cluster-wide.
+
+To use the Whereabouts IPAM plugin, please create a file called `multus-values.yaml` with the following content:
+
+[,yaml]
+----
+config:
+  cni_conf:
+    confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+    binDir: /var/lib/rancher/k3s/data/current/bin/
+    kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
+rke2-whereabouts:
+  fullnameOverride: whereabouts
+  enabled: true
+  cniConf:
+    confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+    binDir: /var/lib/rancher/k3s/data/current/bin/
+----
+--
 
 Tab Multus DHCP daemon::
 +
-The dhcp IPAM plugin can be deployed when there is already a DHCP server running on the network. This daemonset takes care of periodically renewing the DHCP lease. For more information please check the official docs of [DHCP IPAM plugin](https://www.cni.dev/plugins/current/ipam/dhcp/). To use the DHCP plugin, please create a file called `multus-values.yaml` with the following content: ``` config: cni_conf: confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d binDir: /var/lib/rancher/k3s/data/current/bin/ kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig manifests: dhcpDaemonSet: true ```
+--
+The dhcp IPAM plugin can be deployed when there is already a DHCP server running on the network. This daemonset takes care of periodically renewing the DHCP lease. For more information please check the official docs of https://www.cni.dev/plugins/current/ipam/dhcp/[DHCP IPAM plugin].
+
+To use the DHCP plugin, please create a file called `multus-values.yaml` with the following content:
+
+[,yaml]
+----
+config:
+  cni_conf:
+    confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+    binDir: /var/lib/rancher/k3s/data/current/bin/
+    kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
+manifests:
+  dhcpDaemonSet: true
+----
+--
 ======
 
 == Deploy Multus

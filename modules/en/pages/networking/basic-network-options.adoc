@@ -65,15 +65,72 @@ Start K3s with `--flannel-backend=none` and install your CNI of choice. Most CNI
 ======
 Tab Canal::
 +
-Visit the [Canal Docs](https://docs.tigera.io/calico/latest/getting-started/kubernetes/flannel/install-for-flannel#installing-calico-for-policy-and-flannel-aka-canal-for-networking) website. Follow the steps to install Canal. Modify the Canal YAML so that IP forwarding is allowed in the `container_settings` section, for example: ```yaml "container_settings": { "allow_ip_forwarding": true } ``` Apply the Canal YAML. Ensure the settings were applied by running the following command on the host: ```bash cat /etc/cni/net.d/10-canal.conflist ``` You should see that IP forwarding is set to true. 
+--
+Visit the https://docs.tigera.io/calico/latest/getting-started/kubernetes/flannel/install-for-flannel#installing-calico-for-policy-and-flannel-aka-canal-for-networking[Canal Docs] website. Follow the steps to install Canal. Modify the Canal YAML so that IP forwarding is allowed in the `container_settings` section, for example:
+
+[,yaml]
+----
+"container_settings": {
+  "allow_ip_forwarding": true
+}
+----
+
+Apply the Canal YAML.
+
+Ensure the settings were applied by running the following command on the host:
+
+[,bash]
+----
+cat /etc/cni/net.d/10-canal.conflist
+----
+
+You should see that IP forwarding is set to true.
+--
 
 Tab Calico::
 +
-Follow the [Calico CNI Plugins Guide](https://docs.tigera.io/calico/latest/reference/configure-cni-plugins). Modify the Calico YAML so that IP forwarding is allowed in the `container_settings` section, for example: ```yaml "container_settings": { "allow_ip_forwarding": true } ``` Apply the Calico YAML. Ensure the settings were applied by running the following command on the host: ```bash cat /etc/cni/net.d/10-calico.conflist ``` You should see that IP forwarding is set to true. 
+--
+Follow the https://docs.tigera.io/calico/latest/reference/configure-cni-plugins[Calico CNI Plugins Guide]. Modify the Calico YAML so that IP forwarding is allowed in the `container_settings` section, for example:
+
+[,yaml]
+----
+"container_settings": {
+  "allow_ip_forwarding": true
+}
+----
+
+Apply the Calico YAML.
+
+Ensure the settings were applied by running the following command on the host:
+
+[,bash]
+----
+cat /etc/cni/net.d/10-calico.conflist
+----
+
+You should see that IP forwarding is set to true.
+--
 
 Tab Cilium::
 +
-Before running `k3s-killall.sh` or `k3s-uninstall.sh`, you must manually remove `cilium_host`, `cilium_net` and `cilium_vxlan` interfaces. If you fail to do this, you may lose network connectivity to the host when K3s is stopped ```bash ip link delete cilium_host ip link delete cilium_net ip link delete cilium_vxlan ``` Additionally, iptables rules for cilium should be removed: ```bash iptables-save | grep -iv cilium | iptables-restore ip6tables-save | grep -iv cilium | ip6tables-restore ```
+--
+Before running `k3s-killall.sh` or `k3s-uninstall.sh`, you must manually remove `cilium_host`, `cilium_net` and `cilium_vxlan` interfaces. If you fail to do this, you may lose network connectivity to the host when K3s is stopped
+
+[,bash]
+----
+ip link delete cilium_host
+ip link delete cilium_net
+ip link delete cilium_vxlan
+----
+
+Additionally, iptables rules for cilium should be removed:
+
+[,bash]
+----
+iptables-save | grep -iv cilium | iptables-restore
+ip6tables-save | grep -iv cilium | ip6tables-restore
+----
+--
 ======
 
 == Control-Plane Egress Selector configuration

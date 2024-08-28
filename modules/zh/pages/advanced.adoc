@@ -413,7 +413,13 @@ Tab Docker::
 
 [,bash]
 ----
-sudo docker run \ --privileged \ --name k3s-server-1 \ --hostname k3s-server-1 \ -p 6443:6443 \ -d rancher/k3s:v1.24.10-k3s1 \ server
+sudo docker run \
+  --privileged \
+  --name k3s-server-1 \
+  --hostname k3s-server-1 \
+  -p 6443:6443 \
+  -d rancher/k3s:v1.24.10-k3s1 \
+  server
 ----
 
 [NOTE]
@@ -450,7 +456,17 @@ Tab 自动安装::
 
 Tab 手动安装::
 +
-可以使用以下命令安装必要的策略： ```bash yum install -y container-selinux selinux-policy-base yum install -y https://rpm.rancher.io/k3s/latest/common/centos/7/noarch/k3s-selinux-0.2-1.el7_8.noarch.rpm ``` 要让安装脚本报告 warning 而不是 fail，你可以设置环境变量 `INSTALL_K3S_SELINUX_WARN=true`。
+--
+可以使用以下命令安装必要的策略：
+
+[,bash]
+----
+yum install -y container-selinux selinux-policy-base
+yum install -y https://rpm.rancher.io/k3s/latest/common/centos/7/noarch/k3s-selinux-0.2-1.el7_8.noarch.rpm
+----
+
+要让安装脚本报告 warning 而不是 fail，你可以设置环境变量 `INSTALL_K3S_SELINUX_WARN=true`。
+--
 ======
 
 === 启用 SELinux 强制执行

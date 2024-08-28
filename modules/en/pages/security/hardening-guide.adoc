@@ -43,11 +43,326 @@ By default, K3s does not include any pod security or network policies. However, 
 ======
 Tab v1.25 and Newer::
 +
-K3s v1.25 and newer support [Pod Security Admissions (PSAs)](https://kubernetes.io/docs/concepts/security/pod-security-admission/) for controlling pod security. PSAs are enabled by passing the following flag to the K3s server: ``` --kube-apiserver-arg="admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml" ``` The policy should be written to a file named `psa.yaml` in `/var/lib/rancher/k3s/server` directory. Here is an example of a compliant PSA: ```yaml apiVersion: apiserver.config.k8s.io/v1 kind: AdmissionConfiguration plugins: - name: PodSecurity configuration: apiVersion: pod-security.admission.config.k8s.io/v1beta1 kind: PodSecurityConfiguration defaults: enforce: "restricted" enforce-version: "latest" audit: "restricted" audit-version: "latest" warn: "restricted" warn-version: "latest" exemptions: usernames: [] runtimeClasses: [] namespaces: [kube-system, cis-operator-system] ``` 
+--
+K3s v1.25 and newer support https://kubernetes.io/docs/concepts/security/pod-security-admission/[Pod Security Admissions (PSAs)] for controlling pod security. PSAs are enabled by passing the following flag to the K3s server:
+
+----
+--kube-apiserver-arg="admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml"
+----
+
+The policy should be written to a file named `psa.yaml` in `/var/lib/rancher/k3s/server` directory.
+
+Here is an example of a compliant PSA:
+
+[,yaml]
+----
+apiVersion: apiserver.config.k8s.io/v1
+kind: AdmissionConfiguration
+plugins:
+- name: PodSecurity
+  configuration:
+    apiVersion: pod-security.admission.config.k8s.io/v1beta1
+    kind: PodSecurityConfiguration
+    defaults:
+      enforce: "restricted"
+      enforce-version: "latest"
+      audit: "restricted"
+      audit-version: "latest"
+      warn: "restricted"
+      warn-version: "latest"
+    exemptions:
+      usernames: []
+      runtimeClasses: []
+      namespaces: [kube-system, cis-operator-system]
+----
+--
 
 Tab v1.24 and Older::
 +
-K3s v1.24 and older support [Pod Security Policies (PSPs)](https://kubernetes.io/docs/concepts/security/pod-security-policy/) for controlling pod security. PSPs are enabled by passing the following flag to the K3s server: ``` --kube-apiserver-arg="enable-admission-plugins=NodeRestriction,PodSecurityPolicy" ``` This will have the effect of maintaining the `NodeRestriction` plugin as well as enabling the `PodSecurityPolicy`. When PSPs are enabled, a policy can be applied to satisfy the necessary controls described in section 5.2 of the CIS Benchmark. Here is an example of a compliant PSP: ```yaml apiVersion: policy/v1beta1 kind: PodSecurityPolicy metadata: name: restricted-psp spec: privileged: false # CIS - 5.2.1 allowPrivilegeEscalation: false # CIS - 5.2.5 requiredDropCapabilities: # CIS - 5.2.7/8/9 - ALL volumes: - 'configMap' - 'emptyDir' - 'projected' - 'secret' - 'downwardAPI' - 'csi' - 'persistentVolumeClaim' - 'ephemeral' hostNetwork: false # CIS - 5.2.4 hostIPC: false # CIS - 5.2.3 hostPID: false # CIS - 5.2.2 runAsUser: rule: 'MustRunAsNonRoot' # CIS - 5.2.6 seLinux: rule: 'RunAsAny' supplementalGroups: rule: 'MustRunAs' ranges: - min: 1 max: 65535 fsGroup: rule: 'MustRunAs' ranges: - min: 1 max: 65535 readOnlyRootFilesystem: false ``` For the above PSP to be effective, we need to create a ClusterRole and a ClusterRoleBinding. We also need to include a "system unrestricted policy" which is needed for system-level pods that require additional privileges, and an additional policy that allows sysctls necessary for servicelb to function properly. Combining the configuration above with the [Network Policy](#networkpolicies) described in the next section, a single file can be placed in the `/var/lib/rancher/k3s/server/manifests` directory. Here is an example of a `policy.yaml` file: ```yaml apiVersion: policy/v1beta1 kind: PodSecurityPolicy metadata: name: restricted-psp spec: privileged: false allowPrivilegeEscalation: false requiredDropCapabilities: - ALL volumes: - 'configMap' - 'emptyDir' - 'projected' - 'secret' - 'downwardAPI' - 'csi' - 'persistentVolumeClaim' - 'ephemeral' hostNetwork: false hostIPC: false hostPID: false runAsUser: rule: 'MustRunAsNonRoot' seLinux: rule: 'RunAsAny' supplementalGroups: rule: 'MustRunAs' ranges: - min: 1 max: 65535 fsGroup: rule: 'MustRunAs' ranges: - min: 1 max: 65535 readOnlyRootFilesystem: false --- apiVersion: policy/v1beta1 kind: PodSecurityPolicy metadata: name: system-unrestricted-psp annotations: seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*' spec: allowPrivilegeEscalation: true allowedCapabilities: - '*' fsGroup: rule: RunAsAny hostIPC: true hostNetwork: true hostPID: true hostPorts: - max: 65535 min: 0 privileged: true runAsUser: rule: RunAsAny seLinux: rule: RunAsAny supplementalGroups: rule: RunAsAny volumes: - '*' --- apiVersion: policy/v1beta1 kind: PodSecurityPolicy metadata: name: svclb-psp annotations: seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*' spec: allowPrivilegeEscalation: false allowedCapabilities: - NET_ADMIN allowedUnsafeSysctls: - net.ipv4.ip_forward - net.ipv6.conf.all.forwarding fsGroup: rule: RunAsAny hostPorts: - max: 65535 min: 0 runAsUser: rule: RunAsAny seLinux: rule: RunAsAny supplementalGroups: rule: RunAsAny --- apiVersion: rbac.authorization.k8s.io/v1 kind: ClusterRole metadata: name: psp:restricted-psp rules: - apiGroups: - policy resources: - podsecuritypolicies verbs: - use resourceNames: - restricted-psp --- apiVersion: rbac.authorization.k8s.io/v1 kind: ClusterRole metadata: name: psp:system-unrestricted-psp rules: - apiGroups: - policy resources: - podsecuritypolicies resourceNames: - system-unrestricted-psp verbs: - use --- apiVersion: rbac.authorization.k8s.io/v1 kind: ClusterRole metadata: name: psp:svclb-psp rules: - apiGroups: - policy resources: - podsecuritypolicies resourceNames: - svclb-psp verbs: - use --- apiVersion: rbac.authorization.k8s.io/v1 kind: ClusterRoleBinding metadata: name: default:restricted-psp roleRef: apiGroup: rbac.authorization.k8s.io kind: ClusterRole name: psp:restricted-psp subjects: - kind: Group name: system:authenticated apiGroup: rbac.authorization.k8s.io --- apiVersion: rbac.authorization.k8s.io/v1 kind: ClusterRoleBinding metadata: name: system-unrestricted-node-psp-rolebinding roleRef: apiGroup: rbac.authorization.k8s.io kind: ClusterRole name: psp:system-unrestricted-psp subjects: - apiGroup: rbac.authorization.k8s.io kind: Group name: system:nodes --- apiVersion: rbac.authorization.k8s.io/v1 kind: RoleBinding metadata: name: system-unrestricted-svc-acct-psp-rolebinding namespace: kube-system roleRef: apiGroup: rbac.authorization.k8s.io kind: ClusterRole name: psp:system-unrestricted-psp subjects: - apiGroup: rbac.authorization.k8s.io kind: Group name: system:serviceaccounts --- apiVersion: rbac.authorization.k8s.io/v1 kind: RoleBinding metadata: name: svclb-psp-rolebinding namespace: kube-system roleRef: apiGroup: rbac.authorization.k8s.io kind: ClusterRole name: psp:svclb-psp subjects: - kind: ServiceAccount name: svclb --- kind: NetworkPolicy apiVersion: networking.k8s.io/v1 metadata: name: intra-namespace namespace: kube-system spec: podSelector: {} ingress: - from: - namespaceSelector: matchLabels: name: kube-system --- kind: NetworkPolicy apiVersion: networking.k8s.io/v1 metadata: name: intra-namespace namespace: default spec: podSelector: {} ingress: - from: - namespaceSelector: matchLabels: name: default --- kind: NetworkPolicy apiVersion: networking.k8s.io/v1 metadata: name: intra-namespace namespace: kube-public spec: podSelector: {} ingress: - from: - namespaceSelector: matchLabels: name: kube-public ```
+--
+K3s v1.24 and older support https://kubernetes.io/docs/concepts/security/pod-security-policy/[Pod Security Policies (PSPs)] for controlling pod security. PSPs are enabled by passing the following flag to the K3s server:
+
+----
+--kube-apiserver-arg="enable-admission-plugins=NodeRestriction,PodSecurityPolicy"
+----
+
+This will have the effect of maintaining the `NodeRestriction` plugin as well as enabling the `PodSecurityPolicy`.
+
+When PSPs are enabled, a policy can be applied to satisfy the necessary controls described in section 5.2 of the CIS Benchmark.
+
+Here is an example of a compliant PSP:
+
+[,yaml]
+----
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: restricted-psp
+spec:
+  privileged: false                # CIS - 5.2.1
+  allowPrivilegeEscalation: false  # CIS - 5.2.5
+  requiredDropCapabilities:        # CIS - 5.2.7/8/9
+    - ALL
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    - 'csi'
+    - 'persistentVolumeClaim'
+    - 'ephemeral'
+  hostNetwork: false               # CIS - 5.2.4
+  hostIPC: false                   # CIS - 5.2.3
+  hostPID: false                   # CIS - 5.2.2
+  runAsUser:
+    rule: 'MustRunAsNonRoot'       # CIS - 5.2.6
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1
+        max: 65535
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1
+        max: 65535
+  readOnlyRootFilesystem: false
+----
+
+For the above PSP to be effective, we need to create a ClusterRole and a ClusterRoleBinding. We also need to include a "system unrestricted policy" which is needed for system-level pods that require additional privileges, and an additional policy that allows sysctls necessary for servicelb to function properly.
+
+Combining the configuration above with the <<networkpolicies,Network Policy>> described in the next section, a single file can be placed in the `/var/lib/rancher/k3s/server/manifests` directory. Here is an example of a `policy.yaml` file:
+
+[,yaml]
+----
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: restricted-psp
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+    - ALL
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    - 'csi'
+    - 'persistentVolumeClaim'
+    - 'ephemeral'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    rule: 'MustRunAsNonRoot'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1
+        max: 65535
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1
+        max: 65535
+  readOnlyRootFilesystem: false
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: system-unrestricted-psp
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*'
+spec:
+  allowPrivilegeEscalation: true
+  allowedCapabilities:
+  - '*'
+  fsGroup:
+    rule: RunAsAny
+  hostIPC: true
+  hostNetwork: true
+  hostPID: true
+  hostPorts:
+  - max: 65535
+    min: 0
+  privileged: true
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+  - '*'
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: svclb-psp
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*'
+spec:
+  allowPrivilegeEscalation: false
+  allowedCapabilities:
+  - NET_ADMIN
+  allowedUnsafeSysctls:
+  - net.ipv4.ip_forward
+  - net.ipv6.conf.all.forwarding
+  fsGroup:
+    rule: RunAsAny
+  hostPorts:
+  - max: 65535
+    min: 0
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: psp:restricted-psp
+rules:
+- apiGroups:
+  - policy
+  resources:
+  - podsecuritypolicies
+  verbs:
+  - use
+  resourceNames:
+  - restricted-psp
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: psp:system-unrestricted-psp
+rules:
+- apiGroups:
+  - policy
+  resources:
+  - podsecuritypolicies
+  resourceNames:
+  - system-unrestricted-psp
+  verbs:
+  - use
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: psp:svclb-psp
+rules:
+- apiGroups:
+  - policy
+  resources:
+  - podsecuritypolicies
+  resourceNames:
+  - svclb-psp
+  verbs:
+  - use
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: default:restricted-psp
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: psp:restricted-psp
+subjects:
+- kind: Group
+  name: system:authenticated
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: system-unrestricted-node-psp-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: psp:system-unrestricted-psp
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:nodes
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: system-unrestricted-svc-acct-psp-rolebinding
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: psp:system-unrestricted-psp
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:serviceaccounts
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: svclb-psp-rolebinding
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: psp:svclb-psp
+subjects:
+- kind: ServiceAccount
+  name: svclb
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: intra-namespace
+  namespace: kube-system
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: kube-system
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: intra-namespace
+  namespace: default
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: default
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: intra-namespace
+  namespace: kube-public
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: kube-public
+----
+--
 ======
 
 NOTE: The Kubernetes critical additions such as CNI, DNS, and Ingress are run as pods in the `kube-system` namespace. Therefore, this namespace will have a policy that is less restrictive so that these components can run properly.
@@ -105,11 +420,100 @@ The metrics-server and Traefik ingress controller will be blocked by default if 
 ======
 Tab v1.21 and Newer::
 +
-```yaml apiVersion: networking.k8s.io/v1 kind: NetworkPolicy metadata: name: allow-all-metrics-server namespace: kube-system spec: podSelector: matchLabels: k8s-app: metrics-server ingress: - {} policyTypes: - Ingress --- apiVersion: networking.k8s.io/v1 kind: NetworkPolicy metadata: name: allow-all-svclbtraefik-ingress namespace: kube-system spec: podSelector: matchLabels: svccontroller.k3s.cattle.io/svcname: traefik ingress: - {} policyTypes: - Ingress --- apiVersion: networking.k8s.io/v1 kind: NetworkPolicy metadata: name: allow-all-traefik-v121-ingress namespace: kube-system spec: podSelector: matchLabels: app.kubernetes.io/name: traefik ingress: - {} policyTypes: - Ingress --- ``` 
+[,yaml]
+----
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-metrics-server
+  namespace: kube-system
+spec:
+  podSelector:
+    matchLabels:
+      k8s-app: metrics-server
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-svclbtraefik-ingress
+  namespace: kube-system
+spec:
+  podSelector:
+    matchLabels:
+      svccontroller.k3s.cattle.io/svcname: traefik
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-traefik-v121-ingress
+  namespace: kube-system
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
+---
+----
+
 
 Tab v1.20 and Older::
 +
-```yaml apiVersion: networking.k8s.io/v1 kind: NetworkPolicy metadata: name: allow-all-metrics-server namespace: kube-system spec: podSelector: matchLabels: k8s-app: metrics-server ingress: - {} policyTypes: - Ingress --- apiVersion: networking.k8s.io/v1 kind: NetworkPolicy metadata: name: allow-all-svclbtraefik-ingress namespace: kube-system spec: podSelector: matchLabels: svccontroller.k3s.cattle.io/svcname: traefik ingress: - {} policyTypes: - Ingress --- apiVersion: networking.k8s.io/v1 kind: NetworkPolicy metadata: name: allow-all-traefik-v120-ingress namespace: kube-system spec: podSelector: matchLabels: app: traefik ingress: - {} policyTypes: - Ingress --- ```
+[,yaml]
+----
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-metrics-server
+  namespace: kube-system
+spec:
+  podSelector:
+    matchLabels:
+      k8s-app: metrics-server
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-svclbtraefik-ingress
+  namespace: kube-system
+spec:
+  podSelector:
+    matchLabels:
+      svccontroller.k3s.cattle.io/svcname: traefik
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-traefik-v120-ingress
+  namespace: kube-system
+spec:
+  podSelector:
+    matchLabels:
+      app: traefik
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
+---
+----
 ======
 
 [IMPORTANT]
@@ -173,11 +577,45 @@ The configuration below should be placed in the link:../installation/configurati
 ======
 Tab v1.25 and Newer::
 +
-```yaml protect-kernel-defaults: true secrets-encryption: true kube-apiserver-arg: - 'admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml' - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log' - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml' - 'audit-log-maxage=30' - 'audit-log-maxbackup=10' - 'audit-log-maxsize=100' kube-controller-manager-arg: - 'terminated-pod-gc-threshold=10' - 'use-service-account-credentials=true' kubelet-arg: - 'streaming-connection-idle-timeout=5m' - 'make-iptables-util-chains=true' ``` 
+[,yaml]
+----
+protect-kernel-defaults: true
+secrets-encryption: true
+kube-apiserver-arg:
+  - 'admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml'
+  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
+  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
+  - 'audit-log-maxage=30'
+  - 'audit-log-maxbackup=10'
+  - 'audit-log-maxsize=100'
+kube-controller-manager-arg:
+  - 'terminated-pod-gc-threshold=10'
+  - 'use-service-account-credentials=true'
+kubelet-arg:
+  - 'streaming-connection-idle-timeout=5m'
+  - 'make-iptables-util-chains=true'
+----
 
 Tab v1.24 and Older::
 +
-```yaml protect-kernel-defaults: true secrets-encryption: true kube-apiserver-arg: - 'enable-admission-plugins=NodeRestriction,PodSecurityPolicy,NamespaceLifecycle,ServiceAccount' - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log' - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml' - 'audit-log-maxage=30' - 'audit-log-maxbackup=10' - 'audit-log-maxsize=100' kube-controller-manager-arg: - 'terminated-pod-gc-threshold=10' - 'use-service-account-credentials=true' kubelet-arg: - 'streaming-connection-idle-timeout=5m' - 'make-iptables-util-chains=true' ```
+[,yaml]
+----
+protect-kernel-defaults: true
+secrets-encryption: true
+kube-apiserver-arg:
+  - 'enable-admission-plugins=NodeRestriction,PodSecurityPolicy,NamespaceLifecycle,ServiceAccount'
+  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
+  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
+  - 'audit-log-maxage=30'
+  - 'audit-log-maxbackup=10'
+  - 'audit-log-maxsize=100'
+kube-controller-manager-arg:
+  - 'terminated-pod-gc-threshold=10'
+  - 'use-service-account-credentials=true'
+kubelet-arg:
+  - 'streaming-connection-idle-timeout=5m'
+  - 'make-iptables-util-chains=true'
+----
 ======
 
 == Control Plane Execution and Arguments

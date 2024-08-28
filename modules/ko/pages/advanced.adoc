@@ -413,7 +413,13 @@ Docker를 사용하려면 `rancher/k3s` 이미지를 사용하여 K3s 서버와 
 
 [,bash]
 ----
-sudo docker run \ --privileged \ --name k3s-server-1 \ --hostname k3s-server-1 \ -p 6443:6443 \ -d rancher/k3s:v1.24.10-k3s1 \ server
+sudo docker run \
+  --privileged \
+  --name k3s-server-1 \
+  --hostname k3s-server-1 \
+  -p 6443:6443 \
+  -d rancher/k3s:v1.24.10-k3s1 \
+  server
 ----
 
 [NOTE]

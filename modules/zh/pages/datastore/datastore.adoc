@@ -63,13 +63,47 @@ K3s 需要 DB 的准备语句支持。换言之，https://www.pgbouncer.org/faq.
 ======
 Tab PostgreSQL::
 +
-最常见的 PostgreSQL 的 `datastore-endpoint` 参数格式如下： `postgres://username:password@hostname:port/database-name` 支持使用更高级的配置参数。有关更多信息，请参阅 https://godoc.org/github.com/lib/pq。 如果指定数据库名称不存在，server 将尝试创建它。 如果你只提供了 `postgres://` 作为端点，K3s 将尝试执行以下操作： - 使用 `postgres` 作为用户名和密码连接到 localhost - 创建一个名为 `kubernetes` 的数据库 
+--
+最常见的 PostgreSQL 的 `datastore-endpoint` 参数格式如下：
+
+`postgres://username:password@hostname:port/database-name`
+
+支持使用更高级的配置参数。有关更多信息，请参阅 https://godoc.org/github.com/lib/pq。
+
+如果指定数据库名称不存在，server 将尝试创建它。
+
+如果你只提供了 `postgres://` 作为端点，K3s 将尝试执行以下操作：
+
+* 使用 `postgres` 作为用户名和密码连接到 localhost
+* 创建一个名为 `kubernetes` 的数据库
+--
 
 Tab MySQL / MariaDB::
 +
-最常见的 MySQL 和 MariaDB 的 `datastore-endpoint` 参数格式如下： `mysql://username:password@tcp(hostname:3306)/database-name` 支持使用更高级的配置参数。有关更多信息，请参阅 https://github.com/go-sql-driver/mysql#dsn-data-source-name 请注意，由于 K3s 的一个[已知问题](https://github.com/k3s-io/k3s/issues/1093)，你无法设置 `tls` 参数。TLS 通信是支持的，但你不能将此参数设置为 "`skip-verify`" 以使 K3s 跳过证书验证。 如果指定数据库名称不存在，server 将尝试创建它。 如果你只提供了 `mysql://` 作为端点，K3s 将尝试执行以下操作： - 通过 `root` 用户，不使用密码连接到 `/var/run/mysqld/mysqld.sock` 的 MySQL socket - 创建一个名为 `kubernetes` 的数据库 
+--
+最常见的 MySQL 和 MariaDB 的 `datastore-endpoint` 参数格式如下：
+
+`mysql://username:password@tcp(hostname:3306)/database-name`
+
+支持使用更高级的配置参数。有关更多信息，请参阅 https://github.com/go-sql-driver/mysql#dsn-data-source-name
+
+请注意，由于 K3s 的一个[已知问题](https://github.com/k3s-io/k3s/issues/1093)，你无法设置 `tls` 参数。TLS 通信是支持的，但你不能将此参数设置为 “skip-verify” 以使 K3s 跳过证书验证。
+
+如果指定数据库名称不存在，server 将尝试创建它。
+
+如果你只提供了 `mysql://` 作为端点，K3s 将尝试执行以下操作：
+
+- 通过 `root` 用户，不使用密码连接到 `/var/run/mysqld/mysqld.sock` 的 MySQL socket
+- 创建一个名为 `kubernetes` 的数据库
+--
 
 Tab etcd::
 +
-最常见的 etcd 的 `datastore-endpoint` 参数格式如下： `https://etcd-host-1:2379,https://etcd-host-2:2379,https://etcd-host-3:2379` 以上假设使用的是典型的三节点 etcd 集群。该参数可以再接受一个逗号分隔的 etcd URL。
+--
+最常见的 etcd 的 `datastore-endpoint` 参数格式如下：
+
+`https://etcd-host-1:2379,https://etcd-host-2:2379,https://etcd-host-3:2379`
+
+以上假设使用的是典型的三节点 etcd 集群。该参数可以再接受一个逗号分隔的 etcd URL。
+--
 ======
