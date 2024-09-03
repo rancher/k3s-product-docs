@@ -15,6 +15,7 @@ ui:
 asciidoc:
   attributes:
     page-pagination: ''
+    tabs-sync-option: ''
   extensions:
   - '@asciidoctor/tabs'
 antora:
