@@ -1,5 +1,5 @@
 = v1.27.X
-:hide_table_of_contents: true
+:page-role: -toc
 :sidebar_position: 4
 
 [CAUTION]
