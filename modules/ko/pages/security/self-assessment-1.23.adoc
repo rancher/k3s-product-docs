@@ -1,16 +1,14 @@
-= CIS Self Assessment Guide
+= CIS 1.23 Self Assessment Guide
 
-=== CIS Kubernetes Benchmark v1.23 - K3s with Kubernetes v1.22 to v1.24
-
-==== Overview
+== Overview
 
 This document is a companion to the xref:./hardening-guide.adoc[K3s security hardening guide]. The hardening guide provides prescriptive guidance for hardening a production installation of K3s, and this benchmark guide is meant to help you evaluate the level of security of the hardened cluster against each control in the CIS Kubernetes Benchmark. It is to be used by K3s operators, security teams, auditors, and decision-makers.
 
-This guide is specific to the *v1.22*, *v1.23* and *v1.24* release line of K3s and the *v1.23* release of the CIS Kubernetes Benchmark.
+This guide is specific to the *v1.22-v1.23* release lines of K3s and the *v1.23* release of the CIS Kubernetes Benchmark.
 
 For more information about each control, including detailed descriptions and remediations for failing tests, you can refer to the corresponding section of the CIS Kubernetes Benchmark v1.6. You can download the benchmark, after creating a free account, in https://www.cisecurity.org/benchmark/kubernetes/[Center for Internet Security (CIS)].
 
-==== Testing controls methodology
+=== Testing controls methodology
 
 Each control in the CIS Kubernetes Benchmark was evaluated against a K3s cluster that was configured according to the accompanying hardening guide.
 
@@ -25,10 +23,6 @@ These are the possible results for each control:
 This guide makes the assumption that K3s is running as a Systemd unit. Your installation may vary and will require you to adjust the "audit" commands to fit your scenario.
 
 NOTE: Only `automated` tests (previously called `scored`) are covered in this guide.
-
-=== Controls
-
-'''
 
 == 1.1 Control Plane Node Configuration Files
 
@@ -1036,14 +1030,10 @@ Sep 13 13:26:40 k3s-123-cis-pool3-b403f678-bzdg5 k3s[1600]: time="2022-09-13T13:
 *Result:* Not Applicable
 
 *Remediation:*
-The request timeout limits the duration of API requests. The default value of 60 seconds is
-sufficiently low already. Only change the default value if necessary. When extending this
-limit, make sure to keep it low enough. A large value can exhaust API server resources and
-make it prone for Denial-of-Service attacks.
-
-Edit the config file /etc/rancher/k3s/config.yaml on the control plane node and remove the
---request-timeout parameter or set it to an appropriate value if needed. For example,
-`--request-timeout=300s`.
+Edit the API server pod specification file /etc/kubernetes/manifests/kube-apiserver.yaml
+on the control plane node and set the --service-account-key-file parameter
+to the public key file for service accounts. For example,
+`--service-account-key-file=<filename>`.
 
 === 1.2.26 Ensure that the --etcd-certfile and --etcd-keyfile arguments are set as appropriate (Automated)
 
