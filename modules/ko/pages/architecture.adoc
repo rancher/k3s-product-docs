@@ -25,7 +25,7 @@ image:k3s-architecture-single-server.svg[K3s Architecture with a Single Server]
 * 두 개 이상의 **서버 노드**가 Kubernetes API를 제공하고 다른 컨트롤 플레인 서비스를 실행합니다.
 * *외부 데이터스토어*(단일 서버 설정에 사용되는 임베디드 SQLite 데이터스토어와 반대)
 
-image:k3s-architecture-ha-server.svg[K3s Architecture with High-availability Servers]
+image:k3s-architecture-ha-embedded.svg[K3s Architecture with High-availability Servers]
 
 == 에이전트 노드를 위한 고정 등록 주소
 
