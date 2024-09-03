@@ -478,12 +478,12 @@ For more details on what's new, see the https://github.com/kubernetes/kubernetes
 * Adjust default kubeconfig file permissions https://github.com/k3s-io/k3s/pull/7984[(#7984)]
 * Update to v1.25.12 https://github.com/k3s-io/k3s/pull/8021[(#8021)]
 ​
-----
-+
+'''
+
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.25.11+k3s1[v1.25.11+k3s1]
-+
+
 // v1.25.11+k3s1
-+
+
 This release updates Kubernetes to v1.25.11, and fixes a number of issues.
 
 For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v12510[Kubernetes release notes].
