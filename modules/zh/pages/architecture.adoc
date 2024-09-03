@@ -1,8 +1,5 @@
 = 架构
 
-import ThemedImage from '@theme/ThemedImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-
 本文介绍了高可用（HA）K3s 服务器集群的架构，以及 K3s 与单节点服务器集群的区别。
 
 本文还描述了 Agent 节点是如何注册到 K3s Server 的。
@@ -11,7 +8,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 * Agent 节点指的是运行 `k3s agent` 命令的主机，不具有任何数据存储或 control plane 组件。
 * Server 和 Agent 都运行 kubelet、容器运行时和 CNI。有关运行无 Agent 的 Server 的更多信息，请参阅link:./advanced.adoc#运行无-agent-的-server实验性[高级选项]。
 
-image:/img/how-it-works-k3s-revised.svg[]
+image:how-it-works-k3s-revised.svg[]
 
 == 带有嵌入式数据库的单服务器设置
 
@@ -19,13 +16,7 @@ image:/img/how-it-works-k3s-revised.svg[]
 
 在此配置中，每个 Agent 节点都注册到同一个 Server 节点。K3s 用户可以通过调用 Server 节点上的 K3s API 来操作 Kubernetes 资源。
 
-<ThemedImage
-alt="K3s Architecture with a Single Server"
-sources={{
-light: useBaseUrl('/img/k3s-architecture-single-server.svg'),
-dark: useBaseUrl('/img/k3s-architecture-single-server-dark.svg'),
-}}
-/>
+image:k3s-architecture-single-server.svg[K3s Architecture with a Single Server]
 
 == 高可用 K3s
 
@@ -39,12 +30,7 @@ Tab 嵌入式数据库::
 * 三个或多个 **Server 节点**为 Kubernetes API 提供服务并运行其他 control plane 服务
 * *嵌入式 etcd 数据存储*（与单节点设置中使用的嵌入式 SQLite 数据存储相反）
 
-<ThemedImage
-  alt="K3s Architecture with High-availability Servers"
-  sources={{
-    light: useBaseUrl('/img/k3s-architecture-ha-embedded.svg'),
-    dark: useBaseUrl('/img/k3s-architecture-ha-embedded-dark.svg'),
-}} />
+image:k3s-architecture-ha-embedded.svg[K3s Architecture with High-availability Servers]
 --
 
 Tab 外部数据库::
@@ -53,12 +39,7 @@ Tab 外部数据库::
 * 两个或多个 **Server 节点**为 Kubernetes API 提供服务并运行其他 control plane 服务
 * *外部数据存储*（例如 MySQL、PostgreSQL 或 etcd）
 
-<ThemedImage
-  alt="K3s Architecture with High-availability Servers and an External DB"
-  sources={{
-    light: useBaseUrl('/img/k3s-architecture-ha-external.svg'),
-    dark: useBaseUrl('/img/k3s-architecture-ha-external-dark.svg'),
-}} />
+image:k3s-architecture-ha-external.svg[K3s Architecture with High-availability Servers and an External DB]
 --
 ======
 
@@ -68,13 +49,7 @@ Tab 外部数据库::
 
 注册后，Agent 节点直接与其中一个 Server 节点建立连接。
 
-<ThemedImage
-alt="Agent Registration HA"
-sources={{
-light: useBaseUrl('/img/k3s-production-setup.svg'),
-dark: useBaseUrl('/img/k3s-production-setup-dark.svg'),
-}}
-/>
+image:k3s-production-setup.svg[Agent Registration HA]
 
 == Agent 节点注册的工作原理
 

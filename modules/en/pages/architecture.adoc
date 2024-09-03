@@ -1,15 +1,12 @@
 = Architecture
 
-import ThemedImage from '@theme/ThemedImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-
 == Servers and Agents
 
 * A server node is defined as a host running the `k3s server` command, with control-plane and datastore components managed by K3s.
 * An agent node is defined as a host running the `k3s agent` command, without any datastore or control-plane components.
 * Both servers and agents run the kubelet, container runtime, and CNI. See the link:./advanced.adoc#running-agentless-servers-experimental[Advanced Options] documentation for more information on running agentless servers.
 
-image:/img/how-it-works-k3s-revised.svg[]
+image:how-it-works-k3s-revised.svg[]
 
 == Single-server Setup with an Embedded DB
 
@@ -17,13 +14,7 @@ The following diagram shows an example of a cluster that has a single-node K3s s
 
 In this configuration, each agent node is registered to the same server node. A K3s user can manipulate Kubernetes resources by calling the K3s API on the server node.
 
-<ThemedImage
-  alt="K3s Architecture with a Single Server"
-  sources={{
-    light: useBaseUrl('/img/k3s-architecture-single-server.svg'),
-    dark: useBaseUrl('/img/k3s-architecture-single-server-dark.svg'),
-  }}
-/>
+image:k3s-architecture-single-server.svg[K3s Architecture with a Single Server]
 
 == High-Availability K3s
 
@@ -37,12 +28,7 @@ Tab Embedded DB::
 * Three or more *server nodes* that will serve the Kubernetes API and run other control plane services
 * An *embedded etcd datastore* (as opposed to the embedded SQLite datastore used in single-server setups)
 
-<ThemedImage
-  alt="K3s Architecture with High-availability Servers"
-  sources={{
-    light: useBaseUrl('/img/k3s-architecture-ha-embedded.svg'),
-    dark: useBaseUrl('/img/k3s-architecture-ha-embedded-dark.svg'),
-}} />
+image:k3s-architecture-ha-embedded.svg[K3s Architecture with High-availability Servers]
 --
 
 Tab External DB::
@@ -51,12 +37,7 @@ Tab External DB::
 * Two or more *server nodes* that will serve the Kubernetes API and run other control plane services
 * An *external datastore* (such as MySQL, PostgreSQL, or etcd)
 
-<ThemedImage
-  alt="K3s Architecture with High-availability Servers and an External DB"
-  sources={{
-    light: useBaseUrl('/img/k3s-architecture-ha-external.svg'),
-    dark: useBaseUrl('/img/k3s-architecture-ha-external-dark.svg'),
-}} />
+image:k3s-architecture-ha-external.svg[K3s Architecture with High-availability Servers and an External DB]
 --
 ======
 
@@ -66,13 +47,7 @@ In the high-availability server configuration, each node can also register with 
 
 After registration, the agent nodes establish a connection directly to one of the server nodes.
 
-<ThemedImage
-  alt="Agent Registration HA"
-  sources={{
-    light: useBaseUrl('/img/k3s-production-setup.svg'),
-    dark: useBaseUrl('/img/k3s-production-setup-dark.svg'),
-  }}
-/>
+image:k3s-production-setup.svg[Agent Registration HA]
 
 == How Agent Node Registration Works
 
