@@ -35,7 +35,7 @@ Kubernetes 需要大量 CA 证书才能正常运行。有关 Kubernetes 如何�
 
 默认情况下，K3s 在第一个 Server 节点启动时生成自签名 CA 证书。这些 CA 证书自颁发日起 10 年内有效，不会自动更新。
 
-权威 CA 证书和密钥存储在数据存储区的引导程序密钥中，使用 link:token.adoc#server[server token] 作为 PBKDF2 密码和 AES256-GCM 和 HMAC-SHA1 进行加密。
+权威 CA 证书和密钥存储在数据存储区的引导程序密钥中，使用 xref:token.adoc#server[server token] 作为 PBKDF2 密码和 AES256-GCM 和 HMAC-SHA1 进行加密。
 在 K3s Server 启动期间，CA 证书和密钥的副本会被提取到磁盘。
 任何 Server 都可以在节点加入集群时为节点生成叶证书，而 Kubernetes https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/[Certificates API] 控制器可以在运行时颁发其他证书。
 
@@ -161,7 +161,7 @@ curl -sL https://github.com/k3s-io/k3s/raw/master/contrib/util/generate-custom-c
 
 只要是使用相同的根 CA，使用自定义 CA 证书启动的集群能无中断地更新或轮换 CA 证书和密钥。
 
-如果使用新的根 CA，则需要中断才能进行轮换。必须使用 `k3s certificate rotate-ca --force` 选项，所有使用 link:token.adoc#secure[secure token] 加入的节点（包括 server）都需要重新配置才能使用新的 Token 值，并且 Pod 需要重启才能信任新的根 CA。
+如果使用新的根 CA，则需要中断才能进行轮换。必须使用 `k3s certificate rotate-ca --force` 选项，所有使用 xref:token.adoc#secure[secure token] 加入的节点（包括 server）都需要重新配置才能使用新的 Token 值，并且 Pod 需要重启才能信任新的根 CA。
 
 ==== 使用示例脚本
 
@@ -191,7 +191,7 @@ k3s certificate rotate-ca --path=/opt/k3s/server
 如果 `rotate-ca` 命令返回错误，请检查服务日志中的错误。
 命令成功完成，在集群中的所有节点上重启 K3s，你需要先重启 Server，然后再重启 Agent。
 
-如果你使用了 `--force` 选项或更改了根 CA，请确保使用 link:token.adoc#secure[secure token] 加入的节点在重启前都重新配置为使用新的 Token 值。
+如果你使用了 `--force` 选项或更改了根 CA，请确保使用 xref:token.adoc#secure[secure token] 加入的节点在重启前都重新配置为使用新的 Token 值。
 Token 可能存储在 `.env` 文件、systemd 单元或 config.yaml 中，具体取决于节点初始安装时的配置。
 
 === 轮换自签名 CA 证书
@@ -206,7 +206,7 @@ Token 可能存储在 `.env` 文件、systemd 单元或 config.yaml 中，具体
 ====
 
 
-如果集群已使用默认的自签名 CA 证书启动，轮换将是中断的。使用 link:token.adoc#secure[secure token] 加入的所有节点都需要重新配置才能信任新的 CA 哈希。
+如果集群已使用默认的自签名 CA 证书启动，轮换将是中断的。使用 xref:token.adoc#secure[secure token] 加入的所有节点都需要重新配置才能信任新的 CA 哈希。
 如果旧 CA 证书没有交叉签名新的 CA 证书，你需要使用 `--force` 选项来绕过完整性检查，并且需要重启 Pod 才能信任新的根 CA。
 
 ==== 默认 CA 拓扑
@@ -307,7 +307,7 @@ k3s certificate rotate-ca --path=/var/lib/rancher/k3s/server/rotate-ca
 如果 `rotate-ca` 命令返回错误，请检查服务日志中的错误。
 命令成功完成，在集群中的所有节点上重启 K3s，你需要先重启 Server，然后再重启 Agent。
 
-请确保使用 link:token.adoc#secure[secure token] 加入的节点（包括 server 节点）在重启前都重新配置为使用新的 Token 值。
+请确保使用 xref:token.adoc#secure[secure token] 加入的节点（包括 server 节点）在重启前都重新配置为使用新的 Token 值。
 Token 可能存储在 `.env` 文件、systemd 单元或 config.yaml 中，具体取决于节点在初始安装时的配置。
 
 == ServiceAccount Issuer 密钥轮换

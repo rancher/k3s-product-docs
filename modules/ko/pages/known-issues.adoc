@@ -10,11 +10,11 @@
 
 레거시 대신 nftables 모드에서 iptables를 실행하는 경우 문제가 발생할 수 있습니다. 문제를 방지하려면 최신 버전(예: 1.6.1+)의 iptables를 사용하는 것이 좋습니다.
 
-또한 1.8.0-1.8.4 버전에는 K3s가 실패할 수 있는 알려진 문제가 있습니다. 해결 방법은 link:./advanced.adoc#이전-iptables-버전[추가 OS 준비]를 참조하세요.
+또한 1.8.0-1.8.4 버전에는 K3s가 실패할 수 있는 알려진 문제가 있습니다. 해결 방법은 xref:./advanced.adoc#이전-iptables-버전[추가 OS 준비]를 참조하세요.
 
 == Rootless Mode
 
-루트리스 모드로 K3s를 실행하는 것은 실험 중이며 몇 가지 link:./advanced.adoc#known-issues-with-rootless-mode[알려진 이슈]가 있습니다.
+루트리스 모드로 K3s를 실행하는 것은 실험 중이며 몇 가지 xref:./advanced.adoc#known-issues-with-rootless-mode[알려진 이슈]가 있습니다.
 
 [#hardened-125]
 == 강화된(Hardened) 클러스터를 v1.24.x에서 v1.25.x로 업그레이드하기

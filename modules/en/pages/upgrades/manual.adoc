@@ -43,7 +43,7 @@ To upgrade K3s from an older version you can re-run the installation script usin
 The `INSTALL_K3S_EXEC` variable, `K3S_` variables, and trailing shell arguments are all used by the install script to generate the systemd unit and environment file.
 If you set configuration when originally running the install script, but do not set it again when re-running the install script, the original values will be lost.
 
-The contents of the link:../installation/configuration.adoc#configuration-file[configuration file] are not managed by the install script.
+The contents of the xref:../installation/configuration.adoc#configuration-file[configuration file] are not managed by the install script.
 If you want your configuration to be independent from the install script, you should use a configuration file instead of passing environment variables or arguments to the install script.
 ====
 

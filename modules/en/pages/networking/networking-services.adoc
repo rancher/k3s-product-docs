@@ -4,7 +4,7 @@ This page explains how CoreDNS, Traefik Ingress controller, Network Policy contr
 
 Refer to the xref:./basic-network-options.adoc[Installation Network Options] page for details on Flannel configuration options and backend selection, or how to set up your own CNI.
 
-For information on which ports need to be opened for K3s, refer to the link:../installation/requirements.adoc#networking[Networking Requirements].
+For information on which ports need to be opened for K3s, refer to the xref:../installation/requirements.adoc#networking[Networking Requirements].
 
 == CoreDNS
 
@@ -24,7 +24,7 @@ To restrict the nodes used by Traefik, and by extension the node IPs advertised 
 
 Traefik is deployed by default when starting the server. For more information see xref:../installation/packaged-components.adoc[Managing Packaged Components]. The default config file is found in `/var/lib/rancher/k3s/server/manifests/traefik.yaml`.
 
-The `traefik.yaml` file should not be edited manually, as K3s will replace the file with defaults at startup. Instead, you should customize Traefik by creating an additional `HelmChartConfig` manifest in `/var/lib/rancher/k3s/server/manifests`. For more details and an example see link:../helm.adoc#customizing-packaged-components-with-helmchartconfig[Customizing Packaged Components with HelmChartConfig]. For more information on the possible configuration values, refer to the official https://github.com/traefik/traefik-helm-chart/tree/master/traefik[Traefik Helm Configuration Parameters.].
+The `traefik.yaml` file should not be edited manually, as K3s will replace the file with defaults at startup. Instead, you should customize Traefik by creating an additional `HelmChartConfig` manifest in `/var/lib/rancher/k3s/server/manifests`. For more details and an example see xref:../helm.adoc#customizing-packaged-components-with-helmchartconfig[Customizing Packaged Components with HelmChartConfig]. For more information on the possible configuration values, refer to the official https://github.com/traefik/traefik-helm-chart/tree/master/traefik[Traefik Helm Configuration Parameters.].
 
 To remove Traefik from your cluster, start all servers with the `--disable=traefik` flag.
 
