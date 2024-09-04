@@ -33,7 +33,7 @@ K3s is expected to work on most modern Linux systems.
 
 Some OSs have additional setup requirements:
 
-[tabs,sync-group-id=os]
+[tabs,sync-group-id=os,id=os]
 ======
 Tab SUSE Linux Enterprise / openSUSE::
 +
