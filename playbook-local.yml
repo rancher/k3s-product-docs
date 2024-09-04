@@ -6,7 +6,6 @@ site:
 content:
   sources: 
   - url: .
-    branches: [main]
 ui: 
   bundle:
     url: https://github.com/rancher/product-docs-ui/blob/main/build/ui-bundle.zip?raw=true
