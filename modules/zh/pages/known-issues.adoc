@@ -11,11 +11,11 @@
 
 如果你使用 nftables 模式而不是传统模式来运行 iptables，则可能会遇到问题。我们建议使用较新的 iptables（例如 1.6.1+）来避免出现问题。
 
-此外，版本 1.8.0-1.8.4 存在可能导致 K3s 失败的问题。有关解决方法，请参阅xref:./advanced.adoc#旧的-iptables-版本[其他操作系统准备]。
+此外，版本 1.8.0-1.8.4 存在可能导致 K3s 失败的问题。有关解决方法，请参阅xref:./advanced.adoc#_旧的-iptables-版本[其他操作系统准备]。
 
 == Rootless 模式
 
-使用 Rootless 模式运行 K3s 是实验性的，存在几个xref:./advanced.adoc#rootless-模式的已知问题[已知问题]。
+使用 Rootless 模式运行 K3s 是实验性的，存在几个xref:./advanced.adoc#_rootless-模式的已知问题[已知问题]。
 
 [#hardened-125]
 == 将强化集群从 v1.24.x 升级到 v1.25.x

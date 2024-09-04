@@ -4,7 +4,7 @@ In this section, you'll learn how to configure the K3s agent.
 
 Note that servers also run an agent, so all flags listed on this page are also valid for use on servers.
 
-Options are documented on this page as CLI flags, but can also be passed as configuration file options. See the xref:../installation/configuration.adoc#configuration-file[Configuration File] documentation for more information on using YAML configuration files.
+Options are documented on this page as CLI flags, but can also be passed as configuration file options. See the xref:../installation/configuration.adoc#_configuration_file[Configuration File] documentation for more information on using YAML configuration files.
 
 [discrete]
 === Logging
@@ -173,7 +173,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Prefer bundled userspace binaries over host binaries
 
 | `--disable-default-registry-endpoint`
-| See "xref:../installation/private-registry.adoc#default-endpoint-fallback[Default Endpoint Fallback]"
+| See "xref:../installation/private-registry.adoc#_default-endpoint-fallback[Default Endpoint Fallback]"
 |===
 
 [discrete]

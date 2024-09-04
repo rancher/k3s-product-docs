@@ -34,11 +34,11 @@ K3s를 시작할 때 `--debug` 플래그(또는 환경설정 파일에서 `debug
 K3s는 단일 프로세스 내에서 모든 쿠버네티스 컴포넌트를 실행하기 때문에, 개별 쿠버네티스 컴포넌트에 대해 다른 로그 레벨이나 대상을 구성할 수 없습니다.
 ``-v=<level>``또는``--vmodule=<module>=<level>`` 컴포넌트 인수를 사용하면 원하는 효과를 얻지 못할 수 있습니다.
 
-더 많은 로그 옵션은 xref:./advanced.adoc#additional-logging-sources[추가 로깅 소스]를 참조하세요.
+더 많은 로그 옵션은 xref:./advanced.adoc#_additional-logging-sources[추가 로깅 소스]를 참조하세요.
 
 == Docker에서 K3s를 실행할 수 있나요?
 
-예, Docker에서 K3s를 실행하는 방법은 여러 가지가 있습니다. 자세한 내용은 xref:./advanced.adoc#running-k3s-in-docker[고급 옵션]을 참조하세요.
+예, Docker에서 K3s를 실행하는 방법은 여러 가지가 있습니다. 자세한 내용은 xref:./advanced.adoc#_running-k3s-in-docker[고급 옵션]을 참조하세요.
 
 == K3s 서버와 에이전트 토큰의 차이점은 무엇인가요?
 
@@ -55,7 +55,7 @@ K3s 조인 토큰 관리에 대한 자세한 내용은 xref:./cli/token.adoc[`k3
 K3s를 배포하는 데 문제가 있는 경우 다음과 같이 하세요:
 
 . xref:./known-issues.adoc[알려진 문제] 페이지를 확인하세요.
-. xref:./advanced.adoc#추가-os-준비-사항[추가 OS 준비사항]을 모두 해결했는지 확인합니다. ``k3s check-config``를 실행하고 통과했는지 확인합니다.
+. xref:./advanced.adoc#_추가-os-준비-사항[추가 OS 준비사항]을 모두 해결했는지 확인합니다. ``k3s check-config``를 실행하고 통과했는지 확인합니다.
 . K3s https://github.com/k3s-io/k3s/issues[이슈] 및 https://github.com/k3s-io/k3s/discussions[토론]에서 문제와 일치하는 항목을 검색합니다.
 
 // lint disable no-dead-urls

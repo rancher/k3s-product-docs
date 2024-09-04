@@ -34,11 +34,11 @@ Kubernetes 使用名为 `klog` 的日志管理框架，该框架对进程中的�
 由于 K3s 在单个进程中运行所有 Kubernetes 组件，因此无法为单个 Kubernetes 组件配置不同的日志级别或目的位置。
 使用 `-v=<level>` 或 `--vmodule=<module>=<level>` 组件参数的效果可能不如预期。
 
-要获得更多日志选项，请参阅xref:./advanced.adoc#其他日志来源[其他日志来源]。
+要获得更多日志选项，请参阅xref:./advanced.adoc#_其他日志来源[其他日志来源]。
 
 == 可以在 Docker 中运行 K3s 吗？
 
-是的，有几种方法可以让你在 Docker 中运行 K3s。有关详细信息，请参阅xref:./advanced.adoc#在-docker-中运行-k3s[高级选项]。
+是的，有几种方法可以让你在 Docker 中运行 K3s。有关详细信息，请参阅xref:./advanced.adoc#_在-docker-中运行-k3s[高级选项]。
 
 == K3s Server 和 Agent Token 有什么区别？
 
@@ -56,7 +56,7 @@ Kubernetes 使用名为 `klog` 的日志管理框架，该框架对进程中的�
 
 1) 检查xref:./known-issues.adoc[已知问题]页面。
 
-2) 检查你是否已解决xref:./advanced.adoc#其他操作系统准备[其他操作系统准备]。运行 `k3s check-config` 并确保它通过。
+2) 检查你是否已解决xref:./advanced.adoc#_其他操作系统准备[其他操作系统准备]。运行 `k3s check-config` 并确保它通过。
 
 3) 在 K3s https://github.com/k3s-io/k3s/issues[Issues] 和 https://github.com/k3s-io/k3s/discussions[Discussions] 中搜索匹配的问题。
 

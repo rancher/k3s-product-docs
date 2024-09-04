@@ -38,11 +38,11 @@ Kubernetes uses a logging framework known as `klog`, which uses a single logging
 Since K3s runs all Kubernetes components within a single process, it is not possible to configure different log levels or destinations for individual Kubernetes components.
 Use of the `-v=<level>` or `--vmodule=<module>=<level>` component args will likely not have the desired effect.
 
-See xref:./advanced.adoc#additional-logging-sources[Additional Logging Sources] for even more log options.
+See xref:./advanced.adoc#_additional-logging-sources[Additional Logging Sources] for even more log options.
 
 == Can I run K3s in Docker?
 
-Yes, there are multiple ways to run K3s in Docker. See xref:./advanced.adoc#running-k3s-in-docker[Advanced Options] for more details.
+Yes, there are multiple ways to run K3s in Docker. See xref:./advanced.adoc#_running-k3s-in-docker[Advanced Options] for more details.
 
 == What is the difference between K3s Server and Agent Tokens?
 
@@ -60,7 +60,7 @@ If you are having an issue with deploying K3s, you should:
 
 1) Check the xref:./known-issues.adoc[Known Issues] page.
 
-2) Check that you have resolved any xref:./installation/requirements.adoc#operating-systems[Additional OS Preparation]. Run `k3s check-config` and ensure that it passes.
+2) Check that you have resolved any xref:./installation/requirements.adoc#_operating-systems[Additional OS Preparation]. Run `k3s check-config` and ensure that it passes.
 
 3) Search the K3s https://github.com/k3s-io/k3s/issues[Issues] and https://github.com/k3s-io/k3s/discussions[Discussions] for one that matches your problem.
 

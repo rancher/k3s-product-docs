@@ -4,7 +4,7 @@ In this section, you'll learn how to configure the K3s server.
 
 Note that servers also run an agent, so all of the configuration options listed in the xref:./agent.adoc[`k3s agent` documentation] are also supported on servers.
 
-Options are documented on this page as CLI flags, but can also be passed as configuration file options. See the xref:../installation/configuration.adoc#configuration-file[Configuration File] documentation for more information on using YAML configuration files.
+Options are documented on this page as CLI flags, but can also be passed as configuration file options. See the xref:../installation/configuration.adoc#_configuration_file[Configuration File] documentation for more information on using YAML configuration files.
 
 == Critical Configuration Values
 
@@ -323,7 +323,7 @@ Note that the primary `service-cidr` IP range must be of the same address family
 | Flag | Description
 
 | `--disable` value
-| See "xref:../installation/packaged-components.adoc#using-the---disable-flag[Using the `--disable` flag]"
+| See "xref:../installation/packaged-components.adoc#_using-the---disable-flag[Using the `--disable` flag]"
 
 | `--disable-scheduler`
 | Disable Kubernetes default scheduler
@@ -386,7 +386,7 @@ Note that the primary `service-cidr` IP range must be of the same address family
 | Prefer bundled userspace binaries over host binaries
 
 | `--disable-agent`
-| See "xref:../advanced.adoc#running-agentless-servers-experimental[Running Agentless Servers (Experimental)]"
+| See "xref:../advanced.adoc#_running-agentless-servers-experimental[Running Agentless Servers (Experimental)]"
 
 | `--embedded-registry`
 | See "xref:../installation/registry-mirror.adoc[Embedded Registry Mirror]"

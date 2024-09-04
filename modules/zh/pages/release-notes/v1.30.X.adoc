@@ -12,7 +12,7 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
 
-| link:v1.30.X.adoc#release-v1303k3s1[v1.30.3+k3s1]
+| xref:#_release_v1_30_3k3s1[v1.30.3+k3s1]
 | Jul 31 2024
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v1303[v1.30.3]
 | https://github.com/k3s-io/kine/releases/tag/v0.11.11[v0.11.11]
@@ -27,7 +27,7 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.16.1[v0.16.1]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.28[v0.0.28]
 
-| link:v1.30.X.adoc#release-v1302k3s2[v1.30.2+k3s2]
+| xref:#_release_v1_30_2k3s2[v1.30.2+k3s2]
 | Jul 03 2024
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v1302[v1.30.2]
 | https://github.com/k3s-io/kine/releases/tag/v0.11.9[v0.11.9]
@@ -42,7 +42,7 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.16.1[v0.16.1]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.27[v0.0.27]
 
-| link:v1.30.X.adoc#release-v1302k3s1[v1.30.2+k3s1]
+| xref:#_release_v1_30_2k3s1[v1.30.2+k3s1]
 | Jun 25 2024
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v1302[v1.30.2]
 | https://github.com/k3s-io/kine/releases/tag/v0.11.9[v0.11.9]
@@ -57,7 +57,7 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.16.1[v0.16.1]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.27[v0.0.27]
 
-| link:v1.30.X.adoc#release-v1301k3s1[v1.30.1+k3s1]
+| xref:#_release_v1_30_1k3s1[v1.30.1+k3s1]
 | May 22 2024
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v1301[v1.30.1]
 | https://github.com/k3s-io/kine/releases/tag/v0.11.8-0.20240430184817-f9ce6f8da97b[v0.11.8-0.20240430184817-f9ce6f8da97b]
@@ -72,7 +72,7 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.16.1-0.20240502205943-2f32059d43e6[v0.16.1-0.20240502205943-2f32059d43e6]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.26[v0.0.26]
 
-| link:v1.30.X.adoc#release-v1300k3s1[v1.30.0+k3s1]
+| xref:#_release_v1_30_0k3s1[v1.30.0+k3s1]
 | May 10 2024
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v1300[v1.30.0]
 | https://github.com/k3s-io/kine/releases/tag/v0.11.7[v0.11.8]

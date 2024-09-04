@@ -39,7 +39,7 @@ When using this method to install K3s, the following environment variables can b
 | Directory to install systemd service and environment files to, or use `/etc/systemd/system` as the default.
 
 | `INSTALL_K3S_EXEC`
-| Command with flags to use for launching K3s in the service. If the command is not specified, and the `K3S_URL` is set, it will default to "agent." If `K3S_URL` not set, it will default to "server." For help, refer to xref:../installation/configuration.adoc#configuration-with-install-script[this example.]
+| Command with flags to use for launching K3s in the service. If the command is not specified, and the `K3S_URL` is set, it will default to "agent." If `K3S_URL` not set, it will default to "server." For help, refer to xref:../installation/configuration.adoc#_configuration-with-install-script[this example.]
 
 | `INSTALL_K3S_NAME`
 | Name of systemd service to create, will default to 'k3s' if running k3s as a server and 'k3s-agent' if running k3s as an agent. If specified the name will be prefixed with 'k3s-'.

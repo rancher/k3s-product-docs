@@ -28,7 +28,7 @@ The `--prefer-bundled-bin` flag is available starting with the 2022-12 releases 
 
 == Rootless Mode
 
-Running K3s with Rootless mode is experimental and has several xref:./advanced.adoc#known-issues-with-rootless-mode[known issues.]
+Running K3s with Rootless mode is experimental and has several xref:./advanced.adoc#_known-issues-with-rootless-mode[known issues.]
 
 [#hardened-125]
 == Upgrading Hardened Clusters from v1.24.x to v1.25.x

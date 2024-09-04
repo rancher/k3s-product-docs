@@ -81,7 +81,7 @@ In this example there are 3 servers, `S1`, `S2`, and `S3`. The snapshot is locat
 
 === Options
 
-These options can be passed in with the command line, or in the xref:../installation/configuration.md#configuration-file[configuration file,] which may be easier to use.
+These options can be passed in with the command line, or in the xref:../installation/configuration.adoc#_configuration_file[configuration file,] which may be easier to use.
 
 |===
 | Options | Description
