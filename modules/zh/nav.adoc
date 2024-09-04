@@ -1,6 +1,6 @@
 * xref:introduction.adoc[]
 * xref:quick-start.adoc[]
-* xref:installation/installation.adoc[]
+* xref:installation/installation.adoc[安装]
 ** xref:installation/requirements.adoc[]
 ** xref:installation/configuration.adoc[]
 ** xref:installation/private-registry.adoc[]
@@ -41,7 +41,7 @@
 ** xref:networking/networking-services.adoc[]
 * xref:helm.adoc[]
 * xref:advanced.adoc[]
-* Reference
+* 参考
 ** xref:reference/env-variables.adoc[]
 ** xref:reference/flag-deprecation.adoc[]
 ** xref:reference/resource-profiling.adoc[]
