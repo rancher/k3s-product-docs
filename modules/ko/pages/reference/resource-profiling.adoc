@@ -44,17 +44,17 @@ The results are summarized as follows:
 | 256 M
 |===
 
-* <<scope-of-resource-testing,Scope of Resource Testing>>
-* <<components-included-for-baseline-measurements,Components Included for Baseline Measurements>>
-* <<methodology,Methodology>>
-* <<environment,Environment>>
-* <<baseline-resource-requirements,Baseline Resource Requirements>>
- ** <<k3s-server-with-a-workload,K3s Server with a Workload>>
- ** <<k3s-cluster-with-a-single-agent,K3s Cluster with a Single Agent>>
- ** <<k3s-agent,K3s Agent>>
-* <<analysis,Analysis>>
- ** <<primary-resource-utilization-drivers,Primary Resource Utilization Drivers>>
- ** <<preventing-agents-and-workloads-from-interfering-with-the-cluster-datastore,Preventing Agents and Workloads from Interfering with the Cluster Datastore>>
+* <<_scope_of_resource_testing,Scope of Resource Testing>>
+* <<_components_included_for_baseline_measurements,Components Included for Baseline Measurements>>
+* <<_methodology,Methodology>>
+* <<_environment,Environment>>
+* <<_baseline_resource_requirements,Baseline Resource Requirements>>
+ ** <<_k3s_server_with_a_workload,K3s Server with a Workload>>
+ ** <<_k3s_cluster_with_a_single_agent,K3s Cluster with a Single Agent>>
+ ** <<_k3s_agent,K3s Agent>>
+* <<_analysis,Analysis>>
+ ** <<_primary_resource_utilization_drivers,Primary Resource Utilization Drivers>>
+ ** <<_preventing_agents_and_workloads_from_interfering_with_the_cluster_datastore,Preventing Agents and Workloads from Interfering with the Cluster Datastore>>
 
 == Scope of Resource Testing
 

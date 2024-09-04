@@ -1,0 +1,3 @@
+[09:15:33.276] INFO (@antora/lunr-extension): The following file already exists in your UI: css/search.css, skipping
+[09:15:33.279] INFO (@antora/lunr-extension): The following file already exists in your UI: js/search-ui.js, skipping
+[09:15:36.932] INFO (@antora/lunr-extension): Building search index with the language(s): en

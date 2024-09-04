@@ -372,7 +372,7 @@ ufw allow from 10.43.0.0/16 to any #services
 
 === Raspberry Pi
 
-라즈베리파이 OS는 데비안 기반이며, 오래된 iptables 버전으로 인해 문제가 발생할 수 있습니다. <<이전-iptables-버전,해결 방법>>을 참조하세요.
+라즈베리파이 OS는 데비안 기반이며, 오래된 iptables 버전으로 인해 문제가 발생할 수 있습니다. <<_이전_iptables_버전,해결 방법>>을 참조하세요.
 
 표준 라즈베리파이 OS 설치는 ``cgroups``가 활성화된 상태에서 시작되지 않습니다. **K3S**는 systemd 서비스를 시작하기 위해 ``cgroups``가 필요합니다. ``cgroups``는 ``/boot/cmdline.txt``에 ``cgroup_memory=1 cgroup_enable=memory``를 추가하여 활성화할 수 있습니다.
 

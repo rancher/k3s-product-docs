@@ -39,7 +39,7 @@ For details on all environment variables, see xref:../reference/env-variables.ad
 ====
 If you set configuration when running the install script, but do not set it again when re-running the install script, the original values will be lost.
 
-The contents of the <<configuration-file,configuration file>> are not managed by the install script.
+The contents of the <<_configuration_file,configuration file>> are not managed by the install script.
 If you want your configuration to be independent from the install script, you should use a configuration file instead of passing environment variables or arguments to the install script.
 ====
 

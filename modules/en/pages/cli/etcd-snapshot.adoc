@@ -12,7 +12,7 @@ In this section, you'll learn how to create backups of the K3s embedded etcd dat
 
 == Creating Snapshots
 
-Snapshots are enabled by default, at 00:00 and 12:00 system time, with 5 snapshots retained. To configure the snapshot interval or the number of retained snapshots, refer to the <<options,options>>.
+Snapshots are enabled by default, at 00:00 and 12:00 system time, with 5 snapshots retained. To configure the snapshot interval or the number of retained snapshots, refer to the <<_options,options>>.
 
 The snapshot directory defaults to `+${data-dir}/server/db/snapshots+`. The data-dir value defaults to `/var/lib/rancher/k3s` and can be changed by setting the `--data-dir` flag.
 
