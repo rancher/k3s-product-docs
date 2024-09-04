@@ -82,7 +82,7 @@ systemctl start k3s
 
 === 选项
 
-你可以通过命令行或者link:../installation/configuration.md#配置文件[配置文件]（可能更容易使用）传入这些选项。
+你可以通过命令行或者xref:../installation/configuration.adoc#_配置文件[配置文件]（可能更容易使用）传入这些选项。
 
 |===
 | 选项 | 描述

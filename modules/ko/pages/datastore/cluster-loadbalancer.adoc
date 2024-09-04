@@ -4,7 +4,7 @@ This section describes how to install an external load balancer in front of a Hi
 
 [TIP]
 ====
-External load-balancers should not be confused with the embedded ServiceLB, which is an embedded controller that allows for use of Kubernetes LoadBalancer Services without deploying a third-party load-balancer controller. For more details, see link:../networking/networking-services.adoc#service-load-balancer[Service Load Balancer].
+External load-balancers should not be confused with the embedded ServiceLB, which is an embedded controller that allows for use of Kubernetes LoadBalancer Services without deploying a third-party load-balancer controller. For more details, see xref:../networking/networking-services.adoc#_service-load-balancer[Service Load Balancer].
 
 External load-balancers can be used to provide a fixed registration address for registering nodes, or for external access to the Kubernetes API Server. For exposing LoadBalancer Services, external load-balancers can be used alongside or instead of ServiceLB, but in most cases, replacement load-balancer controllers such as MetalLB or Kube-VIP are a better choice.
 ====

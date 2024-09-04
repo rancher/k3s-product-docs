@@ -571,7 +571,7 @@ sudo systemctl restart k3s.service
 
 == Configuration for Kubernetes Components
 
-The configuration below should be placed in the link:../installation/configuration.adoc#configuration-file[configuration file], and contains all the necessary remediations to harden the Kubernetes components.
+The configuration below should be placed in the xref:../installation/configuration.adoc#_configuration_file[configuration file], and contains all the necessary remediations to harden the Kubernetes components.
 
 [tabs]
 ======

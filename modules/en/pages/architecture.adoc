@@ -4,7 +4,7 @@
 
 * A server node is defined as a host running the `k3s server` command, with control-plane and datastore components managed by K3s.
 * An agent node is defined as a host running the `k3s agent` command, without any datastore or control-plane components.
-* Both servers and agents run the kubelet, container runtime, and CNI. See the link:./advanced.adoc#running-agentless-servers-experimental[Advanced Options] documentation for more information on running agentless servers.
+* Both servers and agents run the kubelet, container runtime, and CNI. See the xref:./advanced.adoc#_running-agentless-servers-experimental[Advanced Options] documentation for more information on running agentless servers.
 
 image:how-it-works-k3s-revised.svg[]
 

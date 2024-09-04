@@ -8,7 +8,7 @@ https://github.com/flannel-io/flannel/blob/master/README.md[Flannel] is a lightw
 
 * Flannel options can only be set on server nodes, and must be identical on all servers in the cluster.
 * The default backend for Flannel is `vxlan`. To enable encryption, use the `wireguard-native` backend.
-* Using `vxlan` on Rasperry Pi with recent versions of Ubuntu requires link:../installation/requirements.adoc?os=pi#operating-systems[additional preparation].
+* Using `vxlan` on Rasperry Pi with recent versions of Ubuntu requires xref:../installation/requirements.adoc#os_tab_raspberry_pi[additional preparation].
 * Using `wireguard-native` as the Flannel backend may require additional modules on some Linux distributions. Please see the https://www.wireguard.com/install/[WireGuard Install Guide] for details.
 The WireGuard install steps will ensure the appropriate kernel modules are installed for your operating system.
 You must ensure that WireGuard kernel modules are available on every node, both servers and agents, before attempting to use the WireGuard Flannel backend.
@@ -139,7 +139,7 @@ K3s agents and servers maintain websocket tunnels between nodes that are used to
 This allows agents to operate without exposing the kubelet and container runtime streaming ports to incoming connections, and for the control-plane to connect to cluster services when operating with the agent disabled.
 This functionality is equivalent to the https://kubernetes.io/docs/tasks/extend-kubernetes/setup-konnectivity/[Konnectivity] service commonly used on other Kubernetes distributions, and is managed via the apiserver's egress selector configuration.
 
-The default mode is `agent`. `pod` or `cluster` modes are recommended when running link:../advanced.adoc#running-agentless-servers-experimental[agentless servers], in order to provide the apiserver with access to cluster service endpoints in the absence of flannel and kube-proxy.
+The default mode is `agent`. `pod` or `cluster` modes are recommended when running xref:../advanced.adoc#_running-agentless-servers-experimental[agentless servers], in order to provide the apiserver with access to cluster service endpoints in the absence of flannel and kube-proxy.
 
 The egress selector mode may be configured on servers via the `--egress-selector-mode` flag, and offers four modes:
 
