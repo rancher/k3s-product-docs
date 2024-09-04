@@ -1,6 +1,6 @@
 * xref:introduction.adoc[]
 * xref:quick-start.adoc[]
-* xref:installation/installation.adoc[]
+* xref:installation/installation.adoc[安装]
 ** xref:installation/requirements.adoc[]
 ** xref:installation/configuration.adoc[]
 ** xref:installation/private-registry.adoc[]
