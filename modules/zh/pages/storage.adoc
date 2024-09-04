@@ -4,7 +4,7 @@
 
 持久卷 (PV) 是 Kubernetes 集群中的一块存储，而持久卷声明 (PVC) 是对存储的请求。有关 PV 和 PVC 工作原理的详细信息，请参阅 https://kubernetes.io/docs/concepts/storage/volumes/[Kubernetes 存储相关的官方文档]。
 
-本文介绍如何使用本地存储提供程序或 <<设置-longhorn,Longhorn>> 设置持久存储。
+本文介绍如何使用本地存储提供程序或 <<_设置_longhorn,Longhorn>> 设置持久存储。
 
 == K3s 存储有什么不同？
 

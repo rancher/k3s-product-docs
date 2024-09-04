@@ -372,7 +372,8 @@ ufw allow from 10.43.0.0/16 to any #services
 
 === Raspberry Pi
 
-Raspberry Pi OS 基于 Debian，可能会受到旧 iptables 版本的影响。请参阅<<旧的-iptables-版本,解决方法>>。
+Raspberry Pi OS 基于 Debian，可能会受到旧 iptables 版本的影响。请参阅<<_旧的_iptables_版本,解决方法>>。
+旧的 iptables 版本
 
 标准 Raspberry Pi OS 不会在启用 `cgroups` 的情况下开始。*K3S* 需要 `cgroups` 来启动 systemd 服务。你可以通过将 `cgroup_memory=1 cgroup_enable=memory` 附加到 `/boot/cmdline.txt` 来启用 `cgroups` 。
 

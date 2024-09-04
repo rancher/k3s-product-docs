@@ -20,7 +20,7 @@ The Traefik ingress controller deploys a LoadBalancer Service that uses ports 80
 
 By default, ServiceLB will use all nodes in the cluster to host the Traefik LoadBalancer Service, meaning ports 80 and 443 will not be usable for other HostPort or NodePort pods, and Ingress resources' Status will show all cluster members' node IPs.
 
-To restrict the nodes used by Traefik, and by extension the node IPs advertised in the Ingress Status, you can follow the instructions in the <<controlling-servicelb-node-selection,Controlling ServiceLB Node Selection>> section below to limit what nodes ServiceLB runs on, or by adding some nodes to a LoadBalancer pool and restricting the Traefik Service to that pool by setting matching labels in the Traefik HelmChartConfig.
+To restrict the nodes used by Traefik, and by extension the node IPs advertised in the Ingress Status, you can follow the instructions in the <<_controlling_servicelb_node_selection,Controlling ServiceLB Node Selection>> section below to limit what nodes ServiceLB runs on, or by adding some nodes to a LoadBalancer pool and restricting the Traefik Service to that pool by setting matching labels in the Traefik HelmChartConfig.
 
 Traefik is deployed by default when starting the server. For more information see xref:../installation/packaged-components.adoc[Managing Packaged Components]. The default config file is found in `/var/lib/rancher/k3s/server/manifests/traefik.yaml`.
 

@@ -55,7 +55,7 @@ firewall-cmd --permanent --zone=trusted --add-source=10.43.0.0/16 #services
 firewall-cmd --reload
 ----
 
-Additional ports may need to be opened depending on your setup. See <<inbound-rules-for-k3s-nodes,Inbound Rules>> for more information. If you change the default CIDR for pods or services, you will need to update the firewall rules accordingly.
+Additional ports may need to be opened depending on your setup. See <<_inbound_rules_for_k3s_nodes,Inbound Rules>> for more information. If you change the default CIDR for pods or services, you will need to update the firewall rules accordingly.
 --
 
 Tab Red Hat Enterprise Linux / CentOS / Fedora::
@@ -78,7 +78,7 @@ firewall-cmd --permanent --zone=trusted --add-source=10.43.0.0/16 #services
 firewall-cmd --reload
 ----
 
-Additional ports may need to be opened depending on your setup. See <<inbound-rules-for-k3s-nodes,Inbound Rules>> for more information. If you change the default CIDR for pods or services, you will need to update the firewall rules accordingly.
+Additional ports may need to be opened depending on your setup. See <<_inbound_rules_for_k3s_nodes,Inbound Rules>> for more information. If you change the default CIDR for pods or services, you will need to update the firewall rules accordingly.
 
 If enabled, it is required to disable nm-cloud-setup and reboot the node:
 
@@ -110,7 +110,7 @@ ufw allow from 10.42.0.0/16 to any #pods
 ufw allow from 10.43.0.0/16 to any #services
 ----
 
-Additional ports may need to be opened depending on your setup. See <<inbound-rules-for-k3s-nodes,Inbound Rules>> for more information. If you change the default CIDR for pods or services, you will need to update the firewall rules accordingly.
+Additional ports may need to be opened depending on your setup. See <<_inbound_rules_for_k3s_nodes,Inbound Rules>> for more information. If you change the default CIDR for pods or services, you will need to update the firewall rules accordingly.
 --
 
 Tab Raspberry Pi::

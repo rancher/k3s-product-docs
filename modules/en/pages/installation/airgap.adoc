@@ -18,7 +18,7 @@ If you have not yet set up a private Docker registry, refer to the https://docs.
 . Use `docker image load k3s-airgap-images-amd64.tar.zst` to import images from the tar file into docker.
 . Use `docker tag` and `docker push` to retag and push the loaded images to your private registry.
 . Follow the xref:./private-registry.adoc[Private Registry Configuration] guide to create and configure the `registries.yaml` file.
-. Proceed to the <<install-k3s,Install K3s>> section below.
+. Proceed to the <<_install_k3s,Install K3s>> section below.
 
 === Manually Deploy Images Method
 
@@ -39,7 +39,7 @@ This method requires you to manually deploy the necessary images to each node, a
   sudo curl -L -o /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst "https://github.com/k3s-io/k3s/releases/download/v1.29.1-rc2%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
 ----
 
-. Proceed to the <<install-k3s,Install K3s>> section below.
+. Proceed to the <<_install_k3s,Install K3s>> section below.
 
 === Embedded Registry Mirror
 
@@ -61,7 +61,7 @@ For more information on enabling the embedded distributed registry mirror, see t
 
 === Prerequisites
 
-Before installing K3s, complete the <<private-registry-method,Private Registry Method>> or the <<manually-deploy-images-method,Manually Deploy Images Method>> above to prepopulate the images that K3s needs to install.
+Before installing K3s, complete the <<_private_registry_method,Private Registry Method>> or the <<_manually_deploy_images_method,Manually Deploy Images Method>> above to prepopulate the images that K3s needs to install.
 
 ==== Binaries
 
