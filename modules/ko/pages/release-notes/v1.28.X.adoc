@@ -1,0 +1,690 @@
+= v1.28.X
+:page-role: -toc
+:sidebar_position: 3
+
+[CAUTION]
+.Upgrade Notice
+====
+Before upgrading from earlier releases, be sure to read the Kubernetes https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#urgent-upgrade-notes[Urgent Upgrade Notes].
+====
+
+
+|===
+| Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
+
+| link:v1.28.X.adoc#release-v12812k3s1[v1.28.12+k3s1]
+| Jul 31 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12812[v1.28.12]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.11[v0.11.11]
+| https://sqlite.org/releaselog/3_44_0.html[3.44.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.13-k3s1[v3.5.13-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.17-k3s1.28[v1.7.17-k3s1.28]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.12[v1.1.12]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.4[v0.25.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.0[v0.7.0]
+| https://github.com/traefik/traefik/releases/tag/v2.10.7[v2.10.7]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.10[v0.15.10]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.28[v0.0.28]
+
+| link:v1.28.X.adoc#release-v12811k3s2[v1.28.11+k3s2]
+| Jul 03 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12811[v1.28.11]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.9[v0.11.9]
+| https://sqlite.org/releaselog/3_44_0.html[3.44.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.13-k3s1[v3.5.13-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.17-k3s1.28[v1.7.17-k3s1.28]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.12[v1.1.12]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.4[v0.25.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.0[v0.7.0]
+| https://github.com/traefik/traefik/releases/tag/v2.10.7[v2.10.7]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.10[v0.15.10]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.27[v0.0.27]
+
+| link:v1.28.X.adoc#release-v12811k3s1[v1.28.11+k3s1]
+| Jun 25 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12811[v1.28.11]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.9[v0.11.9]
+| https://sqlite.org/releaselog/3_44_0.html[3.44.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.13-k3s1[v3.5.13-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.17-k3s1.28[v1.7.17-k3s1.28]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.12[v1.1.12]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.2[v0.25.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.0[v0.7.0]
+| https://github.com/traefik/traefik/releases/tag/v2.10.7[v2.10.7]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.10[v0.15.10]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.27[v0.0.27]
+
+| link:v1.28.X.adoc#release-v12810k3s1[v1.28.10+k3s1]
+| May 22 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12810[v1.28.10]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.7[v0.11.7]
+| https://sqlite.org/releaselog/3_44_0.html[3.44.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.9-k3s1[v3.5.9-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.15-k3s1[v1.7.15-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.12-k3s1[v1.1.12-k3s1]
+| https://github.com/flannel-io/flannel/releases/tag/v0.24.2[v0.24.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.0[v0.7.0]
+| https://github.com/traefik/traefik/releases/tag/v2.10.7[v2.10.7]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.9[v0.15.9]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.26[v0.0.26]
+
+| link:v1.28.X.adoc#release-v1289k3s1[v1.28.9+k3s1]
+| Apr 25 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1289[v1.28.9]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.7[v0.11.7]
+| https://sqlite.org/releaselog/3_44_0.html[3.44.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.9-k3s1[v3.5.9-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.15-k3s1[v1.7.15-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.12[v1.1.12]
+| https://github.com/flannel-io/flannel/releases/tag/v0.24.2[v0.24.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.0[v0.7.0]
+| https://github.com/traefik/traefik/releases/tag/v2.10.7[v2.10.7]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.9[v0.15.9]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.26[v0.0.26]
+
+| link:v1.28.X.adoc#release-v1288k3s1[v1.28.8+k3s1]
+| Mar 25 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1288[v1.28.8]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.4[v0.11.4]
+| https://sqlite.org/releaselog/3_44_0.html[3.44.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.9-k3s1[v3.5.9-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.11-k3s2[v1.7.11-k3s2]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.12-k3s1[v1.1.12-k3s1]
+| https://github.com/flannel-io/flannel/releases/tag/v0.24.2[v0.24.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.0[v0.7.0]
+| https://github.com/traefik/traefik/releases/tag/v2.10.5[v2.10.5]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.9[v0.15.9]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.26[v0.0.26]
+
+| link:v1.28.X.adoc#release-v1287k3s1[v1.28.7+k3s1]
+| Feb 29 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1287[v1.28.7]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.4[v0.11.4]
+| https://sqlite.org/releaselog/3_44_0.html[3.44.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.9-k3s1[v3.5.9-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.11-k3s2[v1.7.11-k3s2]
+| https://github.com/k3s-io/runc/releases/tag/v1.1.12-k3s1[v1.1.12-k3s1]
+| https://github.com/flannel-io/flannel/releases/tag/v0.24.2[v0.24.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.10.5[v2.10.5]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.8[v0.15.8]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.26[v0.0.26]
+
+| link:v1.28.X.adoc#release-v1286k3s2[v1.28.6+k3s2]
+| Feb 06 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1286[v1.28.6]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.0[v0.11.0]
+| https://sqlite.org/releaselog/3_42_0.html[3.42.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.9-k3s1[v3.5.9-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.11-k3s2[v1.7.11-k3s2]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.12-k3s1[v1.1.12-k3s1]
+| https://github.com/flannel-io/flannel/releases/tag/v0.22.2[v0.22.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.10.5[v2.10.5]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.8[v0.15.8]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| link:v1.28.X.adoc#release-v1285k3s1[v1.28.5+k3s1]
+| Dec 27 2023
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1285[v1.28.5]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.0[v0.11.0]
+| https://sqlite.org/releaselog/3_42_0.html[3.42.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.9-k3s1[v3.5.9-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.11-k3s2[v1.7.11-k3s2]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.10[v1.1.10]
+| https://github.com/flannel-io/flannel/releases/tag/v0.22.2[v0.22.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.10.5[v2.10.5]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| link:v1.28.X.adoc#release-v1284k3s2[v1.28.4+k3s2]
+| Dec 06 2023
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1284[v1.28.4]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.0[v0.11.0]
+| https://sqlite.org/releaselog/3_42_0.html[3.42.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.9-k3s1[v3.5.9-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.7-k3s1[v1.7.7-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.8[v1.1.8]
+| https://github.com/flannel-io/flannel/releases/tag/v0.22.2[v0.22.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.10.5[v2.10.5]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| link:v1.28.X.adoc#release-v1283k3s2[v1.28.3+k3s2]
+| Nov 08 2023
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1283[v1.28.3]
+| https://github.com/k3s-io/kine/releases/tag/v0.10.3[v0.10.3]
+| https://sqlite.org/releaselog/3_42_0.html[3.42.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.9-k3s1[v3.5.9-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.7-k3s1[v1.7.7-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.8[v1.1.8]
+| https://github.com/flannel-io/flannel/releases/tag/v0.22.2[v0.22.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.10.5[v2.10.5]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| link:v1.28.X.adoc#release-v1283k3s1[v1.28.3+k3s1]
+| Oct 30 2023
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1283[v1.28.3]
+| https://github.com/k3s-io/kine/releases/tag/v0.10.3[v0.10.3]
+| https://sqlite.org/releaselog/3_42_0.html[3.42.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.9-k3s1[v3.5.9-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.7-k3s1[v1.7.7-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.8[v1.1.8]
+| https://github.com/flannel-io/flannel/releases/tag/v0.22.2[v0.22.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.10.5[v2.10.5]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| link:v1.28.X.adoc#release-v1282k3s1[v1.28.2+k3s1]
+| Sep 20 2023
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1282[v1.28.2]
+| https://github.com/k3s-io/kine/releases/tag/v0.10.3[v0.10.3]
+| https://sqlite.org/releaselog/3_42_0.html[3.42.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.9-k3s1[v3.5.9-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.6-k3s1[v1.7.6-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.8[v1.1.8]
+| https://github.com/flannel-io/flannel/releases/tag/v0.22.2[v0.22.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.9.10[v2.9.10]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| link:v1.28.X.adoc#release-v1281k3s1[v1.28.1+k3s1]
+| Sep 08 2023
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1281[v1.28.1]
+| https://github.com/k3s-io/kine/releases/tag/v0.10.3[v0.10.3]
+| https://sqlite.org/releaselog/3_42_0.html[3.42.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.9-k3s1[v3.5.9-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.3-k3s2[v1.7.3-k3s2]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.8[v1.1.8]
+| https://github.com/flannel-io/flannel/releases/tag/v0.22.2[v0.22.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.9.10[v2.9.10]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+|===
+
+{blank} +
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.12+k3s1[v1.28.12+k3s1]
+
+// v1.28.12+k3s1
+
+This release updates Kubernetes to v1.28.12, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v12811[Kubernetes release notes].
+
+=== Changes since v1.28.11+k3s2:
+
+* Backports for 2024-07 release cycle https://github.com/k3s-io/k3s/pull/10499[(#10499)]
+ ** Bump k3s-root to v0.14.0
+ ** Bump github.com/hashicorp/go-retryablehttp from 0.7.4 to 0.7.7
+ ** Bump Local Path Provisioner version
+ ** Ensure remotedialer kubelet connections use kubelet bind address
+ ** Chore: Bump Trivy version
+ ** Add etcd s3 config secret implementation
+* July Test Backports https://github.com/k3s-io/k3s/pull/10509[(#10509)]
+* Update to v1.28.12-k3s1 and Go 1.22.5 https://github.com/k3s-io/k3s/pull/10541[(#10541)]
+* Fix issues loading data-dir value from env vars or dropping config files https://github.com/k3s-io/k3s/pull/10598[(#10598)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.11+k3s2[v1.28.11+k3s2]
+
+// v1.28.11+k3s2
+
+This release updates Kubernetes to v1.28.11, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v12811[Kubernetes release notes].
+
+=== Changes since v1.28.11+k3s1:
+
+* Update flannel to v0.25.4 and fixed issue with IPv6 mask https://github.com/k3s-io/k3s/pull/10428[(#10428)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.11+k3s1[v1.28.11+k3s1]
+
+// v1.28.11+k3s1
+
+This release updates Kubernetes to v1.28.11, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v12810[Kubernetes release notes].
+
+=== Changes since v1.28.10+k3s1:
+
+* Replace deprecated ruby function https://github.com/k3s-io/k3s/pull/10090[(#10090)]
+* Fix bug when using tailscale config by file https://github.com/k3s-io/k3s/pull/10144[(#10144)]
+* Bump flannel version to v0.25.2 https://github.com/k3s-io/k3s/pull/10221[(#10221)]
+* Update kube-router version to v2.1.2 https://github.com/k3s-io/k3s/pull/10182[(#10182)]
+* Improve tailscale test & add extra log in e2e tests https://github.com/k3s-io/k3s/pull/10213[(#10213)]
+* Backports for 2024-06 release cycle https://github.com/k3s-io/k3s/pull/10258[(#10258)]
+ ** Add WithSkipMissing to not fail import on missing blobs
+ ** Use fixed stream server bind address for cri-dockerd
+ ** Switch stargz over to cri registry config_path
+ ** Bump to containerd v1.7.17, etcd v3.5.13
+ ** Bump spegel version
+ ** Fix issue with externalTrafficPolicy: Local for single-stack services on dual-stack nodes
+ ** ServiceLB now sets the priorityClassName on svclb pods to `system-node-critical` by default. This can be overridden on a per-service basis via the `svccontroller.k3s.cattle.io/priorityclassname` annotation.
+ ** Bump minio-go to v7.0.70
+ ** Bump kine to v0.11.9 to fix pagination
+ ** Update valid resolv conf
+ ** Add missing kernel config check
+ ** Symlinked sub-directories are now respected when scanning Auto-Deploying Manifests (AddOns)
+ ** Fix bug: allow helm controller set owner reference
+ ** Bump klipper-helm image for tls secret support
+ ** Fix issue with k3s-etcd informers not starting
+ ** `--Enable-pprof` can now be set on agents to enable the debug/pprof endpoints. When set, agents will listen on the supervisor port.
+ ** `--Supervisor-metrics` can now be set on servers to enable serving internal metrics on the supervisor endpoint; when set agents will listen on the supervisor port.
+ ** Fix netpol crash when node remains tainted uninitialized
+ ** The embedded load-balancer will now fall back to trying all servers with health-checks ignored, if all servers have been marked unavailable due to failed health checks.
+* More backports for 2024-06 release cycle https://github.com/k3s-io/k3s/pull/10289[(#10289)]
+* Add snapshot retention etcd-s3-folder fix https://github.com/k3s-io/k3s/pull/10315[(#10315)]
+* Add test for `isValidResolvConf` (#10302) https://github.com/k3s-io/k3s/pull/10331[(#10331)]
+* Fix race condition panic in loadbalancer.nextServer https://github.com/k3s-io/k3s/pull/10323[(#10323)]
+* Fix typo, use `rancher/permissions` https://github.com/k3s-io/k3s/pull/10299[(#10299)]
+* Update Kubernetes to v1.28.11 https://github.com/k3s-io/k3s/pull/10347[(#10347)]
+* Fix agent supervisor port using apiserver port instead https://github.com/k3s-io/k3s/pull/10355[(#10355)]
+* Fix issue that allowed multiple simultaneous snapshots to be allowed https://github.com/k3s-io/k3s/pull/10377[(#10377)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.10+k3s1[v1.28.10+k3s1]
+
+// v1.28.10+k3s1
+
+This release updates Kubernetes to v1.28.10, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v1289[Kubernetes release notes].
+
+=== Changes since v1.28.9+k3s1:
+
+* Bump E2E opensuse leap to 15.6, fix btrfs test https://github.com/k3s-io/k3s/pull/10095[(#10095)]
+* Windows changes https://github.com/k3s-io/k3s/pull/10114[(#10114)]
+* Update to v1.28.10-k3s1 https://github.com/k3s-io/k3s/pull/10098[(#10098)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.9+k3s1[v1.28.9+k3s1]
+
+// v1.28.9+k3s1
+
+This release updates Kubernetes to v1.28.9, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v1288[Kubernetes release notes].
+
+=== Changes since v1.28.8+k3s1:
+
+* Add a new error when kine is with disable apiserver or disable etcd https://github.com/k3s-io/k3s/pull/9804[(#9804)]
+* Remove old pinned dependencies https://github.com/k3s-io/k3s/pull/9827[(#9827)]
+* Transition from deprecated pointer library to ptr https://github.com/k3s-io/k3s/pull/9824[(#9824)]
+* Golang caching and E2E ubuntu 23.10 https://github.com/k3s-io/k3s/pull/9821[(#9821)]
+* Add tls for kine https://github.com/k3s-io/k3s/pull/9849[(#9849)]
+* Bump spegel to v0.0.20-k3s1 https://github.com/k3s-io/k3s/pull/9880[(#9880)]
+* Backports for 2024-04 release cycle https://github.com/k3s-io/k3s/pull/9911[(#9911)]
+ ** Send error response if member list cannot be retrieved
+ ** The k3s stub cloud provider now respects the kubelet's requested provider-id, instance type, and topology labels
+ ** Fix error when image has already been pulled
+ ** Add /etc/passwd and /etc/group to k3s docker image
+ ** Fix etcd snapshot reconcile for agentless servers
+ ** Add health-check support to loadbalancer
+ ** Add certificate expiry check, events, and metrics
+ ** Add workaround for containerd hosts.toml bug when passing config for default registry endpoint
+ ** Add supervisor cert/key to rotate list
+ ** The embedded containerd has been bumped to v1.7.15
+ ** The embedded cri-dockerd has been bumped to v0.3.12
+ ** The `k3s etcd-snapshot` command has been reworked for improved consistency. All snapshots operations are now performed by the server process, with the CLI acting as a client to initiate and report results. As a side effect, the CLI is now less noisy when managing snapshots.
+ ** Improve etcd load-balancer startup behavior
+ ** Actually fix agent certificate rotation
+ ** Traefik has been bumped to v2.10.7.
+ ** Traefik pod annotations are now set properly in the default chart values.
+ ** The system-default-registry value now supports RFC2732 IPv6 literals.
+ ** The local-path provisioner now defaults to creating `local` volumes, instead of `hostPath`.
+* Allow LPP to read helper logs https://github.com/k3s-io/k3s/pull/9938[(#9938)]
+* Update kube-router to v2.1.0 https://github.com/k3s-io/k3s/pull/9942[(#9942)]
+* Update to v1.28.9-k3s1 and Go 1.21.9 https://github.com/k3s-io/k3s/pull/9959[(#9959)]
+* Fix on-demand snapshots timing out; not honoring folder https://github.com/k3s-io/k3s/pull/9994[(#9994)]
+* Make /db/info available anonymously from localhost https://github.com/k3s-io/k3s/pull/10002[(#10002)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.8+k3s1[v1.28.8+k3s1]
+
+// v1.28.8+k3s1
+
+This release updates Kubernetes to v1.28.8, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v1287[Kubernetes release notes].
+
+=== Changes since v1.28.7+k3s1:
+
+* Add an integration test for flannel-backend=none https://github.com/k3s-io/k3s/pull/9608[(#9608)]
+* Install and Unit test backports https://github.com/k3s-io/k3s/pull/9641[(#9641)]
+* Update klipper-lb image version https://github.com/k3s-io/k3s/pull/9605[(#9605)]
+* Chore(deps): Remediating CVE-2023-45142  CVE-2023-48795 https://github.com/k3s-io/k3s/pull/9647[(#9647)]
+* Adjust first node-ip based on configured clusterCIDR https://github.com/k3s-io/k3s/pull/9631[(#9631)]
+* Improve tailscale e2e test https://github.com/k3s-io/k3s/pull/9653[(#9653)]
+* Backports for 2024-03 release cycle https://github.com/k3s-io/k3s/pull/9669[(#9669)]
+ ** Fix: use correct wasm shims names
+ ** The embedded flannel cni-plugin binary is now built and versioned separate from the rest of the cni plugins and the embedded flannel controller.
+ ** Bump spegel to v0.0.18-k3s3
+ ** Adds wildcard registry support
+ ** Fixes issue with excessive CPU utilization while waiting for containerd to start
+ ** Add env var to allow spegel mirroring of latest tag
+ ** Tweak netpol node wait logs
+ ** Fix coredns NodeHosts on dual-stack clusters
+ ** Bump helm-controller/klipper-helm versions
+ ** Fix snapshot prune
+ ** Fix issue with etcd node name missing hostname
+ ** Rootless mode should also bind service nodePort to host for LoadBalancer type, matching UX of rootful mode.
+ ** To enable raw output for the `check-config` subcommand, you may now set NO_COLOR=1
+ ** Fix additional corner cases in registries handling
+ ** Bump metrics-server to v0.7.0
+ ** K3s will now warn and suppress duplicate entries in the mirror endpoint list for a registry. Containerd does not support listing the same endpoint multiple times as a mirror for a single upstream registry.
+* Docker and E2E Test Backports https://github.com/k3s-io/k3s/pull/9707[(#9707)]
+* Fix wildcard entry upstream fallback https://github.com/k3s-io/k3s/pull/9733[(#9733)]
+* Update to v1.28.8-k3s1 and Go 1.21.8 https://github.com/k3s-io/k3s/pull/9746[(#9746)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.7+k3s1[v1.28.7+k3s1]
+
+// v1.28.7+k3s1
+
+This release updates Kubernetes to v1.28.7, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v1286[Kubernetes release notes].
+
+=== Changes since v1.28.6+k3s2:
+
+* Chore: bump Local Path Provisioner version https://github.com/k3s-io/k3s/pull/9426[(#9426)]
+* Bump cri-dockerd to fix compat with Docker Engine 25 https://github.com/k3s-io/k3s/pull/9293[(#9293)]
+* Auto Dependency Bump https://github.com/k3s-io/k3s/pull/9419[(#9419)]
+* Runtimes refactor using exec.LookPath https://github.com/k3s-io/k3s/pull/9431[(#9431)]
+ ** Directories containing runtimes need to be included in the $PATH environment variable for effective runtime detection.
+* Changed how lastHeartBeatTime works in the etcd condition https://github.com/k3s-io/k3s/pull/9424[(#9424)]
+* Bump Flannel v0.24.2 + remove multiclustercidr https://github.com/k3s-io/k3s/pull/9401[(#9401)]
+* Allow executors to define containerd and docker behavior https://github.com/k3s-io/k3s/pull/9254[(#9254)]
+* Update Kube-router to v2.0.1 https://github.com/k3s-io/k3s/pull/9404[(#9404)]
+* Backports for 2024-02 release cycle https://github.com/k3s-io/k3s/pull/9462[(#9462)]
+* Enable longer http timeout requests https://github.com/k3s-io/k3s/pull/9444[(#9444)]
+* Test_UnitApplyContainerdQoSClassConfigFileIfPresent https://github.com/k3s-io/k3s/pull/9440[(#9440)]
+* Support PR testing installs https://github.com/k3s-io/k3s/pull/9469[(#9469)]
+* Update Kubernetes to v1.28.7 https://github.com/k3s-io/k3s/pull/9492[(#9492)]
+* Fix drone publish for arm https://github.com/k3s-io/k3s/pull/9508[(#9508)]
+* Remove failing Drone step https://github.com/k3s-io/k3s/pull/9516[(#9516)]
+* Restore original order of agent startup functions https://github.com/k3s-io/k3s/pull/9545[(#9545)]
+* Fix netpol startup when flannel is disabled https://github.com/k3s-io/k3s/pull/9578[(#9578)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.6+k3s2[v1.28.6+k3s2]
+
+// v1.28.6+k3s2
+
+This release updates Kubernetes to v1.28.6, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v1285[Kubernetes release notes].
+
+*Important Notes*
+
+Addresses the runc CVE: https://nvd.nist.gov/vuln/detail/CVE-2024-21626[CVE-2024-21626] by updating runc to v1.1.12.
+
+=== Changes since v1.28.5+k3s1:
+
+* Add a retry around updating a secrets-encrypt node annotations https://github.com/k3s-io/k3s/pull/9125[(#9125)]
+* Wait for taint to be gone in the node before starting the netpol controller https://github.com/k3s-io/k3s/pull/9175[(#9175)]
+* Etcd condition https://github.com/k3s-io/k3s/pull/9181[(#9181)]
+* Backports for 2024-01 https://github.com/k3s-io/k3s/pull/9203[(#9203)]
+* Pin opa version for missing dependency chain https://github.com/k3s-io/k3s/pull/9216[(#9216)]
+* Added support for env *_PROXY variables for agent loadbalancer https://github.com/k3s-io/k3s/pull/9206[(#9206)]
+* Etcd node is nil https://github.com/k3s-io/k3s/pull/9228[(#9228)]
+* Update to v1.28.6 and Go 1.20.13 https://github.com/k3s-io/k3s/pull/9260[(#9260)]
+* Use `ipFamilyPolicy: RequireDualStack` for dual-stack kube-dns https://github.com/k3s-io/k3s/pull/9269[(#9269)]
+* Backports for 2024-01 k3s2 https://github.com/k3s-io/k3s/pull/9336[(#9336)]
+ ** Bump runc to v1.1.12 and helm-controller to v0.15.7
+ ** Fix handling of bare hostname or IP as endpoint address in registries.yaml
+* Bump helm-controller to fix issue with ChartContent https://github.com/k3s-io/k3s/pull/9346[(#9346)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.5+k3s1[v1.28.5+k3s1]
+
+// v1.28.5+k3s1
+
+This release updates Kubernetes to v1.28.5, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v1284[Kubernetes release notes].
+
+=== Changes since v1.28.4+k3s1:
+
+* Remove s390x steps temporarily since runners are disabled https://github.com/k3s-io/k3s/pull/8983[(#8983)]
+* Remove s390x from manifest https://github.com/k3s-io/k3s/pull/8998[(#8998)]
+* Fix overlapping address range https://github.com/k3s-io/k3s/pull/8913[(#8913)]
+* Modify CONTRIBUTING.md guide https://github.com/k3s-io/k3s/pull/8954[(#8954)]
+* Nov 2023 stable channel update https://github.com/k3s-io/k3s/pull/9022[(#9022)]
+* Default runtime and runtime classes for wasm/nvidia/crun https://github.com/k3s-io/k3s/pull/8936[(#8936)]
+ ** Added runtime classes for wasm/nvidia/crun
+ ** Added default runtime flag for containerd
+* Bump containerd/runc to v1.7.10-k3s1/v1.1.10 https://github.com/k3s-io/k3s/pull/8962[(#8962)]
+* Allow setting default-runtime on servers https://github.com/k3s-io/k3s/pull/9027[(#9027)]
+* Bump containerd to v1.7.11 https://github.com/k3s-io/k3s/pull/9040[(#9040)]
+* Update to v1.28.5-k3s1 https://github.com/k3s-io/k3s/pull/9081[(#9081)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.4+k3s2[v1.28.4+k3s2]
+
+// v1.28.4+k3s2
+
+This release updates Kubernetes to v1.28.4, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v1283[Kubernetes release notes].
+
+=== Changes since v1.28.3+k3s2:
+
+* Update channels latest to v1.27.7+k3s2 https://github.com/k3s-io/k3s/pull/8799[(#8799)]
+* Add etcd status condition https://github.com/k3s-io/k3s/pull/8724[(#8724)]
+ ** Now the user can see the etcd status from each node in a simple way
+* ADR for etcd status https://github.com/k3s-io/k3s/pull/8355[(#8355)]
+* Wasm shims detection https://github.com/k3s-io/k3s/pull/8751[(#8751)]
+ ** Automatic discovery of WebAssembly runtimes
+* Add warning for removal of multiclustercidr flag https://github.com/k3s-io/k3s/pull/8758[(#8758)]
+* Improve dualStack log https://github.com/k3s-io/k3s/pull/8798[(#8798)]
+* Optimize: Simplify and clean up Dockerfile https://github.com/k3s-io/k3s/pull/8244[(#8244)]
+* Add: timezone info in image https://github.com/k3s-io/k3s/pull/8764[(#8764)]
+ ** {blank}
+  *** New timezone info in Docker image allows the use of `spec.timeZone` in CronJobs
+* Bump kine to fix nats, postgres, and watch issues https://github.com/k3s-io/k3s/pull/8778[(#8778)]
+ ** Bumped kine to v0.11.0 to resolve issues with postgres and NATS, fix performance of watch channels under heavy load, and improve compatibility with the reference implementation.
+* QoS-class resource configuration https://github.com/k3s-io/k3s/pull/8726[(#8726)]
+ ** Containerd may now be configured to use rdt or blockio configuration by defining `rdt_config.yaml` or `blockio_config.yaml` files.
+* Add agent flag disable-apiserver-lb https://github.com/k3s-io/k3s/pull/8717[(#8717)]
+ ** Add agent flag disable-apiserver-lb, agent will not start load balance proxy.
+* Force umount for NFS mount (like with longhorn) https://github.com/k3s-io/k3s/pull/8521[(#8521)]
+* General updates to README https://github.com/k3s-io/k3s/pull/8786[(#8786)]
+* Fix wrong warning from restorecon in install script https://github.com/k3s-io/k3s/pull/8871[(#8871)]
+* Fix issue with snapshot metadata configmap https://github.com/k3s-io/k3s/pull/8835[(#8835)]
+ ** Omit snapshot list configmap entries for snapshots without extra metadata
+* Skip initial datastore reconcile during cluster-reset https://github.com/k3s-io/k3s/pull/8861[(#8861)]
+* Tweaked order of ingress IPs in ServiceLB https://github.com/k3s-io/k3s/pull/8711[(#8711)]
+ ** Improved ingress IP ordering from ServiceLB
+* Disable helm CRD installation for disable-helm-controller https://github.com/k3s-io/k3s/pull/8702[(#8702)]
+* More improves for K3s patch release docs https://github.com/k3s-io/k3s/pull/8800[(#8800)]
+* Update install.sh sha256sum https://github.com/k3s-io/k3s/pull/8885[(#8885)]
+* Add jitter to client config retry to avoid hammering servers when they are starting up https://github.com/k3s-io/k3s/pull/8863[(#8863)]
+* Handle nil pointer when runtime core is not ready in etcd https://github.com/k3s-io/k3s/pull/8886[(#8886)]
+* Bump dynamiclistener; reduce snapshot controller log spew https://github.com/k3s-io/k3s/pull/8894[(#8894)]
+ ** Bumped dynamiclistener to address a race condition that could cause a server to fail to sync its certificates into the Kubernetes secret
+ ** Reduced etcd snapshot log spam during initial cluster startup
+* Remove depends_on for e2e step; fix cert rotate e2e https://github.com/k3s-io/k3s/pull/8906[(#8906)]
+* Fix etcd snapshot S3 issues https://github.com/k3s-io/k3s/pull/8926[(#8926)]
+ ** Don't apply S3 retention if S3 client failed to initialize
+ ** Don't request metadata when listing S3 snapshots
+ ** Print key instead of file path in snapshot metadata log message
+* Update to v1.28.4 and Go to v1.20.11 https://github.com/k3s-io/k3s/pull/8920[(#8920)]
+* Remove s390x steps temporarily since runners are disabled https://github.com/k3s-io/k3s/pull/8983[(#8983)]
+* Remove s390x from manifest https://github.com/k3s-io/k3s/pull/8998[(#8998)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.3+k3s2[v1.28.3+k3s2]
+
+// v1.28.3+k3s2
+
+This release updates Kubernetes to v1.28.3, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v1283[Kubernetes release notes].
+
+=== Changes since v1.28.3+k3s1:
+
+* Restore selinux context systemd unit file https://github.com/k3s-io/k3s/pull/8593[(#8593)]
+* Update channel to v1.27.7+k3s1 https://github.com/k3s-io/k3s/pull/8753[(#8753)]
+* Bump Sonobuoy version https://github.com/k3s-io/k3s/pull/8710[(#8710)]
+* Bump Trivy version https://github.com/k3s-io/k3s/pull/8739[(#8739)]
+* Fix: Access outer scope .SystemdCgroup https://github.com/k3s-io/k3s/pull/8761[(#8761)]
+ ** Fixed failing to start with nvidia-container-runtime
+* Upgrade traefik chart to v25.0.0 https://github.com/k3s-io/k3s/pull/8771[(#8771)]
+* Update traefik to fix registry value https://github.com/k3s-io/k3s/pull/8792[(#8792)]
+* Don't use iptables-save/iptables-restore if it will corrupt rules https://github.com/k3s-io/k3s/pull/8795[(#8795)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.3+k3s1[v1.28.3+k3s1]
+
+// v1.28.3+k3s1
+
+This release updates Kubernetes to v1.28.3, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v1282[Kubernetes release notes].
+
+=== Changes since v1.28.2+k3s1:
+
+* Fix error reporting https://github.com/k3s-io/k3s/pull/8250[(#8250)]
+* Add context to flannel errors https://github.com/k3s-io/k3s/pull/8284[(#8284)]
+* Update channel, September patch release https://github.com/k3s-io/k3s/pull/8397[(#8397)]
+* Add missing link to drone in documentation https://github.com/k3s-io/k3s/pull/8295[(#8295)]
+* Include the interface name in the error message https://github.com/k3s-io/k3s/pull/8346[(#8346)]
+* Add extraArgs to vpn provider https://github.com/k3s-io/k3s/pull/8354[(#8354)]
+ ** Allow to pass extra args to the vpn provider
+* Disable HTTP on main etcd client port https://github.com/k3s-io/k3s/pull/8402[(#8402)]
+ ** Embedded etcd no longer serves http requests on the client port, only grpc. This addresses a performance issue that could cause watch stream starvation under load. For more information, see https://github.com/etcd-io/etcd/issues/15402
+* Server token rotation https://github.com/k3s-io/k3s/pull/8215[(#8215)]
+* Fix issues with etcd member removal after reset https://github.com/k3s-io/k3s/pull/8392[(#8392)]
+ ** Fixed an issue that could cause k3s to attempt to remove members from the etcd cluster immediately following a cluster-reset/restore, if they were queued for removal at the time the snapshot was taken.
+* Fix gofmt error https://github.com/k3s-io/k3s/pull/8439[(#8439)]
+* Added advertise address integration test https://github.com/k3s-io/k3s/pull/8344[(#8344)]
+* Added cluster reset from non bootstrap nodes on snapshot restore e2e test https://github.com/k3s-io/k3s/pull/8292[(#8292)]
+* Fix .github regex to skip drone runs on gh action bumps https://github.com/k3s-io/k3s/pull/8433[(#8433)]
+* Added error when cluster reset while using server flag https://github.com/k3s-io/k3s/pull/8385[(#8385)]
+ ** The user will receive a error when --cluster-reset with the --server flag
+* Update kube-router https://github.com/k3s-io/k3s/pull/8423[(#8423)]
+ ** Update kube-router to v2.0.0-rc7 to fix performance issues
+* Add SHA256 signatures of the install script https://github.com/k3s-io/k3s/pull/8312[(#8312)]
+ ** {blank}
+  *** Add SHA256 signatures of the install script.
+* Add --image-service-endpoint flag https://github.com/k3s-io/k3s/pull/8279[(#8279)]
+ ** Add `--image-service-endpoint` flag to specify an external image service socket.
+* Don't ignore assets in home dir if system assets exist https://github.com/k3s-io/k3s/pull/8458[(#8458)]
+* Pass SystemdCgroup setting through to nvidia runtime options https://github.com/k3s-io/k3s/pull/8470[(#8470)]
+ ** Fixed issue that would cause pods using nvidia container runtime to be killed after a few seconds, when using newer versions of nvidia-container-toolkit.
+* Improve release docs - updated https://github.com/k3s-io/k3s/pull/8414[(#8414)]
+* Take IPFamily precedence based on order https://github.com/k3s-io/k3s/pull/8460[(#8460)]
+* Fix spellcheck problem https://github.com/k3s-io/k3s/pull/8507[(#8507)]
+* Network defaults are duplicated, remove one https://github.com/k3s-io/k3s/pull/8523[(#8523)]
+* Fix slemicro check for selinux https://github.com/k3s-io/k3s/pull/8526[(#8526)]
+* Update install.sh.sha256sum https://github.com/k3s-io/k3s/pull/8566[(#8566)]
+* System agent push tags fix https://github.com/k3s-io/k3s/pull/8568[(#8568)]
+* Fixed tailscale node IP dualstack mode in case of IPv4 only node https://github.com/k3s-io/k3s/pull/8524[(#8524)]
+* Server Token Rotation https://github.com/k3s-io/k3s/pull/8265[(#8265)]
+ ** Users can now rotate the server token using `k3s token rotate -t <OLD_TOKEN> --new-token <NEW_TOKEN>`. After command succeeds, all server nodes must be restarted with the new token.
+* E2E Domain Drone Cleanup https://github.com/k3s-io/k3s/pull/8579[(#8579)]
+* Bump containerd to v1.7.7-k3s1 https://github.com/k3s-io/k3s/pull/8604[(#8604)]
+* Bump busybox to v1.36.1 https://github.com/k3s-io/k3s/pull/8602[(#8602)]
+* Migrate to using custom resource to store etcd snapshot metadata https://github.com/k3s-io/k3s/pull/8064[(#8064)]
+* Switch build target from main.go to a package. https://github.com/k3s-io/k3s/pull/8342[(#8342)]
+* Use IPv6 in case is the first configured IP with dualstack https://github.com/k3s-io/k3s/pull/8581[(#8581)]
+* Bump traefik, golang.org/x/net, google.golang.org/grpc https://github.com/k3s-io/k3s/pull/8624[(#8624)]
+* Update kube-router package in build script https://github.com/k3s-io/k3s/pull/8630[(#8630)]
+* Add etcd-only/control-plane-only server test and fix control-plane-only server crash https://github.com/k3s-io/k3s/pull/8638[(#8638)]
+* Use `version.Program` not K3s in token rotate logs https://github.com/k3s-io/k3s/pull/8653[(#8653)]
+* [Windows Port https://github.com/k3s-io/k3s/pull/7259[(#7259)]
+* Fix CloudDualStackNodeIPs feature-gate inconsistency https://github.com/k3s-io/k3s/pull/8667[(#8667)]
+* Re-enable etcd endpoint auto-sync https://github.com/k3s-io/k3s/pull/8675[(#8675)]
+* Manually requeue configmap reconcile when no nodes have reconciled snapshots https://github.com/k3s-io/k3s/pull/8683[(#8683)]
+* Update to v1.28.3 and Go to v1.20.10 https://github.com/k3s-io/k3s/pull/8682[(#8682)]
+* Fix s3 snapshot restore https://github.com/k3s-io/k3s/pull/8729[(#8729)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.2+k3s1[v1.28.2+k3s1]
+
+// v1.28.2+k3s1
+
+This release updates Kubernetes to v1.28.2, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v1281[Kubernetes release notes].
+
+=== Changes since v1.28.1+k3s1:
+
+* Update channel for version v1.28 https://github.com/k3s-io/k3s/pull/8305[(#8305)]
+* Bump kine to v0.10.3 https://github.com/k3s-io/k3s/pull/8323[(#8323)]
+* Update to v1.28.2 and go v1.20.8 https://github.com/k3s-io/k3s/pull/8364[(#8364)]
+ ** Bump embedded containerd to v1.7.6
+ ** Bump embedded stargz-snapshotter plugin to latest
+ ** Fixed intermittent drone CI failures due to race conditions in test environment setup scripts
+ ** Fixed CI failures due to changes to api discovery changes in Kubernetes 1.28
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.1+k3s1[v1.28.1+k3s1]
+
+// v1.28.1+k3s1
+
+This release is K3S's first in the v1.28 line. This release updates Kubernetes to v1.28.1.
+
+[CAUTION]
+.Important
+====
+This release includes remediation for CVE-2023-32187, a potential Denial of Service attack vector on K3s servers. See https://github.com/k3s-io/k3s/security/advisories/GHSA-m4hf-6vgr-75r2 for more information, including documentation on changes in behavior that harden clusters against this vulnerability.
+====
+
+
+[WARNING]
+.Critical Regression
+====
+Kubernetes v1.28 contains a critical regression (https://github.com/kubernetes/kubernetes/issues/120247[kubernetes/kubernetes#120247]) that causes init containers to run at the same time as app containers following a restart of the node. This issue will be fixed in v1.28.2. We do not recommend using K3s v1.28 at this time if your application depends on init containers.
+====
+
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v1270[Kubernetes release notes].
+
+=== Changes since v1.27.5+k3s1:
+
+* Update to v1.28.1 https://github.com/k3s-io/k3s/pull/8239[(#8239)]
+* CLI Removal for v1.28.0 https://github.com/k3s-io/k3s/pull/8203[(#8203)]
+* Secrets Encryption V3 https://github.com/k3s-io/k3s/pull/8111[(#8111)]
+* Add new CLI flag to disable TLS SAN CN filtering https://github.com/k3s-io/k3s/pull/8252[(#8252)]
+ ** Added a new `--tls-san-security` option.
+* Add RWMutex to address controller https://github.com/k3s-io/k3s/pull/8268[(#8268)]
+
+'''
