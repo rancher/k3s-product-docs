@@ -1,0 +1,24 @@
+site:
+  title: K3s
+  url: /
+  start_page: k3s:en:introduction.adoc
+  robots: disallow
+content:
+  sources: 
+  - url: .
+    branches: [main]
+ui: 
+  bundle:
+    url: https://github.com/rancher/product-docs-ui/blob/main/build/ui-bundle.zip?raw=true
+    snapshot: true
+  supplemental_files: ./product-docs-supplemental-files
+asciidoc:
+  attributes:
+    page-pagination: ''
+    tabs-sync-option: ''
+  extensions:
+  - '@asciidoctor/tabs'
+antora:
+  extensions:
+  - require: '@antora/lunr-extension'
+    # languages: [en, kr, zh]
