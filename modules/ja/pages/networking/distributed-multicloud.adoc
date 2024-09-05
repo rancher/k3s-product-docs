@@ -32,7 +32,7 @@ K3sはWireGuardを使用してクラスターのトラフィック用のVPNメ�
 --node-external-ip=<AGENT_EXTERNAL_IP>
 ----
 
-ここで、``SERVER_EXTERNAL_IP``はサーバーノードに到達するためのIPであり、``AGENT_EXTERNAL_IP``はエージェントノードに到達するためのIPです。エージェントの``K3S_URL``設定パラメータは、接続するために``SERVER_EXTERNAL_IP``を使用する必要があることに注意してください。link:../installation/requirements.adoc#networking[ネットワーキング要件]を確認し、内部および外部アドレスのリストされたポートへのアクセスを許可することを忘れないでください。
+ここで、``SERVER_EXTERNAL_IP``はサーバーノードに到達するためのIPであり、``AGENT_EXTERNAL_IP``はエージェントノードに到達するためのIPです。エージェントの``K3S_URL``設定パラメータは、接続するために``SERVER_EXTERNAL_IP``を使用する必要があることに注意してください。xref:../installation/requirements.adoc#_networking[ネットワーキング要件]を確認し、内部および外部アドレスのリストされたポートへのアクセスを許可することを忘れないでください。
 
 ``SERVER_EXTERNAL_IP``と``AGENT_EXTERNAL_IP``は相互に接続可能であり、通常はパブリックIPです。
 

@@ -30,7 +30,7 @@ K3sには、正常に動作するiptables（v1.8.8）が含まれています。
 
 === ルートレスモード
 
-K3sをルートレスモードで実行することは実験的であり、いくつかのlink:./advanced.adoc#known-issues-with-rootless-mode[既知の問題]があります。
+K3sをルートレスモードで実行することは実験的であり、いくつかのxref:./advanced.adoc#_known-issues-with-rootless-mode[既知の問題]があります。
 
 [#hardened-125]
 === v1.24.xからv1.25.xへのハードニングされたクラスターのアップグレード

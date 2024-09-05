@@ -2,9 +2,9 @@
 
 このセクションでは、K3s サーバーの設定方法を学びます。
 
-サーバーはエージェントも実行するため、xref:agent.adoc[`k3s エージェント` ドキュメント]に記載されているすべての設定オプションはサーバーでもサポートされています。
+サーバーはエージェントも実行するため、xref:./agent.adoc[`k3s エージェント` ドキュメント]に記載されているすべての設定オプションはサーバーでもサポートされています。
 
-オプションは CLI フラグとしてこのページに記載されていますが、設定ファイルオプションとしても渡すことができます。YAML 設定ファイルの使用については、link:../installation/configuration.adoc#configuration-file[設定ファイル]のドキュメントを参照してください。
+オプションは CLI フラグとしてこのページに記載されていますが、設定ファイルオプションとしても渡すことができます。YAML 設定ファイルの使用については、xref:../installation/configuration.adoc#_configuration-file[設定ファイル]のドキュメントを参照してください。
 
 == 重要な設定値
 
@@ -323,7 +323,7 @@
 | フラグ | 説明
 
 | `--disable` value
-| "link:../installation/packaged-components.adoc#using-the---disable-flag[``--disable``フラグの使用]" を参照
+| "xref:../installation/packaged-components.adoc#_using-the---disable-flag[``--disable``フラグの使用]" を参照
 
 | `--disable-scheduler`
 | Kubernetesデフォルトスケジューラを無効にする
@@ -386,7 +386,7 @@
 | ホストバイナリよりもバンドルされたユーザースペースバイナリを優先
 
 | `--disable-agent`
-| "link:../advanced.adoc#running-agentless-servers-experimental[エージェントレスサーバーの実行（実験的）]" を参照
+| "xref:../advanced.adoc#_running-agentless-servers-experimental[エージェントレスサーバーの実行（実験的）]" を参照
 
 | `--embedded-registry`
 | "xref:../installation/registry-mirror.adoc[埋め込みレジストリミラー]" を参照

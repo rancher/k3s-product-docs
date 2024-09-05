@@ -4,7 +4,7 @@
 
 [TIP]
 ====
-外部ロードバランサーは、Kubernetes LoadBalancerサービスをサードパーティのロードバランサーコントローラーをデプロイせずに使用できるようにする組み込みコントローラーであるServiceLBと混同しないでください。詳細については、link:../networking/networking-services.adoc#service-load-balancer[Service Load Balancer]を参照してください。
+外部ロードバランサーは、Kubernetes LoadBalancerサービスをサードパーティのロードバランサーコントローラーをデプロイせずに使用できるようにする組み込みコントローラーであるServiceLBと混同しないでください。詳細については、xref:../networking/networking-services.adoc#_service-load-balancer[Service Load Balancer]を参照してください。
 
 外部ロードバランサーは、ノードの登録用の固定登録アドレスを提供したり、Kubernetes APIサーバーへの外部アクセスを提供するために使用できます。LoadBalancerサービスを公開するために、外部ロードバランサーはServiceLBと一緒に、または代わりに使用できますが、ほとんどの場合、MetalLBやKube-VIPなどの代替ロードバランサーコントローラーの方が良い選択です。
 ====

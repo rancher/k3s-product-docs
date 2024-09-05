@@ -6,10 +6,10 @@ K3sバイナリには、クラスターを管理するための追加ツール�
 | コマンド | 説明
 
 | `k3s server`
-| K3sサーバーノードを実行し、Kubernetesの``apiserver``、`scheduler`、`controller-manager`、および``cloud-controller-manager``コンポーネントに加えて、データストアとエージェントコンポーネントを起動します。詳細はxref:server.adoc[``k3s server``コマンドのドキュメント]を参照してください。
+| K3sサーバーノードを実行し、Kubernetesの``apiserver``、`scheduler`、`controller-manager`、および``cloud-controller-manager``コンポーネントに加えて、データストアとエージェントコンポーネントを起動します。詳細はxref:./server.adoc[``k3s server``コマンドのドキュメント]を参照してください。
 
 | `k3s agent`
-| K3sエージェントノードを実行し、`containerd`、`flannel`、``kube-router``ネットワークポリシーコントローラー、およびKubernetesの``kubelet``と``kube-proxy``コンポーネントを起動します。詳細はxref:agent.adoc[``k3s agent``コマンドのドキュメント]を参照してください。
+| K3sエージェントノードを実行し、`containerd`、`flannel`、``kube-router``ネットワークポリシーコントローラー、およびKubernetesの``kubelet``と``kube-proxy``コンポーネントを起動します。詳細はxref:./agent.adoc[``k3s agent``コマンドのドキュメント]を参照してください。
 
 | `k3s kubectl`
 | 組み込みのhttps://kubernetes.io/docs/reference/kubectl[``kubectl``コマンド]を実行します。これはKubernetesのapiserverと対話するためのCLIです。``KUBECONFIG``環境変数が設定されていない場合、自動的に``/etc/rancher/k3s/k3s.yaml``のkubeconfigを使用しようとします。
@@ -21,16 +21,16 @@ K3sバイナリには、クラスターを管理するための追加ツール�
 | 組み込みのhttps://github.com/projectatomic/containerd/blob/master/docs/cli.md[``ctr``コマンド]を実行します。これはK3sで使用されるコンテナデーモンであるcontainerdのCLIです。デバッグに便利です。
 
 | `k3s token`
-| ブートストラップトークンを管理します。詳細はxref:token.adoc[``k3s token``コマンドのドキュメント]を参照してください。
+| ブートストラップトークンを管理します。詳細はxref:./token.adoc[``k3s token``コマンドのドキュメント]を参照してください。
 
 | `k3s etcd-snapshot`
-| K3sクラスターのデータのオンデマンドバックアップを実行し、S3にアップロードします。詳細はxref:etcd-snapshot.adoc[``k3s etcd-snapshot``コマンドのドキュメント]を参照してください。
+| K3sクラスターのデータのオンデマンドバックアップを実行し、S3にアップロードします。詳細はxref:./etcd-snapshot.adoc[``k3s etcd-snapshot``コマンドのドキュメント]を参照してください。
 
 | `k3s secrets-encrypt`
-| K3sを構成して、クラスターに保存する際にシークレットを暗号化します。詳細はxref:secrets-encrypt.adoc[``k3s secrets-encrypt``コマンドのドキュメント]を参照してください。
+| K3sを構成して、クラスターに保存する際にシークレットを暗号化します。詳細はxref:./secrets-encrypt.adoc[``k3s secrets-encrypt``コマンドのドキュメント]を参照してください。
 
 | `k3s certificate`
-| K3s証明書を管理します。詳細はxref:certificate.adoc[``k3s certificate``コマンドのドキュメント]を参照してください。
+| K3s証明書を管理します。詳細はxref:./certificate.adoc[``k3s certificate``コマンドのドキュメント]を参照してください。
 
 | `k3s completion`
 | k3sのシェル補完スクリプトを生成します。

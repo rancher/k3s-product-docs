@@ -15,7 +15,7 @@ K3sをエアギャップ環境でインストールするには、2つの方法�
 . 実行するK3sのバージョンに対応するアーキテクチャ用のイメージアーカイブをhttps://github.com/k3s-io/k3s/releases[リリース]ページから取得します。
 . ``docker image load k3s-airgap-images-amd64.tar.zst``を使用して、tarファイルからDockerにイメージをインポートします。
 . ``docker tag``と``docker push``を使用して、ロードしたイメージを再タグ付けし、プライベートレジストリにプッシュします。
-. xref:private-registry.adoc[プライベートレジストリの設定]ガイドに従って、``registries.yaml``ファイルを作成および設定します。
+. xref:./private-registry.adoc[プライベートレジストリの設定]ガイドに従って、``registries.yaml``ファイルを作成および設定します。
 . 以下の<<install-k3s,Install K3s>>セクションに進みます。
 
 === 手動デプロイ方式
@@ -91,7 +91,7 @@ curl -LO https://github.com/k3s-io/k3s-selinux/releases/download/v1.4.stable.1/k
 sudo yum install ./k3s-selinux-1.4-1.el8.noarch.rpm
 ----
 
-詳細はlink:../advanced.adoc#selinux-support[SELinux]セクションを参照してください。
+詳細はxref:../advanced.adoc#_selinux-support[SELinux]セクションを参照してください。
 
 === エアギャップ環境でのK3sのインストール
 

@@ -49,7 +49,7 @@ k3s-server-2   Ready    control-plane,master        5h39m   v1.20.4+k3s1
 
 == 設定ファイルの構文
 
-他のすべての CLI フラグと同様に、link:configuration.adoc#configuration-file[設定ファイル] を使用してコンポーネントを無効にすることができます。例えば、専用の `etcd` ノードを作成するには、次の値を `/etc/rancher/k3s/config.yaml` に配置します:
+他のすべての CLI フラグと同様に、link:configuration.adoc#_configuration-file[設定ファイル] を使用してコンポーネントを無効にすることができます。例えば、専用の `etcd` ノードを作成するには、次の値を `/etc/rancher/k3s/config.yaml` に配置します:
 
 [,yaml]
 ----

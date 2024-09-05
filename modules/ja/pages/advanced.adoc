@@ -8,13 +8,13 @@
 
 K3sは、最初のサーバーノードの起動時に自己署名の証明書認証局 (CA) 証明書を生成します。これらのCA証明書は10年間有効であり、自動的に更新されません。
 
-カスタムCA証明書の使用や自己署名CA証明書の更新についての情報は、link:./cli/certificate.adoc#certificate-authority-ca-certificates[`k3s certificate rotate-ca` コマンドのドキュメント]を参照してください。
+カスタムCA証明書の使用や自己署名CA証明書の更新についての情報は、xref:./cli/certificate.adoc#_certificate-authority-ca-certificates[`k3s certificate rotate-ca` コマンドのドキュメント]を参照してください。
 
 === クライアントおよびサーバー証明書
 
 K3sのクライアントおよびサーバー証明書は、発行日から365日間有効です。期限が切れているか、期限が切れるまで90日以内の証明書は、K3sが起動するたびに自動的に更新されます。
 
-クライアントおよびサーバー証明書を手動で回転させる方法については、link:./cli/certificate.adoc#client-and-server-certificates[`k3s certificate rotate` コマンドのドキュメント]を参照してください。
+クライアントおよびサーバー証明書を手動で回転させる方法については、xref:./cli/certificate.adoc#_client-and-server-certificates[`k3s certificate rotate` コマンドのドキュメント]を参照してください。
 
 == トークン管理
 
@@ -304,7 +304,7 @@ rootlesskit と slirp4netns によって使用される一部の設定は環境�
 
 == ノードラベルとテイント
 
-K3s エージェントは、kubelet にラベルとテイントを追加するオプション `--node-label` および `--node-taint` で構成できます。これらのオプションは link:./cli/agent.adoc#node-labels-and-taints-for-agents[登録時] にのみラベルおよび/またはテイントを追加するため、ノードがクラスターに最初に参加する際にのみ設定できます。
+K3s エージェントは、kubelet にラベルとテイントを追加するオプション `--node-label` および `--node-taint` で構成できます。これらのオプションは xref:./cli/agent.adoc#_node-labels-and-taints-for-agents[登録時] にのみラベルおよび/またはテイントを追加するため、ノードがクラスターに最初に参加する際にのみ設定できます。
 
 現在のすべての Kubernetes バージョンでは、`kubernetes.io` および `k8s.io` プレフィックスを持つほとんどのラベルでノードの登録が制限されています。特に `kubernetes.io/role` ラベルが含まれます。許可されていないラベルでノードを起動しようとすると、K3s は起動に失敗します。Kubernetes の著者によると:
 
@@ -372,7 +372,7 @@ Tab Manual Installation::
 
 SELinuxを活用するには、K3sサーバーおよびエージェントを起動する際に``--selinux``フラグを指定します。
 
-このオプションはK3sのlink:./installation/configuration.adoc#configuration-file[設定ファイル]にも指定できます。
+このオプションはK3sのxref:./installation/configuration.adoc#_configuration-file[設定ファイル]にも指定できます。
 
 ----
 selinux: true

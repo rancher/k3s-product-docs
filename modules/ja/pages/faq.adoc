@@ -36,11 +36,11 @@ K3sを起動する際に``--debug``フラグ（または設定ファイルで``d
 
 Kubernetesは``klog``というロギングフレームワークを使用しており、プロセス内のすべてのコンポーネントに対して単一のロギング設定を使用します。K3sはすべてのKubernetesコンポーネントを単一のプロセス内で実行するため、個々のKubernetesコンポーネントに対して異なるログレベルや出力先を設定することはできません。``-v=<level>``や``--vmodule=<module>=<level>``のコンポーネント引数を使用しても、期待通りの効果は得られない可能性があります。
 
-さらに多くのログオプションについては、link:./advanced.adoc#additional-logging-sources[追加のログソース]を参照してください。
+さらに多くのログオプションについては、xref:./advanced.adoc#_additional-logging-sources[追加のログソース]を参照してください。
 
 === DockerでK3sを実行できますか？
 
-はい、DockerでK3sを実行する方法はいくつかあります。詳細についてはlink:./advanced.adoc#running-k3s-in-docker[高度なオプション]を参照してください。
+はい、DockerでK3sを実行する方法はいくつかあります。詳細についてはxref:./advanced.adoc#_running-k3s-in-docker[高度なオプション]を参照してください。
 
 === K3sサーバーとエージェントトークンの違いは何ですか？
 
@@ -58,7 +58,7 @@ K3sのデプロイに問題がある場合は、以下を行ってください�
 
 1) xref:./known-issues.adoc[既知の問題]ページを確認してください。
 
-2) link:./installation/requirements.adoc#operating-systems[追加のOS準備]が解決されていることを確認してください。``k3s check-config``を実行し、パスすることを確認してください。
+2) xref:./installation/requirements.adoc#_operating-systems[追加のOS準備]が解決されていることを確認してください。``k3s check-config``を実行し、パスすることを確認してください。
 
 3) K3sのhttps://github.com/k3s-io/k3s/issues[Issues]およびhttps://github.com/k3s-io/k3s/discussions[Discussions]で、問題に一致するものを検索してください。
 

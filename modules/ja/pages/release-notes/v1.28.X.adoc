@@ -12,7 +12,7 @@
 |===
 | バージョン | リリース日 | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
 
-| link:v1.28.X.adoc#release-v12811k3s1[v1.28.11+k3s1]
+| xref:#_release_v1_28_11k3s1[v1.28.11+k3s1]
 | 2024年6月25日
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12811[v1.28.11]
 | https://github.com/k3s-io/kine/releases/tag/v0.11.9[v0.11.9]
@@ -27,7 +27,7 @@
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.10[v0.15.10]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.27[v0.0.27]
 
-| link:v1.28.X.adoc#release-v12810k3s1[v1.28.10+k3s1]
+| xref:#_release_v1_28_10k3s1[v1.28.10+k3s1]
 | 2024年5月22日
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12810[v1.28.10]
 | https://github.com/k3s-io/kine/releases/tag/v0.11.7[v0.11.7]
@@ -42,7 +42,7 @@
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.9[v0.15.9]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.26[v0.0.26]
 
-| link:v1.28.X.adoc#release-v1289k3s1[v1.28.9+k3s1]
+| xref:#_release_v1_28_9k3s1[v1.28.9+k3s1]
 | 2024年4月25日
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1289[v1.28.9]
 | https://github.com/k3s-io/kine/releases/tag/v0.11.7[v0.11.7]
@@ -57,7 +57,7 @@
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.9[v0.15.9]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.26[v0.0.26]
 
-| link:v1.28.X.adoc#release-v1288k3s1[v1.28.8+k3s1]
+| xref:#_release_v1_28_8k3s1[v1.28.8+k3s1]
 | 2024年3月25日
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1288[v1.28.8]
 | https://github.com/k3s-io/kine/releases/tag/v0.11.4[v0.11.4]
@@ -72,7 +72,7 @@
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.9[v0.15.9]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.26[v0.0.26]
 
-| link:v1.28.X.adoc#release-v1287k3s1[v1.28.7+k3s1]
+| xref:#_release_v1_28_7k3s1[v1.28.7+k3s1]
 | 2024年2月29日
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1287[v1.28.7]
 | https://github.com/k3s-io/kine/releases/tag/v0.11.4[v0.11.4]
@@ -87,7 +87,7 @@
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.8[v0.15.8]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.26[v0.0.26]
 
-| link:v1.28.X.adoc#release-v1286k3s2[v1.28.6+k3s2]
+| xref:#_release_v1_28_6k3s2[v1.28.6+k3s2]
 | 2024年2月6日
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1286[v1.28.6]
 | https://github.com/k3s-io/kine/releases/tag/v0.11.0[v0.11.0]
@@ -102,7 +102,7 @@
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.8[v0.15.8]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
 
-| link:v1.28.X.adoc#release-v1285k3s1[v1.28.5+k3s1]
+| xref:#_release_v1_28_5k3s1[v1.28.5+k3s1]
 | 2023年12月27日
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1285[v1.28.5]
 | https://github.com/k3s-io/kine/releases/tag/v0.11.0[v0.11.0]
@@ -117,7 +117,7 @@
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
 
-| link:v1.28.X.adoc#release-v1284k3s2[v1.28.4+k3s2]
+| xref:#_release_v1_28_4k3s2[v1.28.4+k3s2]
 | 2023年12月6日
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1284[v1.28.4]
 | https://github.com/k3s-io/kine/releases/tag/v0.11.0[v0.11.0]
@@ -132,7 +132,7 @@
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
 
-| link:v1.28.X.adoc#release-v1283k3s2[v1.28.3+k3s2]
+| xref:#_release_v1_28_3k3s2[v1.28.3+k3s2]
 | 2023年11月8日
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1283[v1.28.3]
 | https://github.com/k3s-io/kine/releases/tag/v0.10.3[v0.10.3]
@@ -147,7 +147,7 @@
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
 
-| link:v1.28.X.adoc#release-v1283k3s1[v1.28.3+k3s1]
+| xref:#_release_v1_28_3k3s1[v1.28.3+k3s1]
 | 2023年10月30日
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1283[v1.28.3]
 | https://github.com/k3s-io/kine/releases/tag/v0.10.3[v0.10.3]
@@ -162,7 +162,7 @@
 |
 |
 
-| link:v1.28.X.adoc#release-v1282k3s1[v1.28.2+k3s1]
+| xref:#_release_v1_28_2k3s1[v1.28.2+k3s1]
 | 2023年9月20日
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1282[v1.28.2]
 | https://github.com/k3s-io/kine/releases/tag/v0.10.3[v0.10.3]
@@ -177,7 +177,7 @@
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
 
-| link:v1.28.X.adoc#release-v1281k3s1[v1.28.1+k3s1]
+| xref:#_release_v1_28_1k3s1[v1.28.1+k3s1]
 | 2023年9月8日
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v1281[v1.28.1]
 | https://github.com/k3s-io/kine/releases/tag/v0.10.3[v0.10.3]
