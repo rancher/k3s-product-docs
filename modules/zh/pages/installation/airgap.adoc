@@ -31,7 +31,7 @@ This method requires you to manually deploy the necessary images to each node, a
 ==== Prepare the Images Directory and Airgap Image Tarball
 
 . Obtain the images archive for your architecture from the https://github.com/k3s-io/k3s/releases[releases] page for the version of K3s you will be running.
-. Download the imagess archive to the agent's images directory, for example:
+. Download the images archive to the agent's images directory, for example:
 +
 [,bash]
 ----
