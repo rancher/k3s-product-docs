@@ -12,6 +12,21 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
 
+| xref:#_release_v1_30_4k3s1[v1.30.4+k3s1]
+| Aug 21 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v1304[v1.30.4]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.11[v0.11.11]
+| https://sqlite.org/releaselog/3_44_0.html[3.44.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.13-k3s1[v3.5.13-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.20-k3s1[v1.7.20-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.12[v1.1.12]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.4[v0.25.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.0[v0.7.0]
+| https://github.com/traefik/traefik/releases/tag/v2.10.7[v2.10.7]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.1[v0.16.1]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.28[v0.0.28]
+
 | xref:#_release_v1_30_3k3s1[v1.30.3+k3s1]
 | Jul 31 2024
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v1303[v1.30.3]
@@ -89,6 +104,30 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 |===
 
 {blank} +
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.30.4+k3s1[v1.30.4+k3s1]
+
+// v1.30.4+k3s1
+
+This release updates Kubernetes to v1.30.4, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#changelog-since-v1303[Kubernetes release notes].
+
+=== Changes since v1.30.3+k3s1:
+
+* Bump docker/docker to v25.0.6 https://github.com/k3s-io/k3s/pull/10649[(#10649)]
+* Backports for 2024-08 release cycle https://github.com/k3s-io/k3s/pull/10664[(#10664)]
+ ** Use pagination when listing large numbers of resources
+ ** Fix multiple issues with servicelb
+ ** Remove deprecated use of wait. functions
+ ** Wire lasso metrics up to metrics endpoint
+* Backports for August 2024 https://github.com/k3s-io/k3s/pull/10671[(#10671)]
+* Bump containerd to v1.7.20 https://github.com/k3s-io/k3s/pull/10660[(#10660)]
+* Add tolerations support for DaemonSet pods https://github.com/k3s-io/k3s/pull/10703[(#10703)]
+ ** *New Feature*: Users can now define Kubernetes tolerations for ServiceLB DaemonSet directly in the `svccontroller.k3s.cattle.io/tolerations` annotation on services.
+* Update to v1.30.4-k3s1 and Go 1.22.5 https://github.com/k3s-io/k3s/pull/10721[(#10721)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.30.3+k3s1[v1.30.3+k3s1]
 
