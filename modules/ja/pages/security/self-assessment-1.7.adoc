@@ -1156,7 +1156,6 @@ automountServiceAccountToken: false
 
 === 5.1.8 Kubernetes クラスター内での Bind、Impersonate、および Escalate 権限の使用を制限する (手動)
 
-```
 *結果:* WARN
 
 *修正方法:*

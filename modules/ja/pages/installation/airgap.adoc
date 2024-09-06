@@ -16,7 +16,7 @@ K3sをエアギャップ環境でインストールするには、2つの方法�
 . ``docker image load k3s-airgap-images-amd64.tar.zst``を使用して、tarファイルからDockerにイメージをインポートします。
 . ``docker tag``と``docker push``を使用して、ロードしたイメージを再タグ付けし、プライベートレジストリにプッシュします。
 . xref:./private-registry.adoc[プライベートレジストリの設定]ガイドに従って、``registries.yaml``ファイルを作成および設定します。
-. 以下の<<_install_k3s,Install K3s>>セクションに進みます。
+. 以下の<<_k3sのインストール,Install K3s>>セクションに進みます。
 
 === 手動デプロイ方式
 
@@ -35,7 +35,7 @@ K3sをエアギャップ環境でインストールするには、2つの方法�
   sudo curl -L -o /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst "https://github.com/k3s-io/k3s/releases/download/v1.29.1-rc2%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
 ----
 
-. 以下の<<_install_k3s,Install K3s>>セクションに進みます。
+. 以下の<<_k3sのインストール,Install K3s>>セクションに進みます。
 
 === 埋め込みレジストリミラー
 
@@ -57,7 +57,7 @@ K3sには、埋め込みの分散型OCI準拠のレジストリミラーが含�
 
 === 前提条件
 
-K3sをインストールする前に、上記の<<_private_registry_method,プライベートレジストリ方式>>または<<_manually_deploy_images_method,手動デプロイ方式>>を完了して、K3sのインストールに必要なイメージを事前に準備してください。
+K3sをインストールする前に、上記の<<_プライベートレジストリ方式,プライベートレジストリ方式>>または<<_手動デプロイ方式,手動デプロイ方式>>を完了して、K3sのインストールに必要なイメージを事前に準備してください。
 
 ==== バイナリ
 

@@ -136,7 +136,7 @@ spec:
 
 上記の PSP を有効にするためには、ClusterRole と ClusterRoleBinding を作成する必要があります。また、追加の特権を必要とするシステムレベルのポッドに必要な「システム無制限ポリシー」と、servicelb が正常に機能するために必要な sysctl を許可する追加のポリシーも含める必要があります。
 
-上記の設定を次のセクションで説明する <<networkpolicies,ネットワークポリシー>> と組み合わせて、単一のファイルを `/var/lib/rancher/k3s/server/manifests` ディレクトリに配置できます。以下は `policy.yaml` ファイルの例です。
+上記の設定を次のセクションで説明する <<_networkpolicies,ネットワークポリシー>> と組み合わせて、単一のファイルを `/var/lib/rancher/k3s/server/manifests` ディレクトリに配置できます。以下は `policy.yaml` ファイルの例です。
 
 [,yaml]
 ----
