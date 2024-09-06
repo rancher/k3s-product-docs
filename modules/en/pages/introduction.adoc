@@ -1,6 +1,4 @@
 = K3s - Lightweight Kubernetes
-:doctype: book
-:slug: /
 :page-role: -toc
 
 Lightweight Kubernetes. Easy to install, half the memory, all in a binary of less than 100 MB.
