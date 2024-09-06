@@ -285,7 +285,8 @@ permissions=644
 
 **監査:**
 
-```bash
+[,bash]
+----
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig; then stat -c %U:%G /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig; fi'
 ----
 
@@ -1068,7 +1069,8 @@ Kubernetes のドキュメントに従って、apiserver と etcd 間の TLS 接
 ----
 **監査スクリプト:** `check_for_k3s_etcd.sh`
 
-```bash
+[,bash]
+----
 #!/bin/bash
 
 # このスクリプトは、k3sが実際にetcdを実行していること（sqlite3などの他のデータベースではないこと）を確認するために使用されます。
@@ -1679,10 +1681,28 @@ if [[ "$(journalctl -D /var/log/journal -u k3s | grep 'Managed etcd cluster init
         "1.2.29")
             echo $(journalctl -D /var/log/journal -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'etcd-');;
         "2.1")
-----
-
-----
-```bash
+            echo $(grep -A 5 'client-transport-security' /var/lib/rancher/k3s/server/db/etcd/config | grep -E 'cert-file|key-file');;
+        "2.2")
+            echo $(grep -A 5 'client-transport-security' /var/lib/rancher/k3s/server/db/etcd/config | grep 'client-cert-auth');;
+        "2.3")
+            echo $(grep 'auto-tls' /var/lib/rancher/k3s/server/db/etcd/config);;
+        "2.4")
+            echo $(grep -A 5 'peer-transport-security' /var/lib/rancher/k3s/server/db/etcd/config | grep -E 'cert-file|key-file');;
+        "2.5")
+            echo $(grep -A 5 'peer-transport-security' /var/lib/rancher/k3s/server/db/etcd/config | grep 'client-cert-auth');;
+        "2.6")
+            echo $(grep 'peer-auto-tls' /var/lib/rancher/k3s/server/db/etcd/config);;
+        "2.7")
+            echo $(grep 'trusted-ca-file' /var/lib/rancher/k3s/server/db/etcd/config);;
+    esac
+else
+# If another database is running, return whatever is required to pass the scan
+    case $1 in
+        "1.1.11")
+            echo "700";;
+        "1.2.29")
+            echo "--etcd-certfile AND --etcd-keyfile";;
+        "2.1")
             echo "cert-file AND key-file";;
         "2.2")
             echo "--client-cert-auth=true";;
@@ -2390,7 +2410,8 @@ chmod 644 /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig
 
 **監査:**
 
-```bash
+[,bash]
+----
 stat -c %a /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig
 ----
 
@@ -2759,7 +2780,8 @@ systemctl restart kubelet.service
 `/etc/systemd/system/kubelet.service.d/10-kubeadm.conf` を編集し、
 `KUBELET_SYSTEM_PODS_ARGS` 変数から `--make-iptables-util-chains` 引数を削除します。
 システムに基づいて、kubelet サービスを再起動します。例えば：
-```bash
+
+[,bash]
 systemctl daemon-reload
 systemctl restart kubelet.service
 ----
