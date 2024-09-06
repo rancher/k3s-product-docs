@@ -103,13 +103,12 @@ metadata:
 ----
 
 . アップグレードが完了したら、クラスターから残りのPSPリソースを削除します。多くの場合、``/var/lib/rancher/k3s/server/manifests/``内のカスタムファイルでハードニングに使用されるPodSecurityPoliciesおよび関連するRBACリソースが存在する可能性があります。これらのリソースを削除すると、k3sは自動的に更新されます。タイミングの関係で、これらの一部がクラスターに残る場合があるため、その場合は手動で削除する必要があります。xref:./security/hardening-guide.adoc[ハードニングガイド]が以前に従われていた場合、以下のコマンドで削除できるはずです：
-```sh
-+
-= PSPに関連するリソースを取得
-+
+
+[,sh]
+----
+# PSPに関連するリソースを取得
 $ kubectl get roles,clusterroles,rolebindings,clusterrolebindings -A | grep -i psp
 
-= これらのリソースを削除：
-
+# これらのリソースを削除：
 $ kubectl delete clusterrole.rbac.authorization.k8s.io/psp:restricted-psp clusterrole.rbac.authorization.k8s.io/psp:svclb-psp clusterrole.rbac.authorization.k8s.io/psp:system-unrestricted-psp clusterrolebinding.rbac.authorization.k8s.io/default:restricted-psp clusterrolebinding.rbac.authorization.k8s.io/system-unrestricted-node-psp-rolebinding && kubectl delete -n kube-system rolebinding.rbac.authorization.k8s.io/svclb-psp-rolebinding rolebinding.rbac.authorization.k8s.io/system-unrestricted-svc-acct-psp-rolebinding
-```
+----
