@@ -63,15 +63,72 @@ K3sは2022-12リリース（v1.26.0+k3s1、v1.25.5+k3s1、v1.24.9+k3s1、v1.23.1
 ======
 Tab Canal::
 +
-[Canal Docs](https://docs.tigera.io/calico/latest/getting-started/kubernetes/flannel/install-for-flannel#installing-calico-for-policy-and-flannel-aka-canal-for-networking)ウェブサイトを訪問し、Canalをインストールする手順に従います。Canal YAMLを修正して、`container_settings`セクションでIP転送が許可されるようにします。例えば： ```yaml "container_settings": { "allow_ip_forwarding": true } ``` Canal YAMLを適用します。 ホストで次のコマンドを実行して設定が適用されたことを確認します： ```bash cat /etc/cni/net.d/10-canal.conflist ``` IP転送がtrueに設定されていることを確認します。 
+--
+https://docs.tigera.io/calico/latest/getting-started/kubernetes/flannel/install-for-flannel#installing-calico-for-policy-and-flannel-aka-canal-for-networking[Canal Docs]ウェブサイトを訪問し、Canalをインストールする手順に従います。Canal YAMLを修正して、``container_settings``セクションでIP転送が許可されるようにします。例えば：
+
+[,yaml]
+----
+"container_settings": {
+  "allow_ip_forwarding": true
+}
+----
+
+Canal YAMLを適用します。
+
+ホストで次のコマンドを実行して設定が適用されたことを確認します：
+
+[,bash]
+----
+cat /etc/cni/net.d/10-canal.conflist
+----
+
+IP転送がtrueに設定されていることを確認します。
+--
 
 Tab Calico::
 +
-[Calico CNIプラグインガイド](https://docs.tigera.io/calico/latest/reference/configure-cni-plugins)に従います。Calico YAMLを修正して、`container_settings`セクションでIP転送が許可されるようにします。例えば： ```yaml "container_settings": { "allow_ip_forwarding": true } ``` Calico YAMLを適用します。 ホストで次のコマンドを実行して設定が適用されたことを確認します： ```bash cat /etc/cni/net.d/10-calico.conflist ``` IP転送がtrueに設定されていることを確認します。 
+--
+https://docs.tigera.io/calico/latest/reference/configure-cni-plugins[Calico CNIプラグインガイド]に従います。Calico YAMLを修正して、``container_settings``セクションでIP転送が許可されるようにします。例えば：
+
+[,yaml]
+----
+"container_settings": {
+  "allow_ip_forwarding": true
+}
+----
+
+Calico YAMLを適用します。
+
+ホストで次のコマンドを実行して設定が適用されたことを確認します：
+
+[,bash]
+----
+cat /etc/cni/net.d/10-calico.conflist
+----
+
+IP転送がtrueに設定されていることを確認します。
+--
 
 Tab Cilium::
 +
-`k3s-killall.sh`または`k3s-uninstall.sh`を実行する前に、`cilium_host`、`cilium_net`、および`cilium_vxlan`インターフェースを手動で削除する必要があります。これを行わないと、K3sが停止したときにホストへのネットワーク接続が失われる可能性があります。 ```bash ip link delete cilium_host ip link delete cilium_net ip link delete cilium_vxlan ``` さらに、ciliumのiptablesルールを削除する必要があります： ```bash iptables-save | grep -iv cilium | iptables-restore ip6tables-save | grep -iv cilium | ip6tables-restore ```
+--
+``k3s-killall.sh``または``k3s-uninstall.sh``を実行する前に、`cilium_host`、`cilium_net`、および``cilium_vxlan``インターフェースを手動で削除する必要があります。これを行わないと、K3sが停止したときにホストへのネットワーク接続が失われる可能性があります。
+
+[,bash]
+----
+ip link delete cilium_host
+ip link delete cilium_net
+ip link delete cilium_vxlan
+----
+
+さらに、ciliumのiptablesルールを削除する必要があります：
+
+[,bash]
+----
+iptables-save | grep -iv cilium | iptables-restore
+ip6tables-save | grep -iv cilium | ip6tables-restore
+----
+--
 ======
 
 == コントロールプレーンのEgress Selector設定

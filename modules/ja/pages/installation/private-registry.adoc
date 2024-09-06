@@ -182,11 +182,38 @@ configs:
 ======
 Tab 認証あり::
 +
-```yaml mirrors: docker.io: endpoint: - "https://registry.example.com:5000" configs: "registry.example.com:5000": auth: username: xxxxxx # これはレジストリのユーザー名です password: xxxxxx # これはレジストリのパスワードです tls: cert_file: # レジストリで使用される証明書ファイルのパス key_file: # レジストリで使用されるキーのパス ca_file: # レジストリで使用されるCAファイルのパス ``` 
+[,yaml]
+----
+mirrors:
+  docker.io:
+    endpoint:
+      - "https://registry.example.com:5000"
+configs:
+  "registry.example.com:5000":
+    auth:
+      username: xxxxxx # これはレジストリのユーザー名です
+      password: xxxxxx # これはレジストリのパスワードです
+    tls:
+      cert_file: # レジストリで使用される証明書ファイルのパス
+      key_file:  # レジストリで使用されるキーのパス
+      ca_file:   # レジストリで使用されるCAファイルのパス
+----
 
 Tab 認証なし::
 +
-```yaml mirrors: docker.io: endpoint: - "https://registry.example.com:5000" configs: "registry.example.com:5000": tls: cert_file: # レジストリで使用される証明書ファイルのパス key_file: # レジストリで使用されるキーのパス ca_file: # レジストリで使用されるCAファイルのパス ```
+[,yaml]
+----
+mirrors:
+  docker.io:
+    endpoint:
+      - "https://registry.example.com:5000"
+configs:
+  "registry.example.com:5000":
+    tls:
+      cert_file: # レジストリで使用される証明書ファイルのパス
+      key_file:  # レジストリで使用されるキーのパス
+      ca_file:   # レジストリで使用されるCAファイルのパス
+----
 ======
 
 === TLSを使用しない場合
@@ -197,11 +224,28 @@ Tab 認証なし::
 ======
 Tab 認証あり::
 +
-```yaml mirrors: docker.io: endpoint: - "http://registry.example.com:5000" configs: "registry.example.com:5000": auth: username: xxxxxx # これはレジストリのユーザー名です password: xxxxxx # これはレジストリのパスワードです ``` 
+[,yaml]
+----
+mirrors:
+  docker.io:
+    endpoint:
+      - "http://registry.example.com:5000"
+configs:
+  "registry.example.com:5000":
+    auth:
+      username: xxxxxx # これはレジストリのユーザー名です
+      password: xxxxxx # これはレジストリのパスワードです
+----
 
 Tab 認証なし::
 +
-```yaml mirrors: docker.io: endpoint: - "http://registry.example.com:5000" ```
+[,yaml]
+----
+mirrors:
+  docker.io:
+    endpoint:
+      - "http://registry.example.com:5000"
+----
 ======
 
 ____

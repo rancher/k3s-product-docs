@@ -31,26 +31,111 @@ K3sは以下のアーキテクチャで利用可能です:
 
 K3sはほとんどの最新のLinuxシステムで動作することが期待されています。
 
-一部のOSには追加のセットアップ要件があります:+++<Tabs queryString="os">
+一部のOSには追加のセットアップ要件があります:
 
+[tabs]
+======
 Tab SUSE Linux Enterprise / openSUSE::
 +
-firewalldをオフにすることをお勧めします: ```bash systemctl disable firewalld --now ``` firewalldを有効にしたままにしたい場合、デフォルトで以下のルールが必要です: ```bash firewall-cmd --permanent --add-port=6443/tcp #apiserver firewall-cmd --permanent --zone=trusted --add-source=10.42.0.0/16 #pods firewall-cmd --permanent --zone=trusted --add-source=10.43.0.0/16 #services firewall-cmd --reload ``` セットアップに応じて追加のポートを開く必要がある場合があります。詳細については[インバウンドルール](#inbound-rules-for-k3s-nodes)を参照してください。ポッドやサービスのデフォルトCIDRを変更する場合は、ファイアウォールルールを更新する必要があります。 
+--
+firewalldをオフにすることをお勧めします:
+
+[,bash]
+----
+systemctl disable firewalld --now
+----
+
+firewalldを有効にしたままにしたい場合、デフォルトで以下のルールが必要です:
+
+[,bash]
+----
+firewall-cmd --permanent --add-port=6443/tcp #apiserver
+firewall-cmd --permanent --zone=trusted --add-source=10.42.0.0/16 #pods
+firewall-cmd --permanent --zone=trusted --add-source=10.43.0.0/16 #services
+firewall-cmd --reload
+----
+
+セットアップに応じて追加のポートを開く必要がある場合があります。詳細については<<inbound-rules-for-k3s-nodes,インバウンドルール>>を参照してください。ポッドやサービスのデフォルトCIDRを変更する場合は、ファイアウォールルールを更新する必要があります。
+--
 
 Tab Red Hat Enterprise Linux / CentOS / Fedora::
 +
-firewalldをオフにすることをお勧めします: ```bash systemctl disable firewalld --now ``` firewalldを有効にしたままにしたい場合、デフォルトで以下のルールが必要です: ```bash firewall-cmd --permanent --add-port=6443/tcp #apiserver firewall-cmd --permanent --zone=trusted --add-source=10.42.0.0/16 #pods firewall-cmd --permanent --zone=trusted --add-source=10.43.0.0/16 #services firewall-cmd --reload ``` セットアップに応じて追加のポートを開く必要がある場合があります。詳細については[インバウンドルール](#inbound-rules-for-k3s-nodes)を参照してください。ポッドやサービスのデフォルトCIDRを変更する場合は、ファイアウォールルールを更新する必要があります。 有効になっている場合は、nm-cloud-setupを無効にしてノードを再起動する必要があります: ```bash systemctl disable nm-cloud-setup.service nm-cloud-setup.timer reboot ``` 
+--
+firewalldをオフにすることをお勧めします:
+
+[,bash]
+----
+systemctl disable firewalld --now
+----
+
+firewalldを有効にしたままにしたい場合、デフォルトで以下のルールが必要です:
+
+[,bash]
+----
+firewall-cmd --permanent --add-port=6443/tcp #apiserver
+firewall-cmd --permanent --zone=trusted --add-source=10.42.0.0/16 #pods
+firewall-cmd --permanent --zone=trusted --add-source=10.43.0.0/16 #services
+firewall-cmd --reload
+----
+
+セットアップに応じて追加のポートを開く必要がある場合があります。詳細については<<inbound-rules-for-k3s-nodes,インバウンドルール>>を参照してください。ポッドやサービスのデフォルトCIDRを変更する場合は、ファイアウォールルールを更新する必要があります。
+
+有効になっている場合は、nm-cloud-setupを無効にしてノードを再起動する必要があります:
+
+[,bash]
+----
+systemctl disable nm-cloud-setup.service nm-cloud-setup.timer
+reboot
+----
+--
 
 Tab Ubuntu / Debian::
 +
-古いDebianリリースには既知のiptablesバグがある可能性があります。詳細は[既知の問題](../known-issues.md#iptables)を参照してください。 ufw（uncomplicated firewall）をオフにすることをお勧めします: ```bash ufw disable ``` ufwを有効にしたままにしたい場合、デフォルトで以下のルールが必要です: ```bash ufw allow 6443/tcp #apiserver ufw allow from 10.42.0.0/16 to any #pods ufw allow from 10.43.0.0/16 to any #services ``` セットアップに応じて追加のポートを開く必要がある場合があります。詳細については[インバウンドルール](#inbound-rules-for-k3s-nodes)を参照してください。ポッドやサービスのデフォルトCIDRを変更する場合は、ファイアウォールルールを更新する必要があります。 
+--
+古いDebianリリースには既知のiptablesバグがある可能性があります。詳細はlink:../known-issues.md#iptables[既知の問題]を参照してください。
+
+ufw（uncomplicated firewall）をオフにすることをお勧めします:
+
+[,bash]
+----
+ufw disable
+----
+
+ufwを有効にしたままにしたい場合、デフォルトで以下のルールが必要です:
+
+[,bash]
+----
+ufw allow 6443/tcp #apiserver
+ufw allow from 10.42.0.0/16 to any #pods
+ufw allow from 10.43.0.0/16 to any #services
+----
+
+セットアップに応じて追加のポートを開く必要がある場合があります。詳細については<<inbound-rules-for-k3s-nodes,インバウンドルール>>を参照してください。ポッドやサービスのデフォルトCIDRを変更する場合は、ファイアウォールルールを更新する必要があります。
+--
 
 Tab Raspberry Pi::
 +
-Raspberry Pi OSはDebianベースであり、既知のiptablesバグがある可能性があります。詳細は[既知の問題](../known-issues.md#iptables)を参照してください。 標準のRaspberry Pi OSインストールでは、`cgroups`が有効になっていません。**K3S**はsystemdサービスを開始するために`cgroups`を必要とします。`cgroups`は`/boot/cmdline.txt`に`cgroup_memory=1 cgroup_enable=memory`を追加することで有効にできます。 例のcmdline.txt: ``` console=serial0,115200 console=tty1 root=PARTUUID=58b06195-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait cgroup_memory=1 cgroup_enable=memory ``` Ubuntu 21.10以降、Raspberry Piでのvxlanサポートは別のカーネルモジュールに移動されました。 ```bash sudo apt install linux-modules-extra-raspi ```
+--
+Raspberry Pi OSはDebianベースであり、既知のiptablesバグがある可能性があります。詳細はlink:../known-issues.md#iptables[既知の問題]を参照してください。
+
+標準のRaspberry Pi OSインストールでは、``cgroups``が有効になっていません。**K3S**はsystemdサービスを開始するために``cgroups``を必要とします。``cgroups``は``/boot/cmdline.txt``に``cgroup_memory=1 cgroup_enable=memory``を追加することで有効にできます。
+
+例のcmdline.txt:
+
+----
+console=serial0,115200 console=tty1 root=PARTUUID=58b06195-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait cgroup_memory=1 cgroup_enable=memory
+----
+
+Ubuntu 21.10以降、Raspberry Piでのvxlanサポートは別のカーネルモジュールに移動されました。
+
+[,bash]
+----
+sudo apt install linux-modules-extra-raspi
+----
+--
 ======
 
-Rancher管理のK3sクラスターでテストされたOSの詳細については、https://rancher.com/support-maintenance-terms/[Rancherのサポートとメンテナンスの条件]を参照してください。
+Rancher管理のK3sクラスターでテストされたOSの詳細については、link:https://rancher.com/support-maintenance-terms/[Rancherのサポートとメンテナンスの条件]を参照してください。
 
 == ハードウェア
 

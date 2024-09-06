@@ -338,11 +338,44 @@ Docker で K3s を実行する方法はいくつかあります:
 ======
 Tab K3d::
 +
-[k3d](https://github.com/k3d-io/k3d) は、Docker でマルチノード K3s クラスターを簡単に実行するために設計されたユーティリティです。 k3d を使用すると、ローカルでの Kubernetes 開発のために、Docker でシングルノードおよびマルチノードの k3s クラスターを非常に簡単に作成できます。 インストール方法や k3d の使用方法については、[インストール](https://k3d.io/#installation) ドキュメントを参照してください。 
+--
+https://github.com/k3d-io/k3d[k3d] は、Docker でマルチノード K3s クラスターを簡単に実行するために設計されたユーティリティです。
+
+k3d を使用すると、ローカルでの Kubernetes 開発のために、Docker でシングルノードおよびマルチノードの k3s クラスターを非常に簡単に作成できます。
+
+インストール方法や k3d の使用方法については、https://k3d.io/#installation[インストール] ドキュメントを参照してください。
+--
 
 Tab Docker::
 +
-Docker を使用するには、K3s サーバーおよびエージェントを実行するための `rancher/k3s` イメージも利用可能です。 `docker run` コマンドを使用して: ```bash sudo docker run \ --privileged \ --name k3s-server-1 \ --hostname k3s-server-1 \ -p 6443:6443 \ -d rancher/k3s:v1.24.10-k3s1 \ server ``` :::note 有効な K3s バージョンをタグとして指定する必要があります。`latest` タグは維持されていません。 Docker イメージではタグに `+` 記号を使用できないため、代わりに `-` を使用してください。 ::: K3s が起動して実行されると、管理用 kubeconfig を Docker コンテナからコピーして使用できます: ```bash sudo docker cp k3s-server-1:/etc/rancher/k3s/k3s.yaml ~/.kube/config ```
+--
+Docker を使用するには、K3s サーバーおよびエージェントを実行するための `rancher/k3s` イメージも利用可能です。
+`docker run` コマンドを使用して:
+
+[,bash]
+----
+sudo docker run \
+  --privileged \
+  --name k3s-server-1 \
+  --hostname k3s-server-1 \
+  -p 6443:6443 \
+  -d rancher/k3s:v1.24.10-k3s1 \
+  server
+----
+
+[NOTE]
+====
+有効な K3s バージョンをタグとして指定する必要があります。`latest` タグは維持されていません。
+Docker イメージではタグに `+` 記号を使用できないため、代わりに `-` を使用してください。
+====
+
+K3s が起動して実行されると、管理用 kubeconfig を Docker コンテナからコピーして使用できます:
+
+[,bash]
+----
+sudo docker cp k3s-server-1:/etc/rancher/k3s/k3s.yaml ~/.kube/config
+----
+--
 ======
 
 == SELinux サポート
@@ -361,11 +394,23 @@ SELinux がデフォルトで有効になっているシステム（CentOS な�
 ======
 Tab Automatic Installation::
 +
-[インストールスクリプト](./installation/configuration.md#configuration-with-install-script)は、エアギャップインストールを行わない限り、互換性のあるシステムであればRancher RPMリポジトリからSELinux RPMを自動的にインストールします。自動インストールをスキップするには、`INSTALL_K3S_SKIP_SELINUX_RPM=true`を設定します。 
+--
+link:./installation/configuration.md#configuration-with-install-script[インストールスクリプト]は、エアギャップインストールを行わない限り、互換性のあるシステムであればRancher RPMリポジトリからSELinux RPMを自動的にインストールします。自動インストールをスキップするには、``INSTALL_K3S_SKIP_SELINUX_RPM=true``を設定します。
+--
 
 Tab Manual Installation::
 +
-必要なポリシーは以下のコマンドでインストールできます: ```bash yum install -y container-selinux selinux-policy-base yum install -y https://rpm.rancher.io/k3s/latest/common/centos/7/noarch/k3s-selinux-1.4-1.el7.noarch.rpm ``` インストールスクリプトが失敗するのではなく警告をログに記録するように強制するには、以下の環境変数を設定します: `INSTALL_K3S_SELINUX_WARN=true`。
+--
+必要なポリシーは以下のコマンドでインストールできます:
+
+[,bash]
+----
+yum install -y container-selinux selinux-policy-base
+yum install -y https://rpm.rancher.io/k3s/latest/common/centos/7/noarch/k3s-selinux-1.4-1.el7.noarch.rpm
+----
+
+インストールスクリプトが失敗するのではなく警告をログに記録するように強制するには、以下の環境変数を設定します: `INSTALL_K3S_SELINUX_WARN=true`。
+--
 ======
 
 === SELinuxの強制モードを有効にする

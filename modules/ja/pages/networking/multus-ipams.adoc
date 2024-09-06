@@ -21,15 +21,59 @@ Multusによって作成された追加のインターフェースにIPアドレ
 ======
 Tab host-local::
 +
-host-local IPAMプラグインは、アドレス範囲のセットからIPアドレスを割り当てます。状態をホストのファイルシステムにローカルに保存するため、単一ホスト上のIPアドレスの一意性が保証されます。したがって、マルチノードクラスターには推奨しません。このIPAMプラグインは追加のデプロイを必要としません。詳細については、https://www.cni.dev/plugins/current/ipam/host-local/ を参照してください。 host-localプラグインを使用するには、以下の内容で`multus-values.yaml`というファイルを作成してください： ``` config: cni_conf: confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d binDir: /var/lib/rancher/k3s/data/current/bin/ kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig ``` 
+--
+host-local IPAMプラグインは、アドレス範囲のセットからIPアドレスを割り当てます。状態をホストのファイルシステムにローカルに保存するため、単一ホスト上のIPアドレスの一意性が保証されます。したがって、マルチノードクラスターには推奨しません。このIPAMプラグインは追加のデプロイを必要としません。詳細については、https://www.cni.dev/plugins/current/ipam/host-local/ を参照してください。
+
+host-localプラグインを使用するには、以下の内容で``multus-values.yaml``というファイルを作成してください：
+
+----
+config:
+  cni_conf:
+    confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+    binDir: /var/lib/rancher/k3s/data/current/bin/
+    kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
+----
+--
 
 Tab Whereabouts::
 +
-[Whereabouts](https://github.com/k8snetworkplumbingwg/whereabouts) は、クラスター全体でIPアドレスを割り当てるIPアドレス管理（IPAM）CNIプラグインです。 Whereabouts IPAMプラグインを使用するには、以下の内容で`multus-values.yaml`というファイルを作成してください： ``` config: cni_conf: confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d binDir: /var/lib/rancher/k3s/data/current/bin/ kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig rke2-whereabouts: fullnameOverride: whereabouts enabled: true cniConf: confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d binDir: /var/lib/rancher/k3s/data/current/bin/ ``` 
+--
+https://github.com/k8snetworkplumbingwg/whereabouts[Whereabouts] は、クラスター全体でIPアドレスを割り当てるIPアドレス管理（IPAM）CNIプラグインです。
+
+Whereabouts IPAMプラグインを使用するには、以下の内容で``multus-values.yaml``というファイルを作成してください：
+
+----
+config:
+  cni_conf:
+    confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+    binDir: /var/lib/rancher/k3s/data/current/bin/
+    kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
+rke2-whereabouts:
+  fullnameOverride: whereabouts
+  enabled: true
+  cniConf:
+    confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+    binDir: /var/lib/rancher/k3s/data/current/bin/
+----
+--
 
 Tab Multus DHCP daemon::
 +
-dhcp IPAMプラグインは、ネットワーク上に既にDHCPサーバーが稼働している場合にデプロイできます。このデーモンセットは、DHCPリースの定期的な更新を担当します。詳細については、[DHCP IPAMプラグイン](https://www.cni.dev/plugins/current/ipam/dhcp/)の公式ドキュメントを参照してください。 DHCPプラグインを使用するには、以下の内容で`multus-values.yaml`というファイルを作成してください： ``` config: cni_conf: confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d binDir: /var/lib/rancher/k3s/data/current/bin/ kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig manifests: dhcpDaemonSet: true ```
+--
+dhcp IPAMプラグインは、ネットワーク上に既にDHCPサーバーが稼働している場合にデプロイできます。このデーモンセットは、DHCPリースの定期的な更新を担当します。詳細については、link:https://www.cni.dev/plugins/current/ipam/dhcp/[DHCP IPAMプラグイン]の公式ドキュメントを参照してください。
+
+DHCPプラグインを使用するには、以下の内容で``multus-values.yaml``というファイルを作成してください：
+
+----
+config:
+  cni_conf:
+    confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+    binDir: /var/lib/rancher/k3s/data/current/bin/
+    kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
+manifests:
+  dhcpDaemonSet: true
+----
+--
 ======
 
 == Multusをデプロイ

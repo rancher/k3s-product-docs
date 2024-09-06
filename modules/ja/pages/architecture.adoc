@@ -24,15 +24,21 @@ image:k3s-architecture-single-server.svg[シングルサーバーを持つK3sア
 ======
 Tab 埋め込みDB::
 +
-* Kubernetes APIを提供し、他のコントロールプレーンサービスを実行する**3つ以上のサーバーノード** * シングルサーバーセットアップで使用される埋め込みSQLiteデータストアとは対照的に、**埋め込みetcdデータストア** 
+--
+* Kubernetes APIを提供し、他のコントロールプレーンサービスを実行する**3つ以上のサーバーノード**
+* シングルサーバーセットアップで使用される埋め込みSQLiteデータストアとは対照的に、*埋め込みetcdデータストア*
 
 image:k3s-architecture-ha-embedded.svg[高可用性サーバーを持つK3sアーキテクチャ]
+--
 
 Tab 外部DB::
 +
-* Kubernetes APIを提供し、他のコントロールプレーンサービスを実行する**2つ以上のサーバーノード** * **外部データストア**（MySQL、PostgreSQL、またはetcdなど） 
+--
+* Kubernetes APIを提供し、他のコントロールプレーンサービスを実行する**2つ以上のサーバーノード**
+* *外部データストア*（MySQL、PostgreSQL、またはetcdなど）
 
 image:k3s-architecture-ha-external.svg[高可用性サーバーと外部DBを持つK3sアーキテクチャ]
+--
 ======
 
 == エージェントノードの固定登録アドレス

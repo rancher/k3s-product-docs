@@ -101,10 +101,78 @@ sudo yum install ./k3s-selinux-1.4-1.el8.noarch.rpm
 ======
 Tab シングルサーバー構成::
 +
-シングルサーバーにK3sをインストールするには、サーバーノードで以下を実行します： ```bash INSTALL_K3S_SKIP_DOWNLOAD=true ./install.sh ``` 追加のエージェントを追加するには、各エージェントノードで以下を実行します： ```bash INSTALL_K3S_SKIP_DOWNLOAD=true K3S_URL=https://+++<SERVER_IP>+++:6443 K3S_TOKEN=+++<YOUR_TOKEN>+++./install.sh ``` :::note サーバーのトークンは通常、`/var/lib/rancher/k3s/server/token`にあります。 :::  
+--
+シングルサーバーにK3sをインストールするには、サーバーノードで以下を実行します：
+
+[,bash]
+----
+INSTALL_K3S_SKIP_DOWNLOAD=true ./install.sh
+----
+
+追加のエージェントを追加するには、各エージェントノードで以下を実行します：
+
+[,bash]
+----
+INSTALL_K3S_SKIP_DOWNLOAD=true K3S_URL=https://<SERVER_IP>:6443 K3S_TOKEN=<YOUR_TOKEN> ./install.sh
+----
+
+[NOTE]
+====
+サーバーのトークンは通常、``/var/lib/rancher/k3s/server/token``にあります。
+====
+--
 
 Tab 高可用性構成::
 +
-[外部DBを使用した高可用性](../datastore/ha.md)または[埋め込みDBを使用した高可用性](../datastore/ha-embedded.md)ガイドを参照してください。インストールコマンドを調整して`INSTALL_K3S_SKIP_DOWNLOAD=true`を指定し、インストールスクリプトをcurlではなくローカルで実行します。また、`INSTALL_K3S_EXEC='args'`を使用してk3sに引数を渡します。 例えば、外部DBを使用した高可用性ガイドのステップ2では、以下のように記載されています： ```bash curl -sfL https://get.k3s.io | sh -s - server \ --token=SECRET \ --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name" ``` これを以下のように変更します： ```bash INSTALL_K3S_SKIP_DOWNLOAD=true INSTALL_K3S_EXEC='server --token=SECRET' \ K3S_DATASTORE_ENDPOINT='mysql://username:password@tcp(hostname:3306)/database-name' \ ./install.sh ``` 
-====== :::note K3sの`--resolv-conf`フラグはkubeletに渡され、ホストに上流のネームサーバーが設定されていないエアギャップネットワークでのポッドDNS解決の設定に役立つ場合があります。 ::: ## アップグレード ### インストールスクリプト方式 エアギャップ環境のアップグレードは、以下の方法で行うことができます： 1. アップグレードするK3sのバージョンに対応する新しいエアギャップイメージ（tarファイル）を[リリース](https://github.com/k3s-io/k3s/releases)ページからダウンロードします。各ノードの`/var/lib/rancher/k3s/agent/images/`ディレクトリにtarファイルを配置し、古いtarファイルを削除します。 2. 各ノードの`/usr/local/bin`にある古いK3sバイナリを新しいものに置き換えます。https://get.k3s.ioからインストールスクリプトをコピーし、前回のリリース以降に変更があった可能性があるため、再度スクリプトを実行します。同じ環境変数を使用してスクリプトを実行します。 3. K3sサービスを再起動します（インストーラーによって自動的に再起動されない場合）。 ### 自動アップグレード方式 K3sは[自動アップグレード](../upgrades/automated.md)をサポートしています。エアギャップ環境でこれを有効にするには、必要なイメージがプライベートレジストリにあることを確認する必要があります。 アップグレードするK3sのバージョンに対応するrancher/k3s-upgradeのバージョンが必要です。注意点として、K3sリリースの`+`はDockerイメージではサポートされていないため、イメージタグでは`-`に置き換えられます。 また、system-upgrade-controllerマニフェストYAMLに指定されているsystem-upgrade-controllerとkubectlのバージョンも必要です。最新のsystem-upgrade-controllerリリースは[こちら](https://github.com/rancher/system-upgrade-controller/releases/latest)で確認し、必要なバージョンをプライベートレジストリにプッシュします。例えば、system-upgrade-controllerのv0.4.0リリースでは、以下のイメージがマニフェストYAMLに指定されています： ``` rancher/system-upgrade-controller:v0.4.0 rancher/kubectl:v0.17.0 ``` 必要なrancher/k3s-upgrade、rancher/system-upgrade-controller、およびrancher/kubectlイメージをプライベートレジストリに追加したら、[自動アップグレード](../upgrades/automated.md)ガイドに従ってください。+++</YOUR_TOKEN>++++++</SERVER_IP>
-======
+--
+xref:../datastore/ha.adoc[外部DBを使用した高可用性]またはxref:../datastore/ha-embedded.adoc[埋め込みDBを使用した高可用性]ガイドを参照してください。インストールコマンドを調整して``INSTALL_K3S_SKIP_DOWNLOAD=true``を指定し、インストールスクリプトをcurlではなくローカルで実行します。また、``INSTALL_K3S_EXEC='args'``を使用してk3sに引数を渡します。
+
+例えば、外部DBを使用した高可用性ガイドのステップ2では、以下のように記載されています：
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | sh -s - server \
+  --token=SECRET \
+  --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name"
+----
+
+これを以下のように変更します：
+
+[,bash]
+----
+INSTALL_K3S_SKIP_DOWNLOAD=true INSTALL_K3S_EXEC='server --token=SECRET' \
+K3S_DATASTORE_ENDPOINT='mysql://username:password@tcp(hostname:3306)/database-name' \
+./install.sh
+----
+--
+====== 
+
+[NOTE]
+====
+K3sの``--resolv-conf``フラグはkubeletに渡され、ホストに上流のネームサーバーが設定されていないエアギャップネットワークでのポッドDNS解決の設定に役立つ場合があります。
+====
+
+== アップグレード
+
+=== インストールスクリプト方式
+
+エアギャップ環境のアップグレードは、以下の方法で行うことができます：
+
+. アップグレードするK3sのバージョンに対応する新しいエアギャップイメージ（tarファイル）をhttps://github.com/k3s-io/k3s/releases[リリース]ページからダウンロードします。各ノードの``/var/lib/rancher/k3s/agent/images/``ディレクトリにtarファイルを配置し、古いtarファイルを削除します。
+. 各ノードの``/usr/local/bin``にある古いK3sバイナリを新しいものに置き換えます。https://get.k3s.ioからインストールスクリプトをコピーし、前回のリリース以降に変更があった可能性があるため、再度スクリプトを実行します。同じ環境変数を使用してスクリプトを実行します。
+. K3sサービスを再起動します（インストーラーによって自動的に再起動されない場合）。
+
+=== 自動アップグレード方式
+
+K3sはxref:../upgrades/automated.adoc[自動アップグレード]をサポートしています。エアギャップ環境でこれを有効にするには、必要なイメージがプライベートレジストリにあることを確認する必要があります。
+
+アップグレードするK3sのバージョンに対応するrancher/k3s-upgradeのバージョンが必要です。注意点として、K3sリリースの``+``はDockerイメージではサポートされていないため、イメージタグでは``-``に置き換えられます。
+
+また、system-upgrade-controllerマニフェストYAMLに指定されているsystem-upgrade-controllerとkubectlのバージョンも必要です。最新のsystem-upgrade-controllerリリースはhttps://github.com/rancher/system-upgrade-controller/releases/latest[こちら]で確認し、必要なバージョンをプライベートレジストリにプッシュします。例えば、system-upgrade-controllerのv0.4.0リリースでは、以下のイメージがマニフェストYAMLに指定されています：
+
+----
+rancher/system-upgrade-controller:v0.4.0
+rancher/kubectl:v0.17.0
+----
+
+必要なrancher/k3s-upgrade、rancher/system-upgrade-controller、およびrancher/kubectlイメージをプライベートレジストリに追加したら、xref:../upgrades/automated.adoc[自動アップグレード]ガイドに従ってください。
