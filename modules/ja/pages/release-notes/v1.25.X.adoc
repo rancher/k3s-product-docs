@@ -1,0 +1,894 @@
+= v1.25.X
+:hide_table_of_contents: true
+:sidebar_position: 6
+
+[CAUTION]
+.アップグレード通知
+====
+以前のリリースからアップグレードする前に、Kubernetesのhttps://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
+====
+
+
+|===
+| バージョン | リリース日 | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
+
+| xref:#_リリース_v1_25_16k3s4[v1.25.16+k3s4]
+| 2023年12月07日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v12516[v1.25.16]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.0[v0.11.0]
+| https://sqlite.org/releaselog/3_42_0.html[3.42.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.7-k3s1[v1.7.7-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.8[v1.1.8]
+| https://github.com/flannel-io/flannel/releases/tag/v0.22.2[v0.22.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.10.5[v2.10.5]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| xref:#_リリース_v1_25_15k3s2[v1.25.15+k3s2]
+| 2023年11月08日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v12515[v1.25.15]
+| https://github.com/k3s-io/kine/releases/tag/v0.10.3[v0.10.3]
+| https://sqlite.org/releaselog/3_42_0.html[3.42.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.7-k3s1[v1.7.7-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.8[v1.1.8]
+| https://github.com/flannel-io/flannel/releases/tag/v0.22.2[v0.22.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.10.5[v2.10.5]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| xref:#_リリース_v1_25_15k3s1[v1.25.15+k3s1]
+| 2023年10月30日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v12515[v1.25.15]
+| https://github.com/k3s-io/kine/releases/tag/v0.10.3[v0.10.3]
+| https://sqlite.org/releaselog/3_42_0.html[3.42.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.7-k3s1[v1.7.7-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.8[v1.1.8]
+| https://github.com/flannel-io/flannel/releases/tag/v0.22.2[v0.22.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.10.5[v2.10.5]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| xref:#_リリース_v1_25_14k3s1[v1.25.14+k3s1]
+| 2023年9月20日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v12514[v1.25.14]
+| https://github.com/k3s-io/kine/releases/tag/v0.10.3[v0.10.3]
+| https://sqlite.org/releaselog/3_42_0.html[3.42.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.6-k3s1[v1.7.6-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.8[v1.1.8]
+| https://github.com/flannel-io/flannel/releases/tag/v0.22.2[v0.22.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.9.10[v2.9.10]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| xref:#_リリース_v1_25_13k3s1[v1.25.13+k3s1]
+| 2023年9月05日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v12513[v1.25.13]
+| https://github.com/k3s-io/kine/releases/tag/v0.10.2[v0.10.2]
+| https://sqlite.org/releaselog/3_42_0.html[3.42.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.3-k3s1[v1.7.3-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.8[v1.1.8]
+| https://github.com/flannel-io/flannel/releases/tag/v0.22.2[v0.22.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.9.10[v2.9.10]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| xref:#_リリース_v1_25_12k3s1[v1.25.12+k3s1]
+| 2023年7月27日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v12512[v1.25.12]
+| https://github.com/k3s-io/kine/releases/tag/v0.10.1[v0.10.1]
+| https://sqlite.org/releaselog/3_39_2.html[3.39.2]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.1-k3s1[v1.7.1-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.7[v1.1.7]
+| https://github.com/flannel-io/flannel/releases/tag/v0.22.0[v0.22.0]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.9.10[v2.9.10]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.2[v0.15.2]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| xref:#_リリース_v1_25_11k3s1[v1.25.11+k3s1]
+| 2023年6月26日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v12511[v1.25.11]
+| https://github.com/k3s-io/kine/releases/tag/v0.10.1[v0.10.1]
+| https://sqlite.org/releaselog/3_39_2.html[3.39.2]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.1-k3s1[v1.7.1-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.7[v1.1.7]
+| https://github.com/flannel-io/flannel/releases/tag/v0.22.0[v0.22.0]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.3[v0.6.3]
+| https://github.com/traefik/traefik/releases/tag/v2.9.10[v2.9.10]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.0[v0.15.0]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| xref:#_リリース_v1_25_10k3s1[v1.25.10+k3s1]
+| 2023年5月26日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v12510[v1.25.10]
+| https://github.com/k3s-io/kine/releases/tag/v0.10.1[v0.10.1]
+| https://sqlite.org/releaselog/3_39_2.html[3.39.2]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.1-k3s1[v1.7.1-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.7[v1.1.7]
+| https://github.com/flannel-io/flannel/releases/tag/v0.21.4[v0.21.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.2[v0.6.2]
+| https://github.com/traefik/traefik/releases/tag/v2.9.10[v2.9.10]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.14.0[v0.14.0]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| xref:#_リリース_v1_25_9k3s1[v1.25.9+k3s1]
+| 2023年4月20日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v1259[v1.25.9]
+| https://github.com/k3s-io/kine/releases/tag/v0.9.9[v0.9.9]
+| https://sqlite.org/releaselog/3_39_2.html[3.39.2]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.6.19-k3s1[v1.6.19-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.5[v1.1.5]
+| https://github.com/flannel-io/flannel/releases/tag/v0.21.4[v0.21.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.2[v0.6.2]
+| https://github.com/traefik/traefik/releases/tag/v2.9.4[v2.9.4]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.13.3[v0.13.3]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
+
+| xref:#_リリース_v1_25_8k3s1[v1.25.8+k3s1]
+| 2023年3月27日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v1258[v1.25.8]
+| https://github.com/k3s-io/kine/releases/tag/v0.9.9[v0.9.9]
+| https://sqlite.org/releaselog/3_39_2.html[3.39.2]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.6.19-k3s1[v1.6.19-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.4[v1.1.4]
+| https://github.com/flannel-io/flannel/releases/tag/v0.21.4[v0.21.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.2[v0.6.2]
+|
+|
+|
+|
+
+| xref:#_リリース_v1_25_7k3s1[v1.25.7+k3s1]
+| 2023年3月10日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v1257[v1.25.7]
+| https://github.com/k3s-io/kine/releases/tag/v0.9.9[v0.9.9]
+| https://sqlite.org/releaselog/3_39_2.html[3.39.2]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.6.15-k3s1[v1.6.15-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.4[v1.1.4]
+| https://github.com/flannel-io/flannel/releases/tag/v0.21.1[v0.21.1]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.2[v0.6.2]
+| https://github.com/traefik/traefik/releases/tag/v2.9.4[v2.9.4]
+| https://github.com/coredns/coredns/releases/tag/v1.9.4[v1.9.4]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.13.1[v0.13.1]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.23[v0.0.23]
+
+| xref:#_リリース_v1_25_6k3s1[v1.25.6+k3s1]
+| 2023年1月26日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v1256[v1.25.6]
+| https://github.com/k3s-io/kine/releases/tag/v0.9.6[v0.9.6]
+| https://sqlite.org/releaselog/3_39_2.html[3.39.2]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.6.15-k3s1[v1.6.15-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.4[v1.1.4]
+| https://github.com/flannel-io/flannel/releases/tag/v0.20.2[v0.20.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.2[v0.6.2]
+| https://github.com/traefik/traefik/releases/tag/v2.9.4[v2.9.4]
+| https://github.com/coredns/coredns/releases/tag/v1.9.4[v1.9.4]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.13.1[v0.13.1]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.23[v0.0.23]
+
+| xref:#_リリース_v1_25_5k3s2[v1.25.5+k3s2]
+| 2023年1月11日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v1255[v1.25.5]
+| https://github.com/k3s-io/kine/releases/tag/v0.9.6[v0.9.6]
+| https://sqlite.org/releaselog/3_39_2.html[3.39.2]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.6.14-k3s1[v1.6.14-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.4[v1.1.4]
+| https://github.com/flannel-io/flannel/releases/tag/v0.20.2[v0.20.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.2[v0.6.2]
+| https://github.com/traefik/traefik/releases/tag/v2.9.4[v2.9.4]
+| https://github.com/coredns/coredns/releases/tag/v1.9.4[v1.9.4]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.13.1[v0.13.1]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.23[v0.0.23]
+
+| xref:#_リリース_v1_25_5k3s1[v1.25.5+k3s1]
+| 2022年12月20日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v1255[v1.25.5]
+| https://github.com/k3s-io/kine/releases/tag/v0.9.6[v0.9.6]
+| https://sqlite.org/releaselog/3_39_2.html[3.39.2]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.6.12-k3s1[v1.6.12-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.4[v1.1.4]
+| https://github.com/flannel-io/flannel/releases/tag/v0.20.2[v0.20.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.2[v0.6.2]
+| https://github.com/traefik/traefik/releases/tag/v2.9.4[v2.9.4]
+| https://github.com/coredns/coredns/releases/tag/v1.9.4[v1.9.4]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.13.1[v0.13.1]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.23[v0.0.23]
+
+| xref:#_リリース_v1_25_4k3s1[v1.25.4+k3s1]
+| 2022年11月18日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v1254[v1.25.4]
+| https://github.com/k3s-io/kine/releases/tag/v0.9.6[v0.9.6]
+| https://sqlite.org/releaselog/3_39_2.html[3.39.2]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.6.8-k3s1[v1.6.8-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.4[v1.1.4]
+| https://github.com/flannel-io/flannel/releases/tag/v0.20.1[v0.20.1]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.1[v0.6.1]
+| https://github.com/traefik/traefik/releases/tag/v2.9.4[v2.9.4]
+| https://github.com/coredns/coredns/releases/tag/v1.9.4[v1.9.4]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.13.0[v0.13.0]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.23[v0.0.23]
+
+| xref:#_リリース_v1_25_3k3s1[v1.25.3+k3s1]
+| 2022年10月25日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v1253[v1.25.3]
+| https://github.com/k3s-io/kine/releases/tag/v0.9.3[v0.9.3]
+| https://sqlite.org/releaselog/3_36_0.html[3.36.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.6.8-k3s1[v1.6.8-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.4[v1.1.4]
+| https://github.com/flannel-io/flannel/releases/tag/v0.19.2[v0.19.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.6.1[v0.6.1]
+| https://github.com/traefik/traefik/releases/tag/v2.9.1[v2.9.1]
+| https://github.com/coredns/coredns/releases/tag/v1.9.1[v1.9.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.12.3[v0.12.3]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.21[v0.0.21]
+
+| xref:#_リリース_v1_25_2k3s1[v1.25.2+k3s1]
+| 2022年9月28日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v1252[v1.25.2]
+| https://github.com/k3s-io/kine/releases/tag/v0.9.3[v0.9.3]
+| https://sqlite.org/releaselog/3_36_0.html[3.36.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.6.8-k3s1[v1.6.8-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.4[v1.1.4]
+| https://github.com/flannel-io/flannel/releases/tag/v0.19.2[v0.19.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.5.2[v0.5.2]
+| https://github.com/traefik/traefik/releases/tag/v2.6.2[v2.6.2]
+| https://github.com/coredns/coredns/releases/tag/v1.9.1[v1.9.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.12.3[v0.12.3]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.21[v0.0.21]
+
+| xref:#_リリース_v1_25_0k3s1[v1.25.0+k3s1]
+| 2022年9月12日
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#v1250[v1.25.0]
+| https://github.com/k3s-io/kine/releases/tag/v0.9.3[v0.9.3]
+| https://sqlite.org/releaselog/3_36_0.html[3.36.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.3-k3s1[v3.5.3-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.5.13-k3s2[v1.5.13-k3s2]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.3[v1.1.3]
+| https://github.com/flannel-io/flannel/releases/tag/v0.19.1[v0.19.1]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.5.2[v0.5.2]
+| https://github.com/traefik/traefik/releases/tag/v2.6.2[v2.6.2]
+| https://github.com/coredns/coredns/releases/tag/v1.9.1[v1.9.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.12.3[v0.12.3]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.21[v0.0.21]
+|===
+
+{blank} +
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.16+k3s4[v1.25.16+k3s4]
+
+// v1.25.16+k3s4
+
+このリリースでは、Kubernetesをv1.25.16に更新し、多くの問題を修正しました。
+
+新機能の詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v12515[Kubernetesリリースノート]をご覧ください。
+
+=== v1.25.15+k3s2からの変更点:
+
+* Etcdステータス条件 https://github.com/k3s-io/k3s/pull/8819[(#8819)]
+* 2023年11月リリースのバックポート https://github.com/k3s-io/k3s/pull/8880[(#8880)]
+ ** Dockerイメージに新しいタイムゾーン情報を追加し、CronJobsで``spec.timeZone``を使用可能に
+ ** kineをv0.11.0にバンプし、postgresとNATSの問題を解決し、負荷の高い環境でのウォッチチャネルのパフォーマンスを向上させ、リファレンス実装との互換性を改善
+ ** ``rdt_config.yaml``または``blockio_config.yaml``ファイルを定義することで、Containerdがrdtまたはblockio設定を使用できるように
+ ** エージェントフラグdisable-apiserver-lbを追加し、エージェントがロードバランスプロキシを開始しないように
+ ** ServiceLBからのイングレスIPの順序を改善
+ ** disable-helm-controllerのためのhelm CRDインストールを無効化
+ ** 追加メタデータのないスナップショットのスナップショットリストconfigmapエントリを省略
+ ** クライアント設定のリトライにジッターを追加し、サーバー起動時の過負荷を回避
+* etcdのランタイムコアが準備できていない場合のnilポインタ処理 https://github.com/k3s-io/k3s/pull/8889[(#8889)]
+* dualStackログの改善 https://github.com/k3s-io/k3s/pull/8867[(#8867)]
+* dynamiclistenerのバンプ; スナップショットコントローラーログのスピューを減少 https://github.com/k3s-io/k3s/pull/8904[(#8904)]
+ ** レースコンディションを解決するためにdynamiclistenerをバンプし、サーバーがKubernetesシークレットに証明書を同期できない問題を修正
+ ** 初期クラスター起動時のetcdスナップショットログスパムを減少
+* etcdスナップショットS3の問題を修正 https://github.com/k3s-io/k3s/pull/8939[(#8939)]
+ ** S3クライアントが初期化に失敗した場合、S3保持を適用しない
+ ** S3スナップショットをリストする際にメタデータを要求しない
+ ** スナップショットメタデータログメッセージでファイルパスの代わりにキーを表示
+* v1.25.16への更新 https://github.com/k3s-io/k3s/pull/8923[(#8923)]
+* ランナーが無効になっているため、s390xステップを一時的に削
+詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v12515[Kubernetes リリースノート]をご覧ください。
+
+=== v1.25.15+k3s1 以降の変更点:
+
+* E2E ドメインドローンのクリーンアップ https://github.com/k3s-io/k3s/pull/8584[(#8584)]
+* templates_linux.go の SystemdCgroup 修正 https://github.com/k3s-io/k3s/pull/8767[(#8767)]
+ ** 追加のコンテナランタイムの識別に関する問題を修正
+* traefik チャートを v25.0.0 に更新 https://github.com/k3s-io/k3s/pull/8777[(#8777)]
+* レジストリ値を修正するために traefik を更新 https://github.com/k3s-io/k3s/pull/8791[(#8791)]
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.15+k3s2[v1.25.15+k3s2]
+
+// v1.25.15+k3s2
+
+This release updates Kubernetes to v1.25.15, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v12515[Kubernetes release notes].
+
+=== Changes since v1.25.15+k3s1:
+
+* E2E Domain Drone Cleanup https://github.com/k3s-io/k3s/pull/8584[(#8584)]
+* Fix SystemdCgroup in templates_linux.go https://github.com/k3s-io/k3s/pull/8767[(#8767)]
+ ** Fixed an issue with identifying additional container runtimes
+* Update traefik chart to v25.0.0 https://github.com/k3s-io/k3s/pull/8777[(#8777)]
+* Update traefik to fix registry value https://github.com/k3s-io/k3s/pull/8791[(#8791)]
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.15+k3s1[v1.25.15+k3s1]
+
+// v1.25.15+k3s1
+
+このリリースでは Kubernetes を v1.25.15 に更新し、多くの問題を修正しています。
+
+詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v12514[Kubernetes リリースノート]をご覧ください。
+
+=== v1.25.14+k3s1 以降の変更点:
+
+* エラーレポートの修正 https://github.com/k3s-io/k3s/pull/8413[(#8413)]
+* flannel エラーにコンテキストを追加 https://github.com/k3s-io/k3s/pull/8421[(#8421)]
+* 9月のテストバックポート https://github.com/k3s-io/k3s/pull/8301[(#8301)]
+* エラーメッセージにインターフェース名を含める https://github.com/k3s-io/k3s/pull/8437[(#8437)]
+* tailscale に extraArgs を追加 https://github.com/k3s-io/k3s/pull/8466[(#8466)]
+* kube-router の更新 https://github.com/k3s-io/k3s/pull/8445[(#8445)]
+* サーバーフラグを使用しているときにクラスターリセット時にエラーを追加 https://github.com/k3s-io/k3s/pull/8457[(#8457)]
+ ** --cluster-reset と --server フラグを使用した場合にユーザーにエラーが表示されます
+* 非ブートストラップノードからのクラスターリセット https://github.com/k3s-io/k3s/pull/8454[(#8454)]
+* スペルチェックの問題を修正 https://github.com/k3s-io/k3s/pull/8511[(#8511)]
+* 順序に基づいて IPFamily の優先順位を設定 https://github.com/k3s-io/k3s/pull/8506[(#8506)]
+* ネットワークのデフォルトが重複しているため、1つを削除 https://github.com/k3s-io/k3s/pull/8553[(#8553)]
+* アドバタイズアドレスの統合テスト https://github.com/k3s-io/k3s/pull/8518[(#8518)]
+* IPv4 のみのノードの場合に tailscale ノード IP デュアルスタックモードを修正 https://github.com/k3s-io/k3s/pull/8560[(#8560)]
+* サーバートークンのローテーション https://github.com/k3s-io/k3s/pull/8578[(#8578)]
+ ** ユーザーは `k3s token rotate -t <OLD_TOKEN> --new-token <NEW_TOKEN>` を使用してサーバートークンをローテーションできます。コマンドが成功した後、すべてのサーバーノードは新しいトークンで再起動する必要があります。
+* クラスターリセット時に削除アノテーションをクリア https://github.com/k3s-io/k3s/pull/8589[(#8589)]
+ ** スナップショットが取得された時点で削除がキューに入っていた場合、クラスターリセット/リストア直後に k3s が etcd クラスターからメンバーを削除しようとする問題を修正しました。
+* デュアルスタックで最初に構成された IP が IPv6 の場合に使用 https://github.com/k3s-io/k3s/pull/8599[(#8599)]
+* 2023-10 リリースのバックポート https://github.com/k3s-io/k3s/pull/8617[(#8617)]
+* ビルドスクリプトで kube-router パッケージを更新 https://github.com/k3s-io/k3s/pull/8636[(#8636)]
+* etcd のみ/コントロールプレーンのみのサーバーテストを追加し、コントロールプレーンのみのサーバークラッシュを修正 https://github.com/k3s-io/k3s/pull/8644[(#8644)]
+* Windows エージェントのサポート https://github.com/k3s-io/k3s/pull/8646[(#8646)]
+* トークンローテーションログで `version.Program` を使用し、K3s を使用しない https://github.com/k3s-io/k3s/pull/8654[(#8654)]
+* --image-service-endpoint フラグを追加 (#8279) https://github.com/k3s-io/k3s/pull/8664[(#8664)]
+ ** 外部イメージサービスソケットを指定するための `--image-service-endpoint` フラグを追加
+* etcd 修正のバックポート https://github.com/k3s-io/k3s/pull/8692[(#8692)]
+ ** etcd エンドポイントの自動同期を再有効化
+ ** ノードがスナップショットを調整していない場合に configmap の調整を手動で再キュー
+* v1.25.15 と Go を v1.20.10 に更新 https://github.com/k3s-io/k3s/pull/8679[(#8679)]
+* s3 スナップショットのリストアを修正 https://github.com/k3s-io/k3s/pull/8735[(#8735)]
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.14+k3s1[v1.25.14+k3s1]
+
+// v1.25.14+k3s1
+
+このリリースでは Kubernetes を v1.25.14 に更新し、多くの問題を修正しています。
+
+詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v12513[Kubernetes リリースノート]をご覧ください。
+
+=== v1.25.13+k3s1 以降の変更点:
+
+* kine を v0.10.3 にバンプ https://github.com/k3s-io/k3s/pull/8326[(#8326)]
+* Kubernetes を v1.25.14 に、go を 1.20.8 に更新 https://github.com/k3s-io/k3s/pull/8350[(#8350)]
+* containerd バンプとテスト修正のバックポート https://github.com/k3s-io/k3s/pull/8384[(#8384)]
+ ** 組み込み containerd を v1.7.6 にバンプ
+ ** 組み込み stargz-snapshotter プラグインを最新にバンプ
+ ** テスト環境セットアップスクリプトの競合状態による断続的な drone CI の失敗を修正
+ ** Kubernetes 1.28 の API ディスカバリ変更による CI の失敗を修正
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.13+k3s1[v1.25.13+k3s1]
+
+// v1.25.13+k3s1
+
+このリリースでは Kubernetes を v1.25.13 に更新し、多くの問題を修正しています。
+
+[CAUTION]
+.重要
+====
+このリリースには、K3s サーバーに対する潜在的なサービス拒否攻撃ベクトルである CVE-2023-32187 の修正が含まれています。詳細およびこの脆弱性に対するクラスターの強化に必要な必須手順については、https://github.com/k3s-io/k3s/security/advisories/GHSA-m4hf-6vgr-75r2 を参照してください。
+====
+
+
+詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v12512[Kubernetes リリースノート]をご覧ください。
+
+=== v1.25.12+k3s1 以降の変更点:
+
+* flannel とプラグインの更新 https://github.com/k3s-io/k3s/pull/8076[(#8076)]
+* ip モードに関する tailscale バグの修正 https://github.com/k3s-io/k3s/pull/8098[(#8098)]
+* ノード名が変更された場合の etcd スナップショットの保持 https://github.com/k3s-io/k3s/pull/8123[(#8123)]
+* 8月のテストバックポート https://github.com/k3s-io/k3s/pull/8127[(#8127)]
+* 2023-08 リリースのバックポート https://github.com/k3s-io/k3s/pull/8132[(#8132)]
+ ** K3s の外部 apiserver リスナーは、kubernetes apiserver サービス、サーバーノード、または --tls-san オプションの値に関連付けられていないサブジェクト名を証明書に追加しないようになりました。これにより、証明書の SAN リストに不要なエントリが追加されるのを防ぎます。
+ ** K3s は、イングレスプロキシがクラスタ内エンドポイントへの接続をルーティングするために使用されていない場合、apiserver の `enable-aggregator-routing` フラグを有効にしなくなりました。
+ ** 組み込み containerd を v1.7.3+k3s1 に更新
+ ** 組み込み runc を v1.1.8 に更新
+ ** ユーザー提供の containerd 設定テンプレートは、`{{ template "base" . }}` を使用してデフォルトの K3s テンプレートコンテンツを含めることができるようになりました。これにより、ファイルに追加セクションを追加する必要がある場合にユーザー設定を維持しやすくなります。
+ ** golang の最近のリリースによって docker クライアントが送信する無効なホストヘッダーが拒否される問題を修正するために、docker/docker モジュールのバージョンをバンプ
+ ** kine を v0.10.2 に更新
+* s3 フラグを使用して呼び出された場合にローカルファイルを削除できない k3s etcd-snapshot delete の修正 https://github.com/k3s-io/k3s/pull/8145[(#8145)]
+* etcd スナップショットが無効になっている場合の s3 からのクラスターリセットバックアップの修正 https://github.com/k3s-io/k3s/pull/8169[(#8169)]
+* 日付に基づいて孤立したスナップショットを削除するための etcd 保持の修正 https://github.com/k3s-io/k3s/pull/8190[(#8190)]
+* 2023-08 リリースの追加バックポート https://github.com/k3s-io/k3s/pull/8213[(#8213)]
+ ** バンドルされた helm コントローラーのジョブイメージで使用される `helm` のバージョンが v3.12.3 に更新されました
+ ** etcd のみのノードで apiserver/supervisor リスナーが 6443 でリクエストの提供を停止する可能性がある問題を修正するために dynamiclistener をバンプ
+ ** K3s の外部 apiserver/supervisor リスナーは、TLS ハンドシェイクで完全な証明書チェーンを送信するようになりました
+* flannel を 0.22.2 に移行 https://github.com/k3s-io/k3s/pull/8223[(#8223)]
+* v1.25.13 に更新 https://github.com/k3s-io/k3s/pull/8241[(#8241)]
+* runc バージョンバンプの修正 https://github.com/k3s-io/k3s/pull/8246[(#8246)]
+* TLS SAN CN フィルタリングを有効にする新しい CLI フラグを追加 https://github.com/k3s-io/k3s/pull/8259[(#8259)]
+ ** 新しい `--tls-san-security` オプションを追加。このフラグはデフォルトで false ですが、true に設定すると、クライアントが要求する任意のホスト名を満たすためにサーバーの TLS 証明書に SAN を自動的に追加することを無効にできます。
+* アドレスコントローラーに RWMutex を追加 https://github.com/k3s-io/k3s/pull/8275[(#8275)]
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.12+k3s1[v1.25.12+k3s1]
+
+// v1.25.12+k3s1
+
+このリリースでは Kubernetes を v1.25.12 に更新し、多くの問題を修正しています。  +
+​
+詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v12511[Kubernetes リリースノート]をご覧ください。
+​
+
+=== v1.25.11+k3s1 以降の変更点:
+
+​
+
+* file_windows.go を削除 https://github.com/k3s-io/k3s/pull/7856[(#7856)]
+* コードスペルチェックの修正 https://github.com/k3s-io/k3s/pull/7860[(#7860)]
+* helm-controller で apiServerPort をカスタマイズするための k3s の許可 https://github.com/k3s-io/k3s/pull/7873[(#7873)]
+* tailscale を行う際に ipv4、ipv6、またはデュアルスタックかどうかを確認 https://github.com/k3s-io/k3s/pull/7883[(#7883)]
+* Tailscale のコントロールサーバー URL を設定するサポート https://github.com/k3s-io/k3s/pull/7894[(#7894)]
+* S3 とスタートアップテスト https://github.com/k3s-io/k3s/pull/7886[(#7886)]
+* ルートレスノードのパスワード修正 https://github.com/k3s-io/k3s/pull/7900[(#7900)]
+* 2023-07 リリースのバックポート https://github.com/k3s-io/k3s/pull/7909[(#7909)]
+ ** kubeadm スタイルのブートストラップトークンで参加したエージェントが、ノードオブジェクトが削除されたときにクラスターに再参加できない問題を解決しました。
+ ** `k3s certificate rotate-ca` コマンドは data-dir フラグをサポートするようになりました。
+* カスタム klipper helm イメージに CLI を追加 https://github.com/k3s-io/k3s/pull/7915[(#7915)]
+ ** デフォルトの helm-controller ジョブイメージは、--helm-job-image CLI フラグで上書きできるようになりました
+* etcd が無効になっている場合に etcd の証明書とキーの生成をゲート https://github.com/k3s-io/k3s/pull/7945[(#7945)]
+* apparmorプロファイルが強制されている場合、``check-config``でzgrepを使用しない https://github.com/k3s-io/k3s/pull/7954[(#7954)]
+* image_scan.shスクリプトを修正し、trivyバージョンをダウンロードする (#7950) https://github.com/k3s-io/k3s/pull/7969[(#7969)]
+* デフォルトのkubeconfigファイルの権限を調整 https://github.com/k3s-io/k3s/pull/7984[(#7984)]
+* v1.25.12にアップデート https://github.com/k3s-io/k3s/pull/8021[(#8021)]
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.11+k3s1[v1.25.11+k3s1]
+
+// v1.25.11+k3s1
+
+このリリースではKubernetesをv1.25.11に更新し、いくつかの問題を修正しています。
+
+新機能の詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v12510[Kubernetesリリースノート]をご覧ください。
+
+=== v1.25.10+k3s1からの変更点:
+
+* flannelバージョンを更新 https://github.com/k3s-io/k3s/pull/7649[(#7649)]
+* プラグインインストールの修正を含むvagrant libvirtのバージョンアップ https://github.com/k3s-io/k3s/pull/7659[(#7659)]
+* E2Eバックポート - 6月 https://github.com/k3s-io/k3s/pull/7705[(#7705)]
+ ** バージョンまたはヘルプフラグでコマンドをショートサーキット #7683
+ ** ローテーション認証チェックを追加し、エージェントの再起動機能を削除 #7097
+ ** E2E: RunCmdOnNodeのためのSudo #7686
+* プライベートレジストリのE2Eテストを追加 https://github.com/k3s-io/k3s/pull/7722[(#7722)]
+* VPN統合 https://github.com/k3s-io/k3s/pull/7728[(#7728)]
+* スペルテストの修正 https://github.com/k3s-io/k3s/pull/7752[(#7752)]
+* 未使用のlibvirt設定を削除 https://github.com/k3s-io/k3s/pull/7758[(#7758)]
+* バージョンアップとバグ修正のバックポート https://github.com/k3s-io/k3s/pull/7718[(#7718)]
+ ** バンドルされたmetrics-serverがv0.6.3にアップデートされ、デフォルトで安全なTLS暗号のみを使用するようになりました。
+ ** `coredns-custom` ConfigMapは、``.:53``デフォルトサーバーブロックに``*.override``セクションを含めることができるようになりました。
+ ** K3sのコアコントローラー（スーパーバイザー、デプロイ、ヘルム）は、管理者kubeconfigを使用しなくなりました。これにより、アクセスおよび監査ログからシステムによって実行されたアクションと管理者ユーザーによって実行されたアクションを区別しやすくなります。
+ ** klipper-lbイメージをv0.4.4にバンプし、Service ExternalTrafficPolicyがLocalに設定されている場合にlocalhostからServiceLBポートにアクセスできない問題を解決しました。
+ ** k3sをコンパイルする際にLBイメージを設定可能にする
+ ** K3sは、ノードパスワードシークレットがノード参加時に作成できない場合でも、クラスターにノードを参加させることができるようになりました。シークレットの作成はバックグラウンドで再試行されます。これにより、シークレット作成をブロックする失敗閉鎖の検証ウェブフックが新しいノードがクラスターに参加してウェブフックポッドを実行するまで利用できない場合に発生する可能性のあるデッドロックが解消されます。
+ ** バンドルされたcontainerdのaufs/devmapper/zfsスナップショッタープラグインが復元されました。これらは、前回のリリースでcontainerdをk3sマルチコールバイナリに戻す際に意図せず省略されました。
+ ** 組み込みのヘルムコントローラーがv0.15.0にバンプされ、ターゲットネームスペースが存在しない場合にチャートのターゲットネームスペースを作成することをサポートするようになりました。
+* Makefileにフォーマットコマンドを追加 https://github.com/k3s-io/k3s/pull/7763[(#7763)]
+* Tailscaleのログとクリーンアップを修正 https://github.com/k3s-io/k3s/pull/7784[(#7784)]
+* Kubernetesをv1.25.11にアップデート https://github.com/k3s-io/k3s/pull/7788[(#7788)]
+* /apiエンドポイントのkubectlプロキシ適合テストに影響するパス正規化 https://github.com/k3s-io/k3s/pull/7818[(#7818)]
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.10+k3s1[v1.25.10+k3s1]
+
+// v1.25.10+k3s1
+
+このリリースではKubernetesをv1.25.10に更新し、いくつかの問題を修正しています。
+
+新機能の詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v1259[Kubernetesリリースノート]をご覧ください。
+
+=== v1.25.9+k3s1からの変更点:
+
+* klogの詳細度をlogrusと同じレベルに設定することを保証 https://github.com/k3s-io/k3s/pull/7361[(#7361)]
+* DroneでのE2Eテストを追加 https://github.com/k3s-io/k3s/pull/7375[(#7375)]
+* etc-snapshotサーバーフラグの統合テストを追加 #7377 https://github.com/k3s-io/k3s/pull/7378[(#7378)]
+* CLI + Configの強化 https://github.com/k3s-io/k3s/pull/7404[(#7404)]
+ ** ``--Tls-sans``は複数の引数を受け入れるようになりました: `--tls-sans="foo,bar"`
+ ** ``Prefer-bundled-bin: true``は``config.yaml.d``ファイルに設定された場合に正しく動作するようになりました
+* netutilメソッドを/utils/net.goに移行 https://github.com/k3s-io/k3s/pull/7433[(#7433)]
+* CVE修正のためにRunc + Containerd + Dockerをバンプ https://github.com/k3s-io/k3s/pull/7452[(#7452)]
+* ポート名が使用される場合のバグを修正するためにkube-routerバージョンをバンプ https://github.com/k3s-io/k3s/pull/7461[(#7461)]
+* Kubeフラグとlonghornストレージテスト1.25 https://github.com/k3s-io/k3s/pull/7466[(#7466)]
+* ローカルストレージ: 権限を修正 https://github.com/k3s-io/k3s/pull/7473[(#7473)]
+* バージョンアップとバグ修正のバックポート https://github.com/k3s-io/k3s/pull/7515[(#7515)]
+ ** K3sは、etcdから「学習者が多すぎる」エラーを受け取った場合にクラスター参加操作を再試行するようになりました。これは、複数のサーバーを同時に追加しようとしたときに最も頻繁に発生しました。
+ ** K3sは再びページサイズ> 4kのaarch64ノードをサポートします
+ ** パッケージされたTraefikバージョンがv2.9.10 / チャート21.2.0にバンプされました
+ ** K3sは、``noexec``でマウントされたファイルシステムから実行しようとしたときに、より意味のあるエラーを出力するようになりました。
+ ** サーバートークンがブートストラップトークン``id.secret``形式を使用している場合、K3sは適切なエラーメッセージで終了するようになりました。
+ ** Addon、HelmChart、およびHelmChartConfig CRDが構造的スキーマなしで作成され、これらのタイプのカスタムリソースが無効なコンテンツで作成される問題を修正しました。
+ ** (実験的な) --disable-agentフラグで開始されたサーバーは、トンネル認証エージェントコンポーネントを実行しようとしなくなりました。
+ ** ポッドおよびクラスターのイーグレスセレクターモードが正しく機能しない問題を修正しました。
+ ** 新しいサーバーが管理されたetcdクラスターに参加するときに、現在のetcdクラスターのメンバーリストを取得する際のエラーを適切に処理するようになりました。
+ ** 組み込みのkineバージョンがv0.10.1にバンプされました。これにより、レガシー``lib/pq``ポストグレスドライバーが``pgx``に置き換えられました。
+ ** バンドルされたCNIプラグインがv1.2.0-k3s1にアップグレードされました。バンド幅およびファイアウォールプラグインがバンドルに含まれるようになりました。
+ ** 組み込みのHelmコントローラーは、シークレットに保存された資格情報を介してチャートリポジトリに認証すること、およびConfigMapを介してリポジトリCAを渡すことをサポートするようになりました。
+* containerd/runcをv1.7.1-k3s1/v1.1.7にバンプ https://github.com/k3s-io/k3s/pull/7535[(#7535)]
+ ** バンドルされたcontainerdおよびruncバージョンがv1.7.1-k3s1/v1.1.7にバンプされました
+* netpolからのエラーをラップ https://github.com/k3s-io/k3s/pull/7548[(#7548)]
+* 非アクティブなユニットに適用するための'-all'フラグを追加 https://github.com/k3s-io/k3s/pull/7574[(#7574)]
+* v1.25.10-k3s1にアップデート https://github.com/k3s-io/k3s/pull/7582[(#7582)]
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.9+k3s1[v1.25.9+k3s1]
+
+// v1.25.9+k3s1
+
+このリリースではKubernetesをv1.25.9に更新し、いくつかの問題を修正しています。
+
+新機能の詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v1258[Kubernetesリリースノート]をご覧ください。
+
+=== v1.25.8+k3s1からの変更点:
+
+* ``check-config``を強化 https://github.com/k3s-io/k3s/pull/7164[(#7164)]
+* 廃止されたnodeSelectorラベルbeta.kubernetes.io/osを削除 (#6970) https://github.com/k3s-io/k3s/pull/7121[(#7121)]
+* バージョンアップとバグ修正のバックポート https://github.com/k3s-io/k3s/pull/7228[(#7228)]
+ ** バンドルされたlocal-path-provisionerバージョンがv0.0.24にバンプされました
+ ** バンドルされたruncバージョンがv1.1.5にバンプされました
+ ** バンドルされたcorednsバージョンがv1.10.1にバンプされました
+ ** 外部データストアを使用する場合、K3sは初期クラスターブートストラップデータを作成する際にブートストラップキーをロックし、複数のサーバーが同時にクラスターを初期化しようとしたときの競合状態を防ぎます。
+ ** アクティブなサーバーノードへの接続を維持するクライアントロードバランサーは、サーバーがクラスターから削除されたときに接続を閉じるようになりました。これにより、エージェントコンポーネントが直ちに現在のクラスターのメンバーに再接続することが保証されます。
+ ** クラスターリセット中の競合状態を修正し、操作がハングしてタイムアウトする問題を修正しました。
+* デフォルトのACCEPTルールをチェーンの最後に移動するためにkube-routerを更新 https://github.com/k3s-io/k3s/pull/7221[(#7221)]
+ ** 組み込みのkube-routerコントローラーが更新され、ホスト上のデフォルトのドロップ/拒否ルールによってポッドからのトラフィックがブロックされる回帰を修正しました。ユーザーは依然として外部管理のファイアウォールルールがポッドおよびサービスネットワークへのトラフィックを明示的に許可することを確認する必要がありますが、これは一部のユーザーが依存していた以前の動作に戻ります。
+* klipper lbおよびhelm-controllerを更新 https://github.com/k3s-io/k3s/pull/7240[(#7240)]
+* kube-routerのACCEPTルール挿入および開始前にルールをクリーンアップするインストールスクリプトを更新 https://github.com/k3s-io/k3s/pull/7276[(#7276)]
+ ** 組み込みのkube-routerコントローラーが更新され、ホスト上のデフォルトのドロップ/拒否ルールによってポッドからのトラフィックがブロックされる回帰を修正しました。ユーザーは依然として外部管理のファイアウォールルールがポッドおよびサービスネットワークへのトラフィックを明示的に許可することを確認する必要がありますが、これは一部のユーザーが依存していた以前の動作に戻ります。
+* v1.25.9-k3s1にアップデート https://github.com/k3s-io/k3s/pull/7283[(#7283)]
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.8+k3s1[v1.25.8+k3s1]
+
+// v1.25.8+k3s1
+
+このリリースではKubernetesをv1.25.8に更新し、いくつかの問題を修正しています。
+
+新機能の詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v1257[Kubernetesリリースノート]をご覧ください。
+
+=== v1.25.7+k3s1からの変更点:
+
+* flannelおよびkube-routerを更新 https://github.com/k3s-io/k3s/pull/7061[(#7061)]
+* CVEのためにさまざまな依存関係をバンプ https://github.com/k3s-io/k3s/pull/7043[(#7043)]
+* Dependabotを有効にする https://github.com/k3s-io/k3s/pull/7045[(#7045)]
+* kubeletポートの設定前に準備が整うのを待つ https://github.com/k3s-io/k3s/pull/7064[(#7064)]
+ ** エージェントトンネル認証者は、ノードオブジェクトからkubeletポートを読み取る前にkubeletの準備が整うのを待つようになりました。
+* containerdのconfig.tomlファイルを編集する際の警告を追加 https://github.com/k3s-io/k3s/pull/7075[(#7075)]
+* デフォルトの自己署名証明書のローテーションサポートを改善 https://github.com/k3s-io/k3s/pull/7079[(#7079)]
+ ** ``k3s certificate rotate-ca``チェックは、``--force``オプションなしで自己署名証明書のローテーションをサポートするようになりました。
+* v1.25.8-k3s1に更新 https://github.com/k3s-io/k3s/pull/7106[(#7106)]
+* 古いiptablesバージョンでのNAT問題を修正するためにflannelを更新 https://github.com/k3s-io/k3s/pull/7138[(#7138)]
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.7+k3s1[v1.25.7+k3s1]
+
+// v1.25.7+k3s1
+
+このリリースはKubernetesをv1.25.7に更新し、多くの問題を修正します。
+
+新機能の詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v1256[Kubernetesリリースノート]を参照してください。
+
+=== v1.25.6+k3s1からの変更点:
+
+* スケジュールされたスナップショットにジッターを追加し、競合時に再試行を強化 https://github.com/k3s-io/k3s/pull/6782[(#6782)]
+ ** スケジュールされたetcdスナップショットは、数秒以内の短いランダムな遅延でオフセットされるようになりました。これにより、複数サーバークラスターがスナップショットリストConfigMapを同時に更新しようとする病理的な動作を防ぐことができます。スナップショットコントローラーもスナップショットリストの更新を試みる際により粘り強くなります。
+* cri-dockerdをバンプ https://github.com/k3s-io/k3s/pull/6798[(#6798)]
+ ** 組み込みのcri-dockerdがv0.3.1に更新されました
+* バグ修正: pprofが有効な場合にcert-managerを壊さない https://github.com/k3s-io/k3s/pull/6837[(#6837)]
+* cri-dockerdソケットを待つ https://github.com/k3s-io/k3s/pull/6853[(#6853)]
+* vagrantボックスをfedora37にバンプ https://github.com/k3s-io/k3s/pull/6858[(#6858)]
+* cronjobの例を修正 https://github.com/k3s-io/k3s/pull/6864[(#6864)]
+* フラグタイプの一貫性を確保 https://github.com/k3s-io/k3s/pull/6867[(#6867)]
+* E2Eテストを統合 https://github.com/k3s-io/k3s/pull/6887[(#6887)]
+* シークレットの再暗号化時に値の競合を無視 https://github.com/k3s-io/k3s/pull/6919[(#6919)]
+* KubernetesサービスアドレスをSANリストに追加する際にデフォルトのアドレスファミリを使用 https://github.com/k3s-io/k3s/pull/6904[(#6904)]
+ ** IPv6をデフォルトのIPファミリとして使用するクラスターで、apiserverの広告アドレスとIP SANエントリが正しく設定されるようになりました。
+* ServiceLBが``ExternalTrafficPolicy=Local``を尊重するように許可 https://github.com/k3s-io/k3s/pull/6907[(#6907)]
+ ** ServiceLBはServiceのExternalTrafficPolicyを尊重するようになりました。Localに設定されている場合、LoadBalancerはServiceのPodを持つノードのアドレスのみを広告し、他のクラスターのメンバーにトラフィックを転送しません。
+* バリデーションWebhookが作成をブロックする際のservicelb起動失敗問題を修正 https://github.com/k3s-io/k3s/pull/6916[(#6916)]
+ ** 組み込みのクラウドコントローラーマネージャーは、起動時に無条件に名前空間とサービスアカウントを再作成しようとしなくなりました。これにより、fail-closed Webhookが使用されている場合にデッドロッククラスターが発生する問題が解決されます。
+* ユーザー提供のCA証明書と``kubeadm``ブートストラップトークンサポートをバックポート https://github.com/k3s-io/k3s/pull/6929[(#6929)]
+ ** K3sは、クラスターCA証明書が既存のルートまたは中間CAによって署名されている場合に正しく機能するようになりました。K3sが開始する前にそのような証明書を生成するためのサンプルスクリプトは、githubリポジトリのhttps://github.com/k3s-io/k3s/blob/master/contrib/util/certs.sh[contrib/util/certs.sh]にあります。
+ ** K3sは``kubeadm``スタイルの参加トークンをサポートするようになりました。``k3s token create``は、オプションで制限付きTTLを持つ参加トークンシークレットを作成します。
+ ** 期限切れまたは削除されたトークンで参加したK3sエージェントは、ノードオブジェクトがクラスターから削除されない限り、NodeAuthorizationアドミッションプラグインを介して既存のクライアント証明書を使用してクラスターに残ります。
+* egress-selector-mode=agentのときにNodeIPのhostNetworkポートへのアクセスを修正 https://github.com/k3s-io/k3s/pull/6936[(#6936)]
+ ** apiserver egressプロキシが、エージェントまたは無効モードでもエージェントトンネルを使用してサービスエンドポイントに接続しようとする問題を修正しました。
+* flannelバージョンをv0.21.1に更新 https://github.com/k3s-io/k3s/pull/6915[(#6915)]
+* 複数のリーダー選出コントローラーセットを許可 https://github.com/k3s-io/k3s/pull/6941[(#6941)]
+ ** 管理されたetcdのリーダー選出コントローラーがetcd専用ノードで実行されない問題を修正しました
+* etcdおよびca-certのローテーション問題を修正 https://github.com/k3s-io/k3s/pull/6954[(#6954)]
+* ServiceLBデュアルスタックのイングレスIPリストを修正 https://github.com/k3s-io/k3s/pull/6987[(#6987)]
+ ** クラスターまたはサービスがデュアルスタック操作を有効にしていない場合でも、ServiceLBがノードのIPv6アドレスを広告する問題を解決しました。
+* kineをv0.9.9にバンプ https://github.com/k3s-io/k3s/pull/6975[(#6975)]
+ ** 組み込みのkineバージョンがv0.9.9にバンプされました。コンパクションログメッセージは、可視性を高めるために``info``レベルで省略されるようになりました。
+* v1.25.7-k3s1に更新 https://github.com/k3s-io/k3s/pull/7010[(#7010)]
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.6+k3s1[v1.25.6+k3s1]
+
+// v1.25.6+k3s1
+
+このリリースはKubernetesをv1.25.6に更新し、多くの問題を修正します。
+
+新機能の詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v1255[Kubernetesリリースノート]を参照してください。
+
+=== v1.25.5+k3s2からの変更点:
+
+* デフォルトのtls-cipher-suitesをパススルー https://github.com/k3s-io/k3s/pull/6730[(#6730)]
+ ** K3sのデフォルトの暗号スイートは、kube-apiserverに明示的に渡されるようになり、すべてのリスナーがこれらの値を使用するようになりました。
+* containerdをv1.6.15-k3s1にバンプ https://github.com/k3s-io/k3s/pull/6735[(#6735)]
+ ** 組み込みのcontainerdバージョンがv1.6.15-k3s1にバンプされました
+* action/download-artifactをv3にバンプ https://github.com/k3s-io/k3s/pull/6747[(#6747)]
+* dependabot/updatecliの更新をバックポート https://github.com/k3s-io/k3s/pull/6761[(#6761)]
+* 32ビットarm用のDrone plugins/dockerタグを修正 https://github.com/k3s-io/k3s/pull/6768[(#6768)]
+* v1.25.6+k3s1に更新 https://github.com/k3s-io/k3s/pull/6775[(#6775)]
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.5+k3s2[v1.25.5+k3s2]
+
+// v1.25.5+k3s2
+
+このリリースは、containerdをv1.6.14に更新し、containerdが再起動されたときにポッドがCNI情報を失う問題を解決します。
+
+=== v1.25.5+k3s1からの変更点:
+
+* containerdをv1.6.14-k3s1にバンプ https://github.com/k3s-io/k3s/pull/6694[(#6694)]
+ ** 組み込みのcontainerdバージョンがv1.6.14-k3s1にバンプされました。これには、containerdの再起動時にポッドがCNI情報を失い、kubeletがポッドを再作成する原因となるhttps://github.com/containerd/containerd/issues/7843[containerd/7843]の修正がバックポートされています。
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.5+k3s1[v1.25.5+k3s1]
+
+// v1.25.5+k3s1
+
+____
+== ⚠️ 警告
+
+このリリースは、K3sが再起動されるたびにkubeletがすべてのポッドを再起動する原因となるhttps://github.com/containerd/containerd/issues/7843の影響を受けます。このため、このK3sリリースをチャネルサーバーから削除しました。代わりに``v1.25.5+k3s2``を使用してください。
+____
+
+このリリースはKubernetesをv1.25.5に更新し、多くの問題を修正します。
+
+*破壊的変更:* K3sにはもはや``swanctl``および``charon``バイナリが含まれていません。ipsec flannelバックエンドを使用している場合は、このリリースにK3sをアップグレードする前に、ノードにstrongswanの``swanctl``および``charon``パッケージがインストールされていることを確認してください。
+
+新機能の詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v1254[Kubernetesリリースノート]を参照してください。
+
+=== v1.25.4+k3s1からの変更点:
+
+* flannelExternalIP使用ケースのログを修正 https://github.com/k3s-io/k3s/pull/6531[(#6531)]
+* Carolineのgithub IDを修正 https://github.com/k3s-io/k3s/pull/6464[(#6464)]
+* Github CIの更新 https://github.com/k3s-io/k3s/pull/6522[(#6522)]
+* 新しい``prefer-bundled-bin``実験フラグを追加 https://github.com/k3s-io/k3s/pull/6420[(#6420)]
+ ** K3sがホストツールよりもバンドルされたバイナリを強制的に使用する新しいprefer-bundled-binフラグを追加しました
+* containerdをv1.6.10にバンプ https://github.com/k3s-io/k3s/pull/6512[(#6512)]
+ ** 組み込みのcontainerdバージョンがv1.6.10-k3s1に更新されました
+* Traefikチャートをk3s-charts経由でステージング https://github.com/k3s-io/k3s/pull/6519[(#6519)]
+* ルートレス設定を構成可能にする https://github.com/k3s-io/k3s/pull/6498[(#6498)]
+ ** ルートレスの``port-driver``、`cidr`、`mtu`、`enable-ipv6`、および``disable-host-loopback``設定は、環境変数を介して構成可能になりました。
+* Windowsエグゼキュータ実装に属するものを削除 https://github.com/k3s-io/k3s/pull/6517[(#6517)]
+* v1.25.4+k3s1を安定版としてマーク https://github.com/k3s-io/k3s/pull/6534[(#6534)]
+* ``prefer-bundled-bin``をエージェントフラグとして追加 https://github.com/k3s-io/k3s/pull/6545[(#6545)]
+* klipper-helmおよびklipper-lbバージョンをバンプ https://github.com/k3s-io/k3s/pull/6549[(#6549)]
+ ** 組み込みのロードバランサーコントローラーイメージがklipper-lb:v0.4.0にバンプされ、https://kubernetes.io/docs/reference/kubernetes-api/service-resources/service-v1/#:~:text=loadBalancerSourceRanges[LoadBalancerSourceRanges]フィールドのサポートが追加されました。
+ ** 組み込みのHelmコントローラーイメージがklipper-helm:v0.7.4-build20221121にバンプされました
+* GoogleバケットからAWS S3バケットへの切り替え https://github.com/k3s-io/k3s/pull/6497[(#6497)]
+* Dapperを介したAWSクレデンシャルのパススルーを修正 https://github.com/k3s-io/k3s/pull/6567[(#6567)]
+* ``aws s3 cp``を使用したアーティファクトのアップロードを修正 https://github.com/k3s-io/k3s/pull/6568[(#6568)]
+* レガシーCCM機能が無効な場合にCCMメトリクスポートを無効にする https://github.com/k3s-io/k3s/pull/6572[(#6572)]
+ ** `--disable-cloud-controller` フラグが設定されている場合、ポート10258での埋め込みcloud-controller-managerのメトリクスリスナーが無効になります。
+* パッケージ化されたコンポーネントのDeployment設定を同期 https://github.com/k3s-io/k3s/pull/6552[(#6552)]
+ ** K3sのパッケージ化されたコンポーネントのDeploymentは、一貫したアップグレード戦略とrevisionHistoryLimit設定を持つようになり、レプリカ数をハードコーディングすることでスケーリングの決定を上書きしません。
+ ** パッケージ化されたmetrics-serverがv0.6.2にバンプされました。
+* secrets-encryptionフラグをGAとしてマーク https://github.com/k3s-io/k3s/pull/6582[(#6582)]
+* k3s rootをv0.12.0にバンプし、strongswanバイナリを削除 https://github.com/k3s-io/k3s/pull/6400[(#6400)]
+ ** 埋め込みk3s-rootバージョンがbuildroot 2022.08.1に基づいてv0.12.0にバンプされました。
+ ** 埋め込みのswanctlおよびcharonバイナリが削除されました。ipsec flannelバックエンドを使用している場合は、k3sをアップグレードする前にノードにstrongswanの``swanctl``および``charon``パッケージがインストールされていることを確認してください。
+* flannelをv0.20.2に更新 https://github.com/k3s-io/k3s/pull/6588[(#6588)]
+* セキュリティバンプ自動化のためのADRを追加 https://github.com/k3s-io/k3s/pull/6559[(#6559)]
+* node12\->node16ベースのGHアクションを更新 https://github.com/k3s-io/k3s/pull/6593[(#6593)]
+* リリースドキュメントを更新 https://github.com/k3s-io/k3s/pull/6237[(#6237)]
+* install.shを更新し、現在のk3s-selinuxバージョンを推奨 https://github.com/k3s-io/k3s/pull/6453[(#6453)]
+* v1.25.5-k3s1に更新 https://github.com/k3s-io/k3s/pull/6622[(#6622)]
+* containerdをv1.6.12-k3s1にバンプ https://github.com/k3s-io/k3s/pull/6631[(#6631)]
+ ** 埋め込みcontainerdバージョンがv1.6.12にバンプされました。
+* iptable_filter/ip6table_filterをプリロード https://github.com/k3s-io/k3s/pull/6646[(#6646)]
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.4+k3s1[v1.25.4+k3s1]
+
+// v1.25.4+k3s1
+
+このリリースはKubernetesをv1.25.4に更新し、多くの問題を修正します。
+
+新機能の詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v1253[Kubernetesリリースノート]を参照してください。
+
+=== v1.25.3+k3s1からの変更点:
+
+* netplanにゲートウェイパラメータを追加 https://github.com/k3s-io/k3s/pull/6292[(#6292)]
+* dynamiclistenerライブラリをv0.3.5にバンプ https://github.com/k3s-io/k3s/pull/6300[(#6300)]
+* 追加のログを含むkube-routerをv1.5.1に更新 https://github.com/k3s-io/k3s/pull/6345[(#6345)]
+* メンテナを更新 https://github.com/k3s-io/k3s/pull/6298[(#6298)]
+* テストをopensuse Leap 15.4にバンプ https://github.com/k3s-io/k3s/pull/6337[(#6337)]
+* ubuntu 22.04に関する情報を追加してE2Eドキュメントを更新 https://github.com/k3s-io/k3s/pull/6316[(#6316)]
+* podSelector & ingressのためのNetpolテスト https://github.com/k3s-io/k3s/pull/6247[(#6247)]
+* すべてのalpineイメージを3.16にバンプ https://github.com/k3s-io/k3s/pull/6334[(#6334)]
+* kineをv0.9.6 / sqlite3 v3.39.2にバンプ (https://nvd.nist.gov/vuln/detail/CVE-2022-35737[CVE-2022-35737]) https://github.com/k3s-io/k3s/pull/6317[(#6317)]
+* 強化されたクラスターとアップグレードテストを追加 https://github.com/k3s-io/k3s/pull/6320[(#6320)]
+* バンドルされたTraefik helmチャートがv18.0.0に更新されました https://github.com/k3s-io/k3s/pull/6353[(#6353)]
+* v1.25.3+k3s1を安定版としてマーク https://github.com/k3s-io/k3s/pull/6338[(#6338)]
+* 埋め込みhelmコントローラがv0.13.0にバンプされました https://github.com/k3s-io/k3s/pull/6294[(#6294)]
+* apiserverによってサポートされなくなったリソースタイプを含むマニフェストをデプロイコントローラが処理できない問題を修正しました。 https://github.com/k3s-io/k3s/pull/6295[(#6295)]
+* インストールテストのためにfedora-coreosをfedora 36に置き換えました https://github.com/k3s-io/k3s/pull/6315[(#6315)]
+* containerd config.toml.tmpl Linuxテンプレートをv2構文に変換 https://github.com/k3s-io/k3s/pull/6267[(#6267)]
+* node-external-ip設定パラメータのテストを追加 https://github.com/k3s-io/k3s/pull/6359[(#6359)]
+* DEBUGが設定されている場合、デバッガーフレンドリーなコンパイル設定を使用 https://github.com/k3s-io/k3s/pull/6147[(#6147)]
+* e2eテストを更新 https://github.com/k3s-io/k3s/pull/6354[(#6354)]
+* 未使用のvagrant開発スクリプトを削除 https://github.com/k3s-io/k3s/pull/6395[(#6395)]
+* バンドルされたTraefikがv2.9.4 / helmチャートv18.3.0に更新されました https://github.com/k3s-io/k3s/pull/6397[(#6397)]
+* なし https://github.com/k3s-io/k3s/pull/6371[(#6371)]
+* deferの誤った使用を修正 https://github.com/k3s-io/k3s/pull/6296[(#6296)]
+* スナップショット復元のe2eテストを追加 https://github.com/k3s-io/k3s/pull/6396[(#6396)]
+* v1.25でのsonobouyテストを修正 https://github.com/k3s-io/k3s/pull/6399[(#6399)]
+* パッケージ化されたコンポーネントのバージョンをバンプ
+* パッケージ化されたtraefik helmチャートがv19.0.0にバンプされ、デフォルトでingressClassサポートが有効になりました。
+* パッケージ化されたlocal-path-provisionerがv0.0.23にバンプされました。
+* パッケージ化されたcorednsがv1.9.4にバンプされました。 https://github.com/k3s-io/k3s/pull/6408[(#6408)]
+* netpolコントローラを開始する際にkube-routerバージョンをログに記録 https://github.com/k3s-io/k3s/pull/6405[(#6405)]
+* KairosをADOPTERSに追加 https://github.com/k3s-io/k3s/pull/6417[(#6417)]
+* Flannelを0.20.1に更新 https://github.com/k3s-io/k3s/pull/6388[(#6388)]
+* ``flannel-external-ip``の誤った設定を回避し、暗号化されていないバックエンドの場合に警告を追加 https://github.com/k3s-io/k3s/pull/6403[(#6403)]
+* k8s.ioからバージョンをピン留めするためのテスト修正 https://github.com/k3s-io/k3s/pull/6413[(#6413)]
+* マルチクラウドクラスター環境でのmetrics-serverの修正 https://github.com/k3s-io/k3s/pull/6386[(#6386)]
+* K3sは、サーバーノード間で重要な設定が異なる場合に、同期していないクラスター全体の設定フラグを具体的に示すようになりました。 https://github.com/k3s-io/k3s/pull/6409[(#6409)]
+* テスト出力をJSON形式に変換 https://github.com/k3s-io/k3s/pull/6410[(#6410)]
+* traefik helmチャートを直接GHから取得 https://github.com/k3s-io/k3s/pull/6468[(#6468)]
+* ナイトリーテストの修正 https://github.com/k3s-io/k3s/pull/6475[(#6475)]
+* v1.25.4に更新 https://github.com/k3s-io/k3s/pull/6477[(#6477)]
+* Windowsエグゼキュータ実装に属するものを削除 https://github.com/k3s-io/k3s/pull/6492[(#6492)]
+* パッケージ化されたtraefik helmチャートがv19.0.4にバンプされました https://github.com/k3s-io/k3s/pull/6494[(#6494)]
+* 再度traefikチャートリポジトリを移動 https://github.com/k3s-io/k3s/pull/6508[(#6508)]
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.3+k3s1[v1.25.3+k3s1]
+
+// v1.25.3+k3s1
+
+このリリースはKubernetesをv1.25.3に更新し、多くの問題を修正します。
+
+新機能の詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v1252[Kubernetesリリースノート]を参照してください。
+
+=== v1.25.2+k3s1からの変更点:
+
+* E2E: PR実行のための基礎作り https://github.com/k3s-io/k3s/pull/6131[(#6131)]
+* 同じネットワークに属さず、パブリックIPを使用して接続するノードのデプロイメントのためのflannelを修正 https://github.com/k3s-io/k3s/pull/6180[(#6180)]
+* v1.24.6+k3s1を安定版としてマーク https://github.com/k3s-io/k3s/pull/6193[(#6193)]
+* クラスターリセットテストを追加 https://github.com/k3s-io/k3s/pull/6161[(#6161)]
+* 埋め込みmetrics-serverバージョンがv0.6.1にバンプされました https://github.com/k3s-io/k3s/pull/6151[(#6151)]
+* ServiceLB (klipper-lb) サービスコントローラがK3sスタブクラウドコントローラマネージャに統合されました。 https://github.com/k3s-io/k3s/pull/6181[(#6181)]
+* 埋め込みコントローラによってクラスターに記録されたイベントがサービスログに適切にフォーマットされるようになりました。 https://github.com/k3s-io/k3s/pull/6203[(#6203)]
+* apiserverネットワークプロキシの``error dialing backend``エラーを修正 https://github.com/k3s-io/k3s/pull/6216[(#6216)]
+ ** apiserverネットワークプロキシの問題を修正し、``kubectl exec``が時折``error dialing backend: EOF``で失敗する問題を修正しました。
+ ** apiserverネットワークプロキシの問題を修正し、カスタムkubeletポートが使用され、そのカスタムポートがファイアウォールやセキュリティグループルールによってブロックされている場合に``kubectl exec``および``kubectl logs``が失敗する問題を修正しました。
+* テストのタイプミスを修正 https://github.com/k3s-io/k3s/pull/6183[(#6183)]
+* 依存関係をキャッシュするためにsetup-goアクションを使用 https://github.com/k3s-io/k3s/pull/6220[(#6220)]
+* E2Eテストにjournalctlログを追加 https://github.com/k3s-io/k3s/pull/6224[(#6224)]
+* 埋め込みTraefikバージョンがv2.9.1 / チャート12.0.0にバンプされました https://github.com/k3s-io/k3s/pull/6223[(#6223)]
+* 不安定なetcdテストを修正 https://github.com/k3s-io/k3s/pull/6232[(#6232)]
+* 非推奨のioutilパッケージを置き換え https://github.com/k3s-io/k3s/pull/6230[(#6230)]
+* dualStackテストを修正 https://github.com/k3s-io/k3s/pull/6245[(#6245)]
+* svclbポッドのためのServiceAccountを追加 https://github.com/k3s-io/k3s/pull/6253[(#6253)]
+* v1.25.3-k3s1に更新 https://github.com/k3s-io/k3s/pull/6269[(#6269)]
+* ProviderIDをURI形式で返す https://github.com/k3s-io/k3s/pull/6284[(#6284)]
+* レガシーサービスのファイナライザを削除するためのCCM RBACを修正 https://github.com/k3s-io/k3s/pull/6306[(#6306)]
+* 新しい--flannel-external-ipフラグを追加 https://github.com/k3s-io/k3s/pull/6321[(#6321)]
+ ** 有効にすると、Flannelトラフィックはノードの外部IPを使用するようになります。
+ ** これは、同じローカルネットワーク上にない分散クラスターでの使用を意図しています。
+
+'''
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.2+k3s1[v1.25.2+k3s1]
+
+// v1.25.2+k3s1
+
+このリリースはKubernetesをv1.25.2に更新し、多くの問題を修正します。
+
+新機能の詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#changelog-since-v1250[Kubernetesリリースノート]を参照してください。
+
+=== v1.25.0+k3s1からの変更点:
+
+* k3s v1.25をリリースチャンネルに追加 https://github.com/k3s-io/k3s/pull/6129[(#6129)]
+* 元のINSTALL_K3S_SKIP_DOWNLOAD動作を復元 [(#6130)](https://github.com/k3s-io/k3
+
+== リリース https://github.com/k3s-io/k3s/releases/tag/v1.25.0+k3s1[v1.25.0+k3s1]
+
+// v1.25.0+k3s1
+
+このリリースは、v1.25ラインにおけるK3Sの最初のリリースです。このリリースでは、Kubernetesをv1.25.0に更新します。
+
+以前のリリースからアップグレードする前に、Kubernetesのhttps://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
+
+*重要な注意事項:* Kubernetes v1.25では、ベータ版の``PodSecurityPolicy``アドミッションプラグインが削除されます。v1.25.0+k3s1にアップグレードする前に、組み込みのPodSecurityアドミッションプラグインを使用している場合は、https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/[上流のドキュメント]に従ってPSPから移行してください。
+
+=== v1.24.4+k3s1からの変更点:
+
+* Kubernetesをv1.25.0に更新 https://github.com/k3s-io/k3s/pull/6040[(#6040)]
+* Windows kubeletの引数から``--containerd``フラグを削除 https://github.com/k3s-io/k3s/pull/6028[(#6028)]
+* E2E: CentOS 7とRocky 8のサポートを追加 https://github.com/k3s-io/k3s/pull/6015[(#6015)]
+* インストールテストをk3sのPRビルドで実行するように変更 https://github.com/k3s-io/k3s/pull/6003[(#6003)]
+* CI: Fedora 34 \-> 35に更新 https://github.com/k3s-io/k3s/pull/5996[(#5996)]
+* dualStackテストを修正し、ipv6ネットワークプレフィックスを変更 https://github.com/k3s-io/k3s/pull/6023[(#6023)]
+* e2eテストを修正 https://github.com/k3s-io/k3s/pull/6018[(#6018)]
+* README.mdを更新 https://github.com/k3s-io/k3s/pull/6048[(#6048)]
+* クラスターを削除する際にwireguardインターフェースを削除 https://github.com/k3s-io/k3s/pull/6055[(#6055)]
+* Kubernetesの正しいgolangバージョンを確認するための検証チェックを追加 https://github.com/k3s-io/k3s/pull/6050[(#6050)]
+* スタートアップ統合テストを拡張 https://github.com/k3s-io/k3s/pull/6030[(#6030)]
+* go.modバージョンを1.19に更新 https://github.com/k3s-io/k3s/pull/6049[(#6049)]
+* `--cluster-secret`、`--no-deploy`、および``--no-flannel``の使用はサポートされなくなりました。これらのフラグを使用しようとすると致命的なエラーが発生します。代替についてはhttps://k3s-io.github.io/docs/reference/server-config#deprecated-options[ドキュメント]を参照してください。 https://github.com/k3s-io/k3s/pull/6069[(#6069)]
+* 古いiptablesバージョンの問題を修正するためにFlannelバージョンを更新 https://github.com/k3s-io/k3s/pull/6090[(#6090)]
+* バンドルされたruncのバージョンをv1.1.4に更新 https://github.com/k3s-io/k3s/pull/6071[(#6071)]
+* 組み込みのcontainerdバージョンをv1.6.8-k3s1に更新 https://github.com/k3s-io/k3s/pull/6078[(#6078)]
+* 非推奨メッセージを修正 https://github.com/k3s-io/k3s/pull/6112[(#6112)]
+* flannelバックエンドの追加オプションの非推奨に関する警告メッセージを追加 https://github.com/k3s-io/k3s/pull/6111[(#6111)]
+
+'''

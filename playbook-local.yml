@@ -20,4 +20,4 @@ asciidoc:
 antora:
   extensions:
   - require: '@antora/lunr-extension'
-    # languages: [en, kr, zh]
+    # languages: [en, ja, kr, zh]
