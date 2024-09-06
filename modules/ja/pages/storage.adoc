@@ -4,7 +4,7 @@
 
 永続ボリューム（PV）はKubernetesクラスター内のストレージの一部であり、永続ボリュームクレーム（PVC）はストレージの要求です。PVとPVCの動作の詳細については、公式Kubernetesドキュメントのhttps://kubernetes.io/docs/concepts/storage/volumes/[ストレージ]を参照してください。
 
-このページでは、ローカルストレージプロバイダーまたは<<setting-up-longhorn,Longhorn>>を使用して永続ストレージを設定する方法について説明します。
+このページでは、ローカルストレージプロバイダーまたは<<_longhornの設定,Longhorn>>を使用して永続ストレージを設定する方法について説明します。
 
 == K3sストレージの違いは何ですか？
 

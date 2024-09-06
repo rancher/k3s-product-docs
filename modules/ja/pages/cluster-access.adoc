@@ -19,6 +19,6 @@ kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get pods --all-namespaces
 helm --kubeconfig /etc/rancher/k3s/k3s.yaml ls --all-namespaces
 ----
 
-=== kubectl を使用して外部からクラスターにアクセスする
+== kubectl を使用して外部からクラスターにアクセスする
 
 クラスター外にあるマシンに `/etc/rancher/k3s/k3s.yaml` を `~/.kube/config` としてコピーします。その後、`server` フィールドの値を K3s サーバーの IP または名前に置き換えます。これで `kubectl` は K3s クラスターを管理できるようになります。

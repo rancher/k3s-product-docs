@@ -4,7 +4,7 @@ https://github.com/k8snetworkplumbingwg/multus-cni[Multus CNI] は、ポッド�
 
 Multusは単独でデプロイすることはできません。常に、Kubernetesクラスターのネットワーク要件を満たす少なくとも1つの従来のCNIプラグインが必要です。そのCNIプラグインがMultusのデフォルトとなり、すべてのポッドに対して主要なインターフェースを提供するために使用されます。デフォルトオプションでK3sをデプロイする場合、そのCNIプラグインはFlannelです。
 
-=== Helmリポジトリを追加
+== Helmリポジトリを追加
 
 Multusをデプロイするには、以下のHelmリポジトリを使用することをお勧めします：
 
@@ -13,7 +13,7 @@ helm repo add rke2-charts https://rke2-charts.rancher.io
 helm repo update
 ----
 
-=== IPAMプラグインを設定
+== IPAMプラグインを設定
 
 Multusによって作成された追加のインターフェースにIPアドレスを割り当てるために、IPAMプラグインが必要です。
 
@@ -32,7 +32,7 @@ Tab Multus DHCP daemon::
 dhcp IPAMプラグインは、ネットワーク上に既にDHCPサーバーが稼働している場合にデプロイできます。このデーモンセットは、DHCPリースの定期的な更新を担当します。詳細については、[DHCP IPAMプラグイン](https://www.cni.dev/plugins/current/ipam/dhcp/)の公式ドキュメントを参照してください。 DHCPプラグインを使用するには、以下の内容で`multus-values.yaml`というファイルを作成してください： ``` config: cni_conf: confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d binDir: /var/lib/rancher/k3s/data/current/bin/ kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig manifests: dhcpDaemonSet: true ```
 ======
 
-=== Multusをデプロイ
+== Multusをデプロイ
 
 ``multus-values.yaml``ファイルを作成した後、Multusをインストールする準備が整います：
 

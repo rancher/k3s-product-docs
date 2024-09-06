@@ -6,7 +6,6 @@
 
 オプションはCLIフラグとしてこのページに記載されていますが、設定ファイルオプションとしても渡すことができます。YAML設定ファイルの使用方法については、xref:../installation/configuration.adoc#_configuration-file[設定ファイル]のドキュメントを参照してください。
 
-[discrete]
 === ロギング
 
 |===
@@ -29,7 +28,6 @@
 | ファイルに設定されている場合、標準エラーにもログを記録
 |===
 
-[discrete]
 === クラスターオプション
 
 |===
@@ -48,7 +46,6 @@
 | 接続するサーバー
 |===
 
-[discrete]
 === データ
 
 |===
@@ -59,7 +56,6 @@
 | 状態を保持するフォルダー
 |===
 
-[discrete]
 === ノード
 
 |===
@@ -94,7 +90,6 @@
 | スーパーバイザークライアントのロードバランサーのローカルポート。スーパーバイザーとapiserverが同じ場所にない場合、このポートの1つ少ない追加ポートもapiserverクライアントのロードバランサーに使用されます。（デフォルト: 6444）
 |===
 
-[discrete]
 === ランタイム
 
 |===
@@ -113,7 +108,6 @@
 | プライベートレジストリの設定ファイル
 |===
 
-[discrete]
 === ネットワーキング
 
 |===
@@ -144,7 +138,6 @@
 | デフォルトのflannel cni設定ファイルを上書き
 |===
 
-[discrete]
 === カスタマイズされたフラグ
 
 |===
@@ -157,7 +150,6 @@
 | kube-proxyプロセス用のカスタマイズされたフラグ
 |===
 
-[discrete]
 === 実験的
 
 |===
@@ -176,7 +168,6 @@
 | "xref:../installation/private-registry.adoc#_default-endpoint-fallback[デフォルトエンドポイントフォールバック]"を参照
 |===
 
-[discrete]
 === 廃止予定
 
 |===
@@ -191,7 +182,6 @@
 | ``--token``を使用
 |===
 
-[discrete]
 === エージェントのノードラベルとtaints
 
 K3sエージェントは、``--node-label``および``--node-taint``オプションを使用して設定でき、これによりkubeletにラベルとtaintが追加されます。これらのオプションは登録時にのみラベルおよび/またはtaintを追加するため、一度だけ追加され、その後K3sコマンドを実行しても変更できません。
@@ -207,7 +197,6 @@ K3sエージェントは、``--node-label``および``--node-taint``オプショ
 
 ノード登録後にノードラベルとtaintを変更したい場合は、``kubectl``を使用する必要があります。taintsの追加方法については公式のKubernetesドキュメントを参照してください。https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[taints]およびhttps://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[ノードラベル]の追加方法についての詳細を参照してください。
 
-[discrete]
 === K3sエージェントCLIヘルプ
 
 ____

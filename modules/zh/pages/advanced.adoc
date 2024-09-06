@@ -474,7 +474,7 @@ yum install -y https://rpm.rancher.io/k3s/latest/common/centos/7/noarch/k3s-seli
 
 要利用 SELinux，请在启动 K3s Server 和 Agent 时指定 `--selinux` 标志。
 
-你也可以在 K3s <<,配置文件>>中指定此选项。
+你也可以在 K3s xref:./installation/configuration.adoc#_configuration_file[配置文件]中指定此选项。
 
 ----
 selinux: true

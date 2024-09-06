@@ -6,7 +6,7 @@ K3sはHelmをサポートするために特別な設定を必要としません�
 
 K3sには、HelmChartカスタムリソース定義（CRD）を使用してHelmチャートのインストール、アップグレード/再構成、およびアンインストールを管理するhttps://github.com/k3s-io/helm-controller/[Helmコントローラー]が含まれています。xref:./installation/packaged-components.adoc[自動デプロイAddOnマニフェスト]と組み合わせることで、ディスク上に1つのファイルを作成するだけでクラスターにHelmチャートを自動的にインストールできます。
 
-=== Helmコントローラーの使用
+== Helmコントローラーの使用
 
 https://github.com/k3s-io/helm-controller#helm-controller[HelmChartカスタムリソース]は、通常``helm``コマンドラインツールに渡すほとんどのオプションをキャプチャします。以下は、BitnamiチャートリポジトリからApacheをデプロイし、いくつかのデフォルトチャート値を上書きする例です。HelmChartリソース自体は``kube-system``ネームスペースにありますが、チャートのリソースは同じマニフェストで作成される``web``ネームスペースにデプロイされます。これは、HelmChartリソースをデプロイするリソースから分離して保持したい場合に便利です。
 
@@ -81,7 +81,7 @@ data:
     -----END CERTIFICATE-----
 ----
 
-==== HelmChartフィールド定義
+=== HelmChartフィールド定義
 
 |===
 | フィールド | デフォルト | 説明 | Helm引数/フラグの同等
@@ -195,7 +195,7 @@ data:
 ====
 
 
-=== HelmChartConfigでパッケージ化されたコンポーネントをカスタマイズする
+== HelmChartConfigでパッケージ化されたコンポーネントをカスタマイズする
 
 HelmChartsとしてデプロイされるパッケージ化されたコンポーネント（例えばTraefik）の値を上書きするために、K3sはHelmChartConfigリソースを介してデプロイのカスタマイズをサポートします。HelmChartConfigリソースは対応するHelmChartの名前とネームスペースに一致する必要があり、追加の``valuesContent``を提供することができ、これは追加の値ファイルとして``helm``コマンドに渡されます。
 
@@ -226,7 +226,7 @@ spec:
             - 10.0.0.0/8
 ----
 
-=== Helm v2からの移行
+== Helm v2からの移行
 
 K3sはHelm v2またはHelm v3のいずれかを処理できます。Helm v3に移行したい場合は、Helmのhttps://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/[この]ブログ投稿でプラグインを使用して成功裏に移行する方法を説明しています。詳細については、公式のHelm 3ドキュメントhttps://helm.sh/docs/[こちら]を参照してください。xref:./cluster-access.adoc[クラスターアクセス]のセクションに従ってkubeconfigを正しく設定していることを確認してください。
 

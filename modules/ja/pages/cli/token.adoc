@@ -110,7 +110,6 @@ OPTIONS:
    --help, -h  ヘルプを表示する
 ----
 
-[discrete]
 ==== `k3s token create [token]`
 
 新しいトークンを作成します。`[token]` は `k3s token generate` によって生成された実際のトークンです。トークンが指定されていない場合、ランダムなトークンが生成されます。
@@ -139,7 +138,6 @@ OPTIONS:
 | このトークンが使用できる方法を説明します。（デフォルト: "signing,authentication"）
 |===
 
-[discrete]
 ==== `k3s token delete`
 
 1 つ以上のトークンを削除します。完全なトークンまたはトークン ID のみを提供できます。
@@ -154,7 +152,6 @@ OPTIONS:
 | 接続するサーバー [$KUBECONFIG]
 |===
 
-[discrete]
 ==== `k3s token generate`
 
 ランダムに生成されたブートストラップトークンを生成します。
@@ -171,7 +168,6 @@ OPTIONS:
 | 接続するサーバー [$KUBECONFIG]
 |===
 
-[discrete]
 ==== `k3s token list`
 
 ブートストラップトークンを一覧表示し、その ID、説明、および残りの有効期間を表示します。
@@ -189,7 +185,6 @@ OPTIONS:
 | 出力形式。 有効なオプション: text, json（デフォルト: "text"）
 |===
 
-[discrete]
 ==== `k3s token rotate`
 
 [IMPORTANT]

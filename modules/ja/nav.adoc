@@ -26,7 +26,7 @@
 ** xref:security/self-assessment-1.24.adoc[]
 * xref:cli/cli.adoc[]
 ** xref:cli/server.adoc[server]
-** xref:cli/agent.adoc[agent]
+** xref:cli/agent.adoc[]
 ** xref:cli/certificate.adoc[certificate]
 ** xref:cli/etcd-snapshot.adoc[etcd-snapshot]
 ** xref:cli/secrets-encrypt.adoc[secrets-encrypt]

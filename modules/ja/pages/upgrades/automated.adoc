@@ -1,6 +1,6 @@
 = 自動アップグレード
 
-=== 概要
+== 概要
 
 Rancherのsystem-upgrade-controllerを使用してK3sクラスターのアップグレードを管理できます。これはKubernetesネイティブのクラスターアップグレードアプローチです。これには、https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#custom-resources[カスタムリソース定義（CRD）]、`plan`、およびhttps://kubernetes.io/docs/concepts/architecture/controller/[コントローラー]が含まれます。
 
@@ -44,7 +44,7 @@ K3sの新しいバージョンにアップグレードする際には、https://
 ====
 
 
-=== system-upgrade-controllerのインストール
+== system-upgrade-controllerのインストール
 
 system-upgrade-controllerはクラスターにデプロイメントとしてインストールできます。デプロイメントにはサービスアカウント、clusterRoleBinding、およびconfigmapが必要です。これらのコンポーネントをインストールするには、以下のコマンドを実行します：
 
@@ -62,7 +62,7 @@ kubectl apply -f https://github.com/rancher/system-upgrade-controller/releases/l
 kubectl apply -f https://github.com/rancher/system-upgrade-controller/releases/latest/download/crd.yaml
 ----
 
-=== プランの設定
+== プランの設定
 
 少なくとも2つのプランを作成することをお勧めします：サーバー（コントロールプレーン）ノードをアップグレードするプランと、エージェントノードをアップグレードするプランです。必要に応じて追加のプランを作成し、ノード全体のアップグレードの展開を制御できます。プランが作成されると、コントローラーはそれを検出し、クラスターのアップグレードを開始します。
 
