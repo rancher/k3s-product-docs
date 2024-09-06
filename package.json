@@ -5,6 +5,7 @@
   "dependencies": {
     "@antora/lunr-extension": "^1.0.0-alpha.8",
     "@asciidoctor/tabs": "^1.0.0-beta.6",
+    "@node-rs/jieba": "^1.10.3",
     "http-server": "^14.1.1"
   }
 }
