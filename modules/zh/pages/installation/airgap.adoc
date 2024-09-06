@@ -35,8 +35,8 @@ This method requires you to manually deploy the necessary images to each node, a
 +
 [,bash]
 ----
-  sudo mkdir -p /var/lib/rancher/k3s/agent/images/
-  sudo curl -L -O /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst https://github.com/k3s-io/k3s/releases/download/v1.29.1-rc2%2Bk3s1/k3s-airgap-images-amd64.tar.zst
+sudo mkdir -p /var/lib/rancher/k3s/agent/images/
+sudo curl -L -O /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst https://github.com/k3s-io/k3s/releases/download/v1.29.1-rc2%2Bk3s1/k3s-airgap-images-amd64.tar.zst
 ----
 
 . Proceed to the <<_install_k3s,Install K3s>> section below.
@@ -73,10 +73,10 @@ Before installing K3s, complete the <<_private_registry_method,Private Registry 
 If your nodes do not have an interface with a default route, a default route must be configured; even a black-hole route via a dummy interface will suffice. K3s requires a default route in order to auto-detect the node's primary IP, and for kube-proxy ClusterIP routing to function properly. To add a dummy route, do the following:
 
 ----
-  ip link add dummy0 type dummy
-  ip link set dummy0 up
-  ip addr add 203.0.113.254/31 dev dummy0
-  ip route add default via 203.0.113.255 dev dummy0 metric 1000
+ip link add dummy0 type dummy
+ip link set dummy0 up
+ip addr add 203.0.113.254/31 dev dummy0
+ip route add default via 203.0.113.255 dev dummy0 metric 1000
 ----
 
 When running the K3s script with the `INSTALL_K3S_SKIP_DOWNLOAD` environment variable, K3s will use the local version of the script and binary.

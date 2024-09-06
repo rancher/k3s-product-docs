@@ -48,9 +48,9 @@ Tab 高可用性::
 +
 [,bash]
 ----
- k3s server \
-   --cluster-reset \
-   --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
+k3s server \
+  --cluster-reset \
+  --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
 ----
 +
 *結果:* ログにK3sをフラグなしで再起動できるというメッセージが表示されます。
@@ -59,22 +59,22 @@ Tab 高可用性::
 +
 [,bash]
 ----
- systemctl stop k3s
- rm -rf /var/lib/rancher/k3s/server/db/
+systemctl stop k3s
+rm -rf /var/lib/rancher/k3s/server/db/
 ----
 
 . ``S1``で、再度K3sを開始します：
 +
 [,bash]
 ----
- systemctl start k3s
+systemctl start k3s
 ----
 
 . ``S2``と``S3``で、再度K3sを開始して復元されたクラスターに参加します：
 +
 [,bash]
 ----
- systemctl start k3s
+systemctl start k3s
 ----
 --
 ====== 

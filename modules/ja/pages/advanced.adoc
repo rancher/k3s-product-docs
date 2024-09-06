@@ -61,47 +61,47 @@ Dockerをcontainerdの代わりに使用するには：
 +
 [,bash]
 ----
- curl https://releases.rancher.com/install-docker/20.10.sh | sh
+curl https://releases.rancher.com/install-docker/20.10.sh | sh
 ----
 
 . `--docker` オプションを使用してK3sをインストールします：
 +
 [,bash]
 ----
- curl -sfL https://get.k3s.io | sh -s - --docker
+curl -sfL https://get.k3s.io | sh -s - --docker
 ----
 
 . クラスターが利用可能であることを確認します：
 +
 [,bash]
 ----
- $ sudo k3s kubectl get pods --all-namespaces
- NAMESPACE     NAME                                     READY   STATUS      RESTARTS   AGE
- kube-system   local-path-provisioner-6d59f47c7-lncxn   1/1     Running     0          51s
- kube-system   metrics-server-7566d596c8-9tnck          1/1     Running     0          51s
- kube-system   helm-install-traefik-mbkn9               0/1     Completed   1          51s
- kube-system   coredns-8655855d6-rtbnb                  1/1     Running     0          51s
- kube-system   svclb-traefik-jbmvl                      2/2     Running     0          43s
- kube-system   traefik-758cd5fc85-2wz97                 1/1     Running     0          43s
+$ sudo k3s kubectl get pods --all-namespaces
+NAMESPACE     NAME                                     READY   STATUS      RESTARTS   AGE
+kube-system   local-path-provisioner-6d59f47c7-lncxn   1/1     Running     0          51s
+kube-system   metrics-server-7566d596c8-9tnck          1/1     Running     0          51s
+kube-system   helm-install-traefik-mbkn9               0/1     Completed   1          51s
+kube-system   coredns-8655855d6-rtbnb                  1/1     Running     0          51s
+kube-system   svclb-traefik-jbmvl                      2/2     Running     0          43s
+kube-system   traefik-758cd5fc85-2wz97                 1/1     Running     0          43s
 ----
 
 . Dockerコンテナが実行中であることを確認します：
 +
 [,bash]
 ----
- $ sudo docker ps
- CONTAINER ID        IMAGE                     COMMAND                  CREATED              STATUS              PORTS               NAMES
- 3e4d34729602        897ce3c5fc8f              "entry"                  About a minute ago   Up About a minute                       k8s_lb-port-443_svclb-traefik-jbmvl_kube-system_d46f10c6-073f-4c7e-8d7a-8e7ac18f9cb0_0
- bffdc9d7a65f        rancher/klipper-lb        "entry"                  About a minute ago   Up About a minute                       k8s_lb-port-80_svclb-traefik-jbmvl_kube-system_d46f10c6-073f-4c7e-8d7a-8e7ac18f9cb0_0
- 436b85c5e38d        rancher/library-traefik   "/traefik --configfi…"   About a minute ago   Up About a minute                       k8s_traefik_traefik-758cd5fc85-2wz97_kube-system_07abe831-ffd6-4206-bfa1-7c9ca4fb39e7_0
- de8fded06188        rancher/pause:3.1         "/pause"                 About a minute ago   Up About a minute                       k8s_POD_svclb-traefik-jbmvl_kube-system_d46f10c6-073f-4c7e-8d7a-8e7ac18f9cb0_0
- 7c6a30aeeb2f        rancher/pause:3.1         "/pause"                 About a minute ago   Up About a minute                       k8s_POD_traefik-758cd5fc85-2wz97_kube-system_07abe831-ffd6-4206-bfa1-7c9ca4fb39e7_0
- ae6c58cab4a7        9d12f9848b99              "local-path-provisio…"   About a minute ago   Up About a minute                       k8s_local-path-provisioner_local-path-provisioner-6d59f47c7-lncxn_kube-system_2dbd22bf-6ad9-4bea-a73d-620c90a6c1c1_0
- be1450e1a11e        9dd718864ce6              "/metrics-server"        About a minute ago   Up About a minute                       k8s_metrics-server_metrics-server-7566d596c8-9tnck_kube-system_031e74b5-e9ef-47ef-a88d-fbf3f726cbc6_0
- 4454d14e4d3f        c4d3d16fe508              "/coredns -conf /etc…"   About a minute ago   Up About a minute                       k8s_coredns_coredns-8655855d6-rtbnb_kube-system_d05725df-4fb1-410a-8e82-2b1c8278a6a1_0
- c3675b87f96c        rancher/pause:3.1         "/pause"                 About a minute ago   Up About a minute                       k8s_POD_coredns-8655855d6-rtbnb_kube-system_d05725df-4fb1-410a-8e82-2b1c8278a6a1_0
- 4b1fddbe6ca6        rancher/pause:3.1         "/pause"                 About a minute ago   Up About a minute                       k8s_POD_local-path-provisioner-6d59f47c7-lncxn_kube-system_2dbd22bf-6ad9-4bea-a73d-620c90a6c1c1_0
- 64d3517d4a95        rancher/pause:3.1         "/pause"
+$ sudo docker ps
+CONTAINER ID        IMAGE                     COMMAND                  CREATED              STATUS              PORTS               NAMES
+3e4d34729602        897ce3c5fc8f              "entry"                  About a minute ago   Up About a minute                       k8s_lb-port-443_svclb-traefik-jbmvl_kube-system_d46f10c6-073f-4c7e-8d7a-8e7ac18f9cb0_0
+bffdc9d7a65f        rancher/klipper-lb        "entry"                  About a minute ago   Up About a minute                       k8s_lb-port-80_svclb-traefik-jbmvl_kube-system_d46f10c6-073f-4c7e-8d7a-8e7ac18f9cb0_0
+436b85c5e38d        rancher/library-traefik   "/traefik --configfi…"   About a minute ago   Up About a minute                       k8s_traefik_traefik-758cd5fc85-2wz97_kube-system_07abe831-ffd6-4206-bfa1-7c9ca4fb39e7_0
+de8fded06188        rancher/pause:3.1         "/pause"                 About a minute ago   Up About a minute                       k8s_POD_svclb-traefik-jbmvl_kube-system_d46f10c6-073f-4c7e-8d7a-8e7ac18f9cb0_0
+7c6a30aeeb2f        rancher/pause:3.1         "/pause"                 About a minute ago   Up About a minute                       k8s_POD_traefik-758cd5fc85-2wz97_kube-system_07abe831-ffd6-4206-bfa1-7c9ca4fb39e7_0
+ae6c58cab4a7        9d12f9848b99              "local-path-provisio…"   About a minute ago   Up About a minute                       k8s_local-path-provisioner_local-path-provisioner-6d59f47c7-lncxn_kube-system_2dbd22bf-6ad9-4bea-a73d-620c90a6c1c1_0
+be1450e1a11e        9dd718864ce6              "/metrics-server"        About a minute ago   Up About a minute                       k8s_metrics-server_metrics-server-7566d596c8-9tnck_kube-system_031e74b5-e9ef-47ef-a88d-fbf3f726cbc6_0
+4454d14e4d3f        c4d3d16fe508              "/coredns -conf /etc…"   About a minute ago   Up About a minute                       k8s_coredns_coredns-8655855d6-rtbnb_kube-system_d05725df-4fb1-410a-8e82-2b1c8278a6a1_0
+c3675b87f96c        rancher/pause:3.1         "/pause"                 About a minute ago   Up About a minute                       k8s_POD_coredns-8655855d6-rtbnb_kube-system_d05725df-4fb1-410a-8e82-2b1c8278a6a1_0
+4b1fddbe6ca6        rancher/pause:3.1         "/pause"                 About a minute ago   Up About a minute                       k8s_POD_local-path-provisioner-6d59f47c7-lncxn_kube-system_2dbd22bf-6ad9-4bea-a73d-620c90a6c1c1_0
+64d3517d4a95        rancher/pause:3.1         "/pause"
 ----
 
 == etcdctlの使用

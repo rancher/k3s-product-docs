@@ -636,7 +636,6 @@ Ensure that the Kubernetes PKI certificate file permissions are set to 600 or mo
 .Remediation
 [%collapsible]
 ======
-
 K3s PKI certificate files are stored in `/var/lib/rancher/k3s/server/tls/` with permission 644.
 To remediate, run the following command:
 
@@ -653,7 +652,6 @@ Ensure that the admission control plugin EventRateLimit is set
 .Remediation
 [%collapsible]
 ======
-
 Follow the https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#eventratelimit[Kubernetes documentation] and set the desired limits in a configuration file.
 For this and other psa configuration, this documentation uses /var/lib/rancher/k3s/server/psa.yaml.
 Then, edit the K3s config file /etc/rancher/k3s/config.yaml and set the below parameters.
@@ -673,7 +671,6 @@ Ensure that the admission control plugin AlwaysPullImages is set
 .Remediation
 [%collapsible]
 ======
-
 Permissive, per CIS guidelines,
 "This setting could impact offline or isolated clusters, which have images pre-loaded and
 do not have access to a registry to pull in-use images. This setting is not appropriate for
@@ -694,7 +691,6 @@ Ensure that the --request-timeout argument is set as appropriate
 .Remediation
 [%collapsible]
 ======
-
 Permissive, per CIS guidelines,
 "it is recommended to set this limit as appropriate and change the default limit of 60 seconds only if needed".
 Edit the K3s config file /etc/rancher/k3s/config.yaml
@@ -714,7 +710,6 @@ Ensure that a limit is set on pod PIDs
 .Remediation
 [%collapsible]
 ======
-
 Decide on an appropriate level for this parameter and set it,
 If using a K3s config file /etc/rancher/k3s/config.yaml, edit the file to set `podPidsLimit` to
 
