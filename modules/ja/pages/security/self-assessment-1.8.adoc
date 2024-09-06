@@ -1015,14 +1015,9 @@ journalctl -D /var/log/journal -u k3s | grep 'Running kube-scheduler' | tail -n1
 ======
 [,console]
 ----
- 
+ Apr 22 20:12:19 server-0 k3s[2397]: time="2024-04-22T20:12:19Z" level=info msg="Running kube-scheduler --authentication-kubeconfig=/var/lib/rancher/k3s/server/cred/scheduler.kubeconfig --authorization-kubeconfig=/var/lib/rancher/k3s/server/cred/scheduler.kubeconfig --bind-address=127.0.0.1 --kubeconfig=/var/lib/rancher/k3s/server/cred/scheduler.kubeconfig --profiling=false --secure-port=10259"
 ----
 ======
-
-Apr 22 20:12:19 server-0 k3s[2397]: time="2024-04-22T20:12:19Z" level=info msg="Running kube-scheduler --authentication-kubeconfig=/var/lib/rancher/k3s/server/cred/scheduler.kubeconfig --authorization-kubeconfig=/var/lib/rancher/k3s/server/cred/scheduler.kubeconfig --bind-address=127.0.0.1 --kubeconfig=/var/lib/rancher/k3s/server/cred/scheduler.kubeconfig --profiling=false --secure-port=10259"
-
-----
-</details>
 
 ### 1.4.2 --bind-addressの引数が127.0.0.1に設定されていることを確認する（自動化）
 

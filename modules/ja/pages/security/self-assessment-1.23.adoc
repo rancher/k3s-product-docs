@@ -279,8 +279,6 @@ permissions=644
 
 *修正方法:*
 コントロールプレーンノードで以下のコマンドを実行します（システム上のファイルの場所に基づく）。
-
-----
 例えば、`chown root:root scheduler`
 
 **監査:**
@@ -730,6 +728,7 @@ Sep 13 13:26:40 k3s-123-cis-pool3-b403f678-bzdg5 k3s[1600]: time="2022-09-13T13:
 *修正方法:*
 Kubernetesのドキュメントに従い、設定ファイルに希望する制限を設定します。その後、APIサーバーポッド仕様ファイル /etc/kubernetes/manifests/kube-apiserver.yaml を編集し、以下のパラメータを設定します。
 
+[,console]
 ----
 --enable-admission-plugins=...,EventRateLimit,...
 --admission-control-config-file=<path/to/configuration/file>
@@ -1066,7 +1065,6 @@ Kubernetes のドキュメントに従って、apiserver と etcd 間の TLS 接
 --etcd-keyfile=<path/to/client-key-file>
 ----
 
-----
 **監査スクリプト:** `check_for_k3s_etcd.sh`
 
 [,bash]
@@ -2372,7 +2370,6 @@ journalctl -D /var/log/journal -u k3s | grep 'Running kube-apiserver' | tail -n1
 *修正方法:*
 クラスターに提供される監査ポリシーを確認し、少なくとも以下の領域をカバーしていることを確認します。
 
-----
 - クラスターによって管理されるSecretsへのアクセス。Secrets、ConfigMaps、およびTokenReviewsへのリクエストのメタデータのみをログに記録するように注意し、機密データのログ記録のリスクを避ける。
 - PodおよびDeploymentオブジェクトの変更。
 - `pods/exec`、`pods/portforward`、`pods/proxy`、および`services/proxy`の使用。
