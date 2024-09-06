@@ -1,6 +1,5 @@
 = v1.29.X
-:hide_table_of_contents: true
-:sidebar_position: 2
+:page-role: -toc
 
 [CAUTION]
 .アップグレード通知
@@ -411,9 +410,12 @@ runcのCVE: https://nvd.nist.gov/vuln/detail/CVE-2024-21626[CVE-2024-21626]に�
 
 // v1.29.0+k3s1
 
+[CAUTION]
+.重要
+====
 このリリースは、v1.29ラインでのK3Sの最初の
 このリリースでは、Kubernetesの上流でhttps://github.com/kubernetes/kubernetes/issues/117728[KMSv2]に関する変更があったため、実験的な``rotate-keys``サブコマンドを削除しました。このサブコマンドは将来のリリースで再追加される予定です。
-:::
+====
 
 [CAUTION]
 .重要

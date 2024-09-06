@@ -1,6 +1,5 @@
 = v1.28.X
 :page-role: -toc
-:sidebar_position: 3
 
 [CAUTION]
 .Upgrade Notice

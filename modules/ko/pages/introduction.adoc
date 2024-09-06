@@ -1,6 +1,4 @@
 = K3s - Lightweight Kubernetes
-:doctype: book
-:slug: /
 :page-role: -toc
 
 경량의 쿠버네티스. 간편한 설치와 절반의 메모리, 모든걸 100MB 미만의 바이너리로 제공합니다.

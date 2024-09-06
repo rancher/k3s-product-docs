@@ -1,6 +1,5 @@
 = v1.27.X
-:hide_table_of_contents: true
-:sidebar_position: 4
+:page-role: -toc
 
 [CAUTION]
 .アップグレード通知
