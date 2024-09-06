@@ -19,7 +19,7 @@ An example of the process:
 * In v1.22.15, v1.23.11, and v1.24.3, `--foo` continues to exist, but will warn users:
 +
 ----
-  [Warning] --foo will be deprecated in v1.25.0, use `--new-foo` instead
+[Warning] --foo will be deprecated in v1.25.0, use `--new-foo` instead
 ----
 +
 `--foo` will continue to exist as an operational flag for the life of v1.22, v1.23 and v1.24.
@@ -28,7 +28,7 @@ An example of the process:
 * In v1.26.0, `--foo` will cause a fatal error if used. The error message will say:
 +
 ----
-  [Fatal] exit 1: --foo is no longer supported, use --new-foo instead
+[Fatal] exit 1: --foo is no longer supported, use --new-foo instead
 ----
 
 * In v1.27.0, `--foo` will be removed completely from all code and documentation.

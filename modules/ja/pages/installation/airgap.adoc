@@ -31,8 +31,8 @@ K3sをエアギャップ環境でインストールするには、2つの方法�
 +
 [,bash]
 ----
-  sudo mkdir -p /var/lib/rancher/k3s/agent/images/
-  sudo curl -L -o /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst "https://github.com/k3s-io/k3s/releases/download/v1.29.1-rc2%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
+sudo mkdir -p /var/lib/rancher/k3s/agent/images/
+sudo curl -L -o /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst "https://github.com/k3s-io/k3s/releases/download/v1.29.1-rc2%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
 ----
 
 . 以下の<<_k3sのインストール,Install K3s>>セクションに進みます。
@@ -69,10 +69,10 @@ K3sをインストールする前に、上記の<<_プライベートレジス�
 ノードにデフォルトルートを持つインターフェースがない場合は、デフォルトルートを設定する必要があります。ダミーインターフェースを介したブラックホールルートでも構いません。K3sはデフォルトルートを必要とし、ノードのプライマリIPを自動検出し、kube-proxyのClusterIPルーティングが正常に機能するためです。ダミールートを追加するには、以下を実行します：
 
 ----
-  ip link add dummy0 type dummy
-  ip link set dummy0 up
-  ip addr add 203.0.113.254/31 dev dummy0
-  ip route add default via 203.0.113.255 dev dummy0 metric 1000
+ip link add dummy0 type dummy
+ip link set dummy0 up
+ip addr add 203.0.113.254/31 dev dummy0
+ip route add default via 203.0.113.255 dev dummy0 metric 1000
 ----
 
 ``INSTALL_K3S_SKIP_DOWNLOAD``環境変数を使用してK3sスクリプトを実行すると、K3sはローカルバージョンのスクリプトとバイナリを使用します。

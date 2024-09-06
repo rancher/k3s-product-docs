@@ -48,9 +48,9 @@ In this example there are 3 servers, `S1`, `S2`, and `S3`. The snapshot is locat
 +
 [,bash]
 ----
- k3s server \
-   --cluster-reset \
-   --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
+k3s server \
+  --cluster-reset \
+  --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
 ----
 +
 *Result:* A message in the logs says that K3s can be restarted without the flags.
@@ -59,22 +59,22 @@ In this example there are 3 servers, `S1`, `S2`, and `S3`. The snapshot is locat
 +
 [,bash]
 ----
- systemctl stop k3s
- rm -rf /var/lib/rancher/k3s/server/db/
+systemctl stop k3s
+rm -rf /var/lib/rancher/k3s/server/db/
 ----
 
 . On S1, start K3s again:
 +
 [,bash]
 ----
- systemctl start k3s
+systemctl start k3s
 ----
 
 . On S2 and S3, start K3s again to join the restored cluster:
 +
 [,bash]
 ----
- systemctl start k3s
+systemctl start k3s
 ----
 --
 ======
