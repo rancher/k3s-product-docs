@@ -21,4 +21,4 @@ asciidoc:
 antora:
   extensions:
   - require: '@antora/lunr-extension'
-    # languages: [en, ja, kr, zh]
+    languages: [en, ja, zh] # ko not supported by extension
