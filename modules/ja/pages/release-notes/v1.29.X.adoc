@@ -4,7 +4,7 @@
 [CAUTION]
 .アップグレード通知
 ====
-以前のリリースからアップグレードする前に、Kubernetesのhttps://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.29.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
+以前のリリースからアップグレードする前に、Kubernetesのlink:https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.29.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
 ====
 
 
@@ -414,13 +414,13 @@ runcのCVE: https://nvd.nist.gov/vuln/detail/CVE-2024-21626[CVE-2024-21626]に�
 .重要
 ====
 このリリースは、v1.29ラインでのK3Sの最初の
-このリリースでは、Kubernetesの上流でhttps://github.com/kubernetes/kubernetes/issues/117728[KMSv2]に関する変更があったため、実験的な``rotate-keys``サブコマンドを削除しました。このサブコマンドは将来のリリースで再追加される予定です。
+このリリースでは、Kubernetesの上流でlink:https://github.com/kubernetes/kubernetes/issues/117728[KMSv2]に関する変更があったため、実験的な``rotate-keys``サブコマンドを削除しました。このサブコマンドは将来のリリースで再追加される予定です。
 ====
 
 [CAUTION]
 .重要
 ====
-このリリースでは、``multi-cluster-cidr``フラグも削除されました。このアルファ機能のサポートがhttps://groups.google.com/g/kubernetes-sig-network/c/nts1xEZ--gQ/m/2aTOUNFFAAAJ[Kubernetesの上流]から完全に削除されたためです。アップグレード前にこのフラグを設定から削除する必要があります。
+このリリースでは、``multi-cluster-cidr``フラグも削除されました。このアルファ機能のサポートがlink:https://groups.google.com/g/kubernetes-sig-network/c/nts1xEZ--gQ/m/2aTOUNFFAAAJ[Kubernetesの上流]から完全に削除されたためです。アップグレード前にこのフラグを設定から削除する必要があります。
 ====
 
 

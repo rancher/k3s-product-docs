@@ -170,7 +170,7 @@ https://github.com/k3s-io/k3s/releases/tag/v1.17.0%2Bk3s.1[v1.17.0+k3s.1] 开始
 ====
 
 
-K3s 可以处理 Helm v2 或 Helm v3。如果你想迁移到 Helm v3，Helm 的https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/[这篇博客文章]解释了如何使用插件进行迁移。有关更多信息，请参阅https://helm.sh/docs/[官方 Helm 3 文档]。请确保你已按照xref:./cluster-access.adoc[集群访问]部分正确设置了 kubeconfig。
+K3s 可以处理 Helm v2 或 Helm v3。如果你想迁移到 Helm v3，Helm 的link:https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/[这篇博客文章]解释了如何使用插件进行迁移。有关更多信息，请参阅link:https://helm.sh/docs/[官方 Helm 3 文档]。请确保你已按照xref:./cluster-access.adoc[集群访问]部分正确设置了 kubeconfig。
 
 [NOTE]
 ====

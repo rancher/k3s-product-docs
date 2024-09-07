@@ -12,7 +12,7 @@ K3sをエアギャップ環境でインストールするには、2つの方法�
 
 ==== レジストリYAMLの作成とイメージのプッシュ
 
-. 実行するK3sのバージョンに対応するアーキテクチャ用のイメージアーカイブをhttps://github.com/k3s-io/k3s/releases[リリース]ページから取得します。
+. 実行するK3sのバージョンに対応するアーキテクチャ用のイメージアーカイブをlink:https://github.com/k3s-io/k3s/releases[リリース]ページから取得します。
 . ``docker image load k3s-airgap-images-amd64.tar.zst``を使用して、tarファイルからDockerにイメージをインポートします。
 . ``docker tag``と``docker push``を使用して、ロードしたイメージを再タグ付けし、プライベートレジストリにプッシュします。
 . xref:./private-registry.adoc[プライベートレジストリの設定]ガイドに従って、``registries.yaml``ファイルを作成および設定します。
@@ -26,7 +26,7 @@ K3sをエアギャップ環境でインストールするには、2つの方法�
 
 ==== イメージディレクトリとエアギャップイメージtarballの準備
 
-. 実行するK3sのバージョンに対応するアーキテクチャ用のイメージアーカイブをhttps://github.com/k3s-io/k3s/releases[リリース]ページから取得します。
+. 実行するK3sのバージョンに対応するアーキテクチャ用のイメージアーカイブをlink:https://github.com/k3s-io/k3s/releases[リリース]ページから取得します。
 . エージェントのイメージディレクトリにイメージアーカイブをダウンロードします。例：
 +
 [,bash]
@@ -79,7 +79,7 @@ ip route add default via 203.0.113.255 dev dummy0 metric 1000
 
 ==== SELinux RPM
 
-SELinuxを有効にしてK3sをデプロイする場合は、適切なk3s-selinux RPMをすべてのノードにインストールする必要があります。最新バージョンのRPMはhttps://github.com/k3s-io/k3s-selinux/releases/latest[こちら]で見つけることができます。例えば、CentOS 8の場合：
+SELinuxを有効にしてK3sをデプロイする場合は、適切なk3s-selinux RPMをすべてのノードにインストールする必要があります。最新バージョンのRPMはlink:https://github.com/k3s-io/k3s-selinux/releases/latest[こちら]で見つけることができます。例えば、CentOS 8の場合：
 
 [,bash]
 ----
@@ -158,8 +158,8 @@ K3sの``--resolv-conf``フラグはkubeletに渡され、ホストに上流の�
 
 エアギャップ環境のアップグレードは、以下の方法で行うことができます：
 
-. アップグレードするK3sのバージョンに対応する新しいエアギャップイメージ（tarファイル）をhttps://github.com/k3s-io/k3s/releases[リリース]ページからダウンロードします。各ノードの``/var/lib/rancher/k3s/agent/images/``ディレクトリにtarファイルを配置し、古いtarファイルを削除します。
-. 各ノードの``/usr/local/bin``にある古いK3sバイナリを新しいものに置き換えます。https://get.k3s.ioからインストールスクリプトをコピーし、前回のリリース以降に変更があった可能性があるため、再度スクリプトを実行します。同じ環境変数を使用してスクリプトを実行します。
+. アップグレードするK3sのバージョンに対応する新しいエアギャップイメージ（tarファイル）をlink:https://github.com/k3s-io/k3s/releases[リリース]ページからダウンロードします。各ノードの``/var/lib/rancher/k3s/agent/images/``ディレクトリにtarファイルを配置し、古いtarファイルを削除します。
+. 各ノードの``/usr/local/bin``にある古いK3sバイナリを新しいものに置き換えます。link:https://get.k3s.ioからインストールスクリプトをコピーし、前回のリリース以降に変更があった可能性があるため、再度スクリプトを実行します。同じ環境変数を使用してスクリプトを実行します。
 . K3sサービスを再起動します（インストーラーによって自動的に再起動されない場合）。
 
 === 自動アップグレード方式
@@ -168,7 +168,7 @@ K3sはxref:../upgrades/automated.adoc[自動アップグレード]をサポー�
 
 アップグレードするK3sのバージョンに対応するrancher/k3s-upgradeのバージョンが必要です。注意点として、K3sリリースの``+``はDockerイメージではサポートされていないため、イメージタグでは``-``に置き換えられます。
 
-また、system-upgrade-controllerマニフェストYAMLに指定されているsystem-upgrade-controllerとkubectlのバージョンも必要です。最新のsystem-upgrade-controllerリリースはhttps://github.com/rancher/system-upgrade-controller/releases/latest[こちら]で確認し、必要なバージョンをプライベートレジストリにプッシュします。例えば、system-upgrade-controllerのv0.4.0リリースでは、以下のイメージがマニフェストYAMLに指定されています：
+また、system-upgrade-controllerマニフェストYAMLに指定されているsystem-upgrade-controllerとkubectlのバージョンも必要です。最新のsystem-upgrade-controllerリリースはlink:https://github.com/rancher/system-upgrade-controller/releases/latest[こちら]で確認し、必要なバージョンをプライベートレジストリにプッシュします。例えば、system-upgrade-controllerのv0.4.0リリースでは、以下のイメージがマニフェストYAMLに指定されています：
 
 ----
 rancher/system-upgrade-controller:v0.4.0

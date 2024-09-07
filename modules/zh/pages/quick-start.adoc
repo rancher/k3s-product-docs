@@ -6,7 +6,7 @@
 
 [IMPORTANT]
 ====
-Kubernetes 新手？Kubernetes 官方文档介绍了一些很好的https://kubernetes.io/docs/tutorials/kubernetes-basics/[基础知识教程]。
+Kubernetes 新手？Kubernetes 官方文档介绍了一些很好的link:https://kubernetes.io/docs/tutorials/kubernetes-basics/[基础知识教程]。
 ====
 
 

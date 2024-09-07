@@ -111,7 +111,7 @@ Prometheus v2.43.0 的独立实例可以通过 apt 安装的 `prometheus-node-ex
 
 === 具有工作负载的 K3s Server
 
-这些是单节点集群的要求，其中 K3s Server 与https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[简单工作负载]共享资源。
+这些是单节点集群的要求，其中 K3s Server 与link:https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[简单工作负载]共享资源。
 
 CPU 要求：
 

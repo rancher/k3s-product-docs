@@ -4,7 +4,7 @@
 [CAUTION]
 .アップグレード通知
 ====
-以前のリリースからアップグレードする前に、Kubernetesのhttps://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
+以前のリリースからアップグレードする前に、Kubernetesのlink:https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
 ====
 
 
@@ -509,7 +509,7 @@ runcのCVE: https://nvd.nist.gov/vuln/detail/CVE-2024-21626[CVE-2024-21626]に�
 * vpnプロバイダーにextraArgsを追加 https://github.com/k3s-io/k3s/pull/8354[(#8354)]
  ** vpnプロバイダーに追加の引数を渡すことが可能に
 * メインのetcdクライアントポートでHTTPを無効にする https://github.com/k3s-io/k3s/pull/8402[(#8402)]
- ** 組み込みetcdはクライアントポートでhttpリクエストを提供しなくなり、grpcのみとなります。これにより、負荷がかかった場合のウォッチストリームの飢餓状態を引き起こす可能性のあるパフォーマンス問題が解決されます。詳細はhttps://github.com/etcd-io/etcd/issues/15402をご覧ください。
+ ** 組み込みetcdはクライアントポートでhttpリクエストを提供しなくなり、grpcのみとなります。これにより、負荷がかかった場合のウォッチストリームの飢餓状態を引き起こす可能性のあるパフォーマンス問題が解決されます。詳細はlink:https://github.com/etcd-io/etcd/issues/15402をご覧ください。
 * サーバートークンのローテーション https://github.com/k3s-io/k3s/pull/8215[(#8215)]
 * リセット後のetcdメンバー削除の問題を修正 https://github.com/k3s-io/k3s/pull/8392[(#8392)]
  ** スナップショットが撮影された時点で削除がキューに入っていた場合、クラスタリセット/リストア直後にk3sがetcdクラスタからメンバーを削除しようとする問題を修正しました。

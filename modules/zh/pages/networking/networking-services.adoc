@@ -20,17 +20,17 @@ Traefik Ingress Controller 部署了一个使用端口 80 和 443 的 LoadBalanc
 
 Traefik 在启动服务器时默认部署。有关详细信息，请参阅xref:../installation/packaged-components.adoc[管理打包组件]。默认配置文件位于 `/var/lib/rancher/k3s/server/manifests/traefik.yaml`。
 
-不要手动编辑 `traefik.yaml` 文件，因为 K3s 会在启动时使用默认值替换该文件。相反，你需要通过在 `/var/lib/rancher/k3s/server/manifests` 中创建其他 `HelmChartConfig` 清单来自定义 Traefik。有关更多详细信息和示例，请参阅xref:../helm.adoc#_使用_helmchartconfig_自定义打包组件[使用 HelmChartConfig 自定义打包组件]。有关配置值的更多信息，请参阅https://github.com/traefik/traefik-helm-chart/tree/master/traefik[官方 Traefik Helm 配置参数]。
+不要手动编辑 `traefik.yaml` 文件，因为 K3s 会在启动时使用默认值替换该文件。相反，你需要通过在 `/var/lib/rancher/k3s/server/manifests` 中创建其他 `HelmChartConfig` 清单来自定义 Traefik。有关更多详细信息和示例，请参阅xref:../helm.adoc#_使用_helmchartconfig_自定义打包组件[使用 HelmChartConfig 自定义打包组件]。有关配置值的更多信息，请参阅link:https://github.com/traefik/traefik-helm-chart/tree/master/traefik[官方 Traefik Helm 配置参数]。
 
 要从集群中删除 Traefik，请使用 `--disable=traefik` 标志来启动所有 Server。
 
 K3s 1.20 及更早版本包括了 Traefik v1。除非找到现有的 Traefik v1（在这种情况下，Traefik 不会升级到 v2），否则 K3s 1.21 及更高版本将安装 Traefik v2。有关 K3s 中包含的 Traefik 版本，请参阅版本的发行说明。
 
-要从较旧的 Traefik v1 实例迁移，请参阅 https://doc.traefik.io/traefik/migration/v1-to-v2/[Traefik 文档]和https://github.com/traefik/traefik-migration-tool[迁移工具]。
+要从较旧的 Traefik v1 实例迁移，请参阅 https://doc.traefik.io/traefik/migration/v1-to-v2/[Traefik 文档]和link:https://github.com/traefik/traefik-migration-tool[迁移工具]。
 
 == 网络策略控制器
 
-K3s 包含一个嵌入式网络策略控制器。底层实现是 https://github.com/cloudnativelabs/kube-router[kube-router] 的 netpol 控制器库（没有其他 kube-router 功能），你可以在https://github.com/k3s-io/k3s/tree/master/pkg/agent/netpol[此处]找到 netpol。
+K3s 包含一个嵌入式网络策略控制器。底层实现是 https://github.com/cloudnativelabs/kube-router[kube-router] 的 netpol 控制器库（没有其他 kube-router 功能），你可以在link:https://github.com/k3s-io/k3s/tree/master/pkg/agent/netpol[此处]找到 netpol。
 
 要禁用它，使用 `--disable-network-policy` 标志来启动每个 server。
 

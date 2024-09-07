@@ -195,7 +195,7 @@ K3sエージェントは、``--node-label``および``--node-taint``オプショ
      --node-taint key1=value1:NoExecute
 ----
 
-ノード登録後にノードラベルとtaintを変更したい場合は、``kubectl``を使用する必要があります。taintsの追加方法については公式のKubernetesドキュメントを参照してください。https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[taints]およびhttps://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[ノードラベル]の追加方法についての詳細を参照してください。
+ノード登録後にノードラベルとtaintを変更したい場合は、``kubectl``を使用する必要があります。taintsの追加方法については公式のKubernetesドキュメントを参照してください。link:https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[taints]およびlink:https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[ノードラベル]の追加方法についての詳細を参照してください。
 
 == K3sエージェントCLIヘルプ
 

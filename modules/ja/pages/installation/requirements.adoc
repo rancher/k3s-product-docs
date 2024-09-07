@@ -185,7 +185,7 @@ K3sサーバーはポート6443がすべてのノードからアクセス可能�
 
 [WARNING]
 ====
-Flannelは、トラフィックをスイッチングするL2ネットワークを作成するためにhttps://www.cni.dev/plugins/current/main/bridge/[Bridge CNIプラグイン]に依存しています。``NET_RAW``機能を持つ不正なポッドは、そのL2ネットワークを悪用してhttps://static.sched.com/hosted_files/kccncna19/72/ARP%20DNS%20spoof.pdf[ARPスプーフィング]などの攻撃を開始する可能性があります。したがって、https://kubernetes.io/docs/concepts/security/pod-security-standards/[Kubernetesドキュメント]に記載されているように、信頼できないポッドで``NET_RAW``を無効にする制限付きプロファイルを設定してください。
+Flannelは、トラフィックをスイッチングするL2ネットワークを作成するためにlink:https://www.cni.dev/plugins/current/main/bridge/[Bridge CNIプラグイン]に依存しています。``NET_RAW``機能を持つ不正なポッドは、そのL2ネットワークを悪用してlink:https://static.sched.com/hosted_files/kccncna19/72/ARP%20DNS%20spoof.pdf[ARPスプーフィング]などの攻撃を開始する可能性があります。したがって、https://kubernetes.io/docs/concepts/security/pod-security-standards/[Kubernetesドキュメント]に記載されているように、信頼できないポッドで``NET_RAW``を無効にする制限付きプロファイルを設定してください。
 ====
 
 

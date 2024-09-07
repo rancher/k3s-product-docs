@@ -6,7 +6,7 @@
 
 このガイドはK3sの**v1.24**リリースラインおよびCIS Kubernetesベンチマークの**v1.24**リリースに特化しています。
 
-各コントロールの詳細な説明やテスト失敗時の修正方法については、CIS Kubernetesベンチマークv1.6の該当セクションを参照してください。ベンチマークは、無料アカウントを作成後にhttps://www.cisecurity.org/benchmark/kubernetes/[Center for Internet Security (CIS)]からダウンロードできます。
+各コントロールの詳細な説明やテスト失敗時の修正方法については、CIS Kubernetesベンチマークv1.6の該当セクションを参照してください。ベンチマークは、無料アカウントを作成後にlink:https://www.cisecurity.org/benchmark/kubernetes/[Center for Internet Security (CIS)]からダウンロードできます。
 
 === コントロールテストの方法論
 

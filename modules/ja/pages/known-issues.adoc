@@ -34,7 +34,7 @@ K3sをルートレスモードで実行することは実験的であり、い�
 [#hardened-125]
 == v1.24.xからv1.25.xへのハードニングされたクラスターのアップグレード
 
-Kubernetesは、Pod Security Standardsに置き換えるためにv1.25からPodSecurityPolicyを削除しました。PSSについての詳細はhttps://kubernetes.io/docs/concepts/security/pod-security-standards/[上流のドキュメント]を参照してください。K3Sの場合、ノードに``PodSecurityPolicy``が設定されている場合、いくつかの手動ステップが必要です。
+Kubernetesは、Pod Security Standardsに置き換えるためにv1.25からPodSecurityPolicyを削除しました。PSSについての詳細はlink:https://kubernetes.io/docs/concepts/security/pod-security-standards/[上流のドキュメント]を参照してください。K3Sの場合、ノードに``PodSecurityPolicy``が設定されている場合、いくつかの手動ステップが必要です。
 
 . すべてのノードで、``kube-apiserver-arg``の値を更新して``PodSecurityPolicy``アドミッションプラグインを削除します。代わりに次の引数値を追加します：`'admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml'`、ただし、まだK3Sを再起動またはアップグレードしないでください。以下は、この更新後のノードのハードニングされた設定ファイルの例です：
 +
@@ -83,7 +83,7 @@ plugins:
    namespaces: [kube-system, cis-operator-system, system-upgrade]
 ----
 
-. 通常通りアップグレードを実行します。xref:./upgrades/automated.adoc[自動アップグレード]を行う場合、``system-upgrade-controller``ポッドが実行されているネームスペースがhttps://kubernetes.io/docs/concepts/security/pod-security-admission/#pod-security-levels[Pod Securityレベル]に従って特権を持つように設定されていることを確認してください：
+. 通常通りアップグレードを実行します。xref:./upgrades/automated.adoc[自動アップグレード]を行う場合、``system-upgrade-controller``ポッドが実行されているネームスペースがlink:https://kubernetes.io/docs/concepts/security/pod-security-admission/#pod-security-levels[Pod Securityレベル]に従って特権を持つように設定されていることを確認してください：
 +
 [,yaml]
 ----

@@ -51,13 +51,13 @@ CONTAINERD_NO_PROXY=127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
 
 == Dockerをコンテナランタイムとして使用する
 
-K3sには業界標準のコンテナランタイムであるhttps://containerd.io/[containerd]が含まれており、デフォルトで使用されます。
+K3sには業界標準のコンテナランタイムであるlink:https://containerd.io/[containerd]が含まれており、デフォルトで使用されます。
 Kubernetes 1.24以降、Kubeletにはdockershimが含まれておらず、Kubeletがdockerdと通信するためのコンポーネントがありません。
-K3s 1.24以降にはhttps://github.com/Mirantis/cri-dockerd[cri-dockerd]が含まれており、Dockerコンテナランタイムを引き続き使用しながら、以前のリリースからシームレスにアップグレードできます。
+K3s 1.24以降にはlink:https://github.com/Mirantis/cri-dockerd[cri-dockerd]が含まれており、Dockerコンテナランタイムを引き続き使用しながら、以前のリリースからシームレスにアップグレードできます。
 
 Dockerをcontainerdの代わりに使用するには：
 
-. K3sノードにDockerをインストールします。Rancherのhttps://github.com/rancher/install-docker[Dockerインストールスクリプト]の1つを使用してDockerをインストールできます：
+. K3sノードにDockerをインストールします。Rancherのlink:https://github.com/rancher/install-docker[Dockerインストールスクリプト]の1つを使用してDockerをインストールできます：
 +
 [,bash]
 ----
@@ -134,7 +134,7 @@ K3sは、containerdのconfig.tomlを `/var/lib/rancher/k3s/agent/etc/containerd/
 このファイルの高度なカスタマイズを行うには、同じディレクトリに `config.toml.tmpl` という別のファイルを作成し、それが代わりに使用されます。
 
 `config.toml.tmpl` はGoテンプレートファイルとして扱われ、`config.Node` 構造体がテンプレートに渡されます。この構造体を使用して設定ファイルをカスタマイズする方法については、https://github.com/k3s-io/k3s/blob/master/pkg/agent/templates[このフォルダ]のLinuxおよびWindowsの例を参照してください。
-config.Node golang構造体はhttps://github.com/k3s-io/k3s/blob/master/pkg/daemons/config/types.go#L37[こちら]で定義されています。
+config.Node golang構造体はlink:https://github.com/k3s-io/k3s/blob/master/pkg/daemons/config/types.go#L37[こちら]で定義されています。
 
 === ベーステンプレート
 
@@ -314,7 +314,7 @@ ____
 
 詳細については https://github.com/kubernetes/enhancements/blob/master/keps/sig-auth/279-limit-node-access/README.md#proposal[SIG-Auth KEP 279] を参照してください。
 
-ノードの登録後にノードラベルとテイントを変更したり、予約済みラベルを追加したりする場合は、`kubectl` を使用する必要があります。テイントの追加方法については公式の Kubernetes ドキュメントを参照してください。https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[テイント] および https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[ノードラベル] の詳細を参照してください。
+ノードの登録後にノードラベルとテイントを変更したり、予約済みラベルを追加したりする場合は、`kubectl` を使用する必要があります。テイントの追加方法については公式の Kubernetes ドキュメントを参照してください。link:https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[テイント] および https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[ノードラベル] の詳細を参照してください。
 
 == インストールスクリプトでサービスを開始する
 
@@ -423,7 +423,7 @@ SELinuxを活用するには、K3sサーバーおよびエージェントを起�
 selinux: true
 ----
 
-SELinuxの下でカスタムの``--data-dir``を使用することはサポートされていません。カスタマイズするには、おそらく独自のカスタムポリシーを書く必要があります。ガイダンスについては、コンテナランタイムのSELinuxポリシーファイルを含むhttps://github.com/containers/container-selinux[containers/container-selinux]リポジトリおよびK3sのSELinuxポリシーを含むhttps://github.com/k3s-io/k3s-selinux[k3s-io/k3s-selinux]リポジトリを参照してください。
+SELinuxの下でカスタムの``--data-dir``を使用することはサポートされていません。カスタマイズするには、おそらく独自のカスタムポリシーを書く必要があります。ガイダンスについては、コンテナランタイムのSELinuxポリシーファイルを含むlink:https://github.com/containers/container-selinux[containers/container-selinux]リポジトリおよびK3sのSELinuxポリシーを含むlink:https://github.com/k3s-io/k3s-selinux[k3s-io/k3s-selinux]リポジトリを参照してください。
 
 == eStargzのレイジープルを有効にする（実験的機能）
 
@@ -441,11 +441,11 @@ ____
 代わりに、必要なコンテンツのチャンク（例：個々のファイル）がオンデマンドで取得されます。
 特に大きなイメージの場合、この技術はコンテナの起動遅延を短縮することができます。
 
-レイジープルを有効にするには、ターゲットイメージをhttps://github.com/containerd/stargz-snapshotter/blob/main/docs/stargz-estargz.md[_eStargz_]としてフォーマットする必要があります。
+レイジープルを有効にするには、ターゲットイメージをlink:https://github.com/containerd/stargz-snapshotter/blob/main/docs/stargz-estargz.md[_eStargz_]としてフォーマットする必要があります。
 これはOCIの代替ですが、100% OCI互換のイメージフォーマットで、レイジープルに対応しています。
 互換性があるため、eStargzは標準のコンテナレジストリ（例：ghcr.io）にプッシュでき、eStargz非対応のランタイムでも__実行可能__です。
 
-eStargzはhttps://github.com/google/crfs[Google CRFSプロジェクトによって提案されたstargzフォーマット]に基づいて開発されましたが、コンテンツの検証やパフォーマンスの最適化などの実用的な機能が追加されています。
+eStargzはlink:https://github.com/google/crfs[Google CRFSプロジェクトによって提案されたstargzフォーマット]に基づいて開発されましたが、コンテンツの検証やパフォーマンスの最適化などの実用的な機能が追加されています。
 レイジープルとeStargzの詳細については、https://github.com/containerd/stargz-snapshotter[Stargz Snapshotterプロジェクトリポジトリ]を参照してください。
 
 === eStargzのレイジープルのためのk3sの設定
@@ -485,7 +485,7 @@ spec:
 
 == 追加のログソース
 
-K3s用のhttps://rancher.com/docs/rancher/v2.6/en/logging/helm-chart-options/[Rancherロギング]は、Rancherを使用せずにインストールできます。以下の手順を実行してください:
+K3s用のlink:https://rancher.com/docs/rancher/v2.6/en/logging/helm-chart-options/[Rancherロギング]は、Rancherを使用せずにインストールできます。以下の手順を実行してください:
 
 [,bash]
 ----

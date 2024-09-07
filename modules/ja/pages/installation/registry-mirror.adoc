@@ -7,7 +7,7 @@
 ====
 
 
-K3sは、Kubernetesクラスター内のノード間でコンテナイメージをピアツーピアで共有できる、ステートレスな分散OCIレジストリミラーであるhttps://github.com/XenitAB/spegel[Spegel]を埋め込んでいます。
+K3sは、Kubernetesクラスター内のノード間でコンテナイメージをピアツーピアで共有できる、ステートレスな分散OCIレジストリミラーであるlink:https://github.com/XenitAB/spegel[Spegel]を埋め込んでいます。
 分散レジストリミラーはデフォルトでは無効になっています。
 
 == 分散OCIレジストリミラーの有効化
@@ -102,7 +102,7 @@ mirrors:
 
 コンテナイメージにタグが指定されていない場合、暗黙のデフォルトタグは``latest``です。このタグは頻繁に更新され、最新バージョンのイメージを指します。このタグはプルされるタイミングによって異なるリビジョンのイメージを指すため、分散レジストリは他のノードから``latest``タグをプル**しません**。これにより、containerdは一貫したビューを確保するために上流レジストリまたはレジストリミラーにアクセスすることを強制されます。
 
-これは、コンテナイメージに``latest``タグを使用する際にKubernetesが観察するhttps://kubernetes.io/docs/concepts/containers/images/#imagepullpolicy-defaulting[特別な``imagePullPolicy``のデフォルト設定]と一致します。
+これは、コンテナイメージに``latest``タグを使用する際にKubernetesが観察するlink:https://kubernetes.io/docs/concepts/containers/images/#imagepullpolicy-defaulting[特別な``imagePullPolicy``のデフォルト設定]と一致します。
 
 ``latest``タグのミラーリングは、K3sサービスの環境変数``K3S_P2P_ENABLE_LATEST=true``を設定することで有効にできます。上記の理由から、これはサポートされておらず、推奨されません。
 
