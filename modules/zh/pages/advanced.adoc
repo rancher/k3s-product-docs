@@ -109,7 +109,7 @@ c3675b87f96c        rancher/pause:3.1         "/pause"                 About a m
 
 etcdctl 提供了一个与 etcd 服务器交互的 CLI。K3s 附带 etcdctl。
 
-如果你想使用 etcdctl 与 K3s 的嵌入式 etcd 进行交互，请参阅https://etcd.io/docs/latest/install/[官方文档]安装 etcdctl。
+如果你想使用 etcdctl 与 K3s 的嵌入式 etcd 进行交互，请参阅link:https://etcd.io/docs/latest/install/[官方文档]安装 etcdctl。
 
 [,bash]
 ----
@@ -134,8 +134,8 @@ K3s 会在 `/var/lib/rancher/k3s/agent/etc/containerd/config.toml` 中为 contai
 
 如果要对这个文件进行高级定制，你可以在同一目录中创建另一个名为 `config.toml.tmpl` 的文件，此文件将会代替默认设置。
 
-`config.toml.tmpl` 是一个 Go 模板文件，并且 `config.Node` 结构会被传递给模板。有关如何使用该结构自定义配置文件的 Linux 和 Windows 示例，请参阅https://github.com/k3s-io/k3s/blob/master/pkg/agent/templates[此文件夹]。
-config.Node golang 结构定义在https://github.com/k3s-io/k3s/blob/master/pkg/daemons/config/types.go#L37[这里]。
+`config.toml.tmpl` 是一个 Go 模板文件，并且 `config.Node` 结构会被传递给模板。有关如何使用该结构自定义配置文件的 Linux 和 Windows 示例，请参阅link:https://github.com/k3s-io/k3s/blob/master/pkg/agent/templates[此文件夹]。
+config.Node golang 结构定义在link:https://github.com/k3s-io/k3s/blob/master/pkg/daemons/config/types.go#L37[这里]。
 
 == NVIDIA 容器运行时支持
 
@@ -204,7 +204,7 @@ ____
 
 Rootless 模式允许非特权用户运行 K3s Server，这样可以保护主机上真正的 root 免受潜在的容器攻击。
 
-有关 Rootless 模式 Kubernetes 的更多信息，请参阅https://rootlesscontaine.rs/[此处]。
+有关 Rootless 模式 Kubernetes 的更多信息，请参阅link:https://rootlesscontaine.rs/[此处]。
 
 === Rootless 模式的已知问题
 
@@ -289,7 +289,7 @@ ____
 
 有关详细信息，请参阅 https://github.com/kubernetes/enhancements/blob/master/keps/sig-auth/279-limit-node-access/README.md#proposal[SIG-Auth KEP 279]。
 
-如果你想在节点注册后更改节点标签和污点，或者添加保留标签，请使用 `kubectl`。关于如何添加https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[污点]和https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[节点标签]的详细信息，请参阅官方 Kubernetes 文档。
+如果你想在节点注册后更改节点标签和污点，或者添加保留标签，请使用 `kubectl`。关于如何添加link:https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[污点]和link:https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[节点标签]的详细信息，请参阅官方 Kubernetes 文档。
 
 == 使用安装脚本启动服务
 
@@ -403,7 +403,7 @@ https://github.com/k3d-io/k3d[k3d] 是一个用于在 Docker 中轻松运行多�
 
 K3d 能让你轻松在 Docker 中>创建单节点和多节点 K3s 集群（例如 Kubernetes 上的本地开发）。
 
-有关如何安装和使用 K3d 的更多信息，请参阅https://k3d.io/#installation[安装]文档。
+有关如何安装和使用 K3d 的更多信息，请参阅link:https://k3d.io/#installation[安装]文档。
 --
 
 Tab Docker::

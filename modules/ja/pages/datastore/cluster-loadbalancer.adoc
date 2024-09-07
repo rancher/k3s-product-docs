@@ -175,7 +175,7 @@ docker run -d --restart unless-stopped \
     nginx:stable
 ----
 +
-またはhttps://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/[Nginxをインストール]してから次を実行します：
+またはlink:https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/[Nginxをインストール]してから次を実行します：
 +
 [,bash]
 ----

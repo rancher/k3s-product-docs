@@ -4,7 +4,7 @@
 [CAUTION]
 .アップグレード通知
 ====
-以前のリリースからアップグレードする前に、Kubernetesのhttps://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
+以前のリリースからアップグレードする前に、Kubernetesのlink:https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
 ====
 
 
@@ -840,7 +840,7 @@ runc の CVE: https://nvd.nist.gov/vuln/detail/CVE-2024-21626[CVE-2024-21626] �
 
 このリリースはv1.27ラインのK3Sの最初のリリースです。このリリースではKubernetesをv1.27.1に更新します。
 
-以前のリリースからアップグレードする前に、Kubernetesのhttps://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
+以前のリリースからアップグレードする前に、Kubernetesのlink:https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.27.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
 
 === v1.26.4+k3s1からの変更点:
 

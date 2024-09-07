@@ -4,7 +4,7 @@
 [CAUTION]
 .アップグレード通知
 ====
-以前のリリースからアップグレードする前に、Kubernetesのhttps://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
+以前のリリースからアップグレードする前に、Kubernetesのlink:https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
 ====
 
 
@@ -644,7 +644,7 @@ For more details on what's new, see the https://github.com/kubernetes/kubernetes
 * バリデーションWebhookが作成をブロックする際のservicelb起動失敗問題を修正 https://github.com/k3s-io/k3s/pull/6916[(#6916)]
  ** 組み込みのクラウドコントローラーマネージャーは、起動時に無条件に名前空間とサービスアカウントを再作成しようとしなくなりました。これにより、fail-closed Webhookが使用されている場合にデッドロッククラスターが発生する問題が解決されます。
 * ユーザー提供のCA証明書と``kubeadm``ブートストラップトークンサポートをバックポート https://github.com/k3s-io/k3s/pull/6929[(#6929)]
- ** K3sは、クラスターCA証明書が既存のルートまたは中間CAによって署名されている場合に正しく機能するようになりました。K3sが開始する前にそのような証明書を生成するためのサンプルスクリプトは、githubリポジトリのhttps://github.com/k3s-io/k3s/blob/master/contrib/util/certs.sh[contrib/util/certs.sh]にあります。
+ ** K3sは、クラスターCA証明書が既存のルートまたは中間CAによって署名されている場合に正しく機能するようになりました。K3sが開始する前にそのような証明書を生成するためのサンプルスクリプトは、githubリポジトリのlink:https://github.com/k3s-io/k3s/blob/master/contrib/util/certs.sh[contrib/util/certs.sh]にあります。
  ** K3sは``kubeadm``スタイルの参加トークンをサポートするようになりました。``k3s token create``は、オプションで制限付きTTLを持つ参加トークンシークレットを作成します。
  ** 期限切れまたは削除されたトークンで参加したK3sエージェントは、ノードオブジェクトがクラスターから削除されない限り、NodeAuthorizationアドミッションプラグインを介して既存のクライアント証明書を使用してクラスターに残ります。
 * egress-selector-mode=agentのときにNodeIPのhostNetworkポートへのアクセスを修正 https://github.com/k3s-io/k3s/pull/6936[(#6936)]
@@ -691,7 +691,7 @@ For more details on what's new, see the https://github.com/kubernetes/kubernetes
 === v1.25.5+k3s1からの変更点:
 
 * containerdをv1.6.14-k3s1にバンプ https://github.com/k3s-io/k3s/pull/6694[(#6694)]
- ** 組み込みのcontainerdバージョンがv1.6.14-k3s1にバンプされました。これには、containerdの再起動時にポッドがCNI情報を失い、kubeletがポッドを再作成する原因となるhttps://github.com/containerd/containerd/issues/7843[containerd/7843]の修正がバックポートされています。
+ ** 組み込みのcontainerdバージョンがv1.6.14-k3s1にバンプされました。これには、containerdの再起動時にポッドがCNI情報を失い、kubeletがポッドを再作成する原因となるlink:https://github.com/containerd/containerd/issues/7843[containerd/7843]の修正がバックポートされています。
 
 '''
 
@@ -702,7 +702,7 @@ For more details on what's new, see the https://github.com/kubernetes/kubernetes
 ____
 == ⚠️ 警告
 
-このリリースは、K3sが再起動されるたびにkubeletがすべてのポッドを再起動する原因となるhttps://github.com/containerd/containerd/issues/7843の影響を受けます。このため、このK3sリリースをチャネルサーバーから削除しました。代わりに``v1.25.5+k3s2``を使用してください。
+このリリースは、K3sが再起動されるたびにkubeletがすべてのポッドを再起動する原因となるlink:https://github.com/containerd/containerd/issues/7843の影響を受けます。このため、このK3sリリースをチャネルサーバーから削除しました。代わりに``v1.25.5+k3s2``を使用してください。
 ____
 
 このリリースはKubernetesをv1.25.5に更新し、多くの問題を修正します。
@@ -865,7 +865,7 @@ ____
 
 このリリースは、v1.25ラインにおけるK3Sの最初のリリースです。このリリースでは、Kubernetesをv1.25.0に更新します。
 
-以前のリリースからアップグレードする前に、Kubernetesのhttps://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
+以前のリリースからアップグレードする前に、Kubernetesのlink:https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.25.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
 
 *重要な注意事項:* Kubernetes v1.25では、ベータ版の``PodSecurityPolicy``アドミッションプラグインが削除されます。v1.25.0+k3s1にアップグレードする前に、組み込みのPodSecurityアドミッションプラグインを使用している場合は、https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/[上流のドキュメント]に従ってPSPから移行してください。
 
@@ -883,7 +883,7 @@ ____
 * Kubernetesの正しいgolangバージョンを確認するための検証チェックを追加 https://github.com/k3s-io/k3s/pull/6050[(#6050)]
 * スタートアップ統合テストを拡張 https://github.com/k3s-io/k3s/pull/6030[(#6030)]
 * go.modバージョンを1.19に更新 https://github.com/k3s-io/k3s/pull/6049[(#6049)]
-* `--cluster-secret`、`--no-deploy`、および``--no-flannel``の使用はサポートされなくなりました。これらのフラグを使用しようとすると致命的なエラーが発生します。代替についてはhttps://k3s-io.github.io/docs/reference/server-config#deprecated-options[ドキュメント]を参照してください。 https://github.com/k3s-io/k3s/pull/6069[(#6069)]
+* `--cluster-secret`、`--no-deploy`、および``--no-flannel``の使用はサポートされなくなりました。これらのフラグを使用しようとすると致命的なエラーが発生します。代替についてはlink:https://k3s-io.github.io/docs/reference/server-config#deprecated-options[ドキュメント]を参照してください。 https://github.com/k3s-io/k3s/pull/6069[(#6069)]
 * 古いiptablesバージョンの問題を修正するためにFlannelバージョンを更新 https://github.com/k3s-io/k3s/pull/6090[(#6090)]
 * バンドルされたruncのバージョンをv1.1.4に更新 https://github.com/k3s-io/k3s/pull/6071[(#6071)]
 * 組み込みのcontainerdバージョンをv1.6.8-k3s1に更新 https://github.com/k3s-io/k3s/pull/6078[(#6078)]

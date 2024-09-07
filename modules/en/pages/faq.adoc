@@ -58,14 +58,8 @@ In short, servers can be newer than agents, but agents cannot be newer than serv
 
 If you are having an issue with deploying K3s, you should:
 
-1) Check the xref:./known-issues.adoc[Known Issues] page.
-
-2) Check that you have resolved any xref:./installation/requirements.adoc#_operating-systems[Additional OS Preparation]. Run `k3s check-config` and ensure that it passes.
-
-3) Search the K3s https://github.com/k3s-io/k3s/issues[Issues] and https://github.com/k3s-io/k3s/discussions[Discussions] for one that matches your problem.
-
-// lint disable no-dead-urls
-
-4) Join the https://slack.rancher.io/[Rancher Slack] K3s channel to get help.
-
-5) Submit a https://github.com/k3s-io/k3s/issues/new/choose[New Issue] on the K3s Github describing your setup and the issue you are experiencing.
+. Check the xref:./known-issues.adoc[Known Issues] page.
+. Check that you have resolved any xref:./installation/requirements.adoc#_operating-systems[Additional OS Preparation]. Run `k3s check-config` and ensure that it passes.
+. Search the K3s https://github.com/k3s-io/k3s/issues[Issues] and https://github.com/k3s-io/k3s/discussions[Discussions] for one that matches your problem.
+. Join the https://slack.rancher.io/[Rancher Slack] K3s channel to get help.
+. Submit a https://github.com/k3s-io/k3s/issues/new/choose[New Issue] on the K3s Github describing your setup and the issue you are experiencing.

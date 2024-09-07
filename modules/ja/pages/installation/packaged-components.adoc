@@ -14,11 +14,11 @@ K3sには、`coredns`、`traefik`、`local-storage`、および `metrics-server`
 
 === ユーザーAddOns
 
-追加のファイルをマニフェストディレクトリに配置して `AddOn` としてデプロイすることができます。各ファイルには、`---` YAMLドキュメントセパレーターで区切られた複数のKubernetesリソースを含めることができます。マニフェスト内のリソースの整理に関する詳細は、Kubernetesドキュメントのhttps://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/[リソース管理]セクションを参照してください。
+追加のファイルをマニフェストディレクトリに配置して `AddOn` としてデプロイすることができます。各ファイルには、`---` YAMLドキュメントセパレーターで区切られた複数のKubernetesリソースを含めることができます。マニフェスト内のリソースの整理に関する詳細は、Kubernetesドキュメントのlink:https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/[リソース管理]セクションを参照してください。
 
 ==== ファイル命名要件
 
-マニフェストディレクトリ内の各ファイルの `AddOn` 名は、ファイルのベース名から派生します。マニフェストディレクトリ内（またはサブディレクトリ内）のすべてのファイルが一意の名前を持ち、Kubernetesのhttps://kubernetes.io/docs/concepts/overview/working-with-objects/names/[オブジェクト命名制限]に従うようにしてください。デフォルトのK3sパッケージ化コンポーネントで使用されている名前と競合しないようにも注意が必要です。
+マニフェストディレクトリ内の各ファイルの `AddOn` 名は、ファイルのベース名から派生します。マニフェストディレクトリ内（またはサブディレクトリ内）のすべてのファイルが一意の名前を持ち、Kubernetesのlink:https://kubernetes.io/docs/concepts/overview/working-with-objects/names/[オブジェクト命名制限]に従うようにしてください。デフォルトのK3sパッケージ化コンポーネントで使用されている名前と競合しないようにも注意が必要です。
 
 ファイル名にアンダースコアが含まれている場合に報告されるエラーの例を以下に示します：
 

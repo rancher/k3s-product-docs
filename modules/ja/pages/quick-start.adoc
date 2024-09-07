@@ -8,7 +8,7 @@ K3sコンポーネントがどのように連携するかについては、xref:
 
 [IMPORTANT]
 ====
-Kubernetesに初めて触れる方へ：公式のKubernetesドキュメントには、基本を説明する素晴らしいチュートリアルがhttps://kubernetes.io/docs/tutorials/kubernetes-basics/[こちら]にあります。
+Kubernetesに初めて触れる方へ：公式のKubernetesドキュメントには、基本を説明する素晴らしいチュートリアルがlink:https://kubernetes.io/docs/tutorials/kubernetes-basics/[こちら]にあります。
 ====
 
 

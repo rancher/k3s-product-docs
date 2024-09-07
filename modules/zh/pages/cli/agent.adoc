@@ -202,7 +202,7 @@ K3s Agent 可以通过 `--node-label` 和 `--node-taint` 选项来配置，它�
      --node-taint key1=value1:NoExecute
 ----
 
-如果你想在节点注册后更改节点标签和污点，你需要使用 `kubectl`。关于如何添加https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[污点]和https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[节点标签]的详细信息，请参阅官方 Kubernetes 文档。
+如果你想在节点注册后更改节点标签和污点，你需要使用 `kubectl`。关于如何添加link:https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[污点]和link:https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[节点标签]的详细信息，请参阅官方 Kubernetes 文档。
 
 [discrete]
 === K3s Agent CLI 帮助
