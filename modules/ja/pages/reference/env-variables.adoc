@@ -54,7 +54,7 @@ curl -sfL https://get.k3s.io | sh -
 | trueに設定すると、k3s RPMの自動インストールをスキップします。
 
 | `INSTALL_K3S_CHANNEL_URL`
-| K3sダウンロードURLを取得するためのチャネルURL。デフォルトはhttps://update.k3s.io/v1-release/channelsです。
+| K3sダウンロードURLを取得するためのチャネルURL。デフォルトはlink:https://update.k3s.io/v1-release/channelsです。
 
 | `INSTALL_K3S_CHANNEL`
 | K3sダウンロードURLを取得するためのチャネル。デフォルトは「stable」です。オプションには``stable``、`latest`、``testing``があります。

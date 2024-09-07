@@ -4,7 +4,7 @@
 
 xref:./manual.adoc[手動アップグレード]では、クラスターを手動でアップグレードするためのいくつかの技術について説明しています。また、https://www.terraform.io/[Terraform]のようなサードパーティのInfrastructure-as-Codeツールを使用してアップグレードするための基礎としても使用できます。
 
-xref:./automated.adoc[自動アップグレード]では、Rancherのhttps://github.com/rancher/system-upgrade-controller[system-upgrade-controller]を使用してKubernetesネイティブの自動アップグレードを実行する方法について説明しています。
+xref:./automated.adoc[自動アップグレード]では、Rancherのlink:https://github.com/rancher/system-upgrade-controller[system-upgrade-controller]を使用してKubernetesネイティブの自動アップグレードを実行する方法について説明しています。
 
 == バージョン固有の注意点
 

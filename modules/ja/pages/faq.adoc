@@ -20,7 +20,7 @@ K3sはCNCF認定のKubernetesディストリビューションであり、標準
 
 == ソースからビルドするにはどうすればよいですか？
 
-K3sのhttps://github.com/k3s-io/k3s/blob/master/BUILDING.md[BUILDING.md]を参照してください。
+K3sのlink:https://github.com/k3s-io/k3s/blob/master/BUILDING.md[BUILDING.md]を参照してください。
 
 == K3sのログはどこにありますか？
 
@@ -60,10 +60,10 @@ K3sのデプロイに問題がある場合は、以下を行ってください�
 
 2) xref:./installation/requirements.adoc#_operating-systems[追加のOS準備]が解決されていることを確認してください。``k3s check-config``を実行し、パスすることを確認してください。
 
-3) K3sのhttps://github.com/k3s-io/k3s/issues[Issues]およびhttps://github.com/k3s-io/k3s/discussions[Discussions]で、問題に一致するものを検索してください。
+3) K3sのlink:https://github.com/k3s-io/k3s/issues[Issues]およびlink:https://github.com/k3s-io/k3s/discussions[Discussions]で、問題に一致するものを検索してください。
 
 // lint disable no-dead-urls
 
 4) https://slack.rancher.io/[Rancher Slack]のK3sチャンネルに参加して助けを求めてください。
 
-5) K3s Githubにhttps://github.com/k3s-io/k3s/issues/new/choose[新しいIssue]を提出し、セットアップと発生している問題を説明してください。
+5) K3s Githubにlink:https://github.com/k3s-io/k3s/issues/new/choose[新しいIssue]を提出し、セットアップと発生している問題を説明してください。

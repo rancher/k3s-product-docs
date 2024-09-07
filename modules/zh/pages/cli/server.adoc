@@ -162,7 +162,7 @@
 
 | `--write-kubeconfig-mode` value
 | `K3S_KUBECONFIG_MODE`
-| 使用此https://en.wikipedia.org/wiki/Chmod[模式]写入 kubeconfig。kubeconfig 文件归 root 所有，并默认使用 600 模式写入。如果将模式改为 644，主机上的其他非特权用户将能读取它。
+| 使用此link:https://en.wikipedia.org/wiki/Chmod[模式]写入 kubeconfig。kubeconfig 文件归 root 所有，并默认使用 600 模式写入。如果将模式改为 644，主机上的其他非特权用户将能读取它。
 |===
 
 == 高级选项

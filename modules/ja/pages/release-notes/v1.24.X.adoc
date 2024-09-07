@@ -4,7 +4,7 @@
 [CAUTION]
 .アップグレード通知
 ====
-以前のリリースからアップグレードする前に、Kubernetesのhttps://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.24.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
+以前のリリースからアップグレードする前に、Kubernetesのlink:https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.24.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
 ====
 
 
@@ -641,7 +641,7 @@ ____
 
 このリリースはKubernetesをv1.24.7に更新し、多くの問題を修正します。
 
-K3sのhttps://docs.k3s.io/security/hardening-guide[CIS強化ガイド]が更新され、cloud controller managerにServiceLBを埋め込むために必要な設定変更が含まれています。強化ガイドに従った場合は、ポリシーとRBACを適宜更新してください。
+K3sのlink:https://docs.k3s.io/security/hardening-guide[CIS強化ガイド]が更新され、cloud controller managerにServiceLBを埋め込むために必要な設定変更が含まれています。強化ガイドに従った場合は、ポリシーとRBACを適宜更新してください。
 
 新機能の詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.24.md#changelog-since-v1246[Kubernetesリリースノート]を参照してください。
 
@@ -700,7 +700,7 @@ K3sのhttps://docs.k3s.io/security/hardening-guide[CIS強化ガイド]が更新�
 
 このリリースはKubernetesをv1.24.4に更新し、多くの問題を修正します。
 
-このリリースは、v1.24ブランチに``--docker``フラグの使用を復元します。詳細はhttps://github.com/k3s-io/k3s/blob/master/docs/adrs/cri-dockerd.md[docs/adrs/cri-dockerd.md]を参照してください。
+このリリースは、v1.24ブランチに``--docker``フラグの使用を復元します。詳細はlink:https://github.com/k3s-io/k3s/blob/master/docs/adrs/cri-dockerd.md[docs/adrs/cri-dockerd.md]を参照してください。
 
 新機能の詳細については、https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.24.md#changelog-since-v1243[Kubernetesリリースノート]を参照してください。
 
@@ -800,7 +800,7 @@ K3sのhttps://docs.k3s.io/security/hardening-guide[CIS強化ガイド]が更新�
 * SECURITY.mdを更新 https://github.com/k3s-io/k3s/pull/5607[(#5607)]
 * pprofサーバーをオプションで実行するための--enable-pprofフラグを導入 https://github.com/k3s-io/k3s/pull/5527[(#5527)]
 * E2E: デュアルスタックテスト https://github.com/k3s-io/k3s/pull/5617[(#5617)]
-* ServiceLBによって作成されたポッドはすべて``kube-system``ネームスペースに配置されるようになりました。これにより、ユーザーネームスペースでhttps://kubernetes.io/docs/tasks/configure-pod-container/enforce-standards-namespace-labels/[ポッドセキュリティ基準を強制]してもServiceLBが壊れなくなります。 https://github.com/k3s-io/k3s/pull/5657[(#5657)]
+* ServiceLBによって作成されたポッドはすべて``kube-system``ネームスペースに配置されるようになりました。これにより、ユーザーネームスペースでlink:https://kubernetes.io/docs/tasks/configure-pod-container/enforce-standards-namespace-labels/[ポッドセキュリティ基準を強制]してもServiceLBが壊れなくなります。 https://github.com/k3s-io/k3s/pull/5657[(#5657)]
 * E2E: testpadの準備、代替スクリプトの場所を追加 https://github.com/k3s-io/k3s/pull/5692[(#5692)]
 * armテストとアップグレードテストを追加 https://github.com/k3s-io/k3s/pull/5526[(#5526)]
 * スタートアップフックが終了するまでサービスの準備を遅延 https://github.com/k3s-io/k3s/pull/5649[(#5649)]

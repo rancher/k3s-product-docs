@@ -9,7 +9,7 @@ https://github.com/flannel-io/flannel/blob/master/README.md[Flannel]は、Kubern
 * Flannelオプションはサーバーノードでのみ設定でき、クラスター内のすべてのサーバーで同一である必要があります。
 * Flannelのデフォルトバックエンドは``vxlan``です。暗号化を有効にするには、``wireguard-native``バックエンドを使用します。
 * 最近のバージョンのUbuntuを使用しているRaspberry Piで``vxlan``を使用するには、xref:../installation/requirements.adoc#os_tab_raspberry_pi[追加の準備]が必要です。
-* Flannelバックエンドとして``wireguard-native``を使用する場合、一部のLinuxディストリビューションでは追加のモジュールが必要になることがあります。詳細についてはhttps://www.wireguard.com/install/[WireGuardインストールガイド]を参照してください。WireGuardのインストール手順に従うことで、適切なカーネルモジュールがインストールされます。WireGuard Flannelバックエンドを使用する前に、すべてのノード（サーバーとエージェント）でWireGuardカーネルモジュールが利用可能であることを確認する必要があります。
+* Flannelバックエンドとして``wireguard-native``を使用する場合、一部のLinuxディストリビューションでは追加のモジュールが必要になることがあります。詳細についてはlink:https://www.wireguard.com/install/[WireGuardインストールガイド]を参照してください。WireGuardのインストール手順に従うことで、適切なカーネルモジュールがインストールされます。WireGuard Flannelバックエンドを使用する前に、すべてのノード（サーバーとエージェント）でWireGuardカーネルモジュールが利用可能であることを確認する必要があります。
 
 |===
 | CLIフラグと値 | 説明
@@ -133,7 +133,7 @@ ip6tables-save | grep -iv cilium | ip6tables-restore
 
 == コントロールプレーンのEgress Selector設定
 
-K3sエージェントとサーバーは、コントロールプレーン（apiserver）とエージェント（kubeletおよびcontainerd）コンポーネント間の双方向通信をカプセル化するために使用されるノード間のWebSocketトンネルを維持します。これにより、エージェントがkubeletおよびコンテナランタイムのストリーミングポートを外部接続に公開せずに動作でき、エージェントが無効になっている場合でもコントロールプレーンがクラスターサービスに接続できるようになります。この機能は、他のKubernetesディストリビューションで一般的に使用されるhttps://kubernetes.io/docs/tasks/extend-kubernetes/setup-konnectivity/[Konnectivity]サービスと同等であり、apiserverのEgress Selector設定を介して管理されます。
+K3sエージェントとサーバーは、コントロールプレーン（apiserver）とエージェント（kubeletおよびcontainerd）コンポーネント間の双方向通信をカプセル化するために使用されるノード間のWebSocketトンネルを維持します。これにより、エージェントがkubeletおよびコンテナランタイムのストリーミングポートを外部接続に公開せずに動作でき、エージェントが無効になっている場合でもコントロールプレーンがクラスターサービスに接続できるようになります。この機能は、他のKubernetesディストリビューションで一般的に使用されるlink:https://kubernetes.io/docs/tasks/extend-kubernetes/setup-konnectivity/[Konnectivity]サービスと同等であり、apiserverのEgress Selector設定を介して管理されます。
 
 デフォルトモードは``agent``です。xref:../advanced.adoc#_running-agentless-servers-experimental[エージェントレスサーバー]を実行する場合、``pod``または``cluster``モードが推奨されます。これにより、flannelおよびkube-proxyがない場合でもapiserverがクラスターサービスエンドポイントにアクセスできるようになります。
 
@@ -160,7 +160,7 @@ https://github.com/k3s-io/k3s/releases/tag/v1.23.7%2Bk3s1[v1.23.7+k3s1]から安
 .既知の問題
 ====
 
-1.27以前では、Kubernetesのhttps://github.com/kubernetes/kubernetes/issues/111695[Issue #111695]により、デュアルスタック環境でクラスター通信にプライマリネットワークインターフェースを使用していない場合、KubeletがノードのIPv6アドレスを無視します。このバグを回避するには、1.27以降を使用するか、次のフラグをK3sサーバーおよびエージェントの両方に追加します：
+1.27以前では、Kubernetesのlink:https://github.com/kubernetes/kubernetes/issues/111695[Issue #111695]により、デュアルスタック環境でクラスター通信にプライマリネットワークインターフェースを使用していない場合、KubeletがノードのIPv6アドレスを無視します。このバグを回避するには、1.27以降を使用するか、次のフラグをK3sサーバーおよびエージェントの両方に追加します：
 
 ----
 --kubelet-arg="node-ip=0.0.0.0" # IPv4トラフィックを優先する場合

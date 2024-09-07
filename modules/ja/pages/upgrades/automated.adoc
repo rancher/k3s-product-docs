@@ -2,11 +2,11 @@
 
 == 概要
 
-Rancherのsystem-upgrade-controllerを使用してK3sクラスターのアップグレードを管理できます。これはKubernetesネイティブのクラスターアップグレードアプローチです。これには、https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#custom-resources[カスタムリソース定義（CRD）]、`plan`、およびhttps://kubernetes.io/docs/concepts/architecture/controller/[コントローラー]が含まれます。
+Rancherのsystem-upgrade-controllerを使用してK3sクラスターのアップグレードを管理できます。これはKubernetesネイティブのクラスターアップグレードアプローチです。これには、https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#custom-resources[カスタムリソース定義（CRD）]、`plan`、およびlink:https://kubernetes.io/docs/concepts/architecture/controller/[コントローラー]が含まれます。
 
 プランはアップグレードポリシーと要件を定義します。また、https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/[ラベルセレクター]を使用して、どのノードをアップグレードするかを定義します。K3sクラスターのアップグレードに適したデフォルト設定のプランについては、以下を参照してください。より高度なプラン設定オプションについては、https://github.com/rancher/system-upgrade-controller/blob/master/pkg/apis/upgrade.cattle.io/v1/types.go[CRD]を確認してください。
 
-コントローラーはプランを監視し、アップグレードhttps://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/[ジョブ]を実行するノードを選択してアップグレードをスケジュールします。ジョブが正常に完了すると、コントローラーは実行されたノードにラベルを付けます。
+コントローラーはプランを監視し、アップグレードlink:https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/[ジョブ]を実行するノードを選択してアップグレードをスケジュールします。ジョブが正常に完了すると、コントローラーは実行されたノードにラベルを付けます。
 
 [NOTE]
 ====

@@ -4,7 +4,7 @@
 [CAUTION]
 .アップグレード通知
 ====
-以前のリリースからアップグレードする前に、Kubernetesのhttps://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.26.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
+以前のリリースからアップグレードする前に、Kubernetesのlink:https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.26.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
 ====
 
 
@@ -861,7 +861,7 @@ runc の CVE に対処: https://nvd.nist.gov/vuln/detail/CVE-2024-21626[CVE-2024
 * OpenRC initスクリプトエラー 'openrc-run.sh: source: not found' を修正 https://github.com/k3s-io/k3s/pull/6614[(#6614)]
 * セキュリティADRのためのDependabot設定を追加 https://github.com/k3s-io/k3s/pull/6560[(#6560)]
 * containerdをv1.6.14-k3s1にバンプ https://github.com/k3s-io/k3s/pull/6693[(#6693)]
- ** 組み込みのcontainerdバージョンがv1.6.14-k3s1にバンプされました。これには、containerdの再起動時にポッドがCNI情報を失う問題を引き起こすhttps://github.com/containerd/containerd/issues/7843[containerd/7843]のバックポート修正が含まれています。この問題により、kubeletがポッドを再作成することになります。
+ ** 組み込みのcontainerdバージョンがv1.6.14-k3s1にバンプされました。これには、containerdの再起動時にポッドがCNI情報を失う問題を引き起こすlink:https://github.com/containerd/containerd/issues/7843[containerd/7843]のバックポート修正が含まれています。この問題により、kubeletがポッドを再作成することになります。
 * チャンネルサーバーから12月のr1リリースを除外 https://github.com/k3s-io/k3s/pull/6706[(#6706)]
 
 '''
@@ -873,12 +873,12 @@ runc の CVE に対処: https://nvd.nist.gov/vuln/detail/CVE-2024-21626[CVE-2024
 ____
 == ⚠️ 警告
 
-このリリースは、K3sの再起動時にkubeletがすべてのポッドを再起動する原因となるhttps://github.com/containerd/containerd/issues/7843の影響を受けます。このため、このK3sリリースはチャンネルサーバーから削除されました。代わりに``v1.26.0+k3s2``を使用してください。
+このリリースは、K3sの再起動時にkubeletがすべてのポッドを再起動する原因となるlink:https://github.com/containerd/containerd/issues/7843の影響を受けます。このため、このK3sリリースはチャンネルサーバーから削除されました。代わりに``v1.26.0+k3s2``を使用してください。
 ____
 
 このリリースは、v1.26ラインにおけるK3Sの最初のリリースです。このリリースでは、Kubernetesがv1.26.0に更新されます。
 
-以前のリリースからアップグレードする前に、Kubernetesのhttps://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.26.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
+以前のリリースからアップグレードする前に、Kubernetesのlink:https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.26.md#urgent-upgrade-notes[緊急アップグレードノート]を必ずお読みください。
 
 === v1.25.5+k3s1からの変更点:
 

@@ -111,7 +111,7 @@ Prometheus v2.43.0のスタンドアロンインスタンスを使用して、``
 
 === ワークロードを持つK3sサーバー
 
-これは、K3sサーバーがhttps://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[シンプルなワークロード]とリソースを共有する単一ノードクラスターの要件です。
+これは、K3sサーバーがlink:https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[シンプルなワークロード]とリソースを共有する単一ノードクラスターの要件です。
 
 CPU要件は以下の通りです：
 

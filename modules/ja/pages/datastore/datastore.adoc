@@ -87,7 +87,7 @@ MySQLおよびMariaDBの最も一般的な形式では、``datastore-endpoint``�
 
 より高度な設定パラメータも利用可能です。これらの詳細については、https://github.com/go-sql-driver/mysql#dsn-data-source-name を参照してください。
 
-K3sのhttps://github.com/k3s-io/k3s/issues/1093[既知の問題]により、``tls``パラメータを設定できないことに注意してください。TLS通信はサポートされていますが、例えばこのパラメータを"skip-verify"に設定してK3sが証明書の検証をスキップするようにすることはできません。
+K3sのlink:https://github.com/k3s-io/k3s/issues/1093[既知の問題]により、``tls``パラメータを設定できないことに注意してください。TLS通信はサポートされていますが、例えばこのパラメータを"skip-verify"に設定してK3sが証明書の検証をスキップするようにすることはできません。
 
 データベース名を指定し、それが存在しない場合、サーバーはそれを作成しようとします。
 

@@ -32,7 +32,7 @@ K3s Token 可以使用安全（secure）或短（short）格式。安全格式�
 
 短 Token 格式仅包括用于验证加入集群的节点的密码或持有者 Token。
 
-如果使用了短 Token，则加入的节点会隐式信任 Server 提供的 CA 包，以及跳过 TLS 引导过程中的步骤 2-4。初始连接可能容易受到https://en.wikipedia.org/wiki/Man-in-the-middle_attack[中间人]攻击。
+如果使用了短 Token，则加入的节点会隐式信任 Server 提供的 CA 包，以及跳过 TLS 引导过程中的步骤 2-4。初始连接可能容易受到link:https://en.wikipedia.org/wiki/Man-in-the-middle_attack[中间人]攻击。
 
 == Token 类型
 

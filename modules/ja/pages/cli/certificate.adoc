@@ -31,13 +31,13 @@ k3s certificate rotate --service <SERVICE>,<SERVICE>
 
 == 証明書認証局 (CA) 証明書
 
-Kubernetesの適切な動作には、いくつかのCA証明書が必要です。KubernetesがCA証明書をどのように使用するかについての詳細は、Kubernetesのhttps://kubernetes.io/docs/setup/best-practices/certificates/#all-certificates[PKI証明書と要件]ドキュメントを参照してください。
+Kubernetesの適切な動作には、いくつかのCA証明書が必要です。KubernetesがCA証明書をどのように使用するかについての詳細は、Kubernetesのlink:https://kubernetes.io/docs/setup/best-practices/certificates/#all-certificates[PKI証明書と要件]ドキュメントを参照してください。
 
 デフォルトでは、K3sは最初のサーバーノードの起動時に自己署名のCA証明書を生成します。これらのCA証明書は発行日から10年間有効で、自動的に更新されません。
 
 権威あるCA証明書とキーは、データストアのブートストラップキー内に保存され、link:token.adoc#_server[サーバートークン]をPBKDF2パスフレーズとして使用してAES256-GCMおよびHMAC-SHA1で暗号化されます。
 CA証明書とキーのコピーは、K3sサーバーの起動時にディスクに抽出されます。
-任意のサーバーは、クラスターに参加するノードのリーフ証明書を生成でき、Kubernetesのhttps://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/[証明書API]コントローラーはランタイムで追加の証明書を発行することができます。
+任意のサーバーは、クラスターに参加するノードのリーフ証明書を生成でき、Kubernetesのlink:https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/[証明書API]コントローラーはランタイムで追加の証明書を発行することができます。
 
 CA証明書とキーをローテーションするには、``k3s certificate rotate-ca``コマンドを使用します。
 このコマンドは、更新された証明書とキーが使用可能であることを確認するための整合性チェックを実行します。

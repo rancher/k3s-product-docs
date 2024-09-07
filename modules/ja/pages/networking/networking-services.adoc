@@ -24,17 +24,17 @@ Traefikが使用するノードを制限し、拡張してIngressステータス
 
 Traefikはサーバーの起動時にデフォルトでデプロイされます。詳細についてはxref:../installation/packaged-components.adoc[パッケージ化されたコンポーネントの管理]を参照してください。デフォルトの設定ファイルは``/var/lib/rancher/k3s/server/manifests/traefik.yaml``にあります。
 
-``traefik.yaml``ファイルは手動で編集しないでください。K3sは起動時にデフォルトでファイルを置き換えます。代わりに、Traefikをカスタマイズするには、``/var/lib/rancher/k3s/server/manifests``に追加の``HelmChartConfig``マニフェストを作成します。詳細および例についてはxref:../helm.adoc#_customizing-packaged-components-with-helmchartconfig[HelmChartConfigを使用したパッケージ化されたコンポーネントのカスタマイズ]を参照してください。可能な設定値については、公式のhttps://github.com/traefik/traefik-helm-chart/tree/master/traefik[Traefik Helm設定パラメータ]を参照してください。
+``traefik.yaml``ファイルは手動で編集しないでください。K3sは起動時にデフォルトでファイルを置き換えます。代わりに、Traefikをカスタマイズするには、``/var/lib/rancher/k3s/server/manifests``に追加の``HelmChartConfig``マニフェストを作成します。詳細および例についてはxref:../helm.adoc#_customizing-packaged-components-with-helmchartconfig[HelmChartConfigを使用したパッケージ化されたコンポーネントのカスタマイズ]を参照してください。可能な設定値については、公式のlink:https://github.com/traefik/traefik-helm-chart/tree/master/traefik[Traefik Helm設定パラメータ]を参照してください。
 
 クラスターからTraefikを削除するには、すべてのサーバーを``--disable=traefik``フラグで起動します。
 
 K3sにはTraefik v2が含まれています。K3sバージョン1.21から1.30はTraefik v2をインストールしますが、既存のTraefik v1のインストールが見つかった場合、Traefikはv2にアップグレードされません。K3sバージョン1.20およびそれ以前にはTraefik v1が含まれています。K3sに含まれる特定のTraefikバージョンについては、使用しているバージョンのリリースノートを参照してください。
 
-古いTraefik v1インスタンスからの移行については、https://doc.traefik.io/traefik/migration/v1-to-v2/[Traefikドキュメント]およびhttps://github.com/traefik/traefik-migration-tool[移行ツール]を参照してください。
+古いTraefik v1インスタンスからの移行については、https://doc.traefik.io/traefik/migration/v1-to-v2/[Traefikドキュメント]およびlink:https://github.com/traefik/traefik-migration-tool[移行ツール]を参照してください。
 
 == ネットワークポリシーコントローラー
 
-K3sには埋め込みのネットワークポリシーコントローラーが含まれています。基盤となる実装はhttps://github.com/cloudnativelabs/kube-router[kube-router]のnetpolコントローラーライブラリ（他のkube-router機能は含まれていません）であり、https://github.com/k3s-io/k3s/tree/master/pkg/agent/netpol[こちら]にあります。
+K3sには埋め込みのネットワークポリシーコントローラーが含まれています。基盤となる実装はlink:https://github.com/cloudnativelabs/kube-router[kube-router]のnetpolコントローラーライブラリ（他のkube-router機能は含まれていません）であり、https://github.com/k3s-io/k3s/tree/master/pkg/agent/netpol[こちら]にあります。
 
 これを無効にするには、各サーバーを``--disable-network-policy``フラグで起動します。
 
@@ -51,15 +51,15 @@ ip6tables-save | grep -v KUBE-ROUTER | ip6tables-restore
 
 == サービスロードバランサー
 
-任意のLoadBalancerコントローラーをK3sクラスターにデプロイできます。デフォルトでは、K3sは利用可能なホストポートを使用するhttps://github.com/k3s-io/klipper-lb[ServiceLB]（以前はKlipper LoadBalancerとして知られていた）というロードバランサーを提供します。
+任意のLoadBalancerコントローラーをK3sクラスターにデプロイできます。デフォルトでは、K3sは利用可能なホストポートを使用するlink:https://github.com/k3s-io/klipper-lb[ServiceLB]（以前はKlipper LoadBalancerとして知られていた）というロードバランサーを提供します。
 
 上流のKubernetesでは、LoadBalancerタイプのサービスを作成できますが、デフォルトのロードバランサー実装は含まれていないため、これらのサービスはインストールされるまで``pending``のままです。多くのホステッドサービスは、Amazon EC2やMicrosoft Azureなどのクラウドプロバイダーを必要とし、外部ロードバランサー実装を提供します。対照的に、K3sのServiceLBはクラウドプロバイダーや追加の設定なしでLoadBalancerサービスを使用できるようにします。
 
 === ServiceLBの動作
 
-ServiceLBコントローラーは、``spec.type``フィールドが``LoadBalancer``に設定されたKuberneteshttps://kubernetes.io/docs/concepts/services-networking/service/[サービス]を監視します。
+ServiceLBコントローラーは、``spec.type``フィールドが``LoadBalancer``に設定されたKuberneteslink:https://kubernetes.io/docs/concepts/services-networking/service/[サービス]を監視します。
 
-各LoadBalancerサービスごとに、``kube-system``ネームスペースにhttps://kubernetes.io/docs/concepts/workloads/controllers/daemonset/[DaemonSet]が作成されます。このDaemonSetは、各ノードに``svc-``プレフィックスを持つポッドを作成します。これらのポッドはiptablesを使用して、ポッドのNodePortからサービスのClusterIPアドレスおよびポートにトラフィックを転送します。
+各LoadBalancerサービスごとに、``kube-system``ネームスペースにlink:https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/[DaemonSet]が作成されます。このDaemonSetは、各ノードに``svc-``プレフィックスを持つポッドを作成します。これらのポッドはiptablesを使用して、ポッドのNodePortからサービスのClusterIPアドレスおよびポートにトラフィックを転送します。
 
 ServiceLBポッドが外部IPが設定されたノードで実行されている場合、そのノードの外部IPがサービスの``status.loadBalancer.ingress``アドレスリストに入力されます。そうでない場合は、ノードの内部IPが使用されます。
 
@@ -71,7 +71,7 @@ ServiceLBポッドが外部IPが設定されたノードで実行されている
 
 === 使用方法
 
-K3sでhttps://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer[LoadBalancerタイプのサービス]を作成します。
+K3sでlink:https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer[LoadBalancerタイプのサービス]を作成します。
 
 === ServiceLBノード選択の制御
 

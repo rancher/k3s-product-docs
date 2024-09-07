@@ -12,13 +12,13 @@ K3sバイナリには、クラスターを管理するための追加ツール�
 | K3sエージェントノードを実行し、`containerd`、`flannel`、``kube-router``ネットワークポリシーコントローラー、およびKubernetesの``kubelet``と``kube-proxy``コンポーネントを起動します。詳細はxref:./agent.adoc[``k3s agent``コマンドのドキュメント]を参照してください。
 
 | `k3s kubectl`
-| 組み込みのhttps://kubernetes.io/docs/reference/kubectl[``kubectl``コマンド]を実行します。これはKubernetesのapiserverと対話するためのCLIです。``KUBECONFIG``環境変数が設定されていない場合、自動的に``/etc/rancher/k3s/k3s.yaml``のkubeconfigを使用しようとします。
+| 組み込みのlink:https://kubernetes.io/docs/reference/kubectl[``kubectl``コマンド]を実行します。これはKubernetesのapiserverと対話するためのCLIです。``KUBECONFIG``環境変数が設定されていない場合、自動的に``/etc/rancher/k3s/k3s.yaml``のkubeconfigを使用しようとします。
 
 | `k3s crictl`
-| 組み込みのhttps://github.com/kubernetes-sigs/cri-tools/blob/master/docs/crictl.md[``crictl``コマンド]を実行します。これはKubernetesのコンテナランタイムインターフェース（CRI）と対話するためのCLIです。デバッグに便利です。
+| 組み込みのlink:https://github.com/kubernetes-sigs/cri-tools/blob/master/docs/crictl.md[``crictl``コマンド]を実行します。これはKubernetesのコンテナランタイムインターフェース（CRI）と対話するためのCLIです。デバッグに便利です。
 
 | `k3s ctr`
-| 組み込みのhttps://github.com/projectatomic/containerd/blob/master/docs/cli.md[``ctr``コマンド]を実行します。これはK3sで使用されるコンテナデーモンであるcontainerdのCLIです。デバッグに便利です。
+| 組み込みのlink:https://github.com/projectatomic/containerd/blob/master/docs/cli.md[``ctr``コマンド]を実行します。これはK3sで使用されるコンテナデーモンであるcontainerdのCLIです。デバッグに便利です。
 
 | `k3s token`
 | ブートストラップトークンを管理します。詳細はxref:./token.adoc[``k3s token``コマンドのドキュメント]を参照してください。
