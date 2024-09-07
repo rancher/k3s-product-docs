@@ -54,14 +54,8 @@ Kubernetes 使用名为 `klog` 的日志管理框架，该框架对进程中的�
 
 如果你在部署 K3s 时遇到问题，你应该：
 
-1) 检查xref:./known-issues.adoc[已知问题]页面。
-
-2) 检查你是否已解决xref:./advanced.adoc#_其他操作系统准备[其他操作系统准备]。运行 `k3s check-config` 并确保它通过。
-
-3) 在 K3s https://github.com/k3s-io/k3s/issues[Issues] 和 https://github.com/k3s-io/k3s/discussions[Discussions] 中搜索匹配的问题。
-
-// lint disable no-dead-urls
-
-4) 加入 https://slack.rancher.io/[Rancher Slack] K3s 频道以获得帮助。
-
-5) 在 K3s Github 上提交link:https://github.com/k3s-io/k3s/issues/new/choose[新 issue]，你可以描述你的设置和遇到的问题。
+. 检查xref:./known-issues.adoc[已知问题]页面。
+. 检查你是否已解决xref:./advanced.adoc#_其他操作系统准备[其他操作系统准备]。运行 `k3s check-config` 并确保它通过。
+. 在 K3s https://github.com/k3s-io/k3s/issues[Issues] 和 https://github.com/k3s-io/k3s/discussions[Discussions] 中搜索匹配的问题。
+. 加入 https://slack.rancher.io/[Rancher Slack] K3s 频道以获得帮助。
+. 在 K3s Github 上提交link:https://github.com/k3s-io/k3s/issues/new/choose[新 issue]，你可以描述你的设置和遇到的问题。

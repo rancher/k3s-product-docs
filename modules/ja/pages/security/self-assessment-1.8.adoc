@@ -1618,7 +1618,8 @@ users:
 - name: user
   user:
     client-certificate: /var/lib/rancher/k3s/agent/client-kubelet.crt
-    client-key: /var/lib/rancher/k3s/agent/client-kubelet.key----
+    client-key: /var/lib/rancher/k3s/agent/client-kubelet.key
+----
 ======
 
 === 4.2.11 RotateKubeletServerCertificate 引数が true に設定されていることを確認する（手動）
@@ -1658,7 +1659,8 @@ users:
 - name: user
   user:
     client-certificate: /var/lib/rancher/k3s/agent/client-kubelet.crt
-    client-key: /var/lib/rancher/k3s/agent/client-kubelet.key----
+    client-key: /var/lib/rancher/k3s/agent/client-kubelet.key
+----
 ======
 
 === 4.2.12 Kubeletが強力な暗号化暗号のみを使用することを確認する（手動）
