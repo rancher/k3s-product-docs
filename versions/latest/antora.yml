@@ -1,6 +1,6 @@
 name: k3s
 title: K3s
-version: main
+version: latest
 display_version: 'Latest'
 start_page: en:introduction.adoc
 nav:
