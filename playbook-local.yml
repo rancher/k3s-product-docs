@@ -1,11 +1,12 @@
 site:
   title: K3s
   url: /
-  start_page: k3s:en:introduction.adoc
+  start_page: latest@k3s:en:introduction.adoc
   robots: disallow
 content:
   sources: 
   - url: .
+    start_path: versions/latest
 ui: 
   bundle:
     url: https://github.com/rancher/product-docs-ui/blob/main/build/ui-bundle.zip?raw=true
