@@ -6,7 +6,7 @@ site:
 content:
   sources: 
   - url: .
-    start_path: [versions/latest, versions/latest]
+    start_path: versions/latest
 ui: 
   bundle:
     url: https://github.com/rancher/product-docs-ui/blob/main/build/ui-bundle.zip?raw=true
