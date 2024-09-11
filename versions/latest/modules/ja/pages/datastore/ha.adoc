@@ -41,9 +41,9 @@ curl -sfL https://get.k3s.io | sh -s - server \
   --tls-san=<FIXED_IP> # オプション、固定登録アドレスを使用する場合に必要
 ----
 
-データストアエンドポイントの形式はデータベースの種類によって異なります。詳細については、xref:../datastore/datastore.adoc#_datastore-endpoint-format-and-functionality[データストアエンドポイントの形式]のセクションを参照してください。
+データストアエンドポイントの形式はデータベースの種類によって異なります。詳細については、xref:./datastore.adoc#_datastore-endpoint-format-and-functionality[データストアエンドポイントの形式]のセクションを参照してください。
 
-サーバーノードを起動する際のTLS証明書の設定については、xref:../datastore/datastore.adoc#_external-datastore-configuration-parameters[データストア設定ガイド]を参照してください。
+サーバーノードを起動する際のTLS証明書の設定については、xref:./datastore.adoc#_external-datastore-configuration-parameters[データストア設定ガイド]を参照してください。
 
 [NOTE]
 ====

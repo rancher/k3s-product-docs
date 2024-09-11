@@ -4,7 +4,7 @@ This page explains how CoreDNS, Traefik Ingress controller, Network Policy contr
 
 Refer to the xref:./basic-network-options.adoc[Installation Network Options] page for details on Flannel configuration options and backend selection, or how to set up your own CNI.
 
-For information on which ports need to be opened for K3s, refer to the xref:.../installation/requirements.adoc#_networking[Networking Requirements].
+For information on which ports need to be opened for K3s, refer to the xref:../installation/requirements.adoc#_networking[Networking Requirements].
 
 == CoreDNS
 

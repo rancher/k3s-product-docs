@@ -41,9 +41,9 @@ curl -sfL https://get.k3s.io | sh -s - server \
   --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
 ----
 
-The datastore endpoint format differs based on the database type. For details, refer to the section on xref:../datastore/datastore.adoc#_datastore-endpoint-format-and-functionality[datastore endpoint formats.]
+The datastore endpoint format differs based on the database type. For details, refer to the section on xref:./datastore.adoc#_datastore-endpoint-format-and-functionality[datastore endpoint formats.]
 
-To configure TLS certificates when launching server nodes, refer to the xref:../datastore/datastore.adoc#_external-datastore-configuration-parameters[datastore configuration guide.]
+To configure TLS certificates when launching server nodes, refer to the xref:./datastore.adoc#_external-datastore-configuration-parameters[datastore configuration guide.]
 
 [NOTE]
 ====
