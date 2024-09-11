@@ -1,10 +1,10 @@
 = Quick-Start Guide
 
-This guide will help you quickly launch a cluster with default options. The xref:./installation/installation.adoc[installation section] covers in greater detail how K3s can be set up.
+This guide will help you quickly launch a cluster with default options. The xref:installation/installation.adoc[installation section] covers in greater detail how K3s can be set up.
 
-Make sure your nodes meet the xref:./installation/requirements.adoc[requirements] before proceeding.
+Make sure your nodes meet the xref:installation/requirements.adoc[requirements] before proceeding.
 
-For information on how K3s components work together, refer to the xref:./architecture.adoc[architecture section.]
+For information on how K3s components work together, refer to the xref:architecture.adoc[architecture section.]
 
 [IMPORTANT]
 ====
@@ -44,4 +44,4 @@ Each machine must have a unique hostname. If your machines do not have unique ho
 ====
 
 
-If interested in having more server nodes, see xref:./datastore/ha-embedded.adoc[High Availability Embedded etcd] and xref:./datastore/ha.adoc[High Availability External DB] pages for more information.
+If interested in having more server nodes, see xref:datastore/ha-embedded.adoc[High Availability Embedded etcd] and xref:datastore/ha.adoc[High Availability External DB] pages for more information.

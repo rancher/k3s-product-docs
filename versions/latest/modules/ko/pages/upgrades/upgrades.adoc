@@ -2,9 +2,9 @@
 
 == K3s 클러스터 업그레이드하기
 
-xref:./manual.adoc[수동 업그레이드]에서는 클러스터를 수동으로 업그레이드하는 몇 가지 기술을 설명합니다. 또한 https://www.terraform.io/[Terraform]과 같은 타사 코드형 인프라 도구(Infrastructure-as-Code)를 통한 업그레이드의 기초로 사용할 수도 있습니다.
+xref:upgrades/manual.adoc[수동 업그레이드]에서는 클러스터를 수동으로 업그레이드하는 몇 가지 기술을 설명합니다. 또한 https://www.terraform.io/[Terraform]과 같은 타사 코드형 인프라 도구(Infrastructure-as-Code)를 통한 업그레이드의 기초로 사용할 수도 있습니다.
 
-xref:./automated.adoc[자동 업그레이드]는 Rancher의 https://github.com/rancher/system-upgrade-controller[시스템-업그레이드-컨트롤러(system-upgrade-controller)]를 사용하여 쿠버네티스 네이티브 자동 업그레이드를 수행하는 방법을 설명합니다.
+xref:upgrades/automated.adoc[자동 업그레이드]는 Rancher의 https://github.com/rancher/system-upgrade-controller[시스템-업그레이드-컨트롤러(system-upgrade-controller)]를 사용하여 쿠버네티스 네이티브 자동 업그레이드를 수행하는 방법을 설명합니다.
 
 == 버전별 주의사항
 

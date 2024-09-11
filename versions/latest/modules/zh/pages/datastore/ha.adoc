@@ -9,7 +9,7 @@
 * 可选：零个或多个 *Agent 节点*，用于运行你的应用和服务
 * 可选：*固定注册地址*，供 Agent 节点注册到集群
 
-有关这些组件如何协同工作的详细信息，请参阅xref:../architecture.adoc#_高可用-k3s[架构]。
+有关这些组件如何协同工作的详细信息，请参阅xref:architecture.adoc#_高可用_k3s[架构]。
 
 == 安装概要
 
@@ -17,15 +17,15 @@
 
 === 1. 创建外部数据存储
 
-你首先需要为集群创建一个外部数据存储。有关更多详细信息，请参阅xref:./datastore.adoc[集群数据存储选项]文档。
+你首先需要为集群创建一个外部数据存储。有关更多详细信息，请参阅xref:datastore/datastore.adoc[集群数据存储选项]文档。
 
 === 2. 启动 Server 节点
 
-K3s 需要两个或更多的 Server 节点来实现 HA 配置。有关最低主机要求，请参阅xref:../installation/requirements.adoc[安装要求]。
+K3s 需要两个或更多的 Server 节点来实现 HA 配置。有关最低主机要求，请参阅xref:installation/requirements.adoc[安装要求]。
 
 在这些节点上运行 `k3s server` 命令时，你必须设置 `datastore-endpoint` 参数，以便 K3s 知道如何连接到外部数据存储。`token` 参数也可以用来在添加节点时设置一个固定的 token。当为空时，将自动生成 token。
 
-例如，你可以使用如下命令安装 K3s Server，并使用 MySQL 数据库作为外部数据存储和xref:../cli/server.adoc#_集群选项[设置 token]：
+例如，你可以使用如下命令安装 K3s Server，并使用 MySQL 数据库作为外部数据存储和xref:cli/server.adoc#_集群选项[设置 token]：
 
 [,bash]
 ----
@@ -35,13 +35,13 @@ curl -sfL https://get.k3s.io | sh -s - server \
   --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
 ----
 
-根据数据库类型的不同，数据存储端点的格式也不同。有关详细信息，请参阅xref:../datastore/datastore.adoc#_数据存储端点格式和功能[数据存储端点格式]。
+根据数据库类型的不同，数据存储端点的格式也不同。有关详细信息，请参阅xref:datastore/datastore.adoc#_数据存储端点格式和功能[数据存储端点格式]。
 
-要在启动 server 节点时配置 TLS 证书，请参阅xref:../datastore/datastore.adoc#_外部数据库配置参数[数据存储配置指南]。
+要在启动 server 节点时配置 TLS 证书，请参阅xref:datastore/datastore.adoc#_外部数据库配置参数[数据存储配置指南]。
 
 [NOTE]
 ====
-单台 Server 安装时可用的安装选项也适用于高可用安装。有关详细信息，请参阅xref:../installation/configuration.adoc[配置选项]文档。
+单台 Server 安装时可用的安装选项也适用于高可用安装。有关详细信息，请参阅xref:installation/configuration.adoc[配置选项]文档。
 ====
 
 
@@ -60,7 +60,7 @@ curl -sfL https://get.k3s.io | sh -s - server \
 cat /var/lib/rancher/k3s/server/token
 ----
 
-然后可以xref:../cli/server.adoc#_集群选项[使用 Token] 添加其他 Server 节点：
+然后可以xref:cli/server.adoc#_集群选项[使用 Token] 添加其他 Server 节点：
 
 [,bash]
 ----
@@ -101,7 +101,7 @@ Agent 节点需要一个 URL 来注册。这可以是任何 server 节点的 IP 
 * 轮询 DNS
 * 虚拟或弹性 IP 地址
 
-有关示例配置，请参阅xref:./cluster-loadbalancer.adoc[集群负载均衡器]。
+有关示例配置，请参阅xref:datastore/cluster-loadbalancer.adoc[集群负载均衡器]。
 
 这个端点也可以用来访问 Kubernetes API。因此，你可以修改 https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/[kubeconfig] 文件来指向它，而不是特定的节点。
 

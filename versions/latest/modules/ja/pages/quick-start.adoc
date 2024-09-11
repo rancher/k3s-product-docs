@@ -1,10 +1,10 @@
 = クイックスタートガイド
 
-このガイドは、デフォルトオプションでクラスターを迅速に起動するのに役立ちます。xref:./installation/installation.adoc[インストールセクション]では、K3sのセットアップ方法について詳しく説明しています。
+このガイドは、デフォルトオプションでクラスターを迅速に起動するのに役立ちます。xref:installation/installation.adoc[インストールセクション]では、K3sのセットアップ方法について詳しく説明しています。
 
-進める前に、ノードがxref:./installation/requirements.adoc[要件]を満たしていることを確認してください。
+進める前に、ノードがxref:installation/requirements.adoc[要件]を満たしていることを確認してください。
 
-K3sコンポーネントがどのように連携するかについては、xref:./architecture.adoc[アーキテクチャセクション]を参照してください。
+K3sコンポーネントがどのように連携するかについては、xref:architecture.adoc[アーキテクチャセクション]を参照してください。
 
 [IMPORTANT]
 ====
@@ -44,4 +44,4 @@ curl -sfL https://get.k3s.io | K3S_URL=https://myserver:6443 K3S_TOKEN=mynodetok
 ====
 
 
-追加のサーバーノードに興味がある場合は、xref:./datastore/ha-embedded.adoc[高可用性埋め込みetcd]およびxref:./datastore/ha.adoc[高可用性外部DB]ページを参照してください。
+追加のサーバーノードに興味がある場合は、xref:datastore/ha-embedded.adoc[高可用性埋め込みetcd]およびxref:datastore/ha.adoc[高可用性外部DB]ページを参照してください。

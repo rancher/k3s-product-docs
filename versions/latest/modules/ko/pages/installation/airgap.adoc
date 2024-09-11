@@ -17,7 +17,7 @@ If you have not yet set up a private Docker registry, refer to the https://docs.
 . Obtain the images archive for your architecture from the https://github.com/k3s-io/k3s/releases[releases] page for the version of K3s you will be running.
 . Use `docker image load k3s-airgap-images-amd64.tar.zst` to import images from the tar file into docker.
 . Use `docker tag` and `docker push` to retag and push the loaded images to your private registry.
-. Follow the xref:./private-registry.adoc[Private Registry Configuration] guide to create and configure the `registries.yaml` file.
+. Follow the xref:installation/private-registry.adoc[Private Registry Configuration] guide to create and configure the `registries.yaml` file.
 . Proceed to the <<_install_k3s,Install K3s>> section below.
 
 === Manually Deploy Images Method
@@ -55,7 +55,7 @@ When enabled and properly configured, images available in the containerd image s
 can be pulled by other cluster members without access to an external image registry.
 
 The mirrored images may be sourced from an upstream registry, registry mirror, or airgap image tarball.
-For more information on enabling the embedded distributed registry mirror, see the xref:./registry-mirror.adoc[Embedded Registry Mirror] documentation.
+For more information on enabling the embedded distributed registry mirror, see the xref:installation/registry-mirror.adoc[Embedded Registry Mirror] documentation.
 
 == Install K3s
 
@@ -95,7 +95,7 @@ On air-gapped machine:
 sudo yum install ./k3s-selinux-1.4-1.el8.noarch.rpm
 ----
 
-See the xref:../advanced.adoc#_selinux-support[SELinux] section for more information.
+See the xref:advanced.adoc#_selinux_support[SELinux] section for more information.
 
 === Installing K3s in an Air-Gapped Environment
 
@@ -129,7 +129,7 @@ The token from the server is typically found at `/var/lib/rancher/k3s/server/tok
 Tab High Availability Configuration::
 +
 --
-Reference the xref:../datastore/ha.adoc[High Availability with an External DB] or xref:../datastore/ha-embedded.adoc[High Availability with Embedded DB] guides. You will be tweaking install commands so you specify `INSTALL_K3S_SKIP_DOWNLOAD=true` and run your install script locally instead of via curl. You will also utilize `INSTALL_K3S_EXEC='args'` to supply any arguments to k3s.
+Reference the xref:datastore/ha.adoc[High Availability with an External DB] or xref:datastore/ha-embedded.adoc[High Availability with Embedded DB] guides. You will be tweaking install commands so you specify `INSTALL_K3S_SKIP_DOWNLOAD=true` and run your install script locally instead of via curl. You will also utilize `INSTALL_K3S_EXEC='args'` to supply any arguments to k3s.
 
 For example, step two of the High Availability with an External DB guide mentions the following:
 
@@ -170,7 +170,7 @@ with the same environment variables.
 
 === Automated Upgrades Method
 
-K3s supports xref:../upgrades/automated.adoc[automated upgrades]. To enable this in air-gapped environments, you must ensure the required images are available in your private registry.
+K3s supports xref:upgrades/automated.adoc[automated upgrades]. To enable this in air-gapped environments, you must ensure the required images are available in your private registry.
 
 You will need the version of rancher/k3s-upgrade that corresponds to the version of K3s you intend to upgrade to. Note, the image tag replaces the `+` in the K3s release with a `-` because Docker images do not support `+`.
 
@@ -181,4 +181,4 @@ rancher/system-upgrade-controller:v0.4.0
 rancher/kubectl:v0.17.0
 ----
 
-Once you have added the necessary rancher/k3s-upgrade, rancher/system-upgrade-controller, and rancher/kubectl images to your private registry, follow the xref:../upgrades/automated.adoc[automated upgrades] guide.
+Once you have added the necessary rancher/k3s-upgrade, rancher/system-upgrade-controller, and rancher/kubectl images to your private registry, follow the xref:upgrades/automated.adoc[automated upgrades] guide.

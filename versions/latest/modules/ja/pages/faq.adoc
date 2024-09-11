@@ -4,7 +4,7 @@ FAQは定期的に更新され、K3sに関してユーザーが最も頻繁に�
 
 == K3sはKubernetesの代替として適していますか？
 
-K3sはCNCF認定のKubernetesディストリビューションであり、標準的なKubernetesクラスターに必要なすべてのことを実行できます。ただし、より軽量なバージョンです。詳細についてはxref:./introduction.adoc[メイン]ドキュメントページを参照してください。
+K3sはCNCF認定のKubernetesディストリビューションであり、標準的なKubernetesクラスターに必要なすべてのことを実行できます。ただし、より軽量なバージョンです。詳細についてはxref:introduction.adoc[メイン]ドキュメントページを参照してください。
 
 == Traefikの代わりに自分のIngressを使用するにはどうすればよいですか？
 
@@ -16,7 +16,7 @@ K3sはCNCF認定のKubernetesディストリビューションであり、標準
 
 == サーバーとエージェントとは具体的に何ですか？
 
-サーバーとエージェントを構成するコンポーネントの詳細については、xref:./architecture.adoc[アーキテクチャページ]を参照してください。
+サーバーとエージェントを構成するコンポーネントの詳細については、xref:architecture.adoc[アーキテクチャページ]を参照してください。
 
 == ソースからビルドするにはどうすればよいですか？
 
@@ -36,15 +36,15 @@ K3sを起動する際に``--debug``フラグ（または設定ファイルで``d
 
 Kubernetesは``klog``というロギングフレームワークを使用しており、プロセス内のすべてのコンポーネントに対して単一のロギング設定を使用します。K3sはすべてのKubernetesコンポーネントを単一のプロセス内で実行するため、個々のKubernetesコンポーネントに対して異なるログレベルや出力先を設定することはできません。``-v=<level>``や``--vmodule=<module>=<level>``のコンポーネント引数を使用しても、期待通りの効果は得られない可能性があります。
 
-さらに多くのログオプションについては、xref:./advanced.adoc#_additional-logging-sources[追加のログソース]を参照してください。
+さらに多くのログオプションについては、xref:advanced.adoc#_additional_logging_sources[追加のログソース]を参照してください。
 
 == DockerでK3sを実行できますか？
 
-はい、DockerでK3sを実行する方法はいくつかあります。詳細についてはxref:./advanced.adoc#_running-k3s-in-docker[高度なオプション]を参照してください。
+はい、DockerでK3sを実行する方法はいくつかあります。詳細についてはxref:advanced.adoc#_running_k3s_in_docker[高度なオプション]を参照してください。
 
 == K3sサーバーとエージェントトークンの違いは何ですか？
 
-K3sの参加トークンの管理に関する詳細は、xref:./cli/token.adoc[``k3s token``コマンドのドキュメント]を参照してください。
+K3sの参加トークンの管理に関する詳細は、xref:cli/token.adoc[``k3s token``コマンドのドキュメント]を参照してください。
 
 == 異なるバージョンのK3sの互換性はどの程度ですか？
 
@@ -56,8 +56,8 @@ K3sの参加トークンの管理に関する詳細は、xref:./cli/token.adoc[`
 
 K3sのデプロイに問題がある場合は、以下を行ってください：
 
-. xref:./known-issues.adoc[既知の問題]ページを確認してください。
-. xref:./installation/requirements.adoc#_operating-systems[追加のOS準備]が解決されていることを確認してください。``k3s check-config``を実行し、パスすることを確認してください。
+. xref:known-issues.adoc[既知の問題]ページを確認してください。
+. xref:installation/requirements.adoc#_operating_systems[追加のOS準備]が解決されていることを確認してください。``k3s check-config``を実行し、パスすることを確認してください。
 . K3sのlink:https://github.com/k3s-io/k3s/issues[Issues]およびlink:https://github.com/k3s-io/k3s/discussions[Discussions]で、問題に一致するものを検索してください。
 . https://slack.rancher.io/[Rancher Slack]のK3sチャンネルに参加して助けを求めてください。
 . K3s Githubにlink:https://github.com/k3s-io/k3s/issues/new/choose[新しいIssue]を提出し、セットアップと発生している問題を説明してください。

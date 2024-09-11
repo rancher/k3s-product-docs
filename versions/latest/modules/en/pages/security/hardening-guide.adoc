@@ -579,7 +579,7 @@ sudo systemctl restart k3s.service
 
 == Configuration for Kubernetes Components
 
-The configuration below should be placed in the xref:../installation/configuration.adoc#_configuration_file[configuration file], and contains all the necessary remediations to harden the Kubernetes components.
+The configuration below should be placed in the xref:installation/configuration.adoc#_configuration_file[configuration file], and contains all the necessary remediations to harden the Kubernetes components.
 
 [tabs,sync-group-id=pod-sec]
 ======
@@ -724,8 +724,8 @@ kubelet-arg:
 
 All the 5.X Controls are related to Kubernetes policy configuration. These controls are not enforced by K3s by default.
 
-Refer to xref:./self-assessment-1.8.adoc#_51_rbac_and_service_accounts[CIS 1.8 Section 5] for more information on how to create and apply these policies.
+Refer to xref:security/self-assessment-1.8.adoc#_51_rbac_and_service_accounts[CIS 1.8 Section 5] for more information on how to create and apply these policies.
 
 == Conclusion
 
-If you have followed this guide, your K3s cluster will be configured to comply with the CIS Kubernetes Benchmark. You can review the xref:./self-assessment-1.8.adoc[CIS 1.8 Self-Assessment Guide] to understand the expectations of each of the benchmark's checks and how you can do the same on your cluster.
+If you have followed this guide, your K3s cluster will be configured to comply with the CIS Kubernetes Benchmark. You can review the xref:security/self-assessment-1.8.adoc[CIS 1.8 Self-Assessment Guide] to understand the expectations of each of the benchmark's checks and how you can do the same on your cluster.

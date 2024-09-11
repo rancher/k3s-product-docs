@@ -31,4 +31,4 @@ K3s 的备份和恢复方式取决于你使用的数据存储类型。
 
 == 使用嵌入式 etcd 数据存储进行备份和恢复
 
-有关在嵌入式 etcd 数据存储上执行备份和恢复操作的信息，请参阅 xref:../cli/etcd-snapshot.adoc[`k3s etcd-snapshot` 命令文档]。
+有关在嵌入式 etcd 数据存储上执行备份和恢复操作的信息，请参阅 xref:cli/etcd-snapshot.adoc[`k3s etcd-snapshot` 命令文档]。

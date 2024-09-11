@@ -15,7 +15,7 @@
 * オプション：アプリケーションやサービスを実行するために指定された**エージェントノード**が0個以上
 * オプション：エージェントノードがクラスターに登録するための**固定登録アドレス**
 
-これらのコンポーネントがどのように連携するかの詳細については、xref:../architecture.adoc#_high-availability-k3s[アーキテクチャセクション]を参照してください。
+これらのコンポーネントがどのように連携するかの詳細については、xref:architecture.adoc#_high_availability_k3s[アーキテクチャセクション]を参照してください。
 
 == インストール概要
 
@@ -23,15 +23,15 @@ HAクラスターのセットアップには以下の手順が必要です：
 
 === 1. 外部データストアの作成
 
-まず、クラスター用の外部データストアを作成する必要があります。詳細については、xref:./datastore.adoc[クラスターのデータストアオプション]のドキュメントを参照してください。
+まず、クラスター用の外部データストアを作成する必要があります。詳細については、xref:datastore/datastore.adoc[クラスターのデータストアオプション]のドキュメントを参照してください。
 
 === 2. サーバーノードの起動
 
-K3sのHA構成には2つ以上のサーバーノードが必要です。最小マシン要件については、xref:../installation/requirements.adoc[要件]ガイドを参照してください。
+K3sのHA構成には2つ以上のサーバーノードが必要です。最小マシン要件については、xref:installation/requirements.adoc[要件]ガイドを参照してください。
 
 これらのノードで``k3s server``コマンドを実行する際、K3sが外部データストアに接続する方法を知るために``datastore-endpoint``パラメータを設定する必要があります。ノードを追加する際に決定的なトークンを設定するために``token``パラメータも使用できます。空の場合、このトークンは自動的に生成され、後で使用されます。
 
-例えば、以下のようなコマンドを使用して、MySQLデータベースを外部データストアとしてK3sサーバーをインストールし、xref:../cli/server.adoc#_cluster-options[トークンを設定]できます：
+例えば、以下のようなコマンドを使用して、MySQLデータベースを外部データストアとしてK3sサーバーをインストールし、xref:cli/server.adoc#_cluster_options[トークンを設定]できます：
 
 [,bash]
 ----
@@ -41,13 +41,13 @@ curl -sfL https://get.k3s.io | sh -s - server \
   --tls-san=<FIXED_IP> # オプション、固定登録アドレスを使用する場合に必要
 ----
 
-データストアエンドポイントの形式はデータベースの種類によって異なります。詳細については、xref:../datastore/datastore.adoc#_datastore-endpoint-format-and-functionality[データストアエンドポイントの形式]のセクションを参照してください。
+データストアエンドポイントの形式はデータベースの種類によって異なります。詳細については、xref:datastore/datastore.adoc#_datastore_endpoint_format_and_functionality[データストアエンドポイントの形式]のセクションを参照してください。
 
-サーバーノードを起動する際のTLS証明書の設定については、xref:../datastore/datastore.adoc#_external-datastore-configuration-parameters[データストア設定ガイド]を参照してください。
+サーバーノードを起動する際のTLS証明書の設定については、xref:datastore/datastore.adoc#_external_datastore_configuration_parameters[データストア設定ガイド]を参照してください。
 
 [NOTE]
 ====
-単一サーバーインストールで利用可能なインストールオプションは、高可用性インストールでも利用可能です。詳細については、xref:../installation/configuration.adoc[設定オプション]のドキュメントを参照してください。
+単一サーバーインストールで利用可能なインストールオプションは、高可用性インストールでも利用可能です。詳細については、xref:installation/configuration.adoc[設定オプション]のドキュメントを参照してください。
 ====
 
 
@@ -66,7 +66,7 @@ curl -sfL https://get.k3s.io | sh -s - server \
 cat /var/lib/rancher/k3s/server/token
 ----
 
-追加のサーバーノードはxref:../cli/server.adoc#_cluster-options[トークンを使用して]追加できます：
+追加のサーバーノードはxref:cli/server.adoc#_cluster_options[トークンを使用して]追加できます：
 
 [,bash]
 ----
@@ -95,7 +95,7 @@ curl -sfL https://get.k3s.io | sh -s - server \
 * ラウンドロビンDNS
 * 仮想またはエラスティックIPアドレス
 
-例としての設定については、xref:./cluster-loadbalancer.adoc[クラスターのロードバランサー]を参照してください。
+例としての設定については、xref:datastore/cluster-loadbalancer.adoc[クラスターのロードバランサー]を参照してください。
 
 このエンドポイントはKubernetes APIにアクセスするためにも使用できます。例えば、https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/[kubeconfig]ファイルを特定のノードではなくこのエンドポイントを指すように変更できます。
 

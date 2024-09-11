@@ -1,6 +1,6 @@
 = 環境変数
 
-xref:../quick-start.adoc[クイックスタートガイド]で述べたように、https://get.k3s.io で利用可能なインストールスクリプトを使用して、systemdおよびopenrcベースのシステムにK3sをサービスとしてインストールできます。
+xref:quick-start.adoc[クイックスタートガイド]で述べたように、https://get.k3s.io で利用可能なインストールスクリプトを使用して、systemdおよびopenrcベースのシステムにK3sをサービスとしてインストールできます。
 
 このコマンドの最も簡単な形式は次のとおりです：
 
@@ -39,7 +39,7 @@ curl -sfL https://get.k3s.io | sh -
 | systemdサービスおよび環境ファイルをインストールするディレクトリ。デフォルトは``/etc/systemd/system``です。
 
 | `INSTALL_K3S_EXEC`
-| サービスでK3sを起動するためのフラグ付きコマンド。コマンドが指定されておらず、``K3S_URL``が設定されている場合、デフォルトは「agent」です。``K3S_URL``が設定されていない場合、デフォルトは「server」です。詳細はxref:../installation/configuration.adoc#_configuration-with-install-script[この例]を参照してください。
+| サービスでK3sを起動するためのフラグ付きコマンド。コマンドが指定されておらず、``K3S_URL``が設定されている場合、デフォルトは「agent」です。``K3S_URL``が設定されていない場合、デフォルトは「server」です。詳細はxref:installation/configuration.adoc#_configuration_with_install_script[この例]を参照してください。
 
 | `INSTALL_K3S_NAME`
 | 作成するsystemdサービスの名前。k3sをサーバーとして実行する場合はデフォルトで「k3s」、エージェントとして実行する場合は「k3s-agent」になります。指定された場合、名前の前に「k3s-」が付加されます。

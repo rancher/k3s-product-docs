@@ -35,7 +35,7 @@ Kubernetes requires a number of CA certificates for proper operation. For more i
 
 By default, K3s generates self-signed CA certificates during startup of the first server node. These CA certificates are valid for 10 years from date of issuance, and are not automatically renewed.
 
-The authoritative CA certificates and keys are stored within the datastore's bootstrap key, encrypted using the xref:./token.adoc#_server[server token] as the PBKDF2 passphrase with AES256-GCM and HMAC-SHA1.
+The authoritative CA certificates and keys are stored within the datastore's bootstrap key, encrypted using the xref:cli/token.adoc#_server[server token] as the PBKDF2 passphrase with AES256-GCM and HMAC-SHA1.
 Copies of the CA certificates and keys are extracted to disk during K3s server startup.
 Any server may generate leaf certificates for nodes as they join the cluster, and the Kubernetes https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/[Certificates API] controllers may issue additional certificates at runtime.
 
@@ -161,7 +161,7 @@ Stage the updated certificates and keys into a separate directory.
 
 A cluster that has been started with custom CA certificates can renew or rotate the CA certificates and keys non-disruptively, as long as the same root CA is used.
 
-If a new root CA is required, the rotation will be disruptive. The `k3s certificate rotate-ca --force` option must be used, all nodes that were joined with a xref:./token.adoc#_secure[secure token] (including servers) will need to be reconfigured to use the new token value, and pods will need to be restarted to trust the new root CA.
+If a new root CA is required, the rotation will be disruptive. The `k3s certificate rotate-ca --force` option must be used, all nodes that were joined with a xref:cli/token.adoc#_secure[secure token] (including servers) will need to be reconfigured to use the new token value, and pods will need to be restarted to trust the new root CA.
 
 ==== Using the Example Script
 
@@ -191,7 +191,7 @@ k3s certificate rotate-ca --path=/opt/k3s/server
 If the `rotate-ca` command returns an error, check the service log for errors.
 If the command completes successfully, restart K3s on all nodes in the cluster - servers first, then agents.
 
-If you used the `--force` option or changed the root CA, ensure that any nodes that were joined with a xref:./token.adoc#_secure[secure token] are reconfigured to use the new token value, prior to being restarted.
+If you used the `--force` option or changed the root CA, ensure that any nodes that were joined with a xref:cli/token.adoc#_secure[secure token] are reconfigured to use the new token value, prior to being restarted.
 The token may be stored in a `.env` file, systemd unit, or config.yaml, depending on how the node was configured during initial installation.
 
 === Rotating Self-Signed CA Certificates
@@ -206,7 +206,7 @@ Stage the updated certificates and keys into a separate directory.
 ====
 
 
-If the cluster has been started with default self-signed CA certificates, rotation will be disruptive. All nodes that were joined with a xref:./token.adoc#_secure[secure token] will need to be reconfigured to trust the new CA hash.
+If the cluster has been started with default self-signed CA certificates, rotation will be disruptive. All nodes that were joined with a xref:cli/token.adoc#_secure[secure token] will need to be reconfigured to trust the new CA hash.
 If the new CA certificates are not cross-signed by the old CA certificates, you will need to use the `--force` option to bypass integrity checks, and pods will need to be restarted to trust the new root CA.
 
 ==== Default CA Topology
@@ -307,7 +307,7 @@ k3s certificate rotate-ca --path=/var/lib/rancher/k3s/server/rotate-ca
 If the `rotate-ca` command returns an error, check the service log for errors.
 If the command completes successfully, restart K3s on all nodes in the cluster - servers first, then agents.
 
-Ensure that any nodes that were joined with a xref:./token.adoc#_secure[secure token], including other server nodes, are reconfigured to use the new token value prior to being restarted.
+Ensure that any nodes that were joined with a xref:cli/token.adoc#_secure[secure token], including other server nodes, are reconfigured to use the new token value prior to being restarted.
 The token may be stored in a `.env` file, systemd unit, or config.yaml, depending on how the node was configured during initial installation.
 
 == Service-Account Issuer Key Rotation

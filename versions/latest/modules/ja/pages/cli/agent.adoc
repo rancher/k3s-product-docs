@@ -4,7 +4,7 @@
 
 サーバーもエージェントを実行するため、このページに記載されているすべてのフラグはサーバーでも使用可能です。
 
-オプションはCLIフラグとしてこのページに記載されていますが、設定ファイルオプションとしても渡すことができます。YAML設定ファイルの使用方法については、xref:../installation/configuration.adoc#_configuration-file[設定ファイル]のドキュメントを参照してください。
+オプションはCLIフラグとしてこのページに記載されていますが、設定ファイルオプションとしても渡すことができます。YAML設定ファイルの使用方法については、xref:installation/configuration.adoc#_configuration_file[設定ファイル]のドキュメントを参照してください。
 
 == ロギング
 
@@ -165,7 +165,7 @@
 | ホストバイナリよりもバンドルされたユーザースペースバイナリを優先
 
 | `--disable-default-registry-endpoint`
-| "xref:../installation/private-registry.adoc#_default-endpoint-fallback[デフォルトエンドポイントフォールバック]"を参照
+| "xref:installation/private-registry.adoc#_default_endpoint_fallback[デフォルトエンドポイントフォールバック]"を参照
 |===
 
 == 廃止予定
