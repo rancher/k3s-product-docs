@@ -1,10 +1,10 @@
 = 設定オプション
 
-このページでは、K3sを初めてセットアップする際によく使用されるオプションに焦点を当てます。詳細については、xref:../advanced.adoc[高度なオプションと設定]およびxref:../cli/server.adoc[サーバー]とxref:../cli/agent.adoc[エージェント]のコマンドドキュメントを参照してください。
+このページでは、K3sを初めてセットアップする際によく使用されるオプションに焦点を当てます。詳細については、xref:advanced.adoc[高度なオプションと設定]およびxref:cli/server.adoc[サーバー]とxref:cli/agent.adoc[エージェント]のコマンドドキュメントを参照してください。
 
 == インストールスクリプトによる設定
 
-xref:../quick-start.adoc[クイックスタートガイド]で述べたように、https://get.k3s.io で利用可能なインストールスクリプトを使用して、systemdおよびopenrcベースのシステムにK3sをサービスとしてインストールできます。
+xref:quick-start.adoc[クイックスタートガイド]で述べたように、https://get.k3s.io で利用可能なインストールスクリプトを使用して、systemdおよびopenrcベースのシステムにK3sをサービスとしてインストールできます。
 
 `INSTALL_K3S_EXEC`、``K3S_``環境変数、およびコマンドフラグの組み合わせを使用して、サービス設定に設定を渡すことができます。
 プレフィックス付きの環境変数、``INSTALL_K3S_EXEC``の値、およびトレイリングシェル引数はすべてサービス設定に保存されます。
@@ -32,7 +32,7 @@ curl -sfL https://get.k3s.io | K3S_URL=https://k3s.example.com sh -s - agent --t
 curl -sfL https://get.k3s.io | K3S_URL=https://k3s.example.com K3S_TOKEN=mypassword sh -s - # K3S_URLがあるためエージェントが想定されます
 ----
 
-すべての環境変数の詳細については、xref:../reference/env-variables.adoc[環境変数]を参照してください。
+すべての環境変数の詳細については、xref:reference/env-variables.adoc[環境変数]を参照してください。
 
 [IMPORTANT]
 .注意
@@ -75,8 +75,8 @@ k3sエージェントもこの方法で設定できます：
 k3s agent --server https://k3s.example.com --token mypassword
 ----
 
-K3sサーバーの設定の詳細については、xref:../cli/server.adoc[``k3s server``ドキュメント]を参照してください。
-K3sエージェントの設定の詳細については、xref:../cli/agent.adoc[``k3s agent``ドキュメント]を参照してください。
+K3sサーバーの設定の詳細については、xref:cli/server.adoc[``k3s server``ドキュメント]を参照してください。
+K3sエージェントの設定の詳細については、xref:cli/agent.adoc[``k3s agent``ドキュメント]を参照してください。
 また、``--help``フラグを使用して、利用可能なすべてのオプションとそれに対応する環境変数のリストを表示することもできます。
 
 [IMPORTANT]

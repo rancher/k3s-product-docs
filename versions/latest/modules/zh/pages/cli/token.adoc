@@ -68,8 +68,8 @@ Server Token 还用作密钥的 https://en.wikipedia.org/wiki/PBKDF2[PBKDF2] 密
 ====
 
 
-有关使用自定义 CA 证书的更多信息，请参阅 xref:./certificate.adoc[`k3s certificate` 文档]。 +
-有关备份集群的更多信息，请参阅xref:../datastore/backup-restore.adoc[备份和恢复]文档。
+有关使用自定义 CA 证书的更多信息，请参阅 xref:cli/certificate.adoc[`k3s certificate` 文档]。 +
+有关备份集群的更多信息，请参阅xref:datastore/backup-restore.adoc[备份和恢复]文档。
 
 === Agent
 

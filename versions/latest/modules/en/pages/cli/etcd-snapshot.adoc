@@ -81,7 +81,7 @@ systemctl start k3s
 
 == Options
 
-These options can be passed in with the command line, or in the xref:../installation/configuration.adoc#_configuration_file[configuration file,] which may be easier to use.
+These options can be passed in with the command line, or in the xref:installation/configuration.adoc#_configuration_file[configuration file,] which may be easier to use.
 
 |===
 | Options | Description

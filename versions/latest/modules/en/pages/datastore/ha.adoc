@@ -15,7 +15,7 @@ Single server clusters can meet a variety of use cases, but for environments whe
 * Optional: Zero or more *agent nodes* that are designated to run your apps and services
 * Optional: A *fixed registration address* for agent nodes to register with the cluster
 
-For more details on how these components work together, refer to the xref:../architecture.adoc#_high-availability-k3s[architecture section.]
+For more details on how these components work together, refer to the xref:architecture.adoc#_high_availability_k3s[architecture section.]
 
 == Installation Outline
 
@@ -23,15 +23,15 @@ Setting up an HA cluster requires the following steps:
 
 === 1. Create an External Datastore
 
-You will first need to create an external datastore for the cluster. See the xref:./datastore.adoc[Cluster Datastore Options] documentation for more details.
+You will first need to create an external datastore for the cluster. See the xref:datastore/datastore.adoc[Cluster Datastore Options] documentation for more details.
 
 === 2. Launch Server Nodes
 
-K3s requires two or more server nodes for this HA configuration. See the xref:../installation/requirements.adoc[Requirements] guide for minimum machine requirements.
+K3s requires two or more server nodes for this HA configuration. See the xref:installation/requirements.adoc[Requirements] guide for minimum machine requirements.
 
 When running the `k3s server` command on these nodes, you must set the `datastore-endpoint` parameter so that K3s knows how to connect to the external datastore. The `token` parameter can also be used to set a deterministic token when adding nodes. When empty, this token will be generated automatically for further use.
 
-For example, a command like the following could be used to install the K3s server with a MySQL database as the external datastore and xref:../cli/server.adoc#_cluster-options[set a token]:
+For example, a command like the following could be used to install the K3s server with a MySQL database as the external datastore and xref:cli/server.adoc#_cluster_options[set a token]:
 
 [,bash]
 ----
@@ -41,13 +41,13 @@ curl -sfL https://get.k3s.io | sh -s - server \
   --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
 ----
 
-The datastore endpoint format differs based on the database type. For details, refer to the section on xref:./datastore.adoc#_datastore-endpoint-format-and-functionality[datastore endpoint formats.]
+The datastore endpoint format differs based on the database type. For details, refer to the section on xref:datastore/datastore.adoc#_datastore_endpoint_format_and_functionality[datastore endpoint formats.]
 
-To configure TLS certificates when launching server nodes, refer to the xref:./datastore.adoc#_external-datastore-configuration-parameters[datastore configuration guide.]
+To configure TLS certificates when launching server nodes, refer to the xref:datastore/datastore.adoc#_external_datastore_configuration_parameters[datastore configuration guide.]
 
 [NOTE]
 ====
-The same installation options available to single-server installs are also available for high-availability installs. For more details, see the xref:../installation/configuration.adoc[Configuration Options] documentation.
+The same installation options available to single-server installs are also available for high-availability installs. For more details, see the xref:installation/configuration.adoc[Configuration Options] documentation.
 ====
 
 
@@ -66,7 +66,7 @@ If the first server node was started without the `--token` CLI flag or `K3S_TOKE
 cat /var/lib/rancher/k3s/server/token
 ----
 
-Additional server nodes can then be added xref:../cli/server.adoc#_cluster-options[using the token]:
+Additional server nodes can then be added xref:cli/server.adoc#_cluster_options[using the token]:
 
 [,bash]
 ----
@@ -95,7 +95,7 @@ Agent nodes need a URL to register against. This can be the IP or hostname of an
 * Round-robin DNS
 * Virtual or elastic IP addresses
 
-See xref:./cluster-loadbalancer.adoc[Cluster Loadbalancer] for example configurations.
+See xref:datastore/cluster-loadbalancer.adoc[Cluster Loadbalancer] for example configurations.
 
 This endpoint can also be used for accessing the Kubernetes API. So you can, for example, modify your https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/[kubeconfig] file to point to it instead of a specific node.
 

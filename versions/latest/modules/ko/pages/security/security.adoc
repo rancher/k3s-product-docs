@@ -4,5 +4,5 @@
 
 아래 문서는 CIS 쿠버네티스 벤치마크 v1.23에 적용됩니다.
 
-* xref:./hardening-guide.adoc[강화 가이드]
-* xref:./self-assessment-1.23.adoc[CIS 벤치마크 자체 평가 가이드]
+* xref:security/hardening-guide.adoc[강화 가이드]
+* xref:security/self-assessment-1.23.adoc[CIS 벤치마크 자체 평가 가이드]

@@ -4,7 +4,7 @@ The FAQ is updated periodically and designed to answer the questions our users m
 
 == Is K3s a suitable replacement for Kubernetes?
 
-K3s is a CNCF-certified Kubernetes distribution, and can do everything required of a standard Kubernetes cluster. It is just a more lightweight version. See the xref:./introduction.adoc[main] docs page for more details.
+K3s is a CNCF-certified Kubernetes distribution, and can do everything required of a standard Kubernetes cluster. It is just a more lightweight version. See the xref:introduction.adoc[main] docs page for more details.
 
 == How can I use my own Ingress instead of Traefik?
 
@@ -16,7 +16,7 @@ At this time K3s does not natively support Windows, however we are open to the i
 
 == What exactly are Servers and Agents?
 
-For a breakdown on the components that make up a server and agent, see the xref:./architecture.adoc[Architecture page].
+For a breakdown on the components that make up a server and agent, see the xref:architecture.adoc[Architecture page].
 
 == How can I build from source?
 
@@ -38,15 +38,15 @@ Kubernetes uses a logging framework known as `klog`, which uses a single logging
 Since K3s runs all Kubernetes components within a single process, it is not possible to configure different log levels or destinations for individual Kubernetes components.
 Use of the `-v=<level>` or `--vmodule=<module>=<level>` component args will likely not have the desired effect.
 
-See xref:./advanced.adoc#_additional-logging-sources[Additional Logging Sources] for even more log options.
+See xref:advanced.adoc#_additional_logging_sources[Additional Logging Sources] for even more log options.
 
 == Can I run K3s in Docker?
 
-Yes, there are multiple ways to run K3s in Docker. See xref:./advanced.adoc#_running-k3s-in-docker[Advanced Options] for more details.
+Yes, there are multiple ways to run K3s in Docker. See xref:advanced.adoc#_running_k3s_in_docker[Advanced Options] for more details.
 
 == What is the difference between K3s Server and Agent Tokens?
 
-For more information on managing K3s join tokens, see the xref:./cli/token.adoc[`k3s token` command documentation].
+For more information on managing K3s join tokens, see the xref:cli/token.adoc[`k3s token` command documentation].
 
 == How compatible are different versions of K3s?
 
@@ -58,8 +58,8 @@ In short, servers can be newer than agents, but agents cannot be newer than serv
 
 If you are having an issue with deploying K3s, you should:
 
-. Check the xref:./known-issues.adoc[Known Issues] page.
-. Check that you have resolved any xref:./installation/requirements.adoc#_operating-systems[Additional OS Preparation]. Run `k3s check-config` and ensure that it passes.
+. Check the xref:known-issues.adoc[Known Issues] page.
+. Check that you have resolved any xref:installation/requirements.adoc#_operating_systems[Additional OS Preparation]. Run `k3s check-config` and ensure that it passes.
 . Search the K3s https://github.com/k3s-io/k3s/issues[Issues] and https://github.com/k3s-io/k3s/discussions[Discussions] for one that matches your problem.
 . Join the https://slack.rancher.io/[Rancher Slack] K3s channel to get help.
 . Submit a https://github.com/k3s-io/k3s/issues/new/choose[New Issue] on the K3s Github describing your setup and the issue you are experiencing.

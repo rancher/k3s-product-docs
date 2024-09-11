@@ -15,7 +15,7 @@ K3sをエアギャップ環境でインストールするには、2つの方法�
 . 実行するK3sのバージョンに対応するアーキテクチャ用のイメージアーカイブをlink:https://github.com/k3s-io/k3s/releases[リリース]ページから取得します。
 . ``docker image load k3s-airgap-images-amd64.tar.zst``を使用して、tarファイルからDockerにイメージをインポートします。
 . ``docker tag``と``docker push``を使用して、ロードしたイメージを再タグ付けし、プライベートレジストリにプッシュします。
-. xref:./private-registry.adoc[プライベートレジストリの設定]ガイドに従って、``registries.yaml``ファイルを作成および設定します。
+. xref:installation/private-registry.adoc[プライベートレジストリの設定]ガイドに従って、``registries.yaml``ファイルを作成および設定します。
 . 以下の<<_k3sのインストール,Install K3s>>セクションに進みます。
 
 === 手動デプロイ方式
@@ -51,7 +51,7 @@ K3sには、埋め込みの分散型OCI準拠のレジストリミラーが含�
 外部イメージレジストリにアクセスせずに他のクラスターのメンバーがプルできます。
 
 ミラーリングされたイメージは、上流のレジストリ、レジストリミラー、またはエアギャップイメージtarballから取得できます。
-埋め込み分散レジストリミラーの有効化に関する詳細は、xref:./registry-mirror.adoc[埋め込みレジストリミラー]ドキュメントを参照してください。
+埋め込み分散レジストリミラーの有効化に関する詳細は、xref:installation/registry-mirror.adoc[埋め込みレジストリミラー]ドキュメントを参照してください。
 
 == K3sのインストール
 
@@ -91,7 +91,7 @@ curl -LO https://github.com/k3s-io/k3s-selinux/releases/download/v1.4.stable.1/k
 sudo yum install ./k3s-selinux-1.4-1.el8.noarch.rpm
 ----
 
-詳細はxref:../advanced.adoc#_selinux-support[SELinux]セクションを参照してください。
+詳細はxref:advanced.adoc#_selinux_support[SELinux]セクションを参照してください。
 
 === エアギャップ環境でのK3sのインストール
 
@@ -125,7 +125,7 @@ INSTALL_K3S_SKIP_DOWNLOAD=true K3S_URL=https://<SERVER_IP>:6443 K3S_TOKEN=<YOUR_
 Tab 高可用性構成::
 +
 --
-xref:../datastore/ha.adoc[外部DBを使用した高可用性]またはxref:../datastore/ha-embedded.adoc[埋め込みDBを使用した高可用性]ガイドを参照してください。インストールコマンドを調整して``INSTALL_K3S_SKIP_DOWNLOAD=true``を指定し、インストールスクリプトをcurlではなくローカルで実行します。また、``INSTALL_K3S_EXEC='args'``を使用してk3sに引数を渡します。
+xref:datastore/ha.adoc[外部DBを使用した高可用性]またはxref:datastore/ha-embedded.adoc[埋め込みDBを使用した高可用性]ガイドを参照してください。インストールコマンドを調整して``INSTALL_K3S_SKIP_DOWNLOAD=true``を指定し、インストールスクリプトをcurlではなくローカルで実行します。また、``INSTALL_K3S_EXEC='args'``を使用してk3sに引数を渡します。
 
 例えば、外部DBを使用した高可用性ガイドのステップ2では、以下のように記載されています：
 
@@ -164,7 +164,7 @@ K3sの``--resolv-conf``フラグはkubeletに渡され、ホストに上流の�
 
 === 自動アップグレード方式
 
-K3sはxref:../upgrades/automated.adoc[自動アップグレード]をサポートしています。エアギャップ環境でこれを有効にするには、必要なイメージがプライベートレジストリにあることを確認する必要があります。
+K3sはxref:upgrades/automated.adoc[自動アップグレード]をサポートしています。エアギャップ環境でこれを有効にするには、必要なイメージがプライベートレジストリにあることを確認する必要があります。
 
 アップグレードするK3sのバージョンに対応するrancher/k3s-upgradeのバージョンが必要です。注意点として、K3sリリースの``+``はDockerイメージではサポートされていないため、イメージタグでは``-``に置き換えられます。
 
@@ -175,4 +175,4 @@ rancher/system-upgrade-controller:v0.4.0
 rancher/kubectl:v0.17.0
 ----
 
-必要なrancher/k3s-upgrade、rancher/system-upgrade-controller、およびrancher/kubectlイメージをプライベートレジストリに追加したら、xref:../upgrades/automated.adoc[自動アップグレード]ガイドに従ってください。
+必要なrancher/k3s-upgrade、rancher/system-upgrade-controller、およびrancher/kubectlイメージをプライベートレジストリに追加したら、xref:upgrades/automated.adoc[自動アップグレード]ガイドに従ってください。

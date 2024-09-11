@@ -4,7 +4,7 @@
 
 [TIP]
 ====
-外部ロードバランサーは、Kubernetes LoadBalancerサービスをサードパーティのロードバランサーコントローラーをデプロイせずに使用できるようにする組み込みコントローラーであるServiceLBと混同しないでください。詳細については、xref:../networking/networking-services.adoc#_service-load-balancer[Service Load Balancer]を参照してください。
+外部ロードバランサーは、Kubernetes LoadBalancerサービスをサードパーティのロードバランサーコントローラーをデプロイせずに使用できるようにする組み込みコントローラーであるServiceLBと混同しないでください。詳細については、xref:networking/networking-services.adoc#_service_load_balancer[Service Load Balancer]を参照してください。
 
 外部ロードバランサーは、ノードの登録用の固定登録アドレスを提供したり、Kubernetes APIサーバーへの外部アクセスを提供するために使用できます。LoadBalancerサービスを公開するために、外部ロードバランサーはServiceLBと一緒に、または代わりに使用できますが、ほとんどの場合、MetalLBやKube-VIPなどの代替ロードバランサーコントローラーの方が良い選択です。
 ====
@@ -14,7 +14,7 @@
 
 この例のすべてのノードはUbuntu 20.04を実行しています。
 
-両方の例では、xref:../datastore/ha-embedded.adoc[組み込みetcdを使用したHA K3sクラスター]が3つのノードにインストールされていると仮定します。
+両方の例では、xref:datastore/ha-embedded.adoc[組み込みetcdを使用したHA K3sクラスター]が3つのノードにインストールされていると仮定します。
 
 各k3sサーバーは次のように構成されています：
 

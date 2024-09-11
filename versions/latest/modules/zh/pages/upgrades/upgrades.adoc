@@ -2,9 +2,9 @@
 
 == 升级 K3s 集群
 
-xref:./manual.adoc[手动升级]描述了手动升级集群的几种方法。它也可以作为通过第三方基础设施即代码工具（如 https://www.terraform.io/[Terraform]）进行升级的基础。
+xref:upgrades/manual.adoc[手动升级]描述了手动升级集群的几种方法。它也可以作为通过第三方基础设施即代码工具（如 https://www.terraform.io/[Terraform]）进行升级的基础。
 
-xref:./automated.adoc[自动升级]描述了如何使用 Rancher 的 https://github.com/rancher/system-upgrade-controller[system-upgrade-controller] 执行 Kubernetes 原生的自动升级。
+xref:upgrades/automated.adoc[自动升级]描述了如何使用 Rancher 的 https://github.com/rancher/system-upgrade-controller[system-upgrade-controller] 执行 Kubernetes 原生的自动升级。
 
 == 特定版本的注意事项
 

@@ -68,8 +68,8 @@ Unless custom CA certificates are in use, only the short (password-only) token f
 ====
 
 
-For more information on using custom CA certificates, see the xref:./certificate.adoc[`k3s certificate` documentation]. +
-For more information on backing up your cluster, see the xref:../datastore/backup-restore.adoc[Backup and Restore] documentation.
+For more information on using custom CA certificates, see the xref:cli/certificate.adoc[`k3s certificate` documentation]. +
+For more information on backing up your cluster, see the xref:datastore/backup-restore.adoc[Backup and Restore] documentation.
 
 === Agent
 

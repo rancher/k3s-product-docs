@@ -1,10 +1,10 @@
 = Configuration Options
 
-This page focuses on the options that are commonly used when setting up K3s for the first time. Refer to the documentation on xref:../advanced.adoc[Advanced Options and Configuration] and the xref:../cli/server.adoc[server] and xref:../cli/agent.adoc[agent] command documentation for more in-depth coverage.
+This page focuses on the options that are commonly used when setting up K3s for the first time. Refer to the documentation on xref:advanced.adoc[Advanced Options and Configuration] and the xref:cli/server.adoc[server] and xref:cli/agent.adoc[agent] command documentation for more in-depth coverage.
 
 == Configuration with install script
 
-As mentioned in the xref:../quick-start.adoc[Quick-Start Guide], you can use the installation script available at https://get.k3s.io to install K3s as a service on systemd and openrc based systems.
+As mentioned in the xref:quick-start.adoc[Quick-Start Guide], you can use the installation script available at https://get.k3s.io to install K3s as a service on systemd and openrc based systems.
 
 You can use a combination of `INSTALL_K3S_EXEC`, `K3S_` environment variables, and command flags to pass configuration to the service configuration.
 The prefixed environment variables, `INSTALL_K3S_EXEC` value, and trailing shell arguments are all persisted into the service configuration.
@@ -32,7 +32,7 @@ curl -sfL https://get.k3s.io | K3S_URL=https://k3s.example.com sh -s - agent --t
 curl -sfL https://get.k3s.io | K3S_URL=https://k3s.example.com K3S_TOKEN=mypassword sh -s - # agent is assumed because of K3S_URL
 ----
 
-For details on all environment variables, see xref:../reference/env-variables.adoc[Environment Variables.]
+For details on all environment variables, see xref:reference/env-variables.adoc[Environment Variables.]
 
 [IMPORTANT]
 .Note
@@ -75,8 +75,8 @@ The k3s agent can also be configured this way:
 k3s agent --server https://k3s.example.com --token mypassword
 ----
 
-For details on configuring the K3s server, see the xref:../cli/server.adoc[`k3s server` documentation]. +
-For details on configuring the K3s agent, see the xref:../cli/agent.adoc[`k3s agent` documentation]. +
+For details on configuring the K3s server, see the xref:cli/server.adoc[`k3s server` documentation]. +
+For details on configuring the K3s agent, see the xref:cli/agent.adoc[`k3s agent` documentation]. +
 You can also use the `--help` flag to see a list of all available options, and their corresponding environment variables.
 
 [IMPORTANT]

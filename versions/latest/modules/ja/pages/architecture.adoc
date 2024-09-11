@@ -4,7 +4,7 @@
 
 * サーバーノードは、`k3s server` コマンドを実行しているホストとして定義され、K3sによって管理されるコントロールプレーンとデータストアコンポーネントを持ちます。
 * エージェントノードは、`k3s agent` コマンドを実行しているホストとして定義され、データストアやコントロールプレーンコンポーネントは持ちません。
-* サーバーとエージェントの両方がkubelet、コンテナランタイム、およびCNIを実行します。エージェントレスサーバーの実行に関する詳細は、xref:./advanced.adoc#_running-agentless-servers-experimental[高度なオプション]のドキュメントを参照してください。
+* サーバーとエージェントの両方がkubelet、コンテナランタイム、およびCNIを実行します。エージェントレスサーバーの実行に関する詳細は、xref:advanced.adoc#_running_agentless_servers_experimental[高度なオプション]のドキュメントを参照してください。
 
 image:how-it-works-k3s-revised.svg[]
 

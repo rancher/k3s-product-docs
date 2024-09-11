@@ -2,10 +2,10 @@
 
 This section contains instructions for configuring networking in K3s.
 
-xref:./basic-network-options.adoc[Basic Network Options] covers the basic networking configuration of the cluster such as flannel and single/dual stack configurations
+xref:networking/basic-network-options.adoc[Basic Network Options] covers the basic networking configuration of the cluster such as flannel and single/dual stack configurations
 
-xref:./distributed-multicloud.adoc[Hybrid/Multicloud cluster] provides guidance on the options available to span the k3s cluster over remote or hybrid nodes
+xref:networking/distributed-multicloud.adoc[Hybrid/Multicloud cluster] provides guidance on the options available to span the k3s cluster over remote or hybrid nodes
 
-xref:./multus-ipams.adoc[Multus and IPAM plugins] provides guidance to leverage Multus in K3s in order to have multiple interfaces per pod
+xref:networking/multus-ipams.adoc[Multus and IPAM plugins] provides guidance to leverage Multus in K3s in order to have multiple interfaces per pod
 
-xref:./networking-services.adoc[Networking services: dns, ingress, etc] explains how CoreDNS, Traefik, Network Policy controller and ServiceLB controller work within k3s
+xref:networking/networking-services.adoc[Networking services: dns, ingress, etc] explains how CoreDNS, Traefik, Network Policy controller and ServiceLB controller work within k3s

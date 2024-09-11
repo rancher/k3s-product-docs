@@ -1,8 +1,8 @@
 = 快速入门指南
 
-本指南帮助你使用默认选项快速启动集群。xref:./installation/installation.adoc[安装部分]更详细地介绍了如何设置 K3s。
+本指南帮助你使用默认选项快速启动集群。xref:installation/installation.adoc[安装部分]更详细地介绍了如何设置 K3s。
 
-有关 K3s 组件如何协同工作的信息，请参阅xref:./architecture.adoc[架构]。
+有关 K3s 组件如何协同工作的信息，请参阅xref:architecture.adoc[架构]。
 
 [IMPORTANT]
 ====

@@ -92,7 +92,7 @@ reboot
 Tab Ubuntu / Debian::
 +
 --
-Older Debian release may suffer from a known iptables bug. See xref:../known-issues.adoc#_iptables[Known Issues].
+Older Debian release may suffer from a known iptables bug. See xref:known-issues.adoc#_iptables[Known Issues].
 
 It is recommended to turn off ufw (uncomplicated firewall):
 
@@ -116,7 +116,7 @@ Additional ports may need to be opened depending on your setup. See <<_inbound_r
 Tab Raspberry Pi::
 +
 --
-Raspberry Pi OS is Debian based, and may suffer from a known iptables bug. See xref:../known-issues.adoc#_iptables[Known Issues].
+Raspberry Pi OS is Debian based, and may suffer from a known iptables bug. See xref:known-issues.adoc#_iptables[Known Issues].
 
 Standard Raspberry Pi OS installations do not start with `cgroups` enabled. *K3S* needs `cgroups` to start the systemd service. ``cgroups``can be enabled by appending `cgroup_memory=1 cgroup_enable=memory` to `/boot/cmdline.txt`.
 
@@ -153,7 +153,7 @@ Hardware requirements scale based on the size of your deployments. Minimum recom
 | 1 GB
 |===
 
-xref:../reference/resource-profiling.adoc[Resource Profiling] captures the results of tests to determine minimum resource requirements for the K3s agent, the K3s server with a workload, and the K3s server with one agent. It also contains analysis about what has the biggest impact on K3s server and agent utilization, and how the cluster datastore can be protected from interference from agents and workloads.
+xref:reference/resource-profiling.adoc[Resource Profiling] captures the results of tests to determine minimum resource requirements for the K3s agent, the K3s server with a workload, and the K3s server with one agent. It also contains analysis about what has the biggest impact on K3s server and agent utilization, and how the cluster datastore can be protected from interference from agents and workloads.
 
 [IMPORTANT]
 .Raspberry Pi and embedded etcd
@@ -300,7 +300,7 @@ You should consider increasing the subnet size for the cluster CIDR so that you 
 
 === Database
 
-K3s supports different databases including MySQL, PostgreSQL, MariaDB, and etcd.  See xref:../datastore/datastore.adoc[Cluster Datastore] for more info.
+K3s supports different databases including MySQL, PostgreSQL, MariaDB, and etcd.  See xref:datastore/datastore.adoc[Cluster Datastore] for more info.
 
 The following is a sizing guide for the database resources you need to run large clusters:
 

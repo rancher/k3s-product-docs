@@ -2,9 +2,9 @@
 
 In this section, you'll learn how to configure the K3s server.
 
-Note that servers also run an agent, so all of the configuration options listed in the xref:./agent.adoc[`k3s agent` documentation] are also supported on servers.
+Note that servers also run an agent, so all of the configuration options listed in the xref:cli/agent.adoc[`k3s agent` documentation] are also supported on servers.
 
-Options are documented on this page as CLI flags, but can also be passed as configuration file options. See the xref:../installation/configuration.adoc#_configuration_file[Configuration File] documentation for more information on using YAML configuration files.
+Options are documented on this page as CLI flags, but can also be passed as configuration file options. See the xref:installation/configuration.adoc#_configuration_file[Configuration File] documentation for more information on using YAML configuration files.
 
 == Critical Configuration Values
 
@@ -300,7 +300,7 @@ The following options must be set to the same value on all servers in the cluste
 | Flag | Description
 
 | `--disable` value
-| See "xref:../installation/packaged-components.adoc#_using-the---disable-flag[Using the `--disable` flag]"
+| See "xref:installation/packaged-components.adoc#_using_the_disable_flag[Using the `--disable` flag]"
 
 | `--disable-scheduler`
 | Disable Kubernetes default scheduler
@@ -363,7 +363,7 @@ The following options must be set to the same value on all servers in the cluste
 | Prefer bundled userspace binaries over host binaries
 
 | `--disable-agent`
-| See "xref:../advanced.adoc#_에이전트-없는-서버-실행하기실험적[Running Agentless Servers (Experimental)]"
+| See "xref:advanced.adoc#_에이전트_없는_서버_실행하기실험적[Running Agentless Servers (Experimental)]"
 |===
 
 === Deprecated Options

@@ -19,7 +19,7 @@ An HA K3s cluster with embedded etcd is composed of:
 
 [NOTE]
 ====
-To rapidly deploy large HA clusters, see xref:../related-projects.adoc[Related Projects]
+To rapidly deploy large HA clusters, see xref:related-projects.adoc[Related Projects]
 ====
 
 

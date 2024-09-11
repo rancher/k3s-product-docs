@@ -31,4 +31,4 @@ For details on taking database snapshots and restoring your database from them, 
 
 == Backup and Restore with Embedded etcd Datastore
 
-See the xref:../cli/etcd-snapshot.adoc[`k3s etcd-snapshot` command documentation] for information on performing backup and restore operations on the embedded etcd datastore.
+See the xref:cli/etcd-snapshot.adoc[`k3s etcd-snapshot` command documentation] for information on performing backup and restore operations on the embedded etcd datastore.

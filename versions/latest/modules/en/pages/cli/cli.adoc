@@ -6,10 +6,10 @@ The K3s binary contains a number of additional tools the help you manage your cl
 | Command | Description
 
 | `k3s server`
-| Run a K3s server node, which launches the Kubernetes `apiserver`, `scheduler`, `controller-manager`, and `cloud-controller-manager` components, in addition a datastore and the agent components. See the xref:./server.adoc[`k3s server` command documentation] for more information.
+| Run a K3s server node, which launches the Kubernetes `apiserver`, `scheduler`, `controller-manager`, and `cloud-controller-manager` components, in addition a datastore and the agent components. See the xref:cli/server.adoc[`k3s server` command documentation] for more information.
 
 | `k3s agent`
-| Run the K3s agent node, which launches `containerd`, `flannel`, `kube-router` network policy controller, and the Kubernetes `kubelet` and `kube-proxy` components. See the xref:./agent.adoc[`k3s agent` command documentation] for more information.
+| Run the K3s agent node, which launches `containerd`, `flannel`, `kube-router` network policy controller, and the Kubernetes `kubelet` and `kube-proxy` components. See the xref:cli/agent.adoc[`k3s agent` command documentation] for more information.
 
 | `k3s kubectl`
 | Run the embedded https://kubernetes.io/docs/reference/kubectl[`kubectl` command]. This is a CLI for interacting with the Kubernetes apiserver.  If the `KUBECONFIG` environment variable is not set, this will automatically attempt to use the kubeconfig at `/etc/rancher/k3s/k3s.yaml`.
@@ -21,16 +21,16 @@ The K3s binary contains a number of additional tools the help you manage your cl
 | Run the embedded https://github.com/projectatomic/containerd/blob/master/docs/cli.md[`ctr` command]. This is a CLI for containerd, the container daemon used by K3s. Useful for debugging.
 
 | `k3s token`
-| Manage bootstrap tokens. See the xref:./token.adoc[`k3s token` command documentation] for more information.
+| Manage bootstrap tokens. See the xref:cli/token.adoc[`k3s token` command documentation] for more information.
 
 | `k3s etcd-snapshot`
-| Perform on demand backups of the K3s cluster data and upload to S3. See the xref:./etcd-snapshot.adoc[`k3s etcd-snapshot` command documentation] for more information.
+| Perform on demand backups of the K3s cluster data and upload to S3. See the xref:cli/etcd-snapshot.adoc[`k3s etcd-snapshot` command documentation] for more information.
 
 | `k3s secrets-encrypt`
-| Configure K3s to encrypt secrets when storing them in the cluster. See the xref:./secrets-encrypt.adoc[`k3s secrets-encrypt` command documentation] for more information.
+| Configure K3s to encrypt secrets when storing them in the cluster. See the xref:cli/secrets-encrypt.adoc[`k3s secrets-encrypt` command documentation] for more information.
 
 | `k3s certificate`
-| Manage K3s certificates. See the xref:./certificate.adoc[`k3s certificate` command documentation] for more information.
+| Manage K3s certificates. See the xref:cli/certificate.adoc[`k3s certificate` command documentation] for more information.
 
 | `k3s completion`
 | Generate shell completion scripts for k3s

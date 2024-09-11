@@ -68,8 +68,8 @@ K3s は 3 種類のトークンをサポートします。デフォルトでは�
 ====
 
 
-カスタム CA 証明書の使用に関する詳細は、xref:./certificate.adoc[`k3s certificate` ドキュメント]を参照してください。 +
-クラスターのバックアップに関する詳細は、xref:../datastore/backup-restore.adoc[バックアップとリストア]ドキュメントを参照してください。
+カスタム CA 証明書の使用に関する詳細は、xref:cli/certificate.adoc[`k3s certificate` ドキュメント]を参照してください。 +
+クラスターのバックアップに関する詳細は、xref:datastore/backup-restore.adoc[バックアップとリストア]ドキュメントを参照してください。
 
 === エージェント
 
