@@ -19,7 +19,7 @@ Multusによって作成された追加のインターフェースにIPアドレ
 
 [tabs,sync-group-id=MultusIPAMplugins]
 ======
-Tab host-local::
+host-local::
 +
 --
 host-local IPAMプラグインは、アドレス範囲のセットからIPアドレスを割り当てます。状態をホストのファイルシステムにローカルに保存するため、単一ホスト上のIPアドレスの一意性が保証されます。したがって、マルチノードクラスターには推奨しません。このIPAMプラグインは追加のデプロイを必要としません。詳細については、https://www.cni.dev/plugins/current/ipam/host-local/ を参照してください。
@@ -35,7 +35,7 @@ config:
 ----
 --
 
-Tab Whereabouts::
+Whereabouts::
 +
 --
 https://github.com/k8snetworkplumbingwg/whereabouts[Whereabouts] は、クラスター全体でIPアドレスを割り当てるIPアドレス管理（IPAM）CNIプラグインです。
@@ -57,7 +57,7 @@ rke2-whereabouts:
 ----
 --
 
-Tab Multus DHCP daemon::
+Multus DHCP daemon::
 +
 --
 dhcp IPAMプラグインは、ネットワーク上に既にDHCPサーバーが稼働している場合にデプロイできます。このデーモンセットは、DHCPリースの定期的な更新を担当します。詳細については、link:https://www.cni.dev/plugins/current/ipam/dhcp/[DHCP IPAMプラグイン]の公式ドキュメントを参照してください。

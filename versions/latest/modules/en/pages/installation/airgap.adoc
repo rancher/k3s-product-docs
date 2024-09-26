@@ -103,7 +103,7 @@ You can install K3s on one or more servers as described below.
 
 [tabs,sync-group-id=airgap-cluster]
 ======
-Tab Single Server Configuration::
+Single Server Configuration::
 +
 --
 To install K3s on a single server, simply do the following on the server node:
@@ -126,7 +126,7 @@ The token from the server is typically found at `/var/lib/rancher/k3s/server/tok
 =====
 --
 
-Tab High Availability Configuration::
+High Availability Configuration::
 +
 --
 Reference the xref:datastore/ha.adoc[High Availability with an External DB] or xref:datastore/ha-embedded.adoc[High Availability with Embedded DB] guides. You will be tweaking install commands so you specify `INSTALL_K3S_SKIP_DOWNLOAD=true` and run your install script locally instead of via curl. You will also utilize `INSTALL_K3S_EXEC='args'` to supply any arguments to k3s.

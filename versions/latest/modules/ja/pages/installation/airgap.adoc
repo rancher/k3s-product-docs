@@ -99,7 +99,7 @@ sudo yum install ./k3s-selinux-1.4-1.el8.noarch.rpm
 
 [tabs]
 ======
-Tab シングルサーバー構成::
+シングルサーバー構成::
 +
 --
 シングルサーバーにK3sをインストールするには、サーバーノードで以下を実行します：
@@ -122,7 +122,7 @@ INSTALL_K3S_SKIP_DOWNLOAD=true K3S_URL=https://<SERVER_IP>:6443 K3S_TOKEN=<YOUR_
 ====
 --
 
-Tab 高可用性構成::
+高可用性構成::
 +
 --
 xref:datastore/ha.adoc[外部DBを使用した高可用性]またはxref:datastore/ha-embedded.adoc[埋め込みDBを使用した高可用性]ガイドを参照してください。インストールコマンドを調整して``INSTALL_K3S_SKIP_DOWNLOAD=true``を指定し、インストールスクリプトをcurlではなくローカルで実行します。また、``INSTALL_K3S_EXEC='args'``を使用してk3sに引数を渡します。

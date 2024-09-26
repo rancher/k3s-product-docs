@@ -329,7 +329,7 @@ There are several ways to run K3s in Docker:
 
 [tabs]
 ======
-Tab K3d::
+K3d::
 +
 --
 https://github.com/k3d-io/k3d[k3d] is a utility designed to easily run multi-node K3s clusters in Docker.
@@ -339,7 +339,7 @@ k3d makes it very easy to create single- and multi-node k3s clusters in docker, 
 See the https://k3d.io/#installation[Installation] documentation for more information on how to install and use k3d.
 --
 
-Tab Docker::
+Docker::
 +
 --
 To use Docker, `rancher/k3s` images are also available to run the K3s server and agent.
@@ -385,11 +385,11 @@ If you are installing K3s on a system where SELinux is enabled by default (such 
 
 [tabs]
 ======
-Tab Automatic Installation::
+Automatic Installation::
 +
 The xref:installation/configuration.adoc#_configuration_with_install_script[install script] will automatically install the SELinux RPM from the Rancher RPM repository if on a compatible system if not performing an air-gapped install. Automatic installation can be skipped by setting `INSTALL_K3S_SKIP_SELINUX_RPM=true`.
 
-Tab Manual Installation::
+Manual Installation::
 +
 --
 The necessary policies can be installed with the following commands:

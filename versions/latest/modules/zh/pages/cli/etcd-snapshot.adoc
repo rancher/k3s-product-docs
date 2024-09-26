@@ -24,7 +24,7 @@
 
 [tabs,sync-group-id=etcdsnap]
 ======
-Tab 单服务器::
+单服务器::
 +
 --
 使用 `--cluster-reset` 选项运行 K3s，同时指定 `--cluster-reset-restore-path`：
@@ -39,7 +39,7 @@ k3s server \
 *结果*：日志中的一条消息表示 K3s 可以在没有标志的情况下重新启动。再次启动 K3s，K3s 应该会成功运行并通过指定的快照恢复。
 --
 
-Tab 高可用::
+高可用::
 +
 --
 在此示例中有 3 个 Server，分别是 `S1`、``S2``和 `S3`。快照位于 `S1` 上。

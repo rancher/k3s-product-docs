@@ -8,7 +8,7 @@ Stopping and restarting K3s is supported by the installation script for systemd 
 
 [tabs]
 ======
-Tab systemd::
+systemd::
 +
 --
 To stop servers:
@@ -40,7 +40,7 @@ sudo systemctl start k3s-agent
 ----
 --
 
-Tab OpenRC::
+OpenRC::
 +
 --
 To stop servers:

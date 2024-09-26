@@ -156,7 +156,7 @@ Below are examples showing how you may configure `/etc/rancher/k3s/registries.ya
 
 [tabs]
 ======
-Tab With Authentication::
+With Authentication::
 +
 [,yaml]
 ----
@@ -175,7 +175,7 @@ configs:
       ca_file:   # path to the ca file used in the registry
 ----
 
-Tab Without Authentication::
+Without Authentication::
 +
 [,yaml]
 ----
@@ -198,7 +198,7 @@ Below are examples showing how you may configure `/etc/rancher/k3s/registries.ya
 
 [tabs]
 ======
-Tab With Authentication::
+With Authentication::
 +
 [,yaml]
 ----
@@ -213,7 +213,7 @@ configs:
       password: xxxxxx # this is the registry password
 ----
 
-Tab Without Authentication::
+Without Authentication::
 +
 [,yaml]
 ----

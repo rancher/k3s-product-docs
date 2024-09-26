@@ -43,7 +43,7 @@ CIS ベンチマークに準拠するためのランタイム要件は、ポッ�
 
 [tabs]
 ======
-Tab v1.25 and Newer::
+v1.25 and Newer::
 +
 --
 K3s v1.25 以降は、ポッドセキュリティを制御するための https://kubernetes.io/docs/concepts/security/pod-security-admission/[Pod Security Admissions (PSAs)] をサポートしています。PSA は以下のフラグを K3s サーバーに渡すことで有効になります。
@@ -79,7 +79,7 @@ plugins:
 ----
 --
 
-Tab v1.24 and Older::
+v1.24 and Older::
 +
 --
 K3s v1.24 以前は、ポッドセキュリティを制御するための https://kubernetes.io/docs/concepts/security/pod-security-policy/[Pod Security Policies (PSPs)] をサポートしています。PSP は以下のフラグを K3s サーバーに渡すことで有効になります。
@@ -422,7 +422,7 @@ spec:
 
 [tabs]
 ======
-Tab v1.21 and Newer::
+v1.21 and Newer::
 +
 --
 [,yaml]
@@ -472,7 +472,7 @@ spec:
 ----
 --
 
-Tab v1.20 and Older::
+v1.20 and Older::
 +
 --
 [,yaml]
@@ -582,7 +582,7 @@ sudo systemctl restart k3s.service
 
 [tabs]
 ======
-Tab v1.25 and Newer::
+v1.25 and Newer::
 +
 [,yaml]
 ----
@@ -605,7 +605,7 @@ kubelet-arg:
   - 'make-iptables-util-chains=true'
 ----
 
-Tab v1.24 and Older::
+v1.24 and Older::
 +
 [,yaml]
 ----

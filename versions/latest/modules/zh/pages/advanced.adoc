@@ -396,7 +396,7 @@ sudo apt install linux-modules-extra-raspi
 
 [tabs]
 ======
-Tab K3d::
+K3d::
 +
 --
 https://github.com/k3d-io/k3d[k3d] 是一个用于在 Docker 中轻松运行多节点 K3s 集群的实用程序。
@@ -406,7 +406,7 @@ K3d 能让你轻松在 Docker 中>创建单节点和多节点 K3s 集群（例�
 有关如何安装和使用 K3d 的更多信息，请参阅link:https://k3d.io/#installation[安装]文档。
 --
 
-Tab Docker::
+Docker::
 +
 --
 要使用 Docker，你还可以使用 `rancher/k3s` 镜像来运行 K3s Server 和 Agent。
@@ -451,11 +451,11 @@ sudo docker cp k3s-server-1:/etc/rancher/k3s/k3s.yaml ~/.kube/config
 
 [tabs]
 ======
-Tab 自动安装::
+自动安装::
 +
 如果系统兼容，而且没有进行离线安装，那么xref:installation/configuration.adoc#_使用安装脚本的选项[安装脚本]将自动从 Rancher RPM 仓库安装 SELinux RPM。你通过设置 `INSTALL_K3S_SKIP_SELINUX_RPM=true` 来跳过自动安装。
 
-Tab 手动安装::
+手动安装::
 +
 --
 可以使用以下命令安装必要的策略：
