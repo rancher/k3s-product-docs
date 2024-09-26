@@ -46,7 +46,7 @@ tls-san: 10.10.10.100
 
 [tabs]
 ======
-Tab HAProxy::
+HAProxy::
 +
 --
 http://www.haproxy.org/[HAProxy]は、TCPロードバランサーを提供するオープンソースのオプションです。また、ロードバランサー自体のHAをサポートし、すべてのレベルで冗長性を確保します。詳細については、http://docs.haproxy.org/2.8/intro.html[HAProxy Documentation]を参照してください。
@@ -134,7 +134,7 @@ server-3   Ready    control-plane,etcd,master   3m12s   v1.27.3+k3s1
 ----
 --
 
-Tab Nginx::
+Nginx::
 +
 --
 [WARNING]

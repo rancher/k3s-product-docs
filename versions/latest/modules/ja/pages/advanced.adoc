@@ -336,7 +336,7 @@ Docker で K3s を実行する方法はいくつかあります:
 
 [tabs]
 ======
-Tab K3d::
+K3d::
 +
 --
 https://github.com/k3d-io/k3d[k3d] は、Docker でマルチノード K3s クラスターを簡単に実行するために設計されたユーティリティです。
@@ -346,7 +346,7 @@ k3d を使用すると、ローカルでの Kubernetes 開発のために、Dock
 インストール方法や k3d の使用方法については、https://k3d.io/#installation[インストール] ドキュメントを参照してください。
 --
 
-Tab Docker::
+Docker::
 +
 --
 Docker を使用するには、K3s サーバーおよびエージェントを実行するための `rancher/k3s` イメージも利用可能です。
@@ -392,13 +392,13 @@ SELinux がデフォルトで有効になっているシステム（CentOS な�
 
 [tabs]
 ======
-Tab Automatic Installation::
+Automatic Installation::
 +
 --
 link:./installation/configuration.md#configuration-with-install-script[インストールスクリプト]は、エアギャップインストールを行わない限り、互換性のあるシステムであればRancher RPMリポジトリからSELinux RPMを自動的にインストールします。自動インストールをスキップするには、``INSTALL_K3S_SKIP_SELINUX_RPM=true``を設定します。
 --
 
-Tab Manual Installation::
+Manual Installation::
 +
 --
 必要なポリシーは以下のコマンドでインストールできます:

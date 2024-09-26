@@ -394,7 +394,7 @@ Docker에서 K3s를 실행하는 방법에는 여러 가지가 있습니다:
 
 [tabs]
 ======
-Tab K3d::
+K3d::
 +
 --
 https://github.com/k3d-io/k3d[k3d]는 도커에서 멀티노드 K3s 클러스터를 쉽게 실행할 수 있도록 설계된 유틸리티입니다.
@@ -404,7 +404,7 @@ k3d를 사용하면 쿠버네티스의 로컬 개발 등을 위해 도커에서 
 k3d 설치 및 사용 방법에 대한 자세한 내용은 https://k3d.io/#installation[설치] 설명서를 참조하세요.
 --
 
-Tab Docker::
+Docker::
 +
 --
 Docker를 사용하려면 `rancher/k3s` 이미지를 사용하여 K3s 서버와 에이전트를 실행할 수도 있습니다.
@@ -449,11 +449,11 @@ v1.19.4+k3s1부터 사용 가능
 
 [tabs]
 ======
-Tab 자동 설치::
+자동 설치::
 +
 에어 갭(폐쇄망) 설치를 수행하지 않는 경우 호환되는 시스템에서 [설치 스크립트](./installation/configuration.md#configuration-with-install-script)는 랜처 RPM 저장소에서 SELinux RPM을 자동으로 설치합니다. 자동 설치는 `INSTALL_K3S_SKIP_SELINUX_RPM=true`로 설정하여 건너뛸 수 있습니다. 
 
-Tab 수동 설치::
+수동 설치::
 +
 --
 필요한 policy는 다음 명령을 사용하여 설치할 수 있습니다:

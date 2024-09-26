@@ -54,7 +54,7 @@ PostgreSQL, MySQL, etcd와 같은 외부 데이터스토어를 사용하려면 K
 
 [tabs,sync-group-id=ext-db]
 ======
-Tab PostgreSQL::
+PostgreSQL::
 +
 --
 가장 일반적인 형식의 PostgreSQL용 데이터 저장소 엔드포인트 매개 변수는 다음과 같은 형식을 갖습니다:
@@ -71,7 +71,7 @@ Tab PostgreSQL::
 * ``kubernetes``라는 이름의 데이터베이스를 생성합니다.
 --
 
-Tab MySQL / MariaDB::
+MySQL / MariaDB::
 +
 --
 가장 일반적인 형태인 MySQL과 MariaDB의 `datastore-endpoint` 파라미터는 다음과 같은 형식을 갖습니다:
@@ -90,7 +90,7 @@ K3s의 https://github.com/k3s-io/k3s/issues/1093[알려진 이슈]로 인해 `tl
 * ``kubernetes``라는 이름의 데이터베이스를 생성합니다.
 --
 
-Tab etcd::
+etcd::
 +
 --
 가장 일반적인 형태인 etcd의 `datastore-endpoint` 파라미터의 형식은 다음과 같습니다:

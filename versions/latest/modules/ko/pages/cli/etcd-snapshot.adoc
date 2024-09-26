@@ -24,7 +24,7 @@ To restore the cluster from backup:
 
 [tabs,sync-group-id=etcdsnap]
 ======
-Tab Single Server::
+Single Server::
 +
 --
 Run K3s with the `--cluster-reset` option, with the `--cluster-reset-restore-path` also given:
@@ -39,7 +39,7 @@ k3s server \
 *Result:* A message in the logs says that K3s can be restarted without the flags. Start k3s again and should run successfully and be restored from the specified snapshot.
 --
 
-Tab High Availability::
+High Availability::
 +
 --
 In this example there are 3 servers, `S1`, `S2`, and `S3`. The snapshot is located on `S1`.

@@ -35,7 +35,7 @@ K3sはほとんどの最新のLinuxシステムで動作することが期待さ
 
 [tabs,sync-group-id=os,id=os]
 ======
-Tab SUSE Linux Enterprise / openSUSE::
+SUSE Linux Enterprise / openSUSE::
 +
 --
 firewalldをオフにすることをお勧めします:
@@ -58,7 +58,7 @@ firewall-cmd --reload
 セットアップに応じて追加のポートを開く必要がある場合があります。詳細については<<_k3sノードのインバウンドルール,インバウンドルール>>を参照してください。ポッドやサービスのデフォルトCIDRを変更する場合は、ファイアウォールルールを更新する必要があります。
 --
 
-Tab Red Hat Enterprise Linux / CentOS / Fedora::
+Red Hat Enterprise Linux / CentOS / Fedora::
 +
 --
 firewalldをオフにすることをお勧めします:
@@ -89,7 +89,7 @@ reboot
 ----
 --
 
-Tab Ubuntu / Debian::
+Ubuntu / Debian::
 +
 --
 古いDebianリリースには既知のiptablesバグがある可能性があります。詳細はlink:../known-issues.md#iptables[既知の問題]を参照してください。
@@ -113,7 +113,7 @@ ufw allow from 10.43.0.0/16 to any #services
 セットアップに応じて追加のポートを開く必要がある場合があります。詳細については<<_k3sノードのインバウンドルール,インバウンドルール>>を参照してください。ポッドやサービスのデフォルトCIDRを変更する場合は、ファイアウォールルールを更新する必要があります。
 --
 
-Tab Raspberry Pi::
+Raspberry Pi::
 +
 --
 Raspberry Pi OSはDebianベースであり、既知のiptablesバグがある可能性があります。詳細はlink:../known-issues.md#iptables[既知の問題]を参照してください。

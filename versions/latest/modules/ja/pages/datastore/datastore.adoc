@@ -61,7 +61,7 @@ PostgreSQL、MySQL、またはetcdなどの外部データストアを使用す�
 
 [tabs]
 ======
-Tab PostgreSQL::
+PostgreSQL::
 +
 --
 PostgreSQLの最も一般的な形式では、``datastore-endpoint``パラメータは以下の形式を持ちます：
@@ -78,7 +78,7 @@ PostgreSQLの最も一般的な形式では、``datastore-endpoint``パラメー
 * ``kubernetes``という名前のデータベースを作成
 --
 
-Tab MySQL / MariaDB::
+MySQL / MariaDB::
 +
 --
 MySQLおよびMariaDBの最も一般的な形式では、``datastore-endpoint``パラメータは以下の形式を持ちます：
@@ -97,7 +97,7 @@ K3sのlink:https://github.com/k3s-io/k3s/issues/1093[既知の問題]により�
 * ``kubernetes``という名前のデータベースを作成
 --
 
-Tab etcd::
+etcd::
 +
 --
 etcdの最も一般的な形式では、``datastore-endpoint``パラメータは以下の形式を持ちます：

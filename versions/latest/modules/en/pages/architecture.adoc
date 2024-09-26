@@ -22,7 +22,7 @@ Single server clusters can meet a variety of use cases, but for environments whe
 
 [tabs]
 ======
-Tab Embedded DB::
+Embedded DB::
 +
 --
 * Three or more *server nodes* that will serve the Kubernetes API and run other control plane services
@@ -31,7 +31,7 @@ Tab Embedded DB::
 image:k3s-architecture-ha-embedded.svg[K3s Architecture with High-availability Servers]
 --
 
-Tab External DB::
+External DB::
 +
 --
 * Two or more *server nodes* that will serve the Kubernetes API and run other control plane services

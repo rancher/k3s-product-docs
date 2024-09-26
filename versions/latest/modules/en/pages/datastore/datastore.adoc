@@ -61,7 +61,7 @@ As mentioned, the format of the value passed to the `datastore-endpoint` paramet
 
 [tabs,sync-group-id=ext-db]
 ======
-Tab PostgreSQL::
+PostgreSQL::
 +
 --
 In its most common form, the datastore-endpoint parameter for PostgreSQL has the following format:
@@ -78,7 +78,7 @@ If you only supply `postgres://`  as the endpoint, K3s will attempt to do the fo
 * Create a database named `kubernetes`
 --
 
-Tab MySQL / MariaDB::
+MySQL / MariaDB::
 +
 --
 In its most common form, the `datastore-endpoint` parameter for MySQL and MariaDB has the following format:
@@ -97,7 +97,7 @@ If you only supply `mysql://` as the endpoint, K3s will attempt to do the follow
 * Create a database with the name `kubernetes`
 --
 
-Tab etcd::
+etcd::
 +
 --
 In its most common form, the `datastore-endpoint` parameter for etcd has the following format:

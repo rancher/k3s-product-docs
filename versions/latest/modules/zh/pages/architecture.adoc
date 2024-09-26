@@ -24,7 +24,7 @@ image:k3s-architecture-single-server.svg[K3s Architecture with a Single Server]
 
 [tabs]
 ======
-Tab 嵌入式数据库::
+嵌入式数据库::
 +
 --
 * 三个或多个 **Server 节点**为 Kubernetes API 提供服务并运行其他 control plane 服务
@@ -33,7 +33,7 @@ Tab 嵌入式数据库::
 image:k3s-architecture-ha-embedded.svg[K3s Architecture with High-availability Servers]
 --
 
-Tab 外部数据库::
+外部数据库::
 +
 --
 * 两个或多个 **Server 节点**为 Kubernetes API 提供服务并运行其他 control plane 服务

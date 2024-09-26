@@ -46,7 +46,7 @@ By default, K3s does not include any pod security or network policies. However, 
 
 [tabs,sync-group-id=pod-sec]
 ======
-Tab v1.25 and Newer::
+v1.25 and Newer::
 +
 --
 K3s v1.25 and newer support https://kubernetes.io/docs/concepts/security/pod-security-admission/[Pod Security Admissions (PSAs)] for controlling pod security. PSAs are enabled by passing the following flag to the K3s server:
@@ -82,7 +82,7 @@ plugins:
 ----
 --
 
-Tab v1.24 and Older::
+v1.24 and Older::
 +
 --
 K3s v1.24 and older support https://kubernetes.io/docs/concepts/security/pod-security-policy/[Pod Security Policies (PSPs)] for controlling pod security. PSPs are enabled by passing the following flag to the K3s server:
@@ -423,7 +423,7 @@ The metrics-server and Traefik ingress controller will be blocked by default if 
 
 [tabs]
 ======
-Tab v1.21 and Newer::
+v1.21 and Newer::
 +
 [,yaml]
 ----
@@ -472,7 +472,7 @@ spec:
 ----
 
 
-Tab v1.20 and Older::
+v1.20 and Older::
 +
 [,yaml]
 ----
@@ -552,7 +552,7 @@ Both configurations must be passed as arguments to the API Server as:
 
 [tabs]
 ======
-Tab config::
+config::
 +
 [,yaml]
 ----
@@ -565,7 +565,7 @@ kube-apiserver-arg:
   - 'audit-log-maxsize=100'
 ----
 
-Tab cmdline::
+cmdline::
 +
 [,bash]
 ----
@@ -588,7 +588,7 @@ The configuration below should be placed in the xref:installation/configuration.
 
 [tabs,sync-group-id=pod-sec]
 ======
-Tab v1.25 and Newer::
+v1.25 and Newer::
 +
 [,yaml]
 ----
@@ -609,7 +609,7 @@ kubelet-arg:
   - "tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
 ----
 
-Tab v1.24 and Older::
+v1.24 and Older::
 +
 [,yaml]
 ----

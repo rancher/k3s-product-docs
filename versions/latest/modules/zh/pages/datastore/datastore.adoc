@@ -61,7 +61,7 @@ K3s 需要 DB 的准备语句支持。换言之，https://www.pgbouncer.org/faq.
 
 [tabs,sync-group-id=ext-db]
 ======
-Tab PostgreSQL::
+PostgreSQL::
 +
 --
 最常见的 PostgreSQL 的 `datastore-endpoint` 参数格式如下：
@@ -78,7 +78,7 @@ Tab PostgreSQL::
 * 创建一个名为 `kubernetes` 的数据库
 --
 
-Tab MySQL / MariaDB::
+MySQL / MariaDB::
 +
 --
 最常见的 MySQL 和 MariaDB 的 `datastore-endpoint` 参数格式如下：
@@ -97,7 +97,7 @@ Tab MySQL / MariaDB::
 - 创建一个名为 `kubernetes` 的数据库
 --
 
-Tab etcd::
+etcd::
 +
 --
 最常见的 etcd 的 `datastore-endpoint` 参数格式如下：

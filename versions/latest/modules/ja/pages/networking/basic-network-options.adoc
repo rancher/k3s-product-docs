@@ -61,7 +61,7 @@ K3sは2022-12リリース（v1.26.0+k3s1、v1.25.5+k3s1、v1.24.9+k3s1、v1.23.1
 
 [tabs]
 ======
-Tab Canal::
+Canal::
 +
 --
 https://docs.tigera.io/calico/latest/getting-started/kubernetes/flannel/install-for-flannel#installing-calico-for-policy-and-flannel-aka-canal-for-networking[Canal Docs]ウェブサイトを訪問し、Canalをインストールする手順に従います。Canal YAMLを修正して、``container_settings``セクションでIP転送が許可されるようにします。例えば：
@@ -85,7 +85,7 @@ cat /etc/cni/net.d/10-canal.conflist
 IP転送がtrueに設定されていることを確認します。
 --
 
-Tab Calico::
+Calico::
 +
 --
 https://docs.tigera.io/calico/latest/reference/configure-cni-plugins[Calico CNIプラグインガイド]に従います。Calico YAMLを修正して、``container_settings``セクションでIP転送が許可されるようにします。例えば：
@@ -109,7 +109,7 @@ cat /etc/cni/net.d/10-calico.conflist
 IP転送がtrueに設定されていることを確認します。
 --
 
-Tab Cilium::
+Cilium::
 +
 --
 ``k3s-killall.sh``または``k3s-uninstall.sh``を実行する前に、`cilium_host`、`cilium_net`、および``cilium_vxlan``インターフェースを手動で削除する必要があります。これを行わないと、K3sが停止したときにホストへのネットワーク接続が失われる可能性があります。

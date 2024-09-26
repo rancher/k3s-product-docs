@@ -22,7 +22,7 @@ image:k3s-architecture-single-server.svg[シングルサーバーを持つK3sア
 
 [tabs]
 ======
-Tab 埋め込みDB::
+埋め込みDB::
 +
 --
 * Kubernetes APIを提供し、他のコントロールプレーンサービスを実行する**3つ以上のサーバーノード**
@@ -31,7 +31,7 @@ Tab 埋め込みDB::
 image:k3s-architecture-ha-embedded.svg[高可用性サーバーを持つK3sアーキテクチャ]
 --
 
-Tab 外部DB::
+外部DB::
 +
 --
 * Kubernetes APIを提供し、他のコントロールプレーンサービスを実行する**2つ以上のサーバーノード**

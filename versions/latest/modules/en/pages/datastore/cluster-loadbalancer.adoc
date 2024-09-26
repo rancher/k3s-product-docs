@@ -46,7 +46,7 @@ Three additional nodes exist with hostnames and IPs of:
 
 [tabs,sync-group-id=ext-load-balancer]
 ======
-Tab HAProxy::
+HAProxy::
 +
 --
 http://www.haproxy.org/[HAProxy] is an open source option that provides a TCP load balancer. It also supports HA for the load balancer itself, ensuring redundancy at all levels. See http://docs.haproxy.org/2.8/intro.html[HAProxy Documentation] for more info.
@@ -139,7 +139,7 @@ server-3   Ready    control-plane,etcd,master   3m12s   v1.27.3+k3s1
 ----
 --
 
-Tab Nginx::
+Nginx::
 +
 --
 [WARNING]
