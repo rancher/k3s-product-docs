@@ -17,9 +17,9 @@ Great for:
 * Embedded K8s
 * Situations where a PhD in K8s clusterology is infeasible
 
-== What is K3s?
+== What is {product_name}?
 
-K3s is a fully compliant Kubernetes distribution with the following enhancements:
+{product_name} is a fully compliant Kubernetes distribution with the following enhancements:
 
 * Distributed as a single binary or minimal container image.
 * Lightweight datastore based on sqlite3 as the default storage backend. etcd3, MySQL, and Postgres are also available.
