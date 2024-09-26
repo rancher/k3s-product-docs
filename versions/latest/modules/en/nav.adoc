@@ -1,4 +1,4 @@
-* xref:introduction.adoc[]
+* xref:introduction.adoc[Introduction]
 * xref:quick-start.adoc[]
 * xref:installation/installation.adoc[]
 ** xref:installation/requirements.adoc[]

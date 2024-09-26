@@ -1,7 +1,9 @@
-= K3s - Lightweight Kubernetes
+= {product_name} - Lightweight Kubernetes
 :page-role: -toc
 
 Lightweight Kubernetes. Easy to install, half the memory, all in a binary of less than 100 MB.
+
+{product_name} is derived from the open source, community, https://www.cncf.io[CNCF] project called https://k3s.io[K3s]. The name K3s is used interchangeably with *{product_name}* in this documentation.
 
 Great for:
 
