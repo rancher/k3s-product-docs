@@ -1,25 +1,9 @@
-= {product_name} - Lightweight Kubernetes
+= {product_name}
 :page-role: -toc
 
-Lightweight Kubernetes. Easy to install, half the memory, all in a binary of less than 100 MB.
+K3s is an official https://www.cncf.io[CNCF] sandbox project that delivers a lightweight yet powerful certified Kubernetes distribution designed for production workloads across resource-restrained, remote locations or on IoT devices. When used with SUSE® Rancher Prime, K3s is simple to install, lightweight yet high availability Kubernetes distribution that can be easily managed within the Rancher orchestration platform.
 
-{product_name} is derived from the open source, community, https://www.cncf.io[CNCF] project called https://k3s.io[K3s]. The name K3s is used interchangeably with *{product_name}* in this documentation.
-
-Great for:
-
-* Edge
-* Homelab
-* Internet of Things (IoT)
-* Continuous Integration (CI)
-* Development
-* Single board computers (ARM)
-* Air-gapped environments
-* Embedded K8s
-* Situations where a PhD in K8s clusterology is infeasible
-
-== What is {product_name}?
-
-{product_name} is a fully compliant Kubernetes distribution with the following enhancements:
+== Key Features
 
 * Distributed as a single binary or minimal container image.
 * Lightweight datastore based on sqlite3 as the default storage backend. etcd3, MySQL, and Postgres are also available.
@@ -38,6 +22,14 @@ Great for:
  ** Spegel distributed container image registry mirror
  ** Host utilities (iptables, socat, etc)
 
-== What's with the name?
+== Great for:
 
-We wanted an installation of Kubernetes that was half the size in terms of memory footprint. Kubernetes is a 10-letter word stylized as K8s. So something half as big as Kubernetes would be a 5-letter word stylized as K3s. There is no long form of K3s and no official pronunciation.
+* Edge
+* Homelab
+* Internet of Things (IoT)
+* Continuous Integration (CI)
+* Development
+* Single board computers (ARM)
+* Air-gapped environments
+* Embedded K8s
+* Situations where a PhD in K8s clusterology is infeasible

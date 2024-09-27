@@ -5,7 +5,7 @@ display_version: 'Latest'
 start_page: en:introduction.adoc
 asciidoc:
   attributes:
-    product_name: SUSE® Rancher Prime K3s
+    product_name: SUSE® Rancher Prime Lightweight Kubernetes | K3s
 nav:
 - modules/en/nav.adoc
 - modules/ja/nav.adoc
