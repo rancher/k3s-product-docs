@@ -97,7 +97,6 @@ kubectl get pvc
 
 [CAUTION]
 ====
-
 LonghornはARM32をサポートしていません。
 ====
 
@@ -115,13 +114,7 @@ kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/depl
 
 Longhornは``longhorn-system``という名前空間にインストールされます。
 
-PVCとポッドを作成するためにyamlを適用します：
-
-[,bash]
-----
-kubectl create -f pvc.yaml
-kubectl create -f pod.yaml
-----
+Create a persistent volume claim and a pod to utilize it:
 
 === pvc.yaml
 
@@ -163,6 +156,14 @@ spec:
   - name: volv
     persistentVolumeClaim:
       claimName: longhorn-volv-pvc
+----
+
+PVCとポッドを作成するためにyamlを適用します：
+
+[,bash]
+----
+kubectl create -f pvc.yaml
+kubectl create -f pod.yaml
 ----
 
 PVとPVCが作成されたことを確認します：
