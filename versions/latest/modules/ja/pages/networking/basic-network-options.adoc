@@ -180,12 +180,14 @@ K3sでデュアルスタックを有効にするには、すべてのサーバ�
 
 有効な``cluster-cidr``および``service-cidr``値を設定できますが、上記のマスクが推奨されます。``cluster-cidr``マスクを変更する場合は、計画されたノードごとのポッド数および総ノード数に合わせて``node-cidr-mask-size-ipv4``および``node-cidr-mask-size-ipv6``値も変更する必要があります。サポートされる最大の``service-cidr``マスクはIPv4の場合は/12、IPv6の場合は/112です。パブリッククラウドにデプロイする場合は、IPv6トラフィックを許可することを忘れないでください。
 
+
+When using IPv6 addresses that are not publicly routed, for example in the ULA range, you might want to add the `--flannel-ipv6-masq` option to enable IPv6 NAT, as per default pods use their pod IPv6 address for outgoing traffic.
+
 カスタムCNIプラグイン、つまりFlannel以外のCNIプラグインを使用している場合、追加の設定が必要になることがあります。プラグインのデュアルスタックドキュメントを参照し、ネットワークポリシーが有効にできるか確認してください。
 
 [CAUTION]
 .既知の問題
 ====
-
 クラスタCIDRおよびサービスCIDRをIPv6を主要ファミリーとして定義する場合、すべてのクラスタメンバーのノードIPを明示的に設定し、ノードの希望するIPv6アドレスを最初のアドレスとして配置する必要があります。デフォルトでは、kubeletは常にIPv4を主要アドレスファミリーとして使用します。
 ====
 
@@ -212,6 +214,8 @@ IPv6のデフォルトルートがルーター広告（RA）によって設定�
 ----
 --cluster-cidr=2001:cafe:42::/56 --service-cidr=2001:cafe:43::/112
 ----
+
+When using IPv6 addresses that are not publicly routed, for example in the ULA range, you might want to add the `--flannel-ipv6-masq` option to enable IPv6 NAT, as per default pods use their pod IPv6 address for outgoing traffic.
 
 == ホスト名のないノード
 
