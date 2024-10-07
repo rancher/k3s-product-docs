@@ -11,6 +11,21 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
 
+| xref:#_release_v1_28_14k3s1[v1.28.14+k3s1]
+| Sep 19 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12814[v1.28.14]
+| https://github.com/k3s-io/kine/releases/tag/v0.12.0[v0.12.0]
+| https://sqlite.org/releaselog/3_44_0.html[3.44.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.13-k3s1[v3.5.13-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.21-k3s2.28[v1.7.21-k3s2.28]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.14[v1.1.14]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.6[v0.25.6]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.2[v0.7.2]
+| https://github.com/traefik/traefik/releases/tag/v2.11.8[v2.11.8]
+| https://github.com/coredns/coredns/releases/tag/v1.11.3[v1.11.3]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.13[v0.15.13]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.28[v0.0.28]
+
 | xref:#_release_v1_28_13k3s1[v1.28.13+k3s1]
 | Aug 21 2024
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12813[v1.28.13]
@@ -238,6 +253,30 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 |===
 
 {blank} +
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.14+k3s1[v1.28.14+k3s1]
+
+// v1.28.14+k3s1
+
+This release updates Kubernetes to v1.28.14, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v12813[Kubernetes release notes].
+
+=== Changes since v1.28.13+k3s1:
+
+* Testing Backports for 2024-09 https://github.com/k3s-io/k3s/pull/10804[(#10804)]
+ ** Update to newer OS images for install testing
+ ** Fix caching name for e2e vagrant box
+ ** Fix deploy latest commit on E2E tests
+ ** DRY E2E Upgrade test setup
+ ** Cover edge case when on new minor release for E2E upgrade test
+* Update CNI plugins version https://github.com/k3s-io/k3s/pull/10820[(#10820)]
+* Backports for 2024-09 https://github.com/k3s-io/k3s/pull/10845[(#10845)]
+* Fix hosts.toml header var https://github.com/k3s-io/k3s/pull/10874[(#10874)]
+* Update to v1.28.14-k3s1 and Go 1.22.6 https://github.com/k3s-io/k3s/pull/10884[(#10884)]
+* Update Kubernetes to v1.28.14-k3s2 https://github.com/k3s-io/k3s/pull/10907[(#10907)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.28.13+k3s1[v1.28.13+k3s1]
 

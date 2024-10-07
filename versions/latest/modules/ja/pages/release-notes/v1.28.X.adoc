@@ -11,6 +11,66 @@
 |===
 | バージョン | リリース日 | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
 
+| xref:#_release_v1_28_14k3s1[v1.28.14+k3s1]
+| Sep 19 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12814[v1.28.14]
+| https://github.com/k3s-io/kine/releases/tag/v0.12.0[v0.12.0]
+| https://sqlite.org/releaselog/3_44_0.html[3.44.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.13-k3s1[v3.5.13-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.21-k3s2.28[v1.7.21-k3s2.28]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.14[v1.1.14]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.6[v0.25.6]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.2[v0.7.2]
+| https://github.com/traefik/traefik/releases/tag/v2.11.8[v2.11.8]
+| https://github.com/coredns/coredns/releases/tag/v1.11.3[v1.11.3]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.13[v0.15.13]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.28[v0.0.28]
+
+| xref:#_release_v1_28_13k3s1[v1.28.13+k3s1]
+| Aug 21 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12813[v1.28.13]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.11[v0.11.11]
+| https://sqlite.org/releaselog/3_44_0.html[3.44.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.13-k3s1[v3.5.13-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.20-k3s2.28[v1.7.20-k3s2.28]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.12[v1.1.12]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.4[v0.25.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.0[v0.7.0]
+| https://github.com/traefik/traefik/releases/tag/v2.10.7[v2.10.7]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.10[v0.15.10]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.28[v0.0.28]
+
+| xref:#_release_v1_28_12k3s1[v1.28.12+k3s1]
+| Jul 31 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12812[v1.28.12]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.11[v0.11.11]
+| https://sqlite.org/releaselog/3_44_0.html[3.44.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.13-k3s1[v3.5.13-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.17-k3s1.28[v1.7.17-k3s1.28]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.12[v1.1.12]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.4[v0.25.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.0[v0.7.0]
+| https://github.com/traefik/traefik/releases/tag/v2.10.7[v2.10.7]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.10[v0.15.10]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.28[v0.0.28]
+
+| xref:#_release_v1_28_11k3s2[v1.28.11+k3s2]
+| Jul 03 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12811[v1.28.11]
+| https://github.com/k3s-io/kine/releases/tag/v0.11.9[v0.11.9]
+| https://sqlite.org/releaselog/3_44_0.html[3.44.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.13-k3s1[v3.5.13-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.17-k3s1.28[v1.7.17-k3s1.28]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.12[v1.1.12]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.4[v0.25.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.0[v0.7.0]
+| https://github.com/traefik/traefik/releases/tag/v2.10.7[v2.10.7]
+| https://github.com/coredns/coredns/releases/tag/v1.10.1[v1.10.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.10[v0.15.10]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.27[v0.0.27]
+
 | xref:#_リリース_v1_28_11k3s1[v1.28.11+k3s1]
 | 2024年6月25日
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12811[v1.28.11]
@@ -193,6 +253,92 @@
 |===
 
 {blank} +
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.14+k3s1[v1.28.14+k3s1]
+
+// v1.28.14+k3s1
+
+This release updates Kubernetes to v1.28.14, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v12813[Kubernetes release notes].
+
+=== Changes since v1.28.13+k3s1:
+
+* Testing Backports for 2024-09 https://github.com/k3s-io/k3s/pull/10804[(#10804)]
+ ** Update to newer OS images for install testing
+ ** Fix caching name for e2e vagrant box
+ ** Fix deploy latest commit on E2E tests
+ ** DRY E2E Upgrade test setup
+ ** Cover edge case when on new minor release for E2E upgrade test
+* Update CNI plugins version https://github.com/k3s-io/k3s/pull/10820[(#10820)]
+* Backports for 2024-09 https://github.com/k3s-io/k3s/pull/10845[(#10845)]
+* Fix hosts.toml header var https://github.com/k3s-io/k3s/pull/10874[(#10874)]
+* Update to v1.28.14-k3s1 and Go 1.22.6 https://github.com/k3s-io/k3s/pull/10884[(#10884)]
+* Update Kubernetes to v1.28.14-k3s2 https://github.com/k3s-io/k3s/pull/10907[(#10907)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.13+k3s1[v1.28.13+k3s1]
+
+// v1.28.13+k3s1
+
+This release updates Kubernetes to v1.28.13, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v12812[Kubernetes release notes].
+
+=== Changes since v1.28.12+k3s1:
+
+* Fixing setproctitle function https://github.com/k3s-io/k3s/pull/10624[(#10624)]
+* Bump docker/docker to v24.0.10-0.20240723193628-852759a7df45 https://github.com/k3s-io/k3s/pull/10651[(#10651)]
+* Backports for 2024-08 release cycle https://github.com/k3s-io/k3s/pull/10666[(#10666)]
+ ** Use pagination when listing large numbers of resources
+ ** Fix multiple issues with servicelb
+ ** Remove deprecated use of wait. functions
+ ** Wire lasso metrics up to metrics endpoint
+* Backports for August 2024 https://github.com/k3s-io/k3s/pull/10673[(#10673)]
+* Bump containerd to v1.7.20 https://github.com/k3s-io/k3s/pull/10662[(#10662)]
+* Add tolerations support for DaemonSet pods https://github.com/k3s-io/k3s/pull/10705[(#10705)]
+ ** *New Feature*: Users can now define Kubernetes tolerations for ServiceLB DaemonSet directly in the `svccontroller.k3s.cattle.io/tolerations` annotation on services.
+* Update to v1.28.13-k3s1 and Go 1.22.5 https://github.com/k3s-io/k3s/pull/10719[(#10719)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.12+k3s1[v1.28.12+k3s1]
+
+// v1.28.12+k3s1
+
+This release updates Kubernetes to v1.28.12, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v12811[Kubernetes release notes].
+
+=== Changes since v1.28.11+k3s2:
+
+* Backports for 2024-07 release cycle https://github.com/k3s-io/k3s/pull/10499[(#10499)]
+ ** Bump k3s-root to v0.14.0
+ ** Bump github.com/hashicorp/go-retryablehttp from 0.7.4 to 0.7.7
+ ** Bump Local Path Provisioner version
+ ** Ensure remotedialer kubelet connections use kubelet bind address
+ ** Chore: Bump Trivy version
+ ** Add etcd s3 config secret implementation
+* July Test Backports https://github.com/k3s-io/k3s/pull/10509[(#10509)]
+* Update to v1.28.12-k3s1 and Go 1.22.5 https://github.com/k3s-io/k3s/pull/10541[(#10541)]
+* Fix issues loading data-dir value from env vars or dropping config files https://github.com/k3s-io/k3s/pull/10598[(#10598)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.11+k3s2[v1.28.11+k3s2]
+
+// v1.28.11+k3s2
+
+This release updates Kubernetes to v1.28.11, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v12811[Kubernetes release notes].
+
+=== Changes since v1.28.11+k3s1:
+
+* Update flannel to v0.25.4 and fixed issue with IPv6 mask https://github.com/k3s-io/k3s/pull/10428[(#10428)]
+
+'''
 
 == リリース https://github.com/k3s-io/k3s/releases/tag/v1.28.11+k3s1[v1.28.11+k3s1]
 
