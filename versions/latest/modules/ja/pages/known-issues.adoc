@@ -56,7 +56,6 @@ kube-controller-manager-arg:
   - 'use-service-account-credentials=true'
 kubelet-arg:
   - 'streaming-connection-idle-timeout=5m'
-  - 'make-iptables-util-chains=true'
 ----
 
 . 次の内容で``/var/lib/rancher/k3s/server/psa.yaml``ファイルを作成します。さらに多くのネームスペースを免除することもできます。以下の例では、`kube-system`（必須）、`cis-operator-system`（オプションですが、Rancherを通じてセキュリティスキャンを実行する場合に便利）、および``system-upgrade``（xref:upgrades/automated.adoc[自動アップグレード]を行う場合に必須）を免除しています。
