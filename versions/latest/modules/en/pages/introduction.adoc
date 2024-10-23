@@ -1,4 +1,4 @@
-= {product_name}
+= {product-name}
 :page-role: -toc
 
 K3s is an official https://www.cncf.io[CNCF] sandbox project that delivers a lightweight yet powerful certified Kubernetes distribution designed for production workloads across resource-restrained, remote locations or on IoT devices. When used with SUSE® Rancher Prime, K3s is simple to install, lightweight yet high availability Kubernetes distribution that can be easily managed within the Rancher orchestration platform.
