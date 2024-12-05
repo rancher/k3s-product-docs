@@ -392,7 +392,7 @@ spec:
     - from:
       - namespaceSelector:
           matchLabels:
-            name: kube-system
+            kubernetes.io/metadata.name: kube-system
 ----
 
 適用された制限により、DNS は意図的に許可されない限りブロックされます。以下は、DNS のトラフィックを許可するネットワークポリシーです。
