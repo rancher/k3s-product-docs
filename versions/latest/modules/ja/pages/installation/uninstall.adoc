@@ -2,12 +2,15 @@
 
 [CAUTION]
 ====
-K3sをアンインストールすると、ローカルクラスターのデータ、設定、およびすべてのスクリプトとCLIツールが削除されます。 +
-外部データストアからのデータや、外部Kubernetesストレージボリュームを使用してポッドによって作成されたデータは削除されません。
+Uninstalling K3s may cause data loss!
 ====
 
-
 インストールスクリプトを使用してK3sをインストールした場合、インストール中にK3sをアンインストールするためのスクリプトが生成されました。
+
+Running the uninstall script stops K3s and all running pods, and deletes the local cluster datastore, xref:storage.adoc#_setting_up_the_local_storage_provider[Local Storage] Persistent Volume data, node configuration, and all of the scripts and CLI tools.
+
+It does not remove any data from external datastores, or created by pods using external Kubernetes Persistent Volumes.
+
 
 アンインストール後にノードを既存のクラスターに再参加させる予定がある場合は、ノードのパスワードシークレットが削除されるように、クラスターからノードを削除することを忘れないでください。詳細については、xref:architecture.adoc#_how_agent_node_registration_works[ノード登録]のドキュメントを参照してください。
 
