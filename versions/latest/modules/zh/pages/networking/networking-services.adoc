@@ -55,15 +55,13 @@ ip6tables-save | grep -v KUBE-ROUTER | ip6tables-restore
 
 ServiceLB 控制器会监视 Kubernetes https://kubernetes.io/docs/concepts/services-networking/service/[Service]，其中 `spec.type` 字段设置为 `LoadBalancer`。
 
-对于每个 LoadBalancer Service，在 `kube-system` 命名空间中会创建一个 https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/[DaemonSet]。这个 DaemonSet 依次在每个节点上创建带有 `svc-` 前缀的 Pod。这些 Pod 使用 iptables 将流量从 Pod 的 NodePort 转发到 Service 的 ClusterIP 地址和端口。
+The ServiceLB controller watches Kubernetes https://kubernetes.io/docs/concepts/services-networking/service/[Services] with the `spec.type` field set to `LoadBalancer`.
 
-如果 ServiceLB Pod 在配置了外部 IP 的节点上运行，则该节点的外部 IP 将填充到 Service 的 `status.loadBalancer.ingress` 地址列表中。否则将使用节点的内部 IP。
+For each LoadBalancer Service, a (https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/)[DaemonSet] is created in the `kube-system` namespace. This DaemonSet in turn creates ServiceLB Pods with a `svc-` prefix, on each node. These pods leverage hostPort using the service port, hence they will only be deployed on nodes that have that port available. If there aren't any nodes with that port available, the LB will remain Pending. Note that it is possible to expose multiple Services on the same node, as long as they use different ports.
 
-如果创建了多个 LoadBalancer Service，则会为每个 Service 创建一个单独的 DaemonSet。
+When the ServiceLB Pod runs on a node that has an external IP configured, the node's external IP is populated into the Service's `status.loadBalancer.ingress` address list with `ipMode: VIP`. Otherwise, the node's internal IP is used.
 
-只要它们使用不同的端口，就可以在同一个节点上公开多个 Service。
-
-如果你创建一个侦听端口 80 的 LoadBalancer Service，ServiceLB 将尝试在集群中为端口 80 寻找空闲主机。如果没有该端口可用的主机，则 LB 将停留在 Pending 状态。
+If the traffic to the external IP is subject to (https://en.wikipedia.org/wiki/Network_address_translation)[Network Address Translation (NAT)] - for example in public clouds when using the public IP of the node as external IP - the traffic is routed into the ServiceLB pod via the hostPort. The pod then uses iptables to forward traffic to the Service's ClusterIP address and port. If the traffic is not subject to NAT and instead arrives with destination address matching the LoadBalancer address, traffic is intercepted (normally by kube-proxy iptables chains or ipvs) and forwarded to the Service's ClusterIP address and port.
 
 === 用法
 
