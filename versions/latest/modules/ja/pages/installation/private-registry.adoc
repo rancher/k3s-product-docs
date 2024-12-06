@@ -13,6 +13,7 @@ Containerdはプライベートレジストリに接続し、kubeletが必要と
 
 Containerdにはすべてのレジストリに対して暗黙の「デフォルトエンドポイント」があります。
 デフォルトエンドポイントは、``registries.yaml``にそのレジストリの他のエンドポイントがリストされている場合でも、最後の手段として常に試されます。
+Rewrites are not applied to pulls against the default endpoint.
 例えば、``registry.example.com:5000/rancher/mirrored-pause:3.6``をプルする場合、containerdは``+https://registry.example.com:5000/v2+``のデフォルトエンドポイントを使用します。
 
 * ``docker.io``のデフォルトエンドポイントは``+https://index.docker.io/v2+``です。
@@ -91,11 +92,13 @@ mirrors:
 
 ==== リライト
 
-各ミラーにはリライトのセットを持つことができます。リライトは正規表現に基づいてイメージの名前を変更できます。
+Each mirror can have a set of rewrites, which use regular expressions to match and transform the name of an image when it is pulled from a mirror.
 これは、プライベートレジストリの組織/プロジェクト構造がミラーリングしているレジストリと異なる場合に便利です。
+Rewrites match and transform only the image name, NOT the tag.
 
 例えば、次の設定は、``docker.io/rancher/mirrored-pause:3.6``のイメージを透過的に``registry.example.com:5000/mirrorproject/rancher-images/mirrored-pause:3.6``としてプルします：
 
+[,yaml]
 ----
 mirrors:
   docker.io:
@@ -105,8 +108,31 @@ mirrors:
       "^rancher/(.*)": "mirrorproject/rancher-images/$1"
 ----
 
-リダイレクトとリライトを使用する場合でも、イメージは元の名前の下に保存されます。
-例えば、``crictl image ls``は、ノード上で``docker.io/rancher/mirrored-pause:3.6``が利用可能であることを示しますが、イメージは異なる名前でミラーリングされたレジストリからプルされました。
+[NOTE]
+.Version Gate
+====
+Rewrites are no longer applied to the xref:#_default_endpoint_fallback[Default Endpoint] as of the January 2024 releases: v1.26.13+k3s1, v1.27.10+k3s1, v1.28.6+k3s1, v1.29.1+k3s1.
+Prior to these releases, rewrites were also applied to the default endpoint, which would prevent K3s from pulling from the upstream registry if the image could not be pulled from a mirror endpoint, and the image was not available under the modified name in the upstream.
+====
+
+If you want to apply rewrites when pulling directly from a registry - when it is not being used as a mirror for a different upstream registry - you must provide a mirror endpoint that does not match the default endpoint.
+Mirror endpoints in `registries.yaml` that match the default endpoint are ignored; the default endpoint is always tried last with no rewrites, if fallback has not been disabled.
+
+For example, if you have a registry at `+https://registry.example.com/+`, and want to apply rewrites when explicitly pulling `registry.example.com/rancher/mirrored-pause:3.6`, you can add a mirror endpoint with the port listed.
+Because the mirror endpoint does not match the default endpoint - **`"https://registry.example.com:443/v2" != "https://registry.example.com/v2"`** - the endpoint is accepted as a mirror and rewrites are applied, despite it being effectively the same as the default.
+
+[,yaml]
+----
+mirrors:
+ registry.example.com
+   endpoint:
+     - "https://registry.example.com:443"
+   rewrites:
+     "^rancher/(.*)": "mirrorproject/rancher-images/$1"
+----
+
+Note that when using mirrors and rewrites, images will still be stored under the original name.
+For example, `crictl image ls` will show `docker.io/rancher/mirrored-pause:3.6` as available on the node, even if the image was pulled from a mirror with a different name.
 
 === 設定
 
