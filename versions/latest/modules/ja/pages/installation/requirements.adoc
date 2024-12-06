@@ -118,13 +118,27 @@ Raspberry Pi::
 --
 Raspberry Pi OSはDebianベースであり、既知のiptablesバグがある可能性があります。詳細はlink:../known-issues.md#iptables[既知の問題]を参照してください。
 
-標準のRaspberry Pi OSインストールでは、``cgroups``が有効になっていません。**K3S**はsystemdサービスを開始するために``cgroups``を必要とします。``cgroups``は``/boot/cmdline.txt``に``cgroup_memory=1 cgroup_enable=memory``を追加することで有効にできます。
+[#_cgroups]
+[pass]
+<h3><a class="anchor" id="_cgroups" href="#_cgroups"></a>Cgroups</h3>
+
+標準のRaspberry Pi OSインストールでは、``cgroups``が有効になっていません。**K3S**はsystemdサービスを開始するために``cgroups``を必要とします。``cgroups``は``/boot/firmware/cmdline.txt``に``cgroup_memory=1 cgroup_enable=memory``を追加することで有効にできます。
+
+[NOTE]
+====
+On Debian 11 and older Pi OS releases the cmdline.txt is located at `/boot/cmdline.txt`.
+====
 
 例のcmdline.txt:
 
 ----
 console=serial0,115200 console=tty1 root=PARTUUID=58b06195-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait cgroup_memory=1 cgroup_enable=memory
 ----
+
+
+[#_ubuntu_vxlan_module]
+[pass]
+<h3><a class="anchor" id="_ubuntu_vxlan_module" href="#_ubuntu_vxlan_module"></a>Ubuntu Vxlan Module</h3>
 
 Ubuntu 21.10以降、Raspberry Piでのvxlanサポートは別のカーネルモジュールに移動されました。
 
@@ -139,32 +153,61 @@ Rancher管理のK3sクラスターでテストされたOSの詳細について�
 
 == ハードウェア
 
-ハードウェア要件はデプロイメントの規模に応じてスケールします。ここでは最低限の推奨事項を示します。
+Hardware requirements scale based on the size of your deployments. The minimum requirements are:
 
 |===
-| スペック | 最低限 | 推奨
+| Node | CPU | RAM
 
-| CPU
-| 1コア
-| 2コア
+| Server
+| 2 cores
+| 2 GB
 
-| RAM
+| Agent
+| 1 core
 | 512 MB
-| 1 GB
 |===
 
-xref:reference/resource-profiling.adoc[リソースプロファイリング]では、K3sエージェント、ワークロードを持つK3sサーバー、および1つのエージェントを持つK3sサーバーの最小リソース要件を決定するためのテスト結果をキャプチャしています。また、K3sサーバーとエージェントの利用に最も大きな影響を与える要因についての分析や、エージェントやワークロードからクラスターのデータストアを保護する方法についても含まれています。
+xref:reference/resource-profiling.adoc[Resource Profiling] captures the results of tests and analysis to determine minimum resource requirements for the K3s agent, the K3s server with a workload, and the K3s server with one agent.
 
-[IMPORTANT]
-.Raspberry Piと組み込みetcd
+=== Disks
+
+K3s performance depends on the performance of the database. To ensure optimal speed, we recommend using an SSD when possible. 
+
+If deploying K3s on a Raspberry Pi or other ARM devices, it is recommended that you use an external SSD. etcd is write intensive; SD cards and eMMC cannot handle the IO load.
+
+=== Server Sizing Guide
+
+When limited on CPU and RAM on the server (control-plane + etcd) node, there are limitations on the amount of agent nodes that can be joined under standard workload conditions.
+
+|===
+| Server CPU | Server RAM | Number of Agents
+
+| 2
+| 4 GB
+| 0-350
+
+| 4
+| 8 GB
+| 351-900
+
+| 8
+| 16 GB
+| 901-1800
+
+| 16+
+| 32 GB
+| 1800+
+|===
+
+[TIP]
+.High Availability Sizing
 ====
-Raspberry Piで組み込みetcdを使用してK3sをデプロイする場合、外部SSDを使用することをお勧めします。etcdは書き込みが多く、SDカードはIO負荷に耐えられません。
+When using a high-availability setup of 3 server nodes, the number of agents can scale roughly ~50% more than the above table. E.g., 3 server with 4 vCPU/8 GB can scale to ~1200 agents.
 ====
 
+It is recommended to join agent nodes in batches of 50 or less to allow the CPU to free up space, as there is a spike on node join. Remember to modify the default `cluster-cidr` if desiring more than 255 nodes!
 
-=== ディスク
-
-K3sのパフォーマンスはデータベースのパフォーマンスに依存します。最適な速度を確保するために、可能であればSSDを使用することをお勧めします。ARMデバイスでSDカードやeMMCを使用する場合、ディスクのパフォーマンスは異なります。
+xref:reference/resource-profiling.adoc#server-sizing-requirements-for-k3s[Resource Profiling] contains more information how these recommendations were found.
 
 == ネットワーキング
 
