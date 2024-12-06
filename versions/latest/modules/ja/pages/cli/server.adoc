@@ -185,6 +185,10 @@
 | `--write-kubeconfig-mode` 値
 | `K3S_KUBECONFIG_MODE`
 | このlink:https://en.wikipedia.org/wiki/Chmod[モード]で kubeconfig を書き込む。kubeconfig ファイルは root によって所有され、デフォルトモード 600 で書き込まれます。モードを 644 に変更すると、ホスト上の他の特権のないユーザーが読み取れるようになります。
+
+| `--write-kubeconfig-group` value
+| `K3S_KUBECONFIG_GROUP`
+| Write kubeconfig group. Combining with `--write-kubeconfig-mode`, it will allow your k3s administrators accessing the kubeconfig file but keeping the file owned by root.
 |===
 
 == 高度なオプション
