@@ -206,7 +206,7 @@ When using a high-availability setup of 3 server nodes, the number of agents can
 
 It is recommended to join agent nodes in batches of 50 or less to allow the CPU to free up space, as there is a spike on node join. Remember to modify the default `cluster-cidr` if desiring more than 255 nodes!
 
-xref:reference/resource-profiling.adoc#server-sizing-requirements-for-k3s[Resource Profiling] contains more information how these recommendations were found.
+xref:reference/resource-profiling.adoc#_server_sizing_requirements_for_k3s[Resource Profiling] contains more information how these recommendations were found.
 
 == Networking
 

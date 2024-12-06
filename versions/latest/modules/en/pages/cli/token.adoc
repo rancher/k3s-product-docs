@@ -195,7 +195,7 @@ List bootstrap tokens, showing their ID, description, and remaining time-to-live
 [IMPORTANT]
 .Version Gate
 ====
-Available as of 2023-10 releases (v1.28.2+k3s1, v1.27.7+k3s1, v1.26.10+k3s1, v1.25.15+k3s1).
+Available as of the October 2023 releases (v1.28.2+k3s1, v1.27.7+k3s1, v1.26.10+k3s1, v1.25.15+k3s1).
 ====
 
 
