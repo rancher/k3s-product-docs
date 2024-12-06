@@ -159,31 +159,37 @@ K3sのベーステンプレートを拡張して、K3sのソースコードか�
   BinaryName = "/usr/bin/custom-container-runtime"
 ----
 
-== NVIDIAコンテナランタイムのサポート
+== Alternativeコンテナランタイムのサポート
 
-K3sは、起動時にNVIDIAコンテナランタイムが存在する場合、自動的に検出して構成します。
+K3s will automatically detect alternative container runtimes if they are present when K3s starts. Supported container runtimes are:
+
+----
+crun, lunatic, nvidia, nvidia-cdi, nvidia-experimental, slight, spin, wasmedge, wasmer, wasmtime, wws
+----
+
+NVIDIA GPUs require installation of the NVIDIA Container Runtime in order to schedule and run accelerated workloads in Pods. To use NVIDIA GPUs with K3s, perform the following steps:
 
 . ノードにnvidia-containerパッケージリポジトリをインストールします。手順は以下を参照してください：
  https://nvidia.github.io/libnvidia-container/
 . nvidiaコンテナランタイムパッケージをインストールします。例えば：
 `apt install -y nvidia-container-runtime cuda-drivers-fabricmanager-515 nvidia-headless-515-server`
-. K3sをインストールするか、既にインストールされている場合は再起動します：
- `curl -ksL get.k3s.io | sh -`
-. K3sがnvidiaコンテナランタイムを検出したことを確認します：
-+
+. xref:installation/installation.adoc[Install K3s], or restart it if already installed.
+. Confirm that the nvidia container runtime has been found by k3s: 
 `grep nvidia /var/lib/rancher/k3s/agent/etc/containerd/config.toml`
 
-これにより、見つかったランタイム実行ファイルに応じて、`nvidia` および/または `nvidia-experimental` ランタイムが自動的に containerd の設定に追加されます。
-クラスターに RuntimeClass 定義を追加し、Pod スペックで `runtimeClassName: nvidia` を設定して適切なランタイムを明示的に要求する Pod をデプロイする必要があります:
+[NOTE]
+.Version Gate
+====
+The `--default-runtime` flag and built-in RuntimeClass resources are available as of the December 2023 releases: v1.29.0+k3s1, v1.28.5+k3s1, v1.27.9+k3s1, v1.26.12+k3s1  
+Prior to these releases, you must deploy your own RuntimeClass resources for any runtimes you want to reference in Pod specs.
+====
+
+K3s includes Kubernetes RuntimeClass definitions for all supported alternative runtimes. You can select one of these to replace `runc` as the default runtime on a node by setting the `--default-runtime` value via the k3s CLI or config file.
+
+If you have not changed the default runtime on your GPU nodes, you must explicitly request the NVIDIA runtime by setting `runtimeClassName: nvidia` in the Pod spec:
 
 [,yaml]
 ----
-apiVersion: node.k8s.io/v1
-kind: RuntimeClass
-metadata:
-  name: nvidia
-handler: nvidia
----
 apiVersion: v1
 kind: Pod
 metadata:
