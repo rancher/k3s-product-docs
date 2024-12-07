@@ -67,6 +67,12 @@ If the traffic to the external IP is subject to (https://en.wikipedia.org/wiki/N
 
 在 K3s 中创建一个 https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer[LoadBalancer 类型的 Service]。
 
+[WARNING]
+.Known Issue
+====
+If external traffic reaches the node using a NAT (e.g. in public clouds) and you require `externalTrafficPolicy=local` for purposes such as client source IP preservation, please do not define the k3s config `node-external-ip` for any of the nodes, as that will not work correctly
+====
+
 === 控制 ServiceLB 节点选择
 
 如果你将 `svccontroller.k3s.cattle.io/enablelb=true` 标签添加到一个或多个节点，ServiceLB 控制器会切换到 allow-list 模式，只有具有该标签的节点才有资格托管 LoadBalancer Pod。未标记的节点将被 ServiceLB 排除。
