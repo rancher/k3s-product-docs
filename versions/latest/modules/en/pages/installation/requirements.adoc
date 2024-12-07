@@ -303,7 +303,7 @@ The following are the minimum CPU and memory requirements for nodes in a high-av
 
 [cols="^,^,^,^"]
 |===
-| Deployment Size | Nodes | VCPUS | RAM
+| Deployment Size | Nodes | vCPUs | RAM
 
 | Small
 | Up to 10
@@ -347,7 +347,7 @@ The following is a sizing guide for the database resources you need to run large
 
 [cols="^,^,^,^"]
 |===
-| Deployment Size | Nodes | VCPUS | RAM
+| Deployment Size | Nodes | vCPUs | RAM
 
 | Small
 | Up to 10
