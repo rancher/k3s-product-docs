@@ -11,6 +11,21 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
 
+| xref:#_release_v1_28_15k3s1[v1.28.15+k3s1]
+| Oct 26 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12815[v1.28.15]
+| https://github.com/k3s-io/kine/releases/tag/v0.13.2[v0.13.2]
+| https://sqlite.org/releaselog/3_46_1.html[3.46.1]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.13-k3s1[v3.5.13-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.22-k3s1.28[v1.7.22-k3s1.28]
+| https://github.com/opencontainers/runc/releases/tag/v1.1.14[v1.1.14]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.6[v0.25.6]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.2[v0.7.2]
+| https://github.com/traefik/traefik/releases/tag/v2.11.10[v2.11.10]
+| https://github.com/coredns/coredns/releases/tag/v1.11.3[v1.11.3]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.15[v0.15.15]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.30[v0.0.30]
+
 | xref:#_release_v1_28_14k3s1[v1.28.14+k3s1]
 | Sep 19 2024
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#v12814[v1.28.14]
@@ -254,6 +269,32 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 |===
 
 {blank} +
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.28.15+k3s1[v1.28.15+k3s1]
+
+// v1.28.15+k3s1
+
+This release updates Kubernetes to v1.28.15, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.28.md#changelog-since-v12814[Kubernetes release notes].
+
+=== Changes since v1.28.14+k3s1:
+
+* Add int test for flannel-ipv6masq https://github.com/k3s-io/k3s/pull/10906[(#10906)]
+* Bump Wharfie to v0.6.7 https://github.com/k3s-io/k3s/pull/10977[(#10977)]
+* Add user path to runtimes search https://github.com/k3s-io/k3s/pull/11005[(#11005)]
+* Add e2e test for advanced fields in services https://github.com/k3s-io/k3s/pull/11020[(#11020)]
+* Launch private registry with init https://github.com/k3s-io/k3s/pull/11045[(#11045)]
+* Backports for 2024-10 https://github.com/k3s-io/k3s/pull/11063[(#11063)]
+* Allow additional Rootless CopyUpDirs through K3S_ROOTLESS_COPYUPDIRS https://github.com/k3s-io/k3s/pull/11042[(#11042)]
+* Bump containerd to v1.7.22 https://github.com/k3s-io/k3s/pull/11075[(#11075)]
+* Add the nvidia runtime cdi https://github.com/k3s-io/k3s/pull/11095[(#11095)]
+* Simplify svclb ds https://github.com/k3s-io/k3s/pull/11085[(#11085)]
+* Revert "Make svclb as simple as possible" https://github.com/k3s-io/k3s/pull/11115[(#11115)]
+* Fixes "file exists" error from CNI bins when upgrading k3s https://github.com/k3s-io/k3s/pull/11128[(#11128)]
+* Update to Kubernetes v1.28.15-k3s1 and Go 1.22.8 https://github.com/k3s-io/k3s/pull/11161[(#11161)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.28.14+k3s1[v1.28.14+k3s1]
 
