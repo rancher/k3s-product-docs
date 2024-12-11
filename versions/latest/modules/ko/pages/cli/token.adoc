@@ -1,6 +1,6 @@
 = k3s token
 
-K3s uses tokens to secure the node join process. Tokens authenticate the cluster to the joining node, and the node to the cluster.
+K3s uses tokens to secure the node join process and to encrypt confidential information that is persisted to the datastore. Tokens authenticate the cluster to the joining node, and the node to the cluster.
 
 == Token Format
 
@@ -58,9 +58,9 @@ K3s supports three types of tokens. Only the server token is available by defaul
 
 If no token is provided when starting the first server in the cluster, one is created with a random password. The server token is always written to `/var/lib/rancher/k3s/server/token`, in secure format.
 
-The server token can be used to join both server and agent nodes to the cluster. It cannot be changed once the cluster has been created, and anyone with access to the server token essentially has full administrator access to the cluster. This token should be guarded carefully.
+The server token can be used to join both server and agent nodes to the cluster. Anyone with access to the server token essentially has full administrator access to the cluster. This token should be guarded carefully.
 
-The server token is also used as the https://en.wikipedia.org/wiki/PBKDF2[PBKDF2] passphrase for the key used to encrypt confidential information that is persisted to the datastore, such as the secrets-encryption configuration, wireguard keys, and private keys for cluster CA certificates and service-account tokens. For this reason, the token must be backed up alongside the cluster datastore itself.
+The server token is also used as the https://en.wikipedia.org/wiki/PBKDF2[PBKDF2] passphrase to encrypt confidential information that is persisted to the datastore known as bootstrap data. Bootstrap data is essential to set up new server nodes or restore from a snapshot. For this reason, the token must be backed up alongside the cluster datastore itself.
 
 [CAUTION]
 ====
@@ -85,8 +85,7 @@ The agent token is written to `/var/lib/rancher/k3s/server/agent-token`, in secu
 Support for the `k3s token` command and the ability to join nodes with bootstrap tokens is available starting with the 2023-02 releases (v1.26.2+k3s1, v1.25.7+k3s1, v1.24.11+k3s1, v1.23.17+k3s1).
 ====
 
-
-K3s supports dynamically generated, automatically expiring agent bootstrap tokens. Bootstrap tokens can only be used to join agents.
+K3s supports dynamically generated, automatically expiring agent https://kubernetes.io/docs/reference/access-authn-authz/bootstrap-tokens/[bootstrap tokens].
 
 == k3s token
 
@@ -104,6 +103,7 @@ COMMANDS:
    delete    Delete bootstrap tokens on the server
    generate  Generate and print a bootstrap token, but do not create it on the server
    list      List bootstrap tokens on the server
+   rotate    Rotate original server token with a new bootstrap token
 
 OPTIONS:
    --help, -h  show help
@@ -120,10 +120,10 @@ A token in secure format, including the cluster CA hash, will be written to stdo
 | Flag | Description
 
 | `--data-dir` value
-| (data) Folder to hold state default /var/lib/rancher/k3s or $\{HOME}/.rancher/k3s if not root
+| Folder to hold state (default: /var/lib/rancher/k3s or $\{HOME}/.rancher/k3s if not root)
 
 | `--kubeconfig` value
-| (cluster) Server to connect to [$KUBECONFIG]
+| Server to connect to [$KUBECONFIG]
 
 | `--description` value
 | A human friendly description of how this token is used
@@ -147,10 +147,10 @@ Delete one or more tokens. The full token can be provided, or just the token ID.
 | Flag | Description
 
 | `--data-dir` value
-| (data) Folder to hold state default /var/lib/rancher/k3s or $\{HOME}/.rancher/k3s if not root
+| Folder to hold state (default: /var/lib/rancher/k3s or $\{HOME}/.rancher/k3s if not root)
 
 | `--kubeconfig` value
-| (cluster) Server to connect to [$KUBECONFIG]
+| Server to connect to [$KUBECONFIG]
 |===
 
 [discrete]
@@ -164,10 +164,10 @@ You don't have to use this command in order to generate a token. You can do so y
 | Flag | Description
 
 | `--data-dir` value
-| (data) Folder to hold state default /var/lib/rancher/k3s or $\{HOME}/.rancher/k3s if not root
+| Folder to hold state (default: /var/lib/rancher/k3s or $\{HOME}/.rancher/k3s if not root)
 
 | `--kubeconfig` value
-| (cluster) Server to connect to [$KUBECONFIG]
+| Server to connect to [$KUBECONFIG]
 |===
 
 [discrete]
@@ -179,11 +179,49 @@ List bootstrap tokens, showing their ID, description, and remaining time-to-live
 | Flag | Description
 
 | `--data-dir` value
-| (data) Folder to hold state default /var/lib/rancher/k3s or $\{HOME}/.rancher/k3s if not root
+| Folder to hold state (default: /var/lib/rancher/k3s or $\{HOME}/.rancher/k3s if not root)
 
 | `--kubeconfig` value
-| (cluster) Server to connect to [$KUBECONFIG]
+| Server to connect to [$KUBECONFIG]
 
 | `--output` value
 | Output format. Valid options: text, json (default: "text")
 |===
+
+[discrete]
+==== `k3s token rotate`
+
+[IMPORTANT]
+.Version Gate
+====
+Available as of the October 2023 releases (v1.28.2+k3s1, v1.27.7+k3s1, v1.26.10+k3s1, v1.25.15+k3s1).
+====
+
+
+Rotate original server token with a new server token. After running this command, all servers and any agents that originally joined with the old token must be restarted with the new token.
+
+If you do not specify a new token, one will be generated for you.
+
+|===
+| Flag | Description
+
+| `--data-dir` value
+| Folder to hold state (default: /var/lib/rancher/k3s or $\{HOME}/.rancher/k3s if not root)
+
+| `--kubeconfig` value
+| Server to connect to [$KUBECONFIG]
+
+| `--server` value
+| Server to connect to (default: "https://127.0.0.1:6443") [$K3S_URL]
+
+| `--token` value
+| Existing token used to join a server or agent to a cluster [$K3S_TOKEN]
+
+| `--new-token` value
+| New token that replaces existing token
+|===
+
+[WARNING]
+====
+Snapshots taken before the rotation will require the old server token when restoring the cluster.
+====
