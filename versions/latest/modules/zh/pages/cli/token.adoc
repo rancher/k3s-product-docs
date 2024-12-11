@@ -1,6 +1,6 @@
 = k3s token
 
-K3s 使用 Token 来保护加入节点的过程。Token 用于验证加入的节点和集群。
+K3s 使用 Token 来保护加入节点的过程 and to encrypt confidential information that is persisted to the datastore。Token 用于验证加入的节点和集群。
 
 == Token 格式
 
@@ -58,9 +58,9 @@ K3s 支持三种类型的 Token。默认情况下只有 Server Token 可用，�
 
 如果在启动集群中的第一个 Server 时未提供 Token，则会使用随机密码创建。Server Token 始终以安全格式写入 `/var/lib/rancher/k3s/server/token`。
 
-Server Token 可用于将 Server 和 Agent 节点加入集群。一旦创建了集群，它就无法更改，任何有权访问 Server Token 的用户基本上都拥有集群的完全管理员访问权限。因此，你需要小心保管 Token。
+The server token can be used to join both server and agent nodes to the cluster. Anyone with access to the server token essentially has full administrator access to the cluster. This token should be guarded carefully.
 
-Server Token 还用作密钥的 https://en.wikipedia.org/wiki/PBKDF2[PBKDF2] 密码，该密钥用于加密持久保存到数据存储的机密信息，例如 Secret 加密配置、wireguard 密钥，集群 CA 证书的私钥以及 service-account Token。因此，Token 必须与集群数据存储一起备份。
+The server token is also used as the https://en.wikipedia.org/wiki/PBKDF2[PBKDF2] passphrase to encrypt confidential information that is persisted to the datastore known as bootstrap data. Bootstrap data is essential to set up new server nodes or restore from a snapshot. For this reason, the token must be backed up alongside the cluster datastore itself.
 
 [CAUTION]
 ====
@@ -85,8 +85,7 @@ Agent Token 以安全格式写入 `/var/lib/rancher/k3s/server/agent-token`。�
 从 2023-02 版本（v1.26.2+k3s1、v1.25.7+k3s1、v1.24.11+k3s1、v1.23.17+k3s1）开始，支持 `k3s token` 命令以及使用 Bootstrap Token 加入节点。
 ====
 
-
-K3s 支持动态生成、自动过期的 agent bootstrap token。Bootstrap Token 只能用于加入 Agent。
+K3s supports dynamically generated, automatically expiring agent https://kubernetes.io/docs/reference/access-authn-authz/bootstrap-tokens/[bootstrap tokens].
 
 == k3s token
 
@@ -187,3 +186,40 @@ OPTIONS:
 | `--output` value
 | 输出格式。可选值：text、json（默认值：`text`）
 |===
+
+==== `k3s token rotate`
+
+[IMPORTANT]
+.Version Gate
+====
+Available as of the October 2023 releases (v1.28.2+k3s1, v1.27.7+k3s1, v1.26.10+k3s1, v1.25.15+k3s1).
+====
+
+
+Rotate original server token with a new server token. After running this command, all servers and any agents that originally joined with the old token must be restarted with the new token.
+
+If you do not specify a new token, one will be generated for you.
+
+|===
+| Flag | Description
+
+| `--data-dir` value
+| Folder to hold state (default: /var/lib/rancher/k3s or $\{HOME}/.rancher/k3s if not root)
+
+| `--kubeconfig` value
+| Server to connect to [$KUBECONFIG]
+
+| `--server` value
+| Server to connect to (default: "https://127.0.0.1:6443") [$K3S_URL]
+
+| `--token` value
+| Existing token used to join a server or agent to a cluster [$K3S_TOKEN]
+
+| `--new-token` value
+| New token that replaces existing token
+|===
+
+[WARNING]
+====
+Snapshots taken before the rotation will require the old server token when restoring the cluster.
+====

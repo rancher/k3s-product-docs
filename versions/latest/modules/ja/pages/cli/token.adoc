@@ -1,6 +1,6 @@
 = k3s トークン
 
-K3s はトークンを使用してノードの参加プロセスを保護します。トークンはクラスターを参加ノードに認証し、ノードをクラスターに認証します。
+K3s uses tokens to secure the node join process and to encrypt confidential information that is persisted to the datastore。トークンはクラスターを参加ノードに認証し、ノードをクラスターに認証します。
 
 == トークン形式
 
@@ -58,9 +58,9 @@ K3s は 3 種類のトークンをサポートします。デフォルトでは�
 
 クラスターの最初のサーバーを起動する際にトークンが提供されない場合、ランダムなパスワードでトークンが作成されます。サーバートークンは常にセキュア形式で `/var/lib/rancher/k3s/server/token` に書き込まれます。
 
-サーバートークンは、サーバーノードとエージェントノードの両方をクラスターに参加させるために使用できます。一度クラスターが作成されると変更できず、サーバートークンにアクセスできる人はクラスターに対して完全な管理者アクセスを持つことになります。このトークンは慎重に保護する必要があります。
+The server token can be used to join both server and agent nodes to the cluster. Anyone with access to the server token essentially has full administrator access to the cluster. This token should be guarded carefully.
 
-サーバートークンは、データストアに永続化される機密情報（シークレット暗号化設定、ワイヤーガードキー、クラスター CA 証明書およびサービスアカウントトークンの秘密鍵など）を暗号化するために使用されるキーの https://en.wikipedia.org/wiki/PBKDF2[PBKDF2] パスフレーズとしても使用されます。このため、トークンはクラスターのデータストアと一緒にバックアップする必要があります。
+The server token is also used as the https://en.wikipedia.org/wiki/PBKDF2[PBKDF2] passphrase to encrypt confidential information that is persisted to the datastore known as bootstrap data. Bootstrap data is essential to set up new server nodes or restore from a snapshot. For this reason, the token must be backed up alongside the cluster datastore itself.
 
 [CAUTION]
 ====
@@ -85,8 +85,7 @@ K3s は 3 種類のトークンをサポートします。デフォルトでは�
 `k3s token` コマンドのサポートとブートストラップトークンを使用してノードに参加する機能は、2023-02 リリース（v1.26.2+k3s1、v1.25.7+k3s1、v1.24.11+k3s1、v1.23.17+k3s1）から利用可能です。
 ====
 
-
-K3s は動的に生成され、自動的に期限切れになるエージェントブートストラップトークンをサポートします。ブートストラップトークンはエージェントの参加にのみ使用できます。
+K3s supports dynamically generated, automatically expiring agent https://kubernetes.io/docs/reference/access-authn-authz/bootstrap-tokens/[bootstrap tokens].
 
 == k3s トークン
 
@@ -193,7 +192,7 @@ OPTIONS:
 2023年10月のリリース（v1.28.2+k3s1、v1.27.7+k3s1、v1.26.10+k3s1、v1.25.15+k3s1）から利用可能です。
 ====
 
-
+Rotate original server token with a new server token.
 元のサーバートークンを新しいブートストラップトークンにローテートします。このコマンドを実行した後、すべてのサーバーおよび元のトークンで参加したエージェントは新しいトークンで再起動する必要があります。
 
 新しいトークンを指定しない場合、1 つが生成されます。
@@ -216,3 +215,8 @@ OPTIONS:
 | `--new-token` 値
 | 既存のトークンを置き換える新しいトークン
 |===
+
+[WARNING]
+====
+Snapshots taken before the rotation will require the old server token when restoring the cluster.
+====
