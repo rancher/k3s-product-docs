@@ -109,7 +109,7 @@ OPTIONS:
 ----
 
 [discrete]
-==== `k3s token create [token]`
+=== `k3s token create [token]`
 
 创建一个新 Token。`[token]` 是要写入的实际 Token，由 `k3s token generate` 生成。如果没有指定 Token，将生成一个随机 Token。
 
@@ -138,7 +138,7 @@ OPTIONS:
 |===
 
 [discrete]
-==== `k3s token delete`
+=== `k3s token delete`
 
 删除一个或多个 Token。你可以提供完整的 Token，也可以仅提供 Token ID。
 
@@ -153,7 +153,7 @@ OPTIONS:
 |===
 
 [discrete]
-==== `k3s token generate`
+=== `k3s token generate`
 
 生成一个随机的 Bootstrap Token。
 
@@ -170,7 +170,7 @@ OPTIONS:
 |===
 
 [discrete]
-==== `k3s token list`
+=== `k3s token list`
 
 列出 Bootstrap Token，这将显示 Token 的 ID、描述和剩余 TTL。
 
@@ -187,7 +187,7 @@ OPTIONS:
 | 输出格式。可选值：text、json（默认值：`text`）
 |===
 
-==== `k3s token rotate`
+=== `k3s token rotate`
 
 [IMPORTANT]
 .Version Gate
