@@ -483,7 +483,7 @@ OPTIONS:
    --etcd-snapshot-name value                 (db) etcdスナップショットの基本名を設定する (デフォルト: etcd-snapshot-<unix-timestamp>) (デフォルト: "etcd-snapshot")
    --etcd-snapshot-schedule-cron value        (db) cron仕様でのスナップショット間隔時間。例: 5時間ごと '* */5 * * *' (デフォルト: "0 */12 * * *")
    --etcd-snapshot-retention value            (db) 保持するスナップショットの数 (デフォルト: 5)
-   --etcd-snapshot-dir value                  (db) データベーススナップショットを保存するディレクトリ (デフォルト: ${data-dir}/db/snapshots)
+   --etcd-snapshot-dir value                  (db) データベーススナップショットを保存するディレクトリ (デフォルト: $\{data-dir}/db/snapshots)
    --etcd-snapshot-compress                   (db) etcdスナップショットを圧縮する
    --etcd-s3                                  (db) S3へのバックアップを有効にする
    --etcd-s3-endpoint value                   (db) S3エンドポイントURL (デフォルト: "s3.amazonaws.com")

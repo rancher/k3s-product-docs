@@ -483,7 +483,7 @@ OPTIONS:
    --etcd-snapshot-name value                 (db) Set the base name of etcd snapshots (default: etcd-snapshot-<unix-timestamp>) (default: "etcd-snapshot")
    --etcd-snapshot-schedule-cron value        (db) Snapshot interval time in cron spec. eg. every 5 hours '* */5 * * *' (default: "0 */12 * * *")
    --etcd-snapshot-retention value            (db) Number of snapshots to retain (default: 5)
-   --etcd-snapshot-dir value                  (db) Directory to save db snapshots. (default: ${data-dir}/db/snapshots)
+   --etcd-snapshot-dir value                  (db) Directory to save db snapshots. (default: $\{data-dir}/db/snapshots)
    --etcd-snapshot-compress                   (db) Compress etcd snapshot
    --etcd-s3                                  (db) Enable backup to S3
    --etcd-s3-endpoint value                   (db) S3 endpoint url (default: "s3.amazonaws.com")
