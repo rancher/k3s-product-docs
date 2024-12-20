@@ -10,6 +10,7 @@ Upon startup, K3s will check to see if `/etc/rancher/k3s/registries.yaml` exists
 Note that server nodes are schedulable by default. If you have not tainted the server nodes and will be running workloads on them,
 please ensure you also create the `registries.yaml` file on each server as well.
 
+[#_default_endpoint_fallback]
 == Default Endpoint Fallback
 
 Containerd has an implicit "default endpoint" for all registries.
