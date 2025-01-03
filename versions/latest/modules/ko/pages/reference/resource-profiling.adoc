@@ -225,6 +225,7 @@ Workload storage (pod ephemeral storage and volumes) should also be isolated fro
 
 Failure to meet datastore throughput and latency requirements may result in delayed response from the control plane and/or failure of the control plane to maintain system state.
 
+[#_server_sizing_requirements_for_k3s]
 == Server Sizing Requirements for K3s
 
 === Environment

@@ -117,6 +117,7 @@ The following options must be set to the same value on all servers in the cluste
 |
 |===
 
+[#_cluster_options]
 === Cluster Options
 
 |===
@@ -367,7 +368,7 @@ The following options must be set to the same value on all servers in the cluste
 | Prefer bundled userspace binaries over host binaries
 
 | `--disable-agent`
-| See "xref:advanced.adoc#_에이전트_없는_서버_실행하기실험적[Running Agentless Servers (Experimental)]"
+| See "xref:advanced.adoc#_running_agentless_servers_experimental[Running Agentless Servers (Experimental)]"
 |===
 
 === Deprecated Options

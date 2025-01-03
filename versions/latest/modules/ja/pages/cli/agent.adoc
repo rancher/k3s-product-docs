@@ -182,6 +182,7 @@
 | ``--token``を使用
 |===
 
+[#_node_labels_and_taints_for_agents]
 == エージェントのノードラベルとtaints
 
 K3sエージェントは、``--node-label``および``--node-taint``オプションを使用して設定でき、これによりkubeletにラベルとtaintが追加されます。これらのオプションは登録時にのみラベルおよび/またはtaintを追加するため、一度だけ追加され、その後K3sコマンドを実行しても変更できません。

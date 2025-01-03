@@ -2,6 +2,7 @@
 
 This page focuses on the options that are commonly used when setting up K3s for the first time. Refer to the documentation on xref:advanced.adoc[Advanced Options and Configuration] and the xref:cli/server.adoc[server] and xref:cli/agent.adoc[agent] command documentation for more in-depth coverage.
 
+[#_configuration_with_install_script]
 == Configuration with install script
 
 As mentioned in the xref:quick-start.adoc[Quick-Start Guide], you can use the installation script available at https://get.k3s.io to install K3s as a service on systemd and openrc based systems.
@@ -88,7 +89,7 @@ It is important to match critical flags on your server nodes. For example, if yo
 See the Server Configuration documentation (linked above) for more information on which flags must be set identically on server nodes.
 ====
 
-
+[#_configuration_file]
 == Configuration File
 
 [IMPORTANT]

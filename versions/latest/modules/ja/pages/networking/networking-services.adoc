@@ -48,7 +48,7 @@ ip6tables-save | grep -v KUBE-ROUTER | ip6tables-restore
 ----
 ====
 
-
+[#_service_load_balancer]
 == サービスロードバランサー
 
 任意のLoadBalancerコントローラーをK3sクラスターにデプロイできます。デフォルトでは、K3sは利用可能なホストポートを使用するlink:https://github.com/k3s-io/klipper-lb[ServiceLB]（以前はKlipper LoadBalancerとして知られていた）というロードバランサーを提供します。

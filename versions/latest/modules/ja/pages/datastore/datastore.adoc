@@ -28,7 +28,7 @@ K3sが新しいetcdクラスタを初期化するように設定されている�
 K3sはDBからのプリペアドステートメントサポートを必要とします。これは、https://www.pgbouncer.org/faq.html#how-to-use-prepared-statements-with-transaction-pooling[PgBouncer]のような接続プーラーがK3sと連携するために追加の設定を必要とする場合があることを意味します。
 ====
 
-
+[#_external_datastore_configuration_parameters]
 == 外部データストアの設定パラメータ
 
 PostgreSQL、MySQL、またはetcdなどの外部データストアを使用する場合、``datastore-endpoint``パラメータを設定してK3sが接続方法を認識できるようにする必要があります。また、接続の認証と暗号化を設定するためのパラメータを指定することもできます。以下の表は、CLIフラグまたは環境変数として渡すことができるこれらのパラメータをまとめたものです。
@@ -55,6 +55,7 @@ PostgreSQL、MySQL、またはetcdなどの外部データストアを使用す�
 
 ベストプラクティスとして、これらのパラメータをコマンドライン引数ではなく環境変数として設定することをお勧めします。これにより、データベースの資格情報やその他の機密情報がプロセス情報の一部として露出しないようにします。
 
+[#_datastore_endpoint_format_and_functionality]
 == データストアエンドポイントの形式と機能
 
 前述のように、``datastore-endpoint``パラメータに渡される値の形式はデータストアバックエンドに依存します。以下に、各サポートされている外部データストアの形式と機能を詳細に説明します。

@@ -1,5 +1,6 @@
 = k3s 証明書
 
+[#_client_and_server_certificates]
 == クライアントおよびサーバー証明書
 
 K3sのクライアントおよびサーバー証明書は、発行日から365日間有効です。期限切れの証明書や、期限切れまで90日以内の証明書は、K3sが起動するたびに自動的に更新されます。
@@ -29,6 +30,7 @@ k3s certificate rotate --service <SERVICE>,<SERVICE>
 
 以下の証明書がローテーション可能です：`admin`, `api-server`, `controller-manager`, `scheduler`, `k3s-controller`, `k3s-server`, `cloud-controller`, `etcd`, `auth-proxy`, `kubelet`, `kube-proxy`。
 
+[#_certificate_authority_ca_certificates]
 == 証明書認証局 (CA) 証明書
 
 Kubernetesの適切な動作には、いくつかのCA証明書が必要です。KubernetesがCA証明書をどのように使用するかについての詳細は、Kubernetesのlink:https://kubernetes.io/docs/setup/best-practices/certificates/#all-certificates[PKI証明書と要件]ドキュメントを参照してください。

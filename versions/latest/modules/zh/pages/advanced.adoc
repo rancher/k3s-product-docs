@@ -192,6 +192,7 @@ spec:
 
 请注意，NVIDIA Container Runtime 也经常与 https://github.com/NVIDIA/k8s-device-plugin/[NVIDIA Device Plugin] 和 https://github.com/NVIDIA/gpu-feature-discovery/[GPU Feature Discovery] 一起使用，它们必须单独安装，而且需要修改以确保 Pod 规范能包括 `runtimeClassName: nvidia`，如前所述。
 
+[#_running_agentless_servers_experimental]
 == 运行无 Agent 的 Server（实验性）
 
 ____
@@ -213,6 +214,7 @@ Rootless 模式允许非特权用户运行 K3s Server，这样可以保护主机
 
 有关 Rootless 模式 Kubernetes 的更多信息，请参阅link:https://rootlesscontaine.rs/[此处]。
 
+[#_known_issues_with_rootless_mode]
 === Rootless 模式的已知问题
 
 * *端口*
@@ -286,7 +288,7 @@ rootlesskit 和 slirp4nets 使用的一些配置可以通过环境变量来设�
 
 == 节点标签和污点
 
-K3s Agent 可以通过 `--node-label` 和 `--node-taint` 选项来配置，它们会为 kubelet 添加标签和污点。这两个选项仅在xref:cli/agent.adoc#_agent_的节点标签和污点[注册时]添加标签和/或污点，因此只能在节点首次加入集群时设置。
+K3s Agent 可以通过 `--node-label` 和 `--node-taint` 选项来配置，它们会为 kubelet 添加标签和污点。这两个选项仅在xref:cli/agent.adoc#_node_labels_and_taints_for_agents[注册时]添加标签和/或污点，因此只能在节点首次加入集群时设置。
 
 当前所有的 Kubernetes 版本都限制节点注册到带有 `kubernetes.io` 和 `k8s.io` 前缀的大部分标签，特别是 `kubernetes.io/role` 标签。如果你尝试启动带有不允许的标签的节点，K3s 将无法启动。正如 Kubernetes 作者所说：
 
@@ -347,7 +349,7 @@ firewall-cmd --permanent --zone=trusted --add-source=10.43.0.0/16 #services
 firewall-cmd --reload
 ----
 
-你可能还需要打开其他端口。有关详细信息，请参阅xref:installation/requirements.adoc#_k3s_server_节点的入站规则[入站规则]。如果更改了 pod 或服务的默认 CIDR，则需要相应地更新防火墙规则。
+你可能还需要打开其他端口。有关详细信息，请参阅xref:installation/requirements.adoc#_inbound_rules_for_k3s_nodes[入站规则]。如果更改了 pod 或服务的默认 CIDR，则需要相应地更新防火墙规则。
 
 如果启用，则需要禁用 nm-cloud-setup 并重新启动节点：
 
@@ -375,7 +377,7 @@ ufw allow from 10.42.0.0/16 to any #pods
 ufw allow from 10.43.0.0/16 to any #services
 ----
 
-你可能还需要打开其他端口。有关详细信息，请参阅xref:installation/requirements.adoc#_k3s_server_节点的入站规则[入站规则]。如果更改了 pod 或服务的默认 CIDR，则需要相应地更新防火墙规则。
+你可能还需要打开其他端口。有关详细信息，请参阅xref:installation/requirements.adoc#_inbound_rules_for_k3s_nodes[入站规则]。如果更改了 pod 或服务的默认 CIDR，则需要相应地更新防火墙规则。
 
 === Raspberry Pi
 
@@ -397,6 +399,7 @@ console=serial0,115200 console=tty1 root=PARTUUID=58b06195-02 rootfstype=ext4 el
 sudo apt install linux-modules-extra-raspi
 ----
 
+[#_running_k3s_in_docker]
 == 在 Docker 中运行 K3s
 
 在 Docker 中运行 K3s 有几种方法：
@@ -444,6 +447,7 @@ sudo docker cp k3s-server-1:/etc/rancher/k3s/k3s.yaml ~/.kube/config
 --
 ======
 
+[#_selinux_support]
 == SELinux 支持
 
 [IMPORTANT]
@@ -460,7 +464,7 @@ sudo docker cp k3s-server-1:/etc/rancher/k3s/k3s.yaml ~/.kube/config
 ======
 自动安装::
 +
-如果系统兼容，而且没有进行离线安装，那么xref:installation/configuration.adoc#_使用安装脚本的选项[安装脚本]将自动从 Rancher RPM 仓库安装 SELinux RPM。你通过设置 `INSTALL_K3S_SKIP_SELINUX_RPM=true` 来跳过自动安装。
+如果系统兼容，而且没有进行离线安装，那么xref:installation/configuration.adoc#_configuration_with_install_script[安装脚本]将自动从 Rancher RPM 仓库安装 SELinux RPM。你通过设置 `INSTALL_K3S_SKIP_SELINUX_RPM=true` 来跳过自动安装。
 
 手动安装::
 +
@@ -547,6 +551,7 @@ spec:
     - containerPort: 80
 ----
 
+[#_additional_logging_sources]
 == 其他日志来源
 
 你可以在不使用 Rancher 的情况下为 K3s 安装 https://rancher.com/docs/rancher/v2.6/en/logging/helm-chart-options/[Rancher Logging]。为此，你可以执行以下命令：

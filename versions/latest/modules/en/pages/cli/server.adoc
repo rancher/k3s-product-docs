@@ -139,6 +139,7 @@ The following options must be set to the same value on all servers in the cluste
 | S3 timeout (default: 5m0s)
 |===
 
+[#_cluster_options]
 === Cluster Options
 
 |===

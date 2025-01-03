@@ -194,7 +194,7 @@ data:
 ``name``フィールドはHelmチャートの命名規則に従う必要があります。詳細については、https://helm.sh/docs/chart_best_practices/conventions/#chart-names[Helmベストプラクティスドキュメント]を参照してください。
 ====
 
-
+[#_customizing_packaged_components_with_helmchartconfig]
 == HelmChartConfigでパッケージ化されたコンポーネントをカスタマイズする
 
 HelmChartsとしてデプロイされるパッケージ化されたコンポーネント（例えばTraefik）の値を上書きするために、K3sはHelmChartConfigリソースを介してデプロイのカスタマイズをサポートします。HelmChartConfigリソースは対応するHelmChartの名前とネームスペースに一致する必要があり、追加の``valuesContent``を提供することができ、これは追加の値ファイルとして``helm``コマンドに渡されます。

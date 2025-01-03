@@ -16,6 +16,7 @@ In this configuration, each agent node is registered to the same server node. A 
 
 image:k3s-architecture-single-server.svg[K3s Architecture with a Single Server]
 
+[#_high_availability_k3s]
 == High-Availability K3s
 
 Single server clusters can meet a variety of use cases, but for environments where uptime of the Kubernetes control plane is critical, you can run K3s in an HA configuration. An HA K3s cluster comprises:
@@ -49,6 +50,7 @@ After registration, the agent nodes establish a connection directly to one of th
 
 image:k3s-production-setup.svg[Agent Registration HA]
 
+[#_how_agent_node_registration_works]
 == How Agent Node Registration Works
 
 Agent nodes are registered with a websocket connection initiated by the `k3s agent` process, and the connection is maintained by a client-side load balancer running as part of the agent process. Initially, the agent connects to the supervisor (and kube-apiserver) via the local load-balancer on port 6443. The load-balancer maintains a list of available endpoints to connect to. The default (and initially only) endpoint is seeded by the hostname from the `--server` address. Once it connects to the cluster, the agent retrieves a list of kube-apiserver addresses from the Kubernetes service endpoint list in the default namespace. Those endpoints are added to the load balancer, which then maintains stable connections to all servers in the cluster, providing a connection to the kube-apiserver that tolerates outages of individual servers.
