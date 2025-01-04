@@ -21,6 +21,7 @@ asciidoc:
   - '@asciidoctor/tabs'
 antora:
   extensions:
+  - require: '@springio/antora-xref-extension'
   - require: '@antora/lunr-extension'
     languages: [en, ja, zh] # ko not supported by extension
   - require: '@sntke/antora-mermaid-extension' # <1>
