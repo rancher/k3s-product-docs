@@ -4,10 +4,9 @@
 
 请注意，Server 也运行 Agent，因此本文列出的所有标志也可用于 Server。
 
-在本文中，选项作为 CLI 标志传递，但是也可以作为配置文件选项传递。有关使用 YAML 配置文件的更多信息，请参阅xref:installation/configuration.adoc#_配置文件[配置文件]文档。
+在本文中，选项作为 CLI 标志传递，但是也可以作为配置文件选项传递。有关使用 YAML 配置文件的更多信息，请参阅xref:installation/configuration.adoc#_configuration_file[配置文件]文档。
 
-[discrete]
-=== Logging
+== Logging
 
 |===
 | 标志 | 默认 | 描述
@@ -29,8 +28,7 @@
 | 记录到标准错误以及文件（如果设置）
 |===
 
-[discrete]
-=== 集群选项
+== 集群选项
 
 |===
 | 标志 | 环境变量 | 描述
@@ -48,8 +46,7 @@
 | 要连接的 server
 |===
 
-[discrete]
-=== 数据
+== 数据
 
 |===
 | 标志 | 默认 | 描述
@@ -59,8 +56,7 @@
 | 保存状态的文件夹
 |===
 
-[discrete]
-=== 节点
+== 节点
 
 |===
 | 标志 | 环境变量 | 描述
@@ -94,8 +90,7 @@
 | Supervisor 客户端负载均衡器的本地端口。如果 supervisor 和 apiserver 没有位于同一位置，则比该端口小 1 的端口也将用于 apiserver 客户端负载均衡器（默认值：6444）
 |===
 
-[discrete]
-=== 运行时
+== 运行时
 
 |===
 | 标志 | 默认 | 描述
@@ -113,8 +108,7 @@
 | 私有镜像仓库配置文件
 |===
 
-[discrete]
-=== 网络
+== 网络
 
 |===
 | 标志 | 环境变量 | 描述
@@ -144,8 +138,7 @@
 | 覆盖默认的 Flannel CNI 配置文件
 |===
 
-[discrete]
-=== 自定义标志
+== 自定义标志
 
 |===
 | 标志 | 描述
@@ -157,8 +150,7 @@
 | kube-proxy 进程的自定义标志
 |===
 
-[discrete]
-=== 实验功能
+== 实验功能
 
 |===
 | 标志 | 描述
@@ -173,8 +165,7 @@
 | 偏向打包的用户空间二进制文件，而不是主机二进制文件
 |===
 
-[discrete]
-=== 已弃用
+== 已弃用
 
 |===
 | 标志 | 环境变量 | 描述
@@ -188,8 +179,8 @@
 | 使用 `--token`
 |===
 
-[discrete]
-=== Agent 的节点标签和污点
+[#_node_labels_and_taints_for_agents]
+== Agent 的节点标签和污点
 
 K3s Agent 可以通过 `--node-label` 和 `--node-taint` 选项来配置，它们会为 kubelet 添加标签和污点。这两个选项只能在注册时添加标签和/或污点，因此它们只能被添加一次，之后不能再通过运行 K3s 命令来改变。
 
@@ -204,8 +195,7 @@ K3s Agent 可以通过 `--node-label` 和 `--node-taint` 选项来配置，它�
 
 如果你想在节点注册后更改节点标签和污点，你需要使用 `kubectl`。关于如何添加link:https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[污点]和link:https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[节点标签]的详细信息，请参阅官方 Kubernetes 文档。
 
-[discrete]
-=== K3s Agent CLI 帮助
+== K3s Agent CLI 帮助
 
 ____
 如果某个选项出现在括号中（例如 `[$K3S_URL]`），该选项可以作为该名称的环境变量传入。

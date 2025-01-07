@@ -48,7 +48,7 @@ ip6tables-save | grep -v KUBE-ROUTER | ip6tables-restore
 ----
 ====
 
-
+[#_service_load_balancer]
 == Service Load Balancer
 
 Any LoadBalancer controller can be deployed to your K3s cluster. By default, K3s provides a load balancer known as https://github.com/k3s-io/klipper-lb[ServiceLB] (formerly Klipper LoadBalancer) that uses available host ports.

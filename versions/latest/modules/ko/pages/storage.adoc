@@ -27,6 +27,7 @@ K3s와 함께 사용할 수 있는 트리 외 대안인 두 구성 요소가 있
 
 쿠버네티스 유지 관리자는 인-트리 볼륨 플러그인을 CSI 드라이버로 적극적으로 마이그레이션하고 있습니다. 이 마이그레이션에 대한 자세한 내용은 https://kubernetes.io/blog/2021/12/10/storage-in-tree-to-csi-migration-status-update/[여기]를 참고하세요.
 
+[#_setting_up_the_local_storage_provider]
 == 로컬 스토리지 공급자 설정하기
 
 K3s는 랜처의 로컬 경로 프로비저너와 함께 제공되며, 이를 통해 각 노드의 로컬 스토리지를 사용하여 영구 볼륨 클레임(persistent volume claims)을 즉시 생성할 수 있습니다. 아래에서는 간단한 예제를 다루겠습니다. 자세한 내용은 공식 문서 https://github.com/rancher/local-path-provisioner/blob/master/README.md#usage[여기]를 참조하세요.

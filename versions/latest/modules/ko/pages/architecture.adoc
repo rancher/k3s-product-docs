@@ -6,7 +6,7 @@
 
 * 서버 노드는 `k3s server` 명령을 실행하는 호스트로 정의되며, 컨트롤 플레인 및 데이터스토어 구성 요소는 K3s에서 관리합니다.
 * 에이전트 노드는 데이터스토어 또는 컨트롤 플레인 구성 요소 없이 `k3s agent` 명령을 실행하는 호스트로 정의됩니다.
-* 서버와 에이전트 모두 kubelet, 컨테이너 런타임 및 CNI를 실행합니다. 에이전트 없는 서버 실행에 대한 자세한 내용은 xref:advanced.adoc#_에이전트_없는_서버_실행하기실험적[고급 옵션] 설명서를 참조하세요.
+* 서버와 에이전트 모두 kubelet, 컨테이너 런타임 및 CNI를 실행합니다. 에이전트 없는 서버 실행에 대한 자세한 내용은 xref:advanced.adoc#_running_agentless_servers_experimental[고급 옵션] 설명서를 참조하세요.
 
 image:how-it-works-k3s-revised.svg[]
 
@@ -18,6 +18,7 @@ image:how-it-works-k3s-revised.svg[]
 
 image:k3s-architecture-single-server.svg[K3s Architecture with a Single Server]
 
+[#_high_availability_k3s_server_with_an_external_db]
 == 외부 DB가 있는 고가용성 K3s 서버
 
 단일 서버 클러스터는 다양한 사용 사례를 충족할 수 있지만, Kubernetes 컨트롤 플레인의 가동 시간이 중요한 환경의 경우, HA 구성으로 K3s를 실행할 수 있습니다. HA K3s 클러스터는 다음과 같이 구성됩니다:
@@ -35,6 +36,7 @@ image:k3s-architecture-ha-embedded.svg[K3s Architecture with High-availability S
 
 image:k3s-production-setup.svg[Agent Registration HA]
 
+[#_how_agent_node_registration_works]
 == 에이전트 노드 등록 작동 방식
 
 에이전트 노드는 `k3s agent` 프로세스에 의해 시작된 웹소켓 연결로 등록되며, 에이전트 프로세스의 일부로 실행되는 클라이언트 측 로드밸런서에 의해 연결이 유지됩니다. 이 로드 밸런서는 클러스터의 모든 서버에 대한 안정적인 연결을 유지하여 개별 서버의 중단을 허용하는 에이전시 서버에 대한 연결을 제공합니다.

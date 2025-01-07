@@ -28,7 +28,7 @@ K3s 支持以下数据存储选项：
 K3s 需要 DB 的准备语句支持。换言之，https://www.pgbouncer.org/faq.html#how-to-use-prepared-statements-with-transaction-pooling[PgBouncer] 之类的连接池将无法与 K3s 一起使用。
 ====
 
-
+[#_external_datastore_configuration_parameters]
 == 外部数据存储配置参数
 
 如果你希望使用外部数据存储（例如 PostgreSQL、MySQL 或 etcd），你必须设置 `datastore-endpoint` 参数，以便 K3s 知道如何连接到外部数据存储。你也可以指定参数来配置连接的认证和加密。下表总结了这些参数，它们可以作为 CLI 标志或环境变量传递：
@@ -55,6 +55,7 @@ K3s 需要 DB 的准备语句支持。换言之，https://www.pgbouncer.org/faq.
 
 作为最佳实践，我们建议将这些参数设置为环境变量，而不是命令行参数，这样你的数据库证书或其他敏感信息就不会作为进程信息的一部分暴露出来。
 
+[#_datastore_endpoint_format_and_functionality]
 == 数据存储端点格式和功能
 
 如前所述，传递给 `datastore-endpoint` 参数的值的格式取决于数据存储后端。下文详细介绍了每个支持的外部数据存储的格式和功能。

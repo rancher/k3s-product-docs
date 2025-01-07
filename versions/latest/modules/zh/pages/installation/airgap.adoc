@@ -20,6 +20,7 @@ If you have not yet set up a private Docker registry, refer to the https://docs.
 . Follow the xref:installation/private-registry.adoc[Private Registry Configuration] guide to create and configure the `registries.yaml` file.
 . Proceed to the <<_install_k3s,Install K3s>> section below.
 
+[#_manually_deploy_images_method]
 === Manually Deploy Images Method
 
 These steps assume you have already created nodes in your air-gap environment,

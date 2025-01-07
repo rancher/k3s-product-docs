@@ -14,7 +14,7 @@
 
 == Rootless 模式
 
-使用 Rootless 模式运行 K3s 是实验性的，存在几个xref:advanced.adoc#_rootless_模式的已知问题[已知问题]。
+使用 Rootless 模式运行 K3s 是实验性的，存在几个xref:advanced.adoc#_known_issues_with_rootless_mode[已知问题]。
 
 [#hardened-125]
 == 将强化集群从 v1.24.x 升级到 v1.25.x

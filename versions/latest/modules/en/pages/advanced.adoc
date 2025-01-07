@@ -216,6 +216,7 @@ spec:
 
 Note that the NVIDIA Container Runtime is also frequently used with https://github.com/NVIDIA/k8s-device-plugin/[NVIDIA Device Plugin], with modifications to ensure that pod specs include `runtimeClassName: nvidia`, as mentioned above.
 
+[#_running_agentless_servers_experimental]
 == Running Agentless Servers (Experimental)
 
 WARNING: This feature is experimental.
@@ -235,6 +236,7 @@ Rootless mode allows running K3s servers as an unprivileged user, so as to prote
 
 See https://rootlesscontaine.rs/ to learn more about Rootless Kubernetes.
 
+[#_known_issues_with_rootless_mode]
 === Known Issues with Rootless mode
 
 * *Ports*
@@ -332,6 +334,7 @@ An example of disabling auto-starting and service enablement with the install sc
 curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_START=true INSTALL_K3S_SKIP_ENABLE=true sh -
 ----
 
+[#_running_k3s_in_docker]
 == Running K3s in Docker
 
 There are several ways to run K3s in Docker:
@@ -380,6 +383,7 @@ sudo docker cp k3s-server-1:/etc/rancher/k3s/k3s.yaml ~/.kube/config
 --
 ======
 
+[#_selinux_support]
 == SELinux Support
 
 [IMPORTANT]
@@ -483,6 +487,7 @@ spec:
     - containerPort: 80
 ----
 
+[#_additional_logging_sources]
 == Additional Logging Sources
 
 https://rancher.com/docs/rancher/v2.6/en/logging/helm-chart-options/[Rancher logging] for K3s can be installed without using Rancher. The following instructions should be executed to do so:

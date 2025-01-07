@@ -191,6 +191,7 @@ spec:
 
 엔비디아 컨테이너 런타임은 https://github.com/NVIDIA/k8s-device-plugin/[엔비디아 디바이스 플러그인] 및 https://github.com/NVIDIA/gpu-feature-discovery/[GPU 기능 검색]과 함께 자주 사용되며, 위에서 언급한 것처럼 파드 사양에 ``runtimeClassName: nvidia``가 포함되도록 수정하여 별도로 설치해야 한다는 점에 유의하세요.
 
+[#_running_agentless_servers_experimental]
 == 에이전트 없는 서버 실행하기(실험적)
 
 ____
@@ -212,6 +213,7 @@ ____
 
 루트리스 쿠버네티스에 대한 자세한 내용은 https://rootlesscontaine.rs/ 을 참조하세요.
 
+[#_known_issues_with_rootless_mode]
 === 루트리스 모드의 알려진 이슈
 
 * *포트*
@@ -395,6 +397,7 @@ console=serial0,115200 console=tty1 root=PARTUUID=58b06195-02 rootfstype=ext4 el
 sudo apt install linux-modules-extra-raspi
 ----
 
+[#_running_k3s_in_docker]
 == Docker에서 k3s 실행하기
 
 Docker에서 K3s를 실행하는 방법에는 여러 가지가 있습니다:
@@ -442,6 +445,7 @@ sudo docker cp k3s-server-1:/etc/rancher/k3s/k3s.yaml ~/.kube/config
 --
 ======
 
+[#_selinux_support]
 == SELinux 지원
 
 [IMPORTANT]
@@ -545,6 +549,7 @@ spec:
         - containerPort: 80
 ----
 
+[#_additional_logging_sources]
 == 추가 로깅 소스
 
 K3s용 https://rancher.com/docs/rancher/v2.6/en/logging/helm-chart-options/[랜처 로깅]은 랜처를 사용하지 않고 설치할 수 있습니다. 이를 위해서는 다음 지침을 실행해야 합니다:

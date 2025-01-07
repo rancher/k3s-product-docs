@@ -225,6 +225,7 @@ K3s Agent 利用率数据主要取决于容器生命周期管理控制循环的�
 
 如果未能满足数据存储吞吐量和延迟要求，control plane 的响应可能会延迟，control plane 也可能无法维持系统状态。
 
+[#_server_sizing_requirements_for_k3s]
 == Server Sizing Requirements for K3s
 
 === Environment

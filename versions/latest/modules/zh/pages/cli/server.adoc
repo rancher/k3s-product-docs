@@ -4,7 +4,7 @@
 
 请注意，Server 也运行 Agent，因此 Server 也支持 xref:cli/agent.adoc[`k3s agent` 文档]中列出的所有配置选项。
 
-在本文中，选项作为 CLI 标志传递，但是也可以作为配置文件选项传递。有关使用 YAML 配置文件的更多信息，请参阅xref:installation/configuration.adoc#_配置文件[配置文件]文档。
+在本文中，选项作为 CLI 标志传递，但是也可以作为配置文件选项传递。有关使用 YAML 配置文件的更多信息，请参阅xref:installation/configuration.adoc#_configuration_file[配置文件]文档。
 
 == 关键配置值
 
@@ -304,7 +304,7 @@
 | 标志 | 描述
 
 | `--disable` value
-| 请参阅xref:installation/packaged-components.adoc#_使用_disable_标志[使用 `--disable` 标志]。
+| 请参阅xref:installation/packaged-components.adoc#_using_the_disable_flag[使用 `--disable` 标志]。
 
 | `--disable-scheduler`
 | 禁用 Kubernetes 默认调度程序
@@ -367,7 +367,7 @@
 | 偏向打包的用户空间二进制文件，而不是主机二进制文件
 
 | `--disable-agent`
-| 请参阅xref:advanced.adoc#_运行无_agent_的_server实验性[运行无 Agent 的 Server（实验性）]
+| 请参阅xref:advanced.adoc#_running_agentless_servers_experimental[运行无 Agent 的 Server（实验性）]
 |===
 
 === 已弃用选项

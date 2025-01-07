@@ -16,6 +16,7 @@ image:how-it-works-k3s-revised.svg[]
 
 image:k3s-architecture-single-server.svg[シングルサーバーを持つK3sアーキテクチャ]
 
+[#_high_availability_k3s]
 == 高可用性K3s
 
 シングルサーバークラスターはさまざまなユースケースに対応できますが、Kubernetesコントロールプレーンの稼働時間が重要な環境では、K3sをHA構成で実行できます。HA K3sクラスターは以下を含みます：
@@ -49,6 +50,7 @@ image:k3s-architecture-ha-external.svg[高可用性サーバーと外部DBを持
 
 image:k3s-production-setup.svg[エージェント登録HA]
 
+[#_how_agent_node_registration_works]
 == エージェントノードの登録方法
 
 エージェントノードは、`k3s agent` プロセスによって開始されるWebSocket接続で登録され、その接続はエージェントプロセスの一部として実行されるクライアントサイドのロードバランサーによって維持されます。最初に、エージェントはポート6443のローカルロードバランサーを介してスーパーバイザー（およびkube-apiserver）に接続します。ロードバランサーは接続可能なエンドポイントのリストを維持します。デフォルト（および最初の）エンドポイントは、`--server` アドレスからのホスト名によってシードされます。クラスターに接続すると、エージェントはデフォルトのネームスペース内のKubernetesサービスエンドポイントリストからkube-apiserverアドレスのリストを取得します。これらのエンドポイントはロードバランサーに追加され、クラスター内のすべてのサーバーに安定した接続を維持し、個々のサーバーの停止に耐えるkube-apiserverへの接続を提供します。

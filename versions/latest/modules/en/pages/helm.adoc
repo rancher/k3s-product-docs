@@ -194,7 +194,7 @@ Content placed in `/var/lib/rancher/k3s/server/static/` can be accessed anonymou
 The `name` field should follow the Helm chart naming conventions. Refer to the https://helm.sh/docs/chart_best_practices/conventions/#chart-names[Helm Best Practices documentation] to learn more.
 ====
 
-
+[#_customizing_packaged_components_with_helmchartconfig]
 == Customizing Packaged Components with HelmChartConfig
 
 To allow overriding values for packaged components that are deployed as HelmCharts (such as Traefik), K3s supports customizing deployments via a HelmChartConfig resources. The HelmChartConfig resource must match the name and namespace of its corresponding HelmChart, and it supports providing additional `valuesContent`, which is passed to the `helm` command as an additional value file.

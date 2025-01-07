@@ -729,7 +729,7 @@ kubelet-arg:
 
 All the 5.X Controls are related to Kubernetes policy configuration. These controls are not enforced by K3s by default.
 
-Refer to xref:security/self-assessment-1.8.adoc#_51_rbac_and_service_accounts[CIS 1.8 Section 5] for more information on how to create and apply these policies.
+Refer to xref:security/self-assessment-1.8.adoc#_5_1_rbac_and_service_accounts[CIS 1.8 Section 5] for more information on how to create and apply these policies.
 
 == Conclusion
 

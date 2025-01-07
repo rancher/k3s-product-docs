@@ -1,5 +1,6 @@
 = k3s certificate
 
+[#_client_and_server_certificates]
 == 客户端和服务器证书
 
 K3s 客户端和服务器证书自颁发日起 365 天内有效。每次启动 K3s 时，已过期或 90 天内过期的证书都会自动更新。
@@ -29,6 +30,7 @@ k3s certificate rotate --service <SERVICE>,<SERVICE>
 
 可以轮换的证书：`admin`、`api-server`、`controller-manager`、`scheduler`、`k3s-controller`, `k3s-server`, `cloud-controller`, `etcd`, `auth-proxy`, `kubelet`，`kube-proxy`。
 
+[#_certificate_authority_ca_certificates]
 == CA 证书
 
 Kubernetes 需要大量 CA 证书才能正常运行。有关 Kubernetes 如何使用 CA 证书，请参阅 Kubernetes https://kubernetes.io/docs/setup/best-practices/certificates/#all-certificates[PKI 证书和要求]文档。

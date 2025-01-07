@@ -1,5 +1,6 @@
 = k3s certificate
 
+[#_client_and_server_certificates]
 == Client and Server Certificates
 
 K3s client and server certificates are valid for 365 days from their date of issuance. Any certificates that are expired, or within 90 days of expiring, are automatically renewed every time K3s starts.
@@ -29,6 +30,7 @@ k3s certificate rotate --service <SERVICE>,<SERVICE>
 
 The following certificates can be rotated: `admin`, `api-server`, `controller-manager`, `scheduler`, `k3s-controller`, `k3s-server`, `cloud-controller`, `etcd`, `auth-proxy`, `kubelet`, `kube-proxy`.
 
+[#_certificate_authority_ca_certificates]
 == Certificate Authority (CA) Certificates
 
 Kubernetes requires a number of CA certificates for proper operation. For more information on how Kubernetes uses CA certificates, see the Kubernetes https://kubernetes.io/docs/setup/best-practices/certificates/#all-certificates[PKI Certificates and Requirements] documentation.

@@ -41,6 +41,7 @@ If you have multiple server nodes, and place additional AddOn manifests on more 
 
 There are two ways to disable deployment of specific content from the manifests directory.
 
+[#_using_the_disable_flag]
 === Using the `--disable` flag
 
 The AddOns for packaged components listed above, in addition to AddOns for any additional manifests placed in the `manifests` directory, can be disabled with the `--disable` flag. Disabled AddOns are actively uninstalled from the cluster, and the source files deleted from the `manifests` directory.

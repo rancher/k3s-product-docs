@@ -49,7 +49,7 @@ curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIR
 | 安装 systemd 服务和环境文件的目录，或使用 `/etc/systemd/system` 作为默认目录。
 
 | `INSTALL_K3S_EXEC`
-| 带有标志的命令，用于在服务中启动 K3s。如果未指定命令并且设置了 `K3S_URL`，它将默认为 "agent"。如果未设置 `K3S_URL`，它将默认为 "server"。如需帮助，请参阅xref:installation/configuration.adoc#_使用安装脚本的选项[此示例]。
+| 带有标志的命令，用于在服务中启动 K3s。如果未指定命令并且设置了 `K3S_URL`，它将默认为 "agent"。如果未设置 `K3S_URL`，它将默认为 "server"。如需帮助，请参阅xref:installation/configuration.adoc#_configuration_with_install_script[此示例]。
 
 | `INSTALL_K3S_NAME`
 | 要创建的 systemd 服务的名称，如果将 K3s 作为 server 运行，则默认为 "`k3s`"，如果将 K3s 作为 agent 运行，则默认为 "`k3s-agent`"。如果指定，名称将以"`k3s-`"为前缀。

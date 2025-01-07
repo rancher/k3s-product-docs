@@ -28,7 +28,7 @@ The following external datastores are supported:
 K3s requires prepared statements support from the DB. This means that connection poolers such as https://www.pgbouncer.org/faq.html#how-to-use-prepared-statements-with-transaction-pooling[PgBouncer] may require additional configuration to work with K3s.
 ====
 
-
+[#_external_datastore_configuration_parameters]
 == External Datastore Configuration Parameters
 
 If you wish to use an external datastore such as PostgreSQL, MySQL, or etcd you must set the `datastore-endpoint` parameter so that K3s knows how to connect to it. You may also specify parameters to configure the authentication and encryption of the connection. The below table summarizes these parameters, which can be passed as either CLI flags or environment variables.
@@ -55,6 +55,7 @@ If you wish to use an external datastore such as PostgreSQL, MySQL, or etcd you 
 
 As a best practice we recommend setting these parameters as environment variables rather than command line arguments so that your database credentials or other sensitive information aren't exposed as part of the process info.
 
+[#_datastore_endpoint_format_and_functionality]
 == Datastore Endpoint Format and Functionality
 
 As mentioned, the format of the value passed to the `datastore-endpoint` parameter is dependent upon the datastore backend. The following details this format and functionality for each supported external datastore.

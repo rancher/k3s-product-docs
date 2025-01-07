@@ -6,8 +6,7 @@ Note that servers also run an agent, so all flags listed on this page are also v
 
 Options are documented on this page as CLI flags, but can also be passed as configuration file options. See the xref:installation/configuration.adoc#_configuration_file[Configuration File] documentation for more information on using YAML configuration files.
 
-[discrete]
-=== Logging
+== Logging
 
 |===
 | Flag | Default | Description
@@ -29,8 +28,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Log to standard error as well as file (if set)
 |===
 
-[discrete]
-=== Cluster Options
+== Cluster Options
 
 |===
 | Flag | Environment Variable | Description
@@ -48,8 +46,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Server to connect to
 |===
 
-[discrete]
-=== Data
+== Data
 
 |===
 | Flag | Default | Description
@@ -59,8 +56,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Folder to hold state
 |===
 
-[discrete]
-=== Node
+== Node
 
 |===
 | Flag | Environment Variable | Description
@@ -94,8 +90,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Local port for supervisor client load-balancer. If the supervisor and apiserver are not colocated an additional port 1 less than this port will also be used for the apiserver client load-balancer. (default: 6444)
 |===
 
-[discrete]
-=== Runtime
+== Runtime
 
 |===
 | Flag | Default | Description
@@ -113,8 +108,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Private registry configuration file
 |===
 
-[discrete]
-=== Networking
+== Networking
 
 |===
 | Flag | Environment Variable | Description
@@ -144,8 +138,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Override default flannel cni config file
 |===
 
-[discrete]
-=== Customized Flags
+== Customized Flags
 
 |===
 | Flag | Description
@@ -157,8 +150,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Customized flag for kube-proxy process
 |===
 
-[discrete]
-=== Experimental
+== Experimental
 
 |===
 | Flag | Description
@@ -176,8 +168,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | See "xref:installation/private-registry.adoc#_default_endpoint_fallback[Default Endpoint Fallback]"
 |===
 
-[discrete]
-=== Deprecated
+== Deprecated
 
 |===
 | Flag | Environment Variable | Description
@@ -191,8 +182,8 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Use `--token`
 |===
 
-[discrete]
-=== Node Labels and Taints for Agents
+[#_node_labels_and_taints_for_agents]
+== Node Labels and Taints for Agents
 
 K3s agents can be configured with the options `--node-label` and `--node-taint` which adds a label and taint to the kubelet. The two options only add labels and/or taints at registration time, so they can only be added once and not changed after that again by running K3s commands.
 
@@ -207,8 +198,7 @@ Below is an example showing how to add labels and a taint:
 
 If you want to change node labels and taints after node registration you should use `kubectl`. Refer to the official Kubernetes documentation for details on how to add https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[taints] and https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[node labels.]
 
-[discrete]
-=== K3s Agent CLI Help
+== K3s Agent CLI Help
 
 ____
 If an option appears in brackets below, for example `[$K3S_URL]`, it means that the option can be passed in as an environment variable of that name.

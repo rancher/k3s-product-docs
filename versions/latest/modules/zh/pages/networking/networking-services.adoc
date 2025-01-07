@@ -4,7 +4,7 @@
 
 有关 Flannel 配置选项和后端选择，以及如何设置自己的 CNI，请参阅xref:networking/basic-network-options.adoc[安装网络选项]页面。
 
-有关 K3s 需要开放哪些端口，请参考xref:installation/requirements.adoc#_网络[网络要求]。
+有关 K3s 需要开放哪些端口，请参考xref:installation/requirements.adoc#_networking[网络要求]。
 
 == CoreDNS
 
@@ -20,7 +20,7 @@ Traefik Ingress Controller 部署了一个使用端口 80 和 443 的 LoadBalanc
 
 Traefik 在启动服务器时默认部署。有关详细信息，请参阅xref:installation/packaged-components.adoc[管理打包组件]。默认配置文件位于 `/var/lib/rancher/k3s/server/manifests/traefik.yaml`。
 
-不要手动编辑 `traefik.yaml` 文件，因为 K3s 会在启动时使用默认值替换该文件。相反，你需要通过在 `/var/lib/rancher/k3s/server/manifests` 中创建其他 `HelmChartConfig` 清单来自定义 Traefik。有关更多详细信息和示例，请参阅xref:helm.adoc#_使用_helmchartconfig_自定义打包组件[使用 HelmChartConfig 自定义打包组件]。有关配置值的更多信息，请参阅link:https://github.com/traefik/traefik-helm-chart/tree/master/traefik[官方 Traefik Helm 配置参数]。
+不要手动编辑 `traefik.yaml` 文件，因为 K3s 会在启动时使用默认值替换该文件。相反，你需要通过在 `/var/lib/rancher/k3s/server/manifests` 中创建其他 `HelmChartConfig` 清单来自定义 Traefik。有关更多详细信息和示例，请参阅xref:helm.adoc#_customizing_packaged_components_with_helmchartconfig[使用 HelmChartConfig 自定义打包组件]。有关配置值的更多信息，请参阅link:https://github.com/traefik/traefik-helm-chart/tree/master/traefik[官方 Traefik Helm 配置参数]。
 
 要从集群中删除 Traefik，请使用 `--disable=traefik` 标志来启动所有 Server。
 
@@ -44,7 +44,7 @@ ip6tables-save | grep -v KUBE-ROUTER | ip6tables-restore
 ----
 ====
 
-
+[#_service_load_balancer]
 == Service Load Balancer
 
 任何 LoadBalancer 控制器都可以部署到你的 K3s 集群。默认情况下，K3s 提供一个称为 https://github.com/k3s-io/klipper-lb[ServiceLB]（以前称为 Klipper LoadBalancer）的负载均衡器，它会使用可用的主机端口。
