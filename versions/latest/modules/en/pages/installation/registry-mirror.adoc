@@ -3,13 +3,12 @@
 [IMPORTANT]
 .Version Gate
 ====
-The Embedded Registry Mirror is available as an experimental feature as of January 2024 releases: v1.26.13+k3s1, v1.27.10+k3s1, v1.28.6+k3s1, v1.29.1+k3s1
+The Embedded Registry Mirror is available as an experimental feature as of January 2024 releases: v1.26.13+k3s1, v1.27.10+k3s1, v1.28.6+k3s1, v1.29.1+k3s1 and GA as of December 2024 releases: v1.29.12+k3s1, v1.30.8+k3s1, v1.31.4+k3s1.
 ====
 
+K3s embeds https://github.com/XenitAB/spegel[Spegel], a stateless distributed OCI registry mirror that allows peer-to-peer sharing of container images between nodes in a Kubernetes cluster. The distributed registry mirror is disabled by default. For K3s to leverage it, you must enable both the xref:#_enabling_the_distributed_oci_registry_mirror[Distributed OCI Registry Mirror] and the xref:#_enabling_registry_mirroring[Registry mirroring] as explained in the following subsections.
 
-K3s embeds https://github.com/XenitAB/spegel[Spegel], a stateless distributed OCI registry mirror that allows peer-to-peer sharing of container images between nodes in a Kubernetes cluster.
-The distributed registry mirror is disabled by default.
-
+[#_enabling_the_distributed_oci_registry_mirror]
 == Enabling The Distributed OCI Registry Mirror
 
 In order to enable the embedded registry mirror, server nodes must be started with the `--embedded-registry` flag, or with `embedded-registry: true` in the configuration file.
@@ -29,6 +28,7 @@ Changing the port is unsupported and not recommended.
 When the embedded registry mirror is enabled, all nodes must be able to reach each other via their internal IP addresses, on TCP ports 5001 and 6443.
 If nodes cannot reach each other, it may take longer for images to be pulled, as the distributed registry will be tried first by containerd, before it falls back to other endpoints.
 
+[#_enabling_registry_mirroring]
 == Enabling Registry Mirroring
 
 Enabling mirroring for a registry allows a node to both pull images from that registry from other nodes, and share the registry's images with other nodes.

@@ -1,9 +1,10 @@
 = エアギャップインストール
 
-K3sをエアギャップ環境でインストールするには、2つの方法があります。エアギャップ環境とは、インターネットに直接接続されていない環境のことです。プライベートレジストリをデプロイしてdocker.ioをミラーリングするか、小規模クラスター用のイメージを手動でデプロイすることができます。
+K3s can be installed in an air-gapped environment with two different methods. You can either deploy images via the xref:#_manually_deploy_images_method[k3s-airgap-images tarball release artifact] or by using a xref:#_private_registry_method[private registry]. It is also possible to use the xref:#_embedded_registry_mirror[embedded registry mirror] as long as there is at least one cluster member that has access to the required images.
 
 == イメージのロード
 
+[#_private_registry_method]
 === プライベートレジストリ方式
 
 これらの手順は、エアギャップ環境でノードを既に作成し、コンテナランタイムとしてバンドルされたcontainerdを使用し、環境内にOCI準拠のプライベートレジストリが利用可能であることを前提としています。
@@ -38,14 +39,8 @@ sudo curl -L -o /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zs
 
 . 以下の<<_k3sのインストール,Install K3s>>セクションに進みます。
 
+[#_embedded_registry_mirror]
 === 埋め込みレジストリミラー
-
-[IMPORTANT]
-.バージョンゲート
-====
-埋め込みレジストリミラーは、2024年1月のリリースから実験的機能として利用可能です：v1.26.13+k3s1、v1.27.10+k3s1、v1.28.6+k3s1、v1.29.1+k3s1
-====
-
 
 K3sには、埋め込みの分散型OCI準拠のレジストリミラーが含まれています。
 有効化して適切に設定すると、任意のノードのcontainerdイメージストアにあるイメージを、
@@ -58,7 +53,7 @@ K3sには、埋め込みの分散型OCI準拠のレジストリミラーが含�
 
 === 前提条件
 
-K3sをインストールする前に、上記の<<_プライベートレジストリ方式,プライベートレジストリ方式>>または<<#_manually_deploy_images_method,手動デプロイ方式>>を完了して、K3sのインストールに必要なイメージを事前に準備してください。
+K3sをインストールする前に、上記の<<#_private_registry_method,プライベートレジストリ方式>>または<<#_manually_deploy_images_method,手動デプロイ方式>>を完了して、K3sのインストールに必要なイメージを事前に準備してください。
 
 ==== バイナリ
 

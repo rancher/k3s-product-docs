@@ -3,13 +3,13 @@
 [IMPORTANT]
 .バージョンゲート
 ====
-埋め込みレジストリミラーは、2024年1月のリリースから実験的な機能として利用可能です：v1.26.13+k3s1、v1.27.10+k3s1、v1.28.6+k3s1、v1.29.1+k3s1
+埋め込みレジストリミラーは、2024年1月のリリースから実験的な機能として利用可能です：v1.26.13+k3s1、v1.27.10+k3s1、v1.28.6+k3s1、v1.29.1+k3s1 and GA as of December 2024 releases: v1.29.12+k3s1, v1.30.8+k3s1, v1.31.4+k3s1.
 ====
 
 
-K3sは、Kubernetesクラスター内のノード間でコンテナイメージをピアツーピアで共有できる、ステートレスな分散OCIレジストリミラーであるlink:https://github.com/XenitAB/spegel[Spegel]を埋め込んでいます。
-分散レジストリミラーはデフォルトでは無効になっています。
+K3sは、Kubernetesクラスター内のノード間でコンテナイメージをピアツーピアで共有できる、ステートレスな分散OCIレジストリミラーであるlink:https://github.com/XenitAB/spegel[Spegel]を埋め込んでいます。分散レジストリミラーはデフォルトでは無効になっています。 For K3s to leverage it, you must enable both the xref:#_enabling_the_distributed_oci_registry_mirror[Distributed OCI Registry Mirror] and the xref:#_enabling_registry_mirroring[Registry mirroring] as explained in the following subsections.
 
+[#_enabling_the_distributed_oci_registry_mirror]
 == 分散OCIレジストリミラーの有効化
 
 埋め込みレジストリミラーを有効にするには、サーバーノードを``--embedded-registry``フラグを付けて起動するか、設定ファイルに``embedded-registry: true``を追加する必要があります。
@@ -27,6 +27,7 @@ xref:installation/airgap.adoc#_manually_deploy_images_method[エアギャップ�
 埋め込みレジストリミラーが有効になっている場合、すべてのノードは内部IPアドレスを介して、TCPポート5001および6443で相互に接続できる必要があります。
 ノードが相互に接続できない場合、分散レジストリが最初に試され、その後他のエンドポイントにフォールバックするため、イメージのプルに時間がかかることがあります。
 
+[#_enabling_registry_mirroring]
 == レジストリミラーリングの有効化
 
 レジストリのミラーリングを有効にすると、ノードは他のノードからそのレジストリのイメージをプルし、そのレジストリのイメージを他のノードと共有できます。
