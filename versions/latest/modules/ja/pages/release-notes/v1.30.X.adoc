@@ -11,6 +11,21 @@
 |===
 | バージョン | リリース日 | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
 
+| xref:#_release_v1_30_8k3s1[v1.30.8+k3s1]
+| Dec 18 2024
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v1308[v1.30.8]
+| https://github.com/k3s-io/kine/releases/tag/v0.13.5[v0.13.5]
+| https://sqlite.org/releaselog/3_46_1.html[3.46.1]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.16-k3s1[v3.5.16-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.23-k3s2[v1.7.23-k3s2]
+| https://github.com/opencontainers/runc/releases/tag/v1.2.1[v1.2.1]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.7[v0.25.7]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.2[v0.7.2]
+| https://github.com/traefik/traefik/releases/tag/v2.11.10[v2.11.10]
+| https://github.com/coredns/coredns/releases/tag/v1.12.0[v1.12.0]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.5[v0.16.5]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.30[v0.0.30]
+
 | xref:#_release_v1_30_7k3s1[v1.30.7+k3s1]
 | Dec 04 2024
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v1307[v1.30.7]
@@ -148,6 +163,25 @@
 |===
 
 {blank} +
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.30.8+k3s1[v1.30.8+k3s1]
+// v1.30.8+k3s1
+
+This release updates Kubernetes to v1.30.8, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#changelog-since-v1307[Kubernetes release notes].
+
+=== Changes since v1.30.7+k3s1:
+
+* Fix secrets-encrypt reencrypt timeout error https://github.com/k3s-io/k3s/pull/11441[(#11441)]
+* Remove experimental from embedded-registry flag https://github.com/k3s-io/k3s/pull/11445[(#11445)]
+* Update coredns to 1.12.0 https://github.com/k3s-io/k3s/pull/11455[(#11455)]
+* Rework loadbalancer server selection logic https://github.com/k3s-io/k3s/pull/11458[(#11458)]
+** The embedded client loadbalancer that handles connectivity to control-plane elements has been extensively reworked for improved performance, reliability, and observability.
+* Add node-internal-dns/node-external-dns address pass-through support … https://github.com/k3s-io/k3s/pull/11465[(#11465)]
+* Update to v1.30.8-k3s1 and Go 1.22.9 https://github.com/k3s-io/k3s/pull/11461[(#11461)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.30.7+k3s1[v1.30.7+k3s1]
 // v1.30.7+k3s1
