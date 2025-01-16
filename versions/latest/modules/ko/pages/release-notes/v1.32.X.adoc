@@ -1,0 +1,172 @@
+= v1.32.X
+:page-role: -toc
+
+[CAUTION]
+.Upgrade Notice
+====
+Before upgrading from earlier releases, be sure to read the Kubernetes https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md#urgent-upgrade-notes[Urgent Upgrade Notes].
+====
+
+
+|===
+| Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
+
+| xref:#_release_v1_32_0k3s1[v1.32.0+k3s1]
+| Jan 10 2025
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md#v1320[v1.32.0]
+| https://github.com/k3s-io/kine/releases/tag/v0.13.5[v0.13.5]
+| https://sqlite.org/releaselog/3_46_1.html[3.46.1]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.16-k3s1[v3.5.16-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.23-k3s2[v1.7.23-k3s2]
+| https://github.com/opencontainers/runc/releases/tag/v1.2.1-k3s1[v1.2.1-k3s1]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.7[v0.25.7]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.2[v0.7.2]
+| https://github.com/traefik/traefik/releases/tag/v2.11.10[v2.11.10]
+| https://github.com/coredns/coredns/releases/tag/v1.12.0[v1.12.0]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.5[v0.16.5]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.30[v0.0.30]
+|===
+
+{blank} +
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.32.0+k3s1[v1.32.0+k3s1]
+// v1.32.0+k3s1
+
+This release is K3S's first in the v1.32 line. This release updates Kubernetes to v1.32.0.
+
+Kubernetes 1.32 moves the `AuthorizeNodeWithSelectors` feature gate to Beta and on by default. See https://github.com/kubernetes/enhancements/blob/master/keps/sig-auth/4601-authorize-with-selectors/README.md[KEP-4601] for more information.
+
+This feature-gate breaks some of the RBAC that previous releases of K3s relied upon. The January releases of K3s v1.29, v1.30, and v1.31 will contain backported fixes. Until then, you must set `--kube-apiserver-arg=feature-gates=AuthorizeNodeWithSelectors=false` on server nodes, if you want to mix K3s v1.32 nodes with nodes of other versions (within the limits of what is supported by the https://kubernetes.io/releases/version-skew-policy/[Kubernetes Version Skew Policy]).
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md#changelog-since-v1310[Kubernetes release notes].
+
+=== Changes since v1.31.4+k3s1:
+
+* Fix rotateca validation failures when not touching default self-signed CAs https://github.com/k3s-io/k3s/pull/10710[(#10710)]
+* Bump runc to v1.1.13 https://github.com/k3s-io/k3s/pull/10737[(#10737)]
+* Update stable channel to v1.30.4+k3s1 https://github.com/k3s-io/k3s/pull/10739[(#10739)]
+* Fix deploy latest commit on E2E tests https://github.com/k3s-io/k3s/pull/10725[(#10725)]
+* Remove secrets encryption controller https://github.com/k3s-io/k3s/pull/10612[(#10612)]
+* Update kubernetes to v1.31.0-k3s3 https://github.com/k3s-io/k3s/pull/10764[(#10764)]
+* Bump traefik to v2.11.8 https://github.com/k3s-io/k3s/pull/10779[(#10779)]
+* Update coredns to 1.11.3 and metrics-server to 0.7.2 https://github.com/k3s-io/k3s/pull/10760[(#10760)]
+* Add trivy scanning to PR reports https://github.com/k3s-io/k3s/pull/10758[(#10758)]
+* Cover edge case when on new minor release for E2E upgrade test https://github.com/k3s-io/k3s/pull/10781[(#10781)]
+* Bump aquasecurity/trivy-action from 0.20.0 to 0.24.0 https://github.com/k3s-io/k3s/pull/10795[(#10795)]
+* Update CNI plugins version https://github.com/k3s-io/k3s/pull/10798[(#10798)]
+* Bump Sonobuoy version https://github.com/k3s-io/k3s/pull/10792[(#10792)]
+* Fix /trivy action running against target branch instead of PR branch https://github.com/k3s-io/k3s/pull/10824[(#10824)]
+* Launch private registry with init https://github.com/k3s-io/k3s/pull/10822[(#10822)]
+* Add channel for v1.31 https://github.com/k3s-io/k3s/pull/10826[(#10826)]
+* Bump containerd to v1.7.21, runc to v1.1.14 https://github.com/k3s-io/k3s/pull/10805[(#10805)]
+* Bump helm-controller for skip-verify/plain-http and updated tolerations https://github.com/k3s-io/k3s/pull/10832[(#10832)]
+* Tag PR image build as latest before scanning https://github.com/k3s-io/k3s/pull/10825[(#10825)]
+* Only clean up containerd hosts dirs managed by k3s https://github.com/k3s-io/k3s/pull/10823[(#10823)]
+* Remove otelgrpc pinned dependency https://github.com/k3s-io/k3s/pull/10799[(#10799)]
+* Add node-internal-dns/node-external-dns address pass-through support https://github.com/k3s-io/k3s/pull/10852[(#10852)]
+* Give good report if no CVEs found in trivy https://github.com/k3s-io/k3s/pull/10853[(#10853)]
+* Fix hosts.toml header var https://github.com/k3s-io/k3s/pull/10870[(#10870)]
+* Bump Trivy version https://github.com/k3s-io/k3s/pull/10863[(#10863)]
+* Add int test for flannel-ipv6masq https://github.com/k3s-io/k3s/pull/10440[(#10440)]
+* Bump Trivy version https://github.com/k3s-io/k3s/pull/10899[(#10899)]
+* Update Kubernetes to v1.31.1-k3s3 https://github.com/k3s-io/k3s/pull/10911[(#10911)]
+* Add MariaDB to CI https://github.com/k3s-io/k3s/pull/10724[(#10724)]
+* Update stable channel tov1.30.5+k3s1 https://github.com/k3s-io/k3s/pull/10921[(#10921)]
+* Use static CNI bin dir https://github.com/k3s-io/k3s/pull/10868[(#10868)]
+** K3s now uses a stable directory for CNI binaries, which simplifies the installation of additional CNI plugins.
+* Breakup trivy scan and check comment author https://github.com/k3s-io/k3s/pull/10935[(#10935)]
+* Fix getMembershipForUserInOrg call https://github.com/k3s-io/k3s/pull/10937[(#10937)]
+* Check k3s-io organization membership not team membership for trivy scans https://github.com/k3s-io/k3s/pull/10940[(#10940)]
+* Bump kine to v0.13.0 https://github.com/k3s-io/k3s/pull/10932[(#10932)]
+** Kine has been bumped to v0.13.0. This release includes changes that should enhance performance when using postgres as an external DB. The updated schema will be automatically used for new databases; to migrate to the new schema on existing databases, K3s can be started with the `KINE_SCHEMA_MIGRATION=2` environment variable set.
+* Fix trivy report download https://github.com/k3s-io/k3s/pull/10943[(#10943)]
+* Trivy workflow: Specify GH_REPO env to use gh cli https://github.com/k3s-io/k3s/pull/10949[(#10949)]
+* Bump Trivy version https://github.com/k3s-io/k3s/pull/10924[(#10924)]
+* Bump traefik to chart 27.0.2 https://github.com/k3s-io/k3s/pull/10939[(#10939)]
+* Pass Rancher's VEX report to Trivy to remove known false-positives CVEs https://github.com/k3s-io/k3s/pull/10956[(#10956)]
+* Fix trivy vex line https://github.com/k3s-io/k3s/pull/10970[(#10970)]
+* Add user path to runtimes search https://github.com/k3s-io/k3s/pull/10953[(#10953)]
+** Runtimes detection will now use $PATH
+* Bump to new wharfie version https://github.com/k3s-io/k3s/pull/10971[(#10971)]
+* Update README.md https://github.com/k3s-io/k3s/pull/10523[(#10523)]
+* Remove trailing whitespace https://github.com/k3s-io/k3s/pull/9362[(#9362)]
+* Bump kine to v0.13.2 https://github.com/k3s-io/k3s/pull/10978[(#10978)]
+* Allow configuration of Rootlesskit's CopyUpDirs through an environment variable https://github.com/k3s-io/k3s/pull/10386[(#10386)]
+** Add new environment variable "K3S_ROOTLESS_COPYUPDIRS" to add folders to the Rootlesskit configuration.
+* Fix race condition when multiple nodes reconcile S3 snapshots https://github.com/k3s-io/k3s/pull/10979[(#10979)]
+* Bump Trivy version https://github.com/k3s-io/k3s/pull/10996[(#10996)]
+* Add ca-cert rotation integration test, and fix ca-cert rotation https://github.com/k3s-io/k3s/pull/11013[(#11013)]
+* Add e2e test which verifies traffic policies and firewall in services https://github.com/k3s-io/k3s/pull/10972[(#10972)]
+* Update tcpproxy for import path change https://github.com/k3s-io/k3s/pull/11029[(#11029)]
+* Bump Local Path Provisioner version https://github.com/k3s-io/k3s/pull/10862[(#10862)]
+* Bump local-path-provisioner to v0.0.30 https://github.com/k3s-io/k3s/pull/11049[(#11049)]
+* Bump helm-controller and klipper-helm https://github.com/k3s-io/k3s/pull/11060[(#11060)]
+* Bump containerd to v1.7.22 https://github.com/k3s-io/k3s/pull/11067[(#11067)]
+* Simplify svclb daemonset https://github.com/k3s-io/k3s/pull/10954[(#10954)]
+** Stop using klipper-lb as the image for svclb. Replace it with a simple busybox which just sleeps
+* Add the nvidia runtime cdi https://github.com/k3s-io/k3s/pull/11065[(#11065)]
+** Add nvidia cdi runtime to the list of supported and discoverable runtimes
+* Bump Trivy version https://github.com/k3s-io/k3s/pull/11103[(#11103)]
+* Rollback GHA to Ubuntu 22.04 https://github.com/k3s-io/k3s/pull/11111[(#11111)]
+* Revert "Make svclb as simple as possible" https://github.com/k3s-io/k3s/pull/11109[(#11109)]
+* Fix Github Actions for Ubuntu-24.04 https://github.com/k3s-io/k3s/pull/11112[(#11112)]
+* Bump aquasecurity/trivy-action from 0.24.0 to 0.27.0 https://github.com/k3s-io/k3s/pull/11105[(#11105)]
+* Check the last 10 commits for upgrade E2E test https://github.com/k3s-io/k3s/pull/11086[(#11086)]
+* Bump aquasecurity/trivy-action from 0.27.0 to 0.28.0 https://github.com/k3s-io/k3s/pull/11138[(#11138)]
+* Fixes "file exists" error from CNI bins when upgrading k3s https://github.com/k3s-io/k3s/pull/11123[(#11123)]
+* Reduce the number of GH api request for E2E nightly https://github.com/k3s-io/k3s/pull/11148[(#11148)]
+* Update Kubernetes to v1.31.2-k3s1 and Go 1.22.8 https://github.com/k3s-io/k3s/pull/11163[(#11163)]
+* Update stable channel to v1.30.6+k3s1 https://github.com/k3s-io/k3s/pull/11186[(#11186)]
+* Fix timeout when defragmenting etcd on startup https://github.com/k3s-io/k3s/pull/11164[(#11164)]
+* Capture all fedora atomic variants in install script https://github.com/k3s-io/k3s/pull/11170[(#11170)]
+** Allow easier installation of k3s on all variants of fedora atomic that use rpm-ostree
+* Typo fixes in contributing.md https://github.com/k3s-io/k3s/pull/11201[(#11201)]
+* Bump Trivy version https://github.com/k3s-io/k3s/pull/11206[(#11206)]
+* Pin vagrant to older version to avoid known issue 13527 https://github.com/k3s-io/k3s/pull/11226[(#11226)]
+* Set kine EmulatedETCDVersion from embedded etcd version https://github.com/k3s-io/k3s/pull/11221[(#11221)]
+* Add nonroot-devices flag to agent CLI https://github.com/k3s-io/k3s/pull/11200[(#11200)]
+** `Device_ownership_from_security_context` can now be enabled in the containerd CRI config by setting the `--nonroot-devices` flag or config key.
+* Bump runc to v1.2 https://github.com/k3s-io/k3s/pull/10896[(#10896)]
+* Update flannel and base cni plugins version https://github.com/k3s-io/k3s/pull/11188[(#11188)]
+* Bump github.com/golang-jwt/jwt/v4 from 4.5.0 to 4.5.1 https://github.com/k3s-io/k3s/pull/11236[(#11236)]
+* Fix MustFindString returning override flags on external CLI commands https://github.com/k3s-io/k3s/pull/11237[(#11237)]
+* Bump containerd to v1.7.23-k3s1 to fix registry rewrite token scopes https://github.com/k3s-io/k3s/pull/11238[(#11238)]
+* Fix the "Standalone"-mode of oidc-login in the wrapped kubectl library https://github.com/k3s-io/k3s/pull/11266[(#11266)]
+** Fixes 'no Auth Provider found for name "oidc"' when using oidc-login in standalone mode.
+* Bump K3s-root version to v0.14.1 https://github.com/k3s-io/k3s/pull/11282[(#11282)]
+* Bump kine https://github.com/k3s-io/k3s/pull/11277[(#11277)]
+* Bump kine for mysql connection close fix https://github.com/k3s-io/k3s/pull/11305[(#11305)]
+* Fix handling of wrapped subcommands when run with a path https://github.com/k3s-io/k3s/pull/11306[(#11306)]
+* Fix updatecli config for klipper and helm-controller https://github.com/k3s-io/k3s/pull/11290[(#11290)]
+* Fix issue with loadbalancer failover to default server https://github.com/k3s-io/k3s/pull/11319[(#11319)]
+* Update `localstorage_int_test.go` reference https://github.com/k3s-io/k3s/pull/11339[(#11339)]
+** Update `localstorage_int_test.go` reference in `tests/integration/README.md`
+* Add  to the output command to be consistent with the product command https://github.com/k3s-io/k3s/pull/11345[(#11345)]
+* Allow install script to print error on failed binary download https://github.com/k3s-io/k3s/pull/11335[(#11335)]
+* Remove the go toolchain line https://github.com/k3s-io/k3s/pull/11358[(#11358)]
+* Add ubuntu 24.04 apt command for e2e test https://github.com/k3s-io/k3s/pull/11361[(#11361)]
+* Bump Trivy version https://github.com/k3s-io/k3s/pull/11360[(#11360)]
+* Bump aquasecurity/trivy-action from 0.28.0 to 0.29.0 https://github.com/k3s-io/k3s/pull/11364[(#11364)]
+* Convert legacy docker tests from bash to golang https://github.com/k3s-io/k3s/pull/11357[(#11357)]
+* Update Kubernetes to v1.31.3-k3s1 https://github.com/k3s-io/k3s/pull/11373[(#11373)]
+* Fix Branch Name logic for Dependabot and UpdateCLI pushes to k3s-io https://github.com/k3s-io/k3s/pull/11376[(#11376)]
+* Fix INSTALL_K3S_PR support https://github.com/k3s-io/k3s/pull/11383[(#11383)]
+* Fix etcd backup/restore test and add guardrail for etcd-snapshot https://github.com/k3s-io/k3s/pull/11314[(#11314)]
+* Bump containerd to -k3s2 to fix rewrites https://github.com/k3s-io/k3s/pull/11401[(#11401)]
+* Fix opensuse-leap install test https://github.com/k3s-io/k3s/pull/11379[(#11379)]
+* Fix secrets-encrypt reencrypt timeout error https://github.com/k3s-io/k3s/pull/11385[(#11385)]
+* Rework loadbalancer server selection logic https://github.com/k3s-io/k3s/pull/11329[(#11329)]
+* Remove experimental from embedded-registry flag https://github.com/k3s-io/k3s/pull/11443[(#11443)]
+* Update stable channel to v1.31.3+k3s1 https://github.com/k3s-io/k3s/pull/11436[(#11436)]
+* Fix agent tunnel address with dedicated supervisor port https://github.com/k3s-io/k3s/pull/11427[(#11427)]
+* Update coredns to 1.12.0 https://github.com/k3s-io/k3s/pull/11387[(#11387)]
+* Bump Trivy version https://github.com/k3s-io/k3s/pull/11430[(#11430)]
+* Update to v1.31.4-k3s1 and Go 1.22.9 https://github.com/k3s-io/k3s/pull/11463[(#11463)]
+* Bump alpine from 3.20 to 3.21 in /conformance https://github.com/k3s-io/k3s/pull/11433[(#11433)]
+* Fix docker check warnings https://github.com/k3s-io/k3s/pull/11474[(#11474)]
+* Update stable channel to v1.31.4+k3s1 https://github.com/k3s-io/k3s/pull/11483[(#11483)]
+* V1.32.0+k3s1 https://github.com/k3s-io/k3s/pull/11478[(#11478)]
+* Switch to using kubelet config file for all supported flags https://github.com/k3s-io/k3s/pull/10433[(#10433)]
+* Load kernel modules for nft in agent setup https://github.com/k3s-io/k3s/pull/11527[(#11527)]
+
+'''
