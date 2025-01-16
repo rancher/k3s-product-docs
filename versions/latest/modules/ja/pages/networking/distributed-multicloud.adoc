@@ -48,7 +48,7 @@ systemctl restart k3s
 ----
 ====
 
-
+[#_integration_with_the_tailscale_vpn_provider_experimental]
 == Tailscale VPNプロバイダーとの統合（実験的）
 
 v1.27.3、v1.26.6、v1.25.11以降で利用可能。
