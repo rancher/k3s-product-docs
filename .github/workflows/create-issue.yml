@@ -1,0 +1,28 @@
+name: Create issue to port to Product docs
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches: 
+      - main
+      - test-workflow
+    paths-ignore:
+      - '**/README.md'
+
+permissions:
+  issues: write
+  pull-requests: read
+
+jobs:
+  create_issue:
+    name: Create issue to port PR on product docs repo
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        gh issue create \
+          --repo btat/rke2-product-docs
+          --title "Port Community docs PR #${github.event.pull_request.number}: ${github.event.pull_request.title}" \
+          --body "Ref: ${github.event.pull_request.url}"
+          --label port/from-community 
