@@ -4,7 +4,7 @@
 
 [NOTE]
 ====
-大規模なHAクラスターを迅速にデプロイするには、link:/related-projects[関連プロジェクト]を参照してください。
+大規模なHAクラスターを迅速にデプロイするには、xref:related-projects.adoc[関連プロジェクト]を参照してください。
 ====
 
 

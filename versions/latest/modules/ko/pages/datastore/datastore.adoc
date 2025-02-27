@@ -97,7 +97,7 @@ etcd::
 --
 가장 일반적인 형태인 etcd의 `datastore-endpoint` 파라미터의 형식은 다음과 같습니다:
 
-`+https://etcd-host-1:2379,https://etcd-host-2:2379,https://etcd-host-3:2379+`
+`\https://etcd-host-1:2379,https://etcd-host-2:2379,https://etcd-host-3:2379\`
 
 위는 일반적인 세 개의 노드인 etcd 클러스터를 가정합니다. 이 매개변수는 쉼표로 구분된 하나 이상의 etcd URL을 사용할 수 있습니다.
 --

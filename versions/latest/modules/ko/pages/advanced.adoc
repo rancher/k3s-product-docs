@@ -462,7 +462,7 @@ v1.19.4+k3s1부터 사용 가능
 ======
 자동 설치::
 +
-에어 갭(폐쇄망) 설치를 수행하지 않는 경우 호환되는 시스템에서 [설치 스크립트](./installation/configuration.md#configuration-with-install-script)는 랜처 RPM 저장소에서 SELinux RPM을 자동으로 설치합니다. 자동 설치는 `INSTALL_K3S_SKIP_SELINUX_RPM=true`로 설정하여 건너뛸 수 있습니다. 
+에어 갭(폐쇄망) 설치를 수행하지 않는 경우 호환되는 시스템에서 xref:installation/configuration.adoc#_configuration_with_install_script[설치 스크립트]는 랜처 RPM 저장소에서 SELinux RPM을 자동으로 설치합니다. 자동 설치는 `INSTALL_K3S_SKIP_SELINUX_RPM=true`로 설정하여 건너뛸 수 있습니다. 
 
 수동 설치::
 +

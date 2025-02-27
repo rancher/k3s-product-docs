@@ -7,7 +7,7 @@ You can upgrade K3s by using the installation script, or by manually installing 
 When upgrading, upgrade server nodes first one at a time, then any agent nodes.
 ====
 
-
+[#_release_channels]
 == Release Channels
 
 Upgrades performed via the installation script or using our xref:upgrades/automated.adoc[automated upgrades] feature can be tied to different release channels. The following channels are available:

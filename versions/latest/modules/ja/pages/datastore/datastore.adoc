@@ -103,7 +103,7 @@ etcd::
 --
 etcdの最も一般的な形式では、``datastore-endpoint``パラメータは以下の形式を持ちます：
 
-`+https://etcd-host-1:2379,https://etcd-host-2:2379,https://etcd-host-3:2379+`
+`\https://etcd-host-1:2379,https://etcd-host-2:2379,https://etcd-host-3:2379\`
 
 上記は典型的な3ノードのetcdクラスタを想定しています。このパラメータは、カンマで区切られた1つ以上のetcd URLを受け入れることができます。
 --

@@ -18,8 +18,8 @@ The default endpoint is always tried as a last resort, even if there are other e
 Rewrites are not applied to pulls against the default endpoint.
 For example, when pulling `registry.example.com:5000/rancher/mirrored-pause:3.6`, containerd will use a default endpoint of `+https://registry.example.com:5000/v2+`.
 
-* The default endpoint for `docker.io` is `+https://index.docker.io/v2+`.
-* The default endpoint for all other registries is `https://<REGISTRY>/v2`, where `<REGISTRY>` is the registry hostname and optional port.
+* The default endpoint for `docker.io` is `\https://index.docker.io/v2`.
+* The default endpoint for all other registries is `\https://<REGISTRY>/v2`, where `<REGISTRY>` is the registry hostname and optional port.
 
 In order to be recognized as a registry, the first component of the image name must contain at least one period or colon.
 For historical reasons, images without a registry specified in their name are implicitly identified as being from `docker.io`.
