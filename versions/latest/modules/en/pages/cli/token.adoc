@@ -54,6 +54,7 @@ K3s supports three types of tokens. Only the server token is available by defaul
 | `n/a`
 |===
 
+[#_server]
 === Server
 
 If no token is provided when starting the first server in the cluster, one is created with a random password. The server token is always written to `/var/lib/rancher/k3s/server/token`, in secure format.

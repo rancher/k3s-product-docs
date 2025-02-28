@@ -17,7 +17,7 @@ Containerdにはすべてのレジストリに対して暗黙の「デフォル�
 Rewrites are not applied to pulls against the default endpoint.
 例えば、``registry.example.com:5000/rancher/mirrored-pause:3.6``をプルする場合、containerdは``+https://registry.example.com:5000/v2+``のデフォルトエンドポイントを使用します。
 
-* ``docker.io``のデフォルトエンドポイントは``+https://index.docker.io/v2+``です。
+* ``docker.io``のデフォルトエンドポイントは``\https://index.docker.io/v2``です。
 * 他のすべてのレジストリのデフォルトエンドポイントは``https://<REGISTRY>/v2``です。``<REGISTRY>``はレジストリのホスト名とオプションのポートです。
 
 レジストリとして認識されるためには、イメージ名の最初のコンポーネントに少なくとも1つのピリオドまたはコロンが含まれている必要があります。

@@ -4,7 +4,7 @@ This section describes how to install a high-availability K3s cluster with an ex
 
 [NOTE]
 ====
-To rapidly deploy large HA clusters, see link:/related-projects[Related Projects]
+To rapidly deploy large HA clusters, see xref:related-projects.adoc[Related Projects]
 ====
 
 

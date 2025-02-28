@@ -92,7 +92,7 @@ reboot
 Ubuntu / Debian::
 +
 --
-古いDebianリリースには既知のiptablesバグがある可能性があります。詳細はlink:../known-issues.md#iptables[既知の問題]を参照してください。
+古いDebianリリースには既知のiptablesバグがある可能性があります。詳細はxref:known-issues.adoc#_iptables[既知の問題]を参照してください。
 
 ufw（uncomplicated firewall）をオフにすることをお勧めします:
 

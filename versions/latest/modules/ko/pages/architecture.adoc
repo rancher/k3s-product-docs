@@ -18,15 +18,31 @@ image:how-it-works-k3s-revised.svg[]
 
 image:k3s-architecture-single-server.svg[K3s Architecture with a Single Server]
 
-[#_high_availability_k3s_server_with_an_external_db]
-== 외부 DB가 있는 고가용성 K3s 서버
+[#_high_availability_k3s]
+== High-Availability K3s
 
-단일 서버 클러스터는 다양한 사용 사례를 충족할 수 있지만, Kubernetes 컨트롤 플레인의 가동 시간이 중요한 환경의 경우, HA 구성으로 K3s를 실행할 수 있습니다. HA K3s 클러스터는 다음과 같이 구성됩니다:
+Single server clusters can meet a variety of use cases, but for environments where uptime of the Kubernetes control plane is critical, you can run K3s in an HA configuration. An HA K3s cluster comprises:
 
-* 두 개 이상의 **서버 노드**가 Kubernetes API를 제공하고 다른 컨트롤 플레인 서비스를 실행합니다.
-* *외부 데이터스토어*(단일 서버 설정에 사용되는 임베디드 SQLite 데이터스토어와 반대)
+[tabs]
+======
+Embedded DB::
++
+--
+* Three or more *server nodes* that will serve the Kubernetes API and run other control plane services
+* An *embedded etcd datastore* (as opposed to the embedded SQLite datastore used in single-server setups)
 
 image:k3s-architecture-ha-embedded.svg[K3s Architecture with High-availability Servers]
+--
+
+External DB::
++
+--
+* Two or more *server nodes* that will serve the Kubernetes API and run other control plane services
+* An *external datastore* (such as MySQL, PostgreSQL, or etcd)
+
+image:k3s-architecture-ha-external.svg[K3s Architecture with High-availability Servers and an External DB]
+--
+======
 
 == 에이전트 노드를 위한 고정 등록 주소
 

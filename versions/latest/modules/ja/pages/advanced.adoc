@@ -405,7 +405,7 @@ SELinux がデフォルトで有効になっているシステム（CentOS な�
 Automatic Installation::
 +
 --
-link:./installation/configuration.md#configuration-with-install-script[インストールスクリプト]は、エアギャップインストールを行わない限り、互換性のあるシステムであればRancher RPMリポジトリからSELinux RPMを自動的にインストールします。自動インストールをスキップするには、``INSTALL_K3S_SKIP_SELINUX_RPM=true``を設定します。
+xref:installation/configuration.adoc#_configuration_with_install_script[インストールスクリプト]は、エアギャップインストールを行わない限り、互換性のあるシステムであればRancher RPMリポジトリからSELinux RPMを自動的にインストールします。自動インストールをスキップするには、``INSTALL_K3S_SKIP_SELINUX_RPM=true``を設定します。
 --
 
 Manual Installation::
