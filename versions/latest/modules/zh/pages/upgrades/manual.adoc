@@ -46,6 +46,11 @@ xref:installation/configuration.adoc#_configuration_file[配置文件] 的内容
 要让你的配置独立于安装脚本，请使用配置文件而不是传递环境变量或使用安装脚本参数。
 ====
 
+Running the install script will:
+
+. Download the new k3s binary
+. Update the systemd unit or openrc init script to reflect the args passed to the install script
+. Restart the k3s service
 
 例如，要升级到当前的稳定版本：
 
@@ -65,50 +70,18 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=latest <EXISTING_K3S_ENV> sh 
 
 [,sh]
 ----
-curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=vX.Y.Z-rc1 <EXISTING_K3S_ENV> sh -s - <EXISTING_K3S_ARGS>
+curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=vX.Y.Z+k3s1 <EXISTING_K3S_ENV> sh -s - <EXISTING_K3S_ARGS>
 ----
 
-== 使用二进制文件手动升级 K3s
+[TIP]
+====
+If you want to download the new version of k3s, but not start it, you can use the `INSTALL_K3S_SKIP_START=true` environment variable.
+====
 
-或者手动升级 K3s：
+== Upgrade K3s Using the Binary
 
-. 从 https://github.com/k3s-io/k3s/releases[releases] 页面下载所需版本的 K3s 二进制文件
-. 将下载的二进制文件复制到 `/usr/local/bin/k3s`（或你想要的位置）
-. 停止旧的 K3s 二进制文件
-. 启动新的 K3s 二进制文件
+To upgrade K3s manually, you can download the desired version of the K3s binary and replace the existing binary with the new one.
 
-== 重启 K3s
-
-systemd 和 OpenRC 的安装脚本支持重启 K3s。
-
-*systemd*
-
-手动重启 Server：
-
-[,sh]
-----
-sudo systemctl restart k3s
-----
-
-手动重启 Agent：
-
-[,sh]
-----
-sudo systemctl restart k3s-agent
-----
-
-*OpenRC*
-
-手动重启 Server：
-
-[,sh]
-----
-sudo service k3s restart
-----
-
-手动重启 Agent：
-
-[,sh]
-----
-sudo service k3s-agent restart
-----
+. Download the desired version of the K3s binary from https://github.com/k3s-io/k3s/releases[releases]
+. Copy the downloaded binary to `/usr/local/bin/k3s` (or your desired location)
+. Restart the k3s or k3s-agent service or restart the k3s process (binary)

@@ -87,5 +87,5 @@ K3sを手動でアップグレードするには、希望するバージョン�
 
 . https://github.com/k3s-io/k3s/releases[リリース]から希望するバージョンのK3sバイナリをダウンロード
 . ダウンロードしたバイナリを``/usr/local/bin/k3s``（または希望する場所）にコピー
-. 古いk3sバイナリを停止
-. 新しいk3sバイナリを起動
+. Restart the k3s or k3s-agent service or restart the k3s process (binary)
+
