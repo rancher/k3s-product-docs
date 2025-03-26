@@ -23,7 +23,6 @@
 ** xref:security/hardening-guide.adoc[]
 ** xref:security/self-assessment-1.8.adoc[]
 ** xref:security/self-assessment-1.7.adoc[]
-** xref:security/self-assessment-1.24.adoc[]
 * xref:cli/cli.adoc[]
 ** xref:cli/server.adoc[server]
 ** xref:cli/agent.adoc[]
