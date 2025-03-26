@@ -7,9 +7,23 @@
 Before upgrading from earlier releases, be sure to read the Kubernetes https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.29.md#urgent-upgrade-notes[Urgent Upgrade Notes].
 ====
 
-
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
+
+| xref:#_release_v1_29_14k3s1[v1.29.14+k3s1]
+| Feb 27 2025
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.29.md#v12914[v1.29.14]
+| https://github.com/k3s-io/kine/releases/tag/v0.13.9[v0.13.9]
+| https://sqlite.org/releaselog/3_46_1.html[3.46.1]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.18-k3s1[v3.5.18-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.23-k3s2[v1.7.23-k3s2]
+| https://github.com/opencontainers/runc/releases/tag/v1.2.4-k3s1[v1.2.4-k3s1]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.7[v0.25.7]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.2[v0.7.2]
+| https://github.com/traefik/traefik/releases/tag/v2.11.20[v2.11.20]
+| https://github.com/coredns/coredns/releases/tag/v1.12.0[v1.12.0]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.16[v0.15.16]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31]
 
 | xref:#_release_v1_29_13k3s1[v1.29.13+k3s1]
 | Jan 28 2025
@@ -237,6 +251,34 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
 |===
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.29.14+k3s1[v1.29.14+k3s1]
+// v1.29.14+k3s1
+
+This release updates Kubernetes to v1.29.14, and fixes a number of issues.
+
+For more details on what’s new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.29.md#changelog-since-v12913[Kubernetes release notes].
+
+=== Changes since v1.29.13+k3s1:
+
+* Correct the k3s token command help https://github.com/k3s-io/k3s/pull/11683[(#11683)]
+* Jan 2025 Testing Overhaul, E2E to Docker Migration https://github.com/k3s-io/k3s/pull/11726[(#11726)]
+* Backports for 2025-02 https://github.com/k3s-io/k3s/pull/11738[(#11738)]
+** Align the CLI-reported default `--etcd-snapshot-dir` value with the actual one (`server`, `etcd-snapshot` commands).
+** Disable s3 transport transparent compression/decompression
+** Etcd snapshot backup/restore now supports loading s3 credentials from an AWS SDK shared credentials file.
+** The containerd config templates for linux and windows have been consolidated and are no longer os-specific.
+** Bump spegel to v0.0.30
+** Bump local-path-provisioner to v0.0.31
+** Bump kine to v0.13.8
+** Bump etcd to v3.5.18
+** Bump traefik to 2.11.20
+* Bump traefik to v2.11.20 https://github.com/k3s-io/k3s/pull/11765[(#11765)]
+* Chore: Bump klipper-lb and klipper-helm https://github.com/k3s-io/k3s/pull/11772[(#11772)]
+* Update to v1.29.14-k3s1 and Go 1.22.12 https://github.com/k3s-io/k3s/pull/11785[(#11785)]
+* Render CNI dir config whenever vars are set https://github.com/k3s-io/k3s/pull/11822[(#11822)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.29.13+k3s1[v1.29.13+k3s1]
 // v1.29.13+k3s1
