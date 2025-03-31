@@ -1,8 +1,10 @@
 = 関連プロジェクト
 
-K3sディストリビューションを実装するプロジェクトは、コミュニティの拡大に役立つ歓迎すべき追加です。このページでは、K3sに関連するさまざまなプロジェクトを紹介し、その機能や潜在的なアプリケーションをさらに探求するのに役立てていただけます。
+K3sディストリビューションを実装するプロジェクトは、コミュニティの拡大に役立つ歓迎すべき追加です。These projects help to:
 
-これらのプロジェクトは、さまざまな環境でのK3sの多用途性と適応性、およびK3sの拡張を示しています。すべて、大規模な高可用性（HA）Kubernetesクラスターを作成するのに役立ちます。
+* Explore K3s capabilities and potential applications.
+* Extend K3s functionality across different platforms and environments.
+* Simplify the process of creating large High Availability (HA) K3s clusters.
 
 == k3s-ansible
 
@@ -15,3 +17,7 @@ K3sクラスターのセットアッププロセスを簡素化するもう一�
 == autok3s
 
 別のプロビジョニングツールであるlink:https://github.com/cnrancher/autok3s[autok3s]は、クラウドプロバイダー、VM、およびローカルマシンにわたってk3sクラスターをプロビジョニングするためのGUIを提供します。このツールは、K3sクラスターのプロビジョニングにグラフィカルインターフェースを好むユーザーにとって便利です。
+
+== hetzner-k3s
+
+For users who deploy on Hetzner Cloud, take a look at link:https://github.com/vitobotta/hetzner-k3s[hetzner-k3s]. This CLI tool, written in Crystal, handles the additional steps required to set up a K3s cluster on Hetzner Cloud.
