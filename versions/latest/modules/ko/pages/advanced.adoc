@@ -584,3 +584,5 @@ tcpdump -ni nflog:100
 ----
 
 더 쉽게 사용할 수 있지만, tcpdump는 패킷을 차단한 네트워크 정책의 이름을 표시하지 않습니다. 대신 와이어샤크의 tshark 명령을 사용하여 정책 이름이 포함된 `nflog.prefix` 필드를 포함한 전체 NFLOG 패킷 헤더를 표시하세요.
+
+Network Policy logging of dropped packets does not support https://github.com/k3s-io/k3s/issues/8008[policies with an empty `podSelector`]. If you rely on logging dropped packets for diagnostic or audit purposes, ensure that your policies include a pod selector that matches the affected pods.
