@@ -418,13 +418,8 @@ spec:
   - Ingress
 ----
 
-メトリクスサーバーおよび Traefik Ingress コントローラーは、アクセスを許可するネットワークポリシーが作成されない限り、デフォルトでブロックされます。K3s バージョン 1.20 およびそれ以前にパッケージ化された Traefik v1 は、Traefik v2 とは異なるラベルを使用します。クラスターに存在する Traefik のバージョンに関連するサンプル YAML のみを使用するようにしてください。
+メトリクスサーバーおよび Traefik Ingress コントローラーは、アクセスを許可するネットワークポリシーが作成されない限り、デフォルトでブロックされます。Ensure that you use the sample yaml below:
 
-[tabs]
-======
-v1.21 and Newer::
-+
---
 [,yaml]
 ----
 apiVersion: networking.k8s.io/v1
@@ -470,58 +465,6 @@ spec:
   - Ingress
 ---
 ----
---
-
-v1.20 and Older::
-+
---
-[,yaml]
-----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-all-metrics-server
-  namespace: kube-system
-spec:
-  podSelector:
-    matchLabels:
-      k8s-app: metrics-server
-  ingress:
-  - {}
-  policyTypes:
-  - Ingress
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-all-svclbtraefik-ingress
-  namespace: kube-system
-spec:
-  podSelector:
-    matchLabels:
-      svccontroller.k3s.cattle.io/svcname: traefik
-  ingress:
-  - {}
-  policyTypes:
-  - Ingress
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-all-traefik-v120-ingress
-  namespace: kube-system
-spec:
-  podSelector:
-    matchLabels:
-      app: traefik
-  ingress:
-  - {}
-  policyTypes:
-  - Ingress
----
-----
---
-======
 
 [IMPORTANT]
 ====
