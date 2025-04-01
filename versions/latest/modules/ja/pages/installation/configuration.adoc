@@ -101,7 +101,9 @@ https://github.com/k3s-io/k3s/releases/tag/v1.19.1%2Bk3s1[v1.19.1+k3s1]以降で
 
 K3sは環境変数やCLI引数で設定するだけでなく、設定ファイルも使用できます。
 
-デフォルトでは、``/etc/rancher/k3s/config.yaml``にあるYAMLファイルの値がインストール時に使用されます。
+By default, configuration is loaded from `/etc/rancher/k3s/config.yaml`, and drop-in files are loaded from `/etc/rancher/k3s/config.yaml.d/*.yaml` in alphabetical order.
+This path is configurable via the `--config` CLI flag or `K3S_CONFIG_FILE` env var.
+When overriding the default config file name, the drop-in directory path is also modified.
 
 以下は基本的な``server``設定ファイルの例です：
 
@@ -132,20 +134,9 @@ k3s server \
 
 設定ファイルとCLI引数の両方を使用することも可能です。この場合、値は両方のソースから読み込まれますが、CLI引数が優先されます。``--node-label``のような繰り返し可能な引数の場合、CLI引数はリスト内のすべての値を上書きします。
 
-最後に、設定ファイルの場所はCLI引数``--config FILE, -c FILE``または環境変数``$K3S_CONFIG_FILE``を使用して変更できます。
-
 === 複数の設定ファイル
 
-[IMPORTANT]
-.バージョンゲート
-====
-https://github.com/k3s-io/k3s/releases/tag/v1.21.0%2Bk3s1[v1.21.0+k3s1]以降で利用可能
-====
-
-
-複数の設定ファイルがサポートされています。デフォルトでは、設定ファイルは``/etc/rancher/k3s/config.yaml``および``/etc/rancher/k3s/config.yaml.d/*.yaml``からアルファベット順に読み込まれます。
-
-デフォルトでは、特定のキーに対して最後に見つかった値が使用されます。キーに``+``を追加すると、既存の文字列やスライスに値を追加することができます。以降のファイルでもこのキーに``+``を追加しないと、累積された値が上書きされます。
+If present in multiple files、特定のキーに対して最後に見つかった値が使用されます。キーに``+``を追加すると、既存の文字列やスライスに値を追加することができます。以降のファイルでもこのキーに``+``を追加しないと、累積された値が上書きされます。
 
 以下は複数の設定ファイルの例です：
 

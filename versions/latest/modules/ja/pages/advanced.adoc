@@ -528,3 +528,5 @@ tcpdump -ni nflog:100
 ----
 
 tcpdumpはより手軽に利用できますが、パケットをブロックしたネットワークポリシーの名前は表示されません。ネットワークポリシー名を含む完全なNFLOGパケットヘッダーを表示するには、wiresharkのtsharkコマンドを使用してください。
+
+Network Policy logging of dropped packets does not support https://github.com/k3s-io/k3s/issues/8008[policies with an empty `podSelector`]. If you rely on logging dropped packets for diagnostic or audit purposes, ensure that your policies include a pod selector that matches the affected pods.
