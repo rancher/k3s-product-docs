@@ -10,6 +10,21 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
 
+| xref:#_release_v1_31_7k3s1[v1.31.7k3s1]
+| Mar 25 2025
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.31.md#v1317[v1.31.7]
+| https://github.com/k3s-io/kine/releases/tag/v0.13.9[v0.13.9]
+| https://sqlite.org/releaselog/3_46_1.html[3.46.1]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.19-k3s1.30[v3.5.19-k3s1.30]
+| https://github.com/k3s-io/containerd/releases/tag/v2.0.4-k3s2[v2.0.4-k3s2]
+| https://github.com/opencontainers/runc/releases/tag/v1.2.5[v1.2.5]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.7[v0.25.7]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.2[v0.7.2]
+| https://github.com/traefik/traefik/releases/tag/v2.11.20[v2.11.20]
+| https://github.com/coredns/coredns/releases/tag/v1.12.0[v1.12.0]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.6[v0.16.6]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31]
+
 | xref:#_release_v1_31_6k3s1[v1.31.6+k3s1] 
 | Feb 27 2025
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.31.md#v1316[v1.31.6] 
@@ -115,6 +130,27 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.16.3[v0.16.3]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.28[v0.0.28]
 |===
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.31.7+k3s1[v1.31.7k3s1]
+// v1.31.7k3s1
+
+This release updates Kubernetes to v1.31.7, and fixes a number of issues.
+
+For more details on what’s new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.31.md#changelog-since-v1316[Kubernetes release notes].
+
+=== Changes since v1.31.6k3s1:
+
+* Revert "`Add ability to pass configuration options to flannel backend`" https://github.com/k3s-io/k3s/pull/11868[(#11868)]
+* Backport Docker  E2E testing PRs for 2025 March https://github.com/k3s-io/k3s/pull/11887[(#11887)]
+* Backports for 2025-03 https://github.com/k3s-io/k3s/pull/11920[(#11920)]
+* Bump klipper-lb to v0.4.13 https://github.com/k3s-io/k3s/pull/11927[(#11927)]
+* Fix syncing empty list of apiserver addresses during initial startup https://github.com/k3s-io/k3s/pull/11954[(#11954)]
+* Update to v1.31.7-k3s1 https://github.com/k3s-io/k3s/pull/11958[(#11958)]
+* Fix skew test for release candidates https://github.com/k3s-io/k3s/pull/11990[(#11990)]
+* Bump to containerd v2.0.4 https://github.com/k3s-io/k3s/pull/12004[(#12004)]
+* Fix upgrade test container version https://github.com/k3s-io/k3s/pull/11999[(#11999)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.31.6+k3s1[v1.31.6+k3s1]
 // v1.31.6+k3s1

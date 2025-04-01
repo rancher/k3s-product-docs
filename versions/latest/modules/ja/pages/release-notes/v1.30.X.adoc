@@ -10,6 +10,21 @@
 |===
 | バージョン | リリース日 | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
 
+| xref:#_release_v1_30_11k3s1[v1.30.11k3s1]
+| Mar 25 2025
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v13011[v1.30.11]
+| https://github.com/k3s-io/kine/releases/tag/v0.13.9[v0.13.9]
+| https://sqlite.org/releaselog/3_46_1.html[3.46.1]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.19-k3s1.30[v3.5.19-k3s1.30]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.26-k3s1[v1.7.26-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.2.5[v1.2.5]
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.7[v0.25.7]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.2[v0.7.2]
+| https://github.com/traefik/traefik/releases/tag/v2.11.20[v2.11.20]
+| https://github.com/coredns/coredns/releases/tag/v1.12.0[v1.12.0]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.6[v0.16.6]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31]
+
 | xref:#_release_v1_30_10k3s1[v1.30.10+k3s1]
 | Feb 27 2025
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v13010[v1.30.10]
@@ -190,6 +205,25 @@
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.9[v0.16.1]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.26[v0.0.26]
 |===
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.30.11+k3s1[v1.30.11k3s1]
+// v1.30.11k3s1
+
+This release updates Kubernetes to v1.30.11, and fixes a number of issues.
+
+For more details on what’s new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#changelog-since-v13010[Kubernetes release notes].
+
+=== Changes since v1.30.10k3s1:
+
+* Revert "`Add ability to pass configuration options to flannel backend`" https://github.com/k3s-io/k3s/pull/11869[(#11869)]
+* Backport Docker  E2E testing PRs for 2025 March https://github.com/k3s-io/k3s/pull/11886[(#11886)]
+* Backports for 2025-03 https://github.com/k3s-io/k3s/pull/11921[(#11921)]
+* Bump klipper-lb to v0.4.13 https://github.com/k3s-io/k3s/pull/11928[(#11928)]
+* Fix syncing empty list of apiserver addresses during initial startup https://github.com/k3s-io/k3s/pull/11955[(#11955)]
+* Update to v1.30.11-k3s1 https://github.com/k3s-io/k3s/pull/11959[(#11959)]
+* Fix skew test for release candidates https://github.com/k3s-io/k3s/pull/11989[(#11989)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.30.10+k3s1[v1.30.10+k3s1]
 // v1.30.10+k3s1

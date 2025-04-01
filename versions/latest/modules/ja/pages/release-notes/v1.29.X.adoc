@@ -10,6 +10,21 @@
 |===
 | バージョン | リリース日 | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
 
+| xref:#_release_v1_29_15k3s1[v1.29.15k3s1] 
+| Mar 25 2025
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.29.md#v12915[v1.29.15] 
+| https://github.com/k3s-io/kine/releases/tag/v0.13.9[v0.13.9] 
+| https://sqlite.org/releaselog/3_46_1.html[3.46.1] 
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.19-k3s1.30[v3.5.19-k3s1.30] 
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.26-k3s1[v1.7.26-k3s1] 
+| https://github.com/opencontainers/runc/releases/tag/v1.2.5[v1.2.5] 
+| https://github.com/flannel-io/flannel/releases/tag/v0.25.7[v0.25.7] 
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.2[v0.7.2] 
+| https://github.com/traefik/traefik/releases/tag/v2.11.20[v2.11.20] 
+| https://github.com/coredns/coredns/releases/tag/v1.12.0[v1.12.0] 
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.15.16[v0.15.16] 
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31] 
+
 | xref:#_release_v1_29_14k3s1[v1.29.14+k3s1]
 | Feb 27 2025
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.29.md#v12914[v1.29.14]
@@ -250,6 +265,23 @@
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.4[v0.15.4]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.24[v0.0.24]
 |===
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.29.15+k3s1[v1.29.15k3s1]
+// v1.29.15k3s1
+
+This release updates Kubernetes to v1.29.15, and fixes a number of issues.
+
+For more details on what’s new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.29.md#changelog-since-v12914[Kubernetes release notes].
+
+=== Changes since v1.29.14k3s1:
+
+* Backports for 2025-03 nhttps://github.com/k3s-io/k3s/pull/11931[(#11931)]
+* Bump klipper-lb to v0.4.13 nhttps://github.com/k3s-io/k3s/pull/11929[(#11929)]
+* Fix syncing empty list of apiserver addresses during initial startup nhttps://github.com/k3s-io/k3s/pull/11956[(#11956)]
+* Update to v1.29.15-k3s1 nhttps://github.com/k3s-io/k3s/pull/11957[(#11957)]
+* Fix skew test for release candidates nhttps://github.com/k3s-io/k3s/pull/11988[(#11988)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.29.14+k3s1[v1.29.14+k3s1]
 // v1.29.14+k3s1
