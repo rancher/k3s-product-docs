@@ -90,11 +90,14 @@ K3s supports dynamically generated, automatically expiring agent https://kuberne
 
 == k3s トークン
 
-K3s ブートストラップトークンは `kubeadm token` ブートストラップトークンと同じ生成および検証コードを使用し、`k3s token` CLI も類似しています。
+The k3s token CLI tool handles:
+
+* The life cycle of bootstrap tokens, using the same generation and validation code as `kubeadm token` bootstrap tokens. Note that both CLIs are similar.
+* The rotation of the server token
 
 ----
 NAME:
-   k3s token - ブートストラップトークンを管理する
+   k3s token - Manage tokens
 
 USAGE:
    k3s token command [command options] [arguments...]
@@ -104,7 +107,7 @@ COMMANDS:
    delete    サーバー上のブートストラップトークンを削除する
    generate  ブートストラップトークンを生成して表示するが、サーバー上には作成しない
    list      サーバー上のブートストラップトークンを一覧表示する
-   rotate    元のサーバートークンを新しいブートストラップトークンにローテートする
+   rotate    Rotate original server token with a new token
 
 OPTIONS:
    --help, -h  ヘルプを表示する
