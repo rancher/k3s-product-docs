@@ -18,6 +18,7 @@
 ** xref:upgrades/killall.adoc[]
 ** xref:upgrades/manual.adoc[]
 ** xref:upgrades/automated.adoc[]
+** xref:upgrades/roll-back.adoc[]
 * xref:security/security.adoc[]
 ** xref:security/secrets-encryption.adoc[]
 ** xref:security/hardening-guide.adoc[]
