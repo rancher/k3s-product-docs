@@ -586,3 +586,5 @@ tcpdump -ni nflog:100
 ----
 
 虽然更容易获得，但 tcpdump 不会显示阻止数据包的网络策略的名称。你可以使用 wireshark 的 tshark 命令来显示完整的 NFLOG 数据包标头，其中包括包含了策略名称的 `nflog.prefix` 字段。
+
+Network Policy logging of dropped packets does not support https://github.com/k3s-io/k3s/issues/8008[policies with an empty `podSelector`]. If you rely on logging dropped packets for diagnostic or audit purposes, ensure that your policies include a pod selector that matches the affected pods.
