@@ -849,7 +849,7 @@ runc の CVE: https://nvd.nist.gov/vuln/detail/CVE-2024-21626[CVE-2024-21626] �
  ** ``--flannel-backed=wireguard``は完全に``--flannel-backend=wireguard-native``に置き換えられました。
  ** ``k3s etcd-snapshot``コマンドはヘルプメッセージを表示するようになり、スナップショットを保存するには次を使用します: `k3s etcd-snapshot save`
  ** 次のフラグは致命的なエラーを引き起こすようになりました（完全な削除はv1.28.0で行われます）:
-  *** `--flannel-backed=ipsec`: ``--flannel-backend=wireguard-native``に置き換えられました https://docs.k3s.io/installation/network-options#migrating-from-wireguard-or-ipsec-to-wireguard-native[詳細はドキュメントを参照してください。]
+  *** `--flannel-backed=ipsec`: ``--flannel-backend=wireguard-native``に置き換えられました xref:networking/basic-network-options.adoc#_migrating_from_wireguard_or_ipsec_to_wireguard_native[詳細はドキュメントを参照してください。]
   *** 複数の``--flannel-backend``値を指定することは無効になりました。代わりに``--flannel-conf``を使用してください。
 * iptablesバイナリチェックのためのコマンド-vリダイレクションを変更 https://github.com/k3s-io/k3s/pull/7315[(#7315)]
 * 2023年4月のチャンネルサーバーを更新 https://github.com/k3s-io/k3s/pull/7327[(#7327)]
