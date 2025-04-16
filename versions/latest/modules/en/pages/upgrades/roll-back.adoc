@@ -4,7 +4,7 @@ You can roll back a K3s Kubernetes version after a problematic upgrade, using a 
 
 ## Important Considerations
 
-* **Backups:** Before any upgrade, ensure you have a valid database or etcd snapshot. Without a backup, a rollback is impossible.
+* **Backups:** Before upgrading, ensure you have a valid database or etcd snapshot from your cluster running the older version of K3s. Without a backup, a rollback is impossible.
 * **Potential Data Loss:** The `k3s-killall.sh` script forcefully terminates K3s processes and may result in data loss if applications are not properly shut down.
 * **Version Specifics:** Always verify K3s and component versions before and after the rollback.
 
