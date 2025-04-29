@@ -45,13 +45,13 @@ Verify the integrity of the restored database.
 +
 [,bash]
 ----
-curl -sfL [https://get.k3s.io](https://get.k3s.io) | INSTALL_K3S_VERSION=vX.Y.Z+k3s1 INSTALL_K3S_EXEC="server" sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=vX.Y.Z+k3s1 INSTALL_K3S_EXEC="server" sh -
 ----
 ** Agent nodes:
 +
 [,bash]
 ----
-curl -sfL [https://get.k3s.io](https://get.k3s.io) | INSTALL_K3S_VERSION=vX.Y.Z+k3s1 INSTALL_K3S_EXEC="agent" sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=vX.Y.Z+k3s1 INSTALL_K3S_EXEC="agent" sh -
 ----
 +
 * Air-gapped Clusters:
@@ -93,14 +93,14 @@ k3s-killall.sh
 +
 [,bash]
 ----    
-curl -sfL [https://get.k3s.io](https://get.k3s.io) | INSTALL_K3S_VERSION=vX.Y.Z+k3s1 INSTALL_K3S_EXEC="server" INSTALL_K3S_SKIP_START="true" sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=vX.Y.Z+k3s1 INSTALL_K3S_EXEC="server" INSTALL_K3S_SKIP_START="true" sh -
 ---- 
 +
 ** Agent nodes:
 +
 [,bash]
 ----
-curl -sfL [https://get.k3s.io](https://get.k3s.io) | INSTALL_K3S_VERSION=vX.Y.Z+k3s1 INSTALL_K3S_EXEC="agent" INSTALL_K3S_SKIP_START="true" sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=vX.Y.Z+k3s1 INSTALL_K3S_EXEC="agent" INSTALL_K3S_SKIP_START="true" sh -
 ----
 +
 * Air-gapped Clusters:
