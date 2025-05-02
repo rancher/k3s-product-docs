@@ -31,11 +31,11 @@ This process may disrupt running applications.
 k3s-killall.sh
 ----
 
-. Restore a database snapshot taken before upgrading K3s.
+. Restore a database snapshot taken before upgrading K3s. For example, if you're using PostgreSQL, run the following command: 
 +
 [,bash]
 ----
-pg_restore -U <db_user> -d <db_name> <backup_file.dump>
+pg_restore -U <DB-USER> -d <DB-NAME> <BACKUP_FILE>
 ----
 Verify the integrity of the restored database.
 
