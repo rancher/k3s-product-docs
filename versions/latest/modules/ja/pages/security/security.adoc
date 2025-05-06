@@ -8,6 +8,5 @@
 
 次に、ハードニングされたクラスターを検証するための自己評価があります。現在、2つの異なる評価が利用可能です：
 
-* xref:security/self-assessment-1.24.adoc[CIS 1.24 ベンチマーク自己評価ガイド]、K3s v1.24 用の古いバージョンの CIS ベンチマーク
 * xref:security/self-assessment-1.7.adoc[CIS 1.7 ベンチマーク自己評価ガイド]、K3s バージョン v1.25-v1.26 用
 * xref:security/self-assessment-1.8.adoc[CIS 1.8 ベンチマーク自己評価ガイド]、K3s バージョン v1.27-v1.29 用

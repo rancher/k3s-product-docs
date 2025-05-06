@@ -5,4 +5,8 @@
 아래 문서는 CIS 쿠버네티스 벤치마크 v1.23에 적용됩니다.
 
 * xref:security/hardening-guide.adoc[강화 가이드]
-* xref:security/self-assessment-1.23.adoc[CIS 벤치마크 자체 평가 가이드]
+
+Second, is the self assessment to validate a hardened cluster. We currently have two different assessments available:
+
+* xref:security/self-assessment-1.7.adoc[CIS 1.7 Benchmark Self-Assessment Guide], for K3s version v1.25
+* xref:security/self-assessment-1.8.adoc[CIS 1.8 Benchmark Self-Assessment Guide], for K3s version v1.26-v1.29
