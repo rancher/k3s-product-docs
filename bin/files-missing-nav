@@ -7,8 +7,8 @@ if [ -d versions ]; then
   DOCS_DIR="versions"
 fi
 
-if test -f tmp/missing-nav.log; then
-    truncate -s 0 tmp/missing-nav.log
+if test -f tmp/files-missing-nav.log; then
+    truncate -s 0 tmp/files-missing-nav.log
 elif ! test -d tmp; then
     mkdir tmp
 fi
@@ -23,13 +23,13 @@ for dir in $MODULE_LANG_DIRS; do
         NAV_FILE="${dir%pages}nav.adoc"
         
         if ! grep -q $MODULE_LANG_RELATIVE_PATH $NAV_FILE; then
-            echo $file >> tmp/missing-nav.log
+            echo $file >> tmp/files-missing-nav.log
         fi
     done
 done
 
-if test -f tmp/missing-nav.log; then
-    cat tmp/missing-nav.log
+if test -f tmp/files-missing-nav.log; then
+    cat tmp/files-missing-nav.log
     exit 1
 else
     exit 0
