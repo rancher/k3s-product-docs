@@ -35,7 +35,7 @@ k3s-killall.sh
 +
 [,bash]
 ----
-pg_restore -U <DB-USER> -d <DB-NAME> <BACKUP_FILE>
+pg_restore -U <DB-USER> -d <DB-NAME> <BACKUP-FILE>
 ----
 
 . On each node, roll back the K3s binary to the previous version.
