@@ -8,7 +8,7 @@ if [ -d versions ]; then
 fi
 
 if test -f tmp/files-missing-nav.log; then
-    truncate -s 0 tmp/files-missing-nav.log
+    rm tmp/files-missing-nav.log
 elif ! test -d tmp; then
     mkdir tmp
 fi
@@ -29,8 +29,10 @@ for dir in $MODULE_LANG_DIRS; do
 done
 
 if test -f tmp/files-missing-nav.log; then
+    echo "The following files are missing from nav.adoc. The results have been saved to tmp/files-missing-nav.log."
     cat tmp/files-missing-nav.log
     exit 1
 else
+    echo "All files are listed in nav.adoc."
     exit 0
 fi
