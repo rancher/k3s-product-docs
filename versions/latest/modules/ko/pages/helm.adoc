@@ -8,7 +8,156 @@ K3s에는 헬름 차트의 설치, 업그레이드/재구성 및 제거를 관�
 
 == 헬름 컨트롤러 사용하기
 
-https://github.com/k3s-io/helm-controller#helm-controller[헬름 차트 커스텀 리소스]는 일반적으로 `helm` 명령줄 도구에 전달할 대부분의 옵션을 담고 있습니다. 다음은 Bitnami 차트 저장소에서 아파치를 배포하여 기본 차트 값 중 일부를 재정의하는 방법에 대한 예제입니다. HelmChart 리소스 자체는 `kube-system` 네임스페이스에 있지만, 차트의 리소스는 동일한 매니페스트에 생성되는 `web` 네임스페이스에 배포된다는 점에 유의하세요. 이는 HelmChart 리소스를 배포하는 리소스와 분리하여 유지하려는 경우에 유용할 수 있습니다.
+https://github.com/k3s-io/helm-controller#helm-controller[헬름 차트 커스텀 리소스]는 일반적으로 `helm` 명령줄 도구에 전달할 대부분의 옵션을 담고 있습니다. 
+
+=== HelmChart 필드 정의
+
+[NOTE]
+====
+`name` 필드는 헬름 차트 명명 규칙을 따라야 합니다, in addition to Kubernetes rules for https://kubernetes.io/docs/concepts/overview/working-with-objects/names/[object names and IDs]. 자세한 내용은 https://helm.sh/docs/chart_best_practices/conventions/#chart-names[헬름 베스트 프랙티스 문서]를 참고하세요.
+====
+
+|===
+| 필드 | 기본값 | 설명 | 헬름 인수 / 플래그 상응값
+
+| metadata.name
+|
+| 헬름 차트 이름
+| NAME
+
+| spec.chart
+|
+| 리포지토리에 있는 헬름 차트 이름 또는 차트 아카이브(.tgz)에 대한 전체 HTTPS URL
+| CHART
+
+| spec.chartContent
+|
+| Base64로 인코딩된 차트 아카이브 .tgz - spec.chart를 재정의합니다.
+| CHART
+
+| spec.targetNamespace
+| default
+| 헬름 차트 대상 네임스페이스
+| `--namespace`
+
+| spec.createNamespace
+| false
+| Create target namespace if not present
+| `--create-namespace`
+
+| spec.version
+|
+| 헬름 차트 버전(리포지토리에서 설치하는 경우)
+| `--version`
+
+| spec.repo
+|
+| 헬름 차트 리포지토리 URL
+| `--repo`
+
+| spec.repoCA
+|
+| HTTPS 사용 서버의 인증서를 지정
+| `--ca-file`
+
+| spec.repoCAConfigMap
+|
+| Reference to a ConfigMap containing CA Certificates to be be trusted by Helm. Can be used along with or instead of `repoCA`
+| `--ca-file`
+
+| spec.plainHTTP
+| false
+| Use insecure HTTP connections for the chart download.
+| `--plain-http`
+
+| spec.insecureSkipTLSVerify
+| false
+| Skip TLS certificate checks for the chart download.
+| `--insecure-skip-tls-verify`
+
+| spec.helmVersion
+| v3
+| 사용할 헬름 버전 (`v2` 혹은 `v3`)
+|
+
+| spec.bootstrap
+| False
+| 클러스터(클라우드 컨트롤러 관리자 등)를 부트스트랩하는 데 이 차트가 필요한 경우 True로 설정합니다.
+|
+
+| spec.jobImage
+|
+| 헬름 차트를 설치할 때 사용할 이미지를 지정합니다. 예시. rancher/klipper-helm:v0.3.0 .
+|
+
+| spec.podSecurityContext
+|
+| Custom https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#podsecuritycontext-v1-core[`v1.PodSecurityContext`] for the Helm job pod
+|
+
+| spec.securityContext
+|
+| Custom https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#securitycontext-v1-core[`v1.SecurityContext`] for the Helm job pod's containers
+|
+
+| spec.backOffLimit
+| 1000
+| Specify the number of retries before considering a job failed.
+|
+
+| spec.timeout
+| 300
+| 헬름 작업 시간 초과(초)
+| `--timeout`
+
+| spec.failurePolicy
+| reinstall
+| ``abort``로 설정하면 헬름 작업이 중단되고 운영자의 수동 개입이 있을 때까지 중단된다.
+|
+
+| spec.authSecret
+|
+| Reference to Secret of type `kubernetes.io/basic-auth` holding Basic auth credentials for the Chart repo.
+|
+
+| spec.authPassCredentials
+| false
+| Pass Basic auth credentials to all domains.
+| `--pass-credentials`
+
+| spec.dockerRegistrySecret
+|
+| Reference to Secret of type `kubernetes.io/dockerconfigjson` holding Docker auth credentials for the OCI-based registry acting as the Chart repo.
+|
+
+| spec.set
+|
+| 간단한 기본 차트 값을 재정의합니다. 값을 통해 설정된 옵션보다 우선합니다.
+| `--set` / `--set-string`
+
+| spec.valuesContent
+|
+| YAML 파일 콘텐츠를 통해 복잡한 기본 차트 값 재정의
+| `--values`
+
+| spec.valuesSecrets
+|
+| Override complex Chart values via references to external Secrets
+| `--values`
+|===
+
+``/var/lib/rancher/k3s/server/static/``에 위치한 콘텐츠는 클러스터 내에서 쿠버네티스 APIServer를 통해 익명으로 액세스할 수 있습니다. 이 URL은 `spec.chart` 필드에 있는 특수 변수 ``+%{KUBERNETES_API}%+``를 사용하여 템플릿화할 수 있습니다. 예를 들어, 패키지화된 Traefik 컴포넌트는 ``+https://%{KUBERNETES_API}%/static/charts/traefik-VERSION.tgz+``에서 해당 차트를 로드합니다.
+
+Chart values are used in the following order, from least to greatest precedence:
+
+. Chart default values
+. HelmChart `spec.valuesContent`
+. HelmChart `spec.valuesSecrets` in listed order of secret name and keys
+. HelmChartConfig `spec.valuesContent`
+. HelmChartConfig `spec.valuesSecrets` in listed order of secret name and keys
+. HelmChart `spec.set`
+
+다음은 Bitnami 차트 저장소에서 아파치를 배포하여 기본 차트 값 중 일부를 재정의하는 방법에 대한 예제입니다. HelmChart 리소스 자체는 `kube-system` 네임스페이스에 있지만, 차트의 리소스는 동일한 매니페스트에 생성되는 `web` 네임스페이스에 배포된다는 점에 유의하세요. 이는 HelmChart 리소스를 배포하는 리소스와 분리하여 유지하려는 경우에 유용할 수 있습니다.
 
 [,yaml]
 ----
@@ -36,105 +185,144 @@ spec:
       enabled: true
 ----
 
-=== HelmChart 필드 정의
+An example of deploying a helm chart from a private repo with authentication:
+
+[,yaml]
+----
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  namespace: kube-system
+  name: example-app
+spec:
+  targetNamespace: example-namespace
+  createNamespace: true
+  version: v1.2.3
+  chart: example-app
+  repo: https://secure-repo.example.com
+  authSecret:
+    name: example-repo-auth
+  repoCAConfigMap:
+    name: example-repo-ca
+  valuesContent: |-
+    image:
+      tag: v1.2.2
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: kube-system
+  name: example-repo-auth
+type: kubernetes.io/basic-auth
+stringData:
+  username: user
+  password: pass
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: kube-system
+  name: example-repo-ca
+data:
+  ca.crt: |-
+    -----BEGIN CERTIFICATE-----
+    <YOUR CERTIFICATE>
+    -----END CERTIFICATE-----
+----
+
+=== Chart Values from Secrets
+
+Chart values can be read from externally-managed Secrets, instead of storing the values in the `spec.set` or `spec.valuesContent` fields. This should be done when passing confidential information such as credentials in to Charts that do not support referring to existing Secrets via the `existingSecret` pattern.
+
+As with other Secrets (`spec.authSecret` and `spec.dockerRegistrySecret`), Secrets referenced in `spec.valuesSecrets` must be in the same namespace as the HelmChart.
+
+Each listed `valuesSecrets` entry has the following fields:
 
 |===
-| 필드 | 기본값 | 설명 | 헬름 인수 / 플래그 상응값
+| Field | Description
 
-| metadata.name
-|
-| 헬름 차트 이름
-| NAME
+| name
+| The name of the Secret. Required.
 
-| spec.chart
-|
-| 리포지토리에 있는 헬름 차트 이름 또는 차트 아카이브(.tgz)에 대한 전체 HTTPS URL
-| CHART
+| keys
+| List of keys to read values from, values are used in the listed order. Required.
 
-| spec.targetNamespace
-| default
-| 헬름 차트 대상 네임스페이스
-| `--namespace`
-
-| spec.version
-|
-| 헬름 차트 버전(리포지토리에서 설치하는 경우)
-| `--version`
-
-| spec.repo
-|
-| 헬름 차트 리포지토리 URL
-| `--repo`
-
-| spec.repoCA
-|
-| HTTPS 사용 서버의 인증서를 지정
-| `--ca-file`
-
-| spec.helmVersion
-| v3
-| 사용할 헬름 버전 (`v2` 혹은 `v3`)
-|
-
-| spec.bootstrap
-| False
-| 클러스터(클라우드 컨트롤러 관리자 등)를 부트스트랩하는 데 이 차트가 필요한 경우 True로 설정합니다.
-|
-
-| spec.set
-|
-| 간단한 기본 차트 값을 재정의합니다. 값을 통해 설정된 옵션보다 우선합니다.
-| `--set` / `--set-string`
-
-| spec.jobImage
-|
-| 헬름 차트를 설치할 때 사용할 이미지를 지정합니다. 예시. rancher/klipper-helm:v0.3.0 .
-|
-
-| spec.timeout
-| 300
-| 헬름 작업 시간 초과(초)
-| `--timeout`
-
-| spec.failurePolicy
-| reinstall
-| ``abort``로 설정하면 헬름 작업이 중단되고 운영자의 수동 개입이 있을 때까지 중단된다.
-|
-
-| spec.valuesContent
-|
-| YAML 파일 콘텐츠를 통해 복잡한 기본 차트 값 재정의
-| `--values`
-
-| spec.chartContent
-|
-| Base64로 인코딩된 차트 아카이브 .tgz - spec.chart를 재정의합니다.
-| CHART
+| ignoreUpdates
+| Mark this Secret as optional, and do not update the chart if the Secret changes. Optional, defaults to `false`.
 |===
 
-``/var/lib/rancher/k3s/server/static/``에 위치한 콘텐츠는 클러스터 내에서 쿠버네티스 APIServer를 통해 익명으로 액세스할 수 있습니다. 이 URL은 `spec.chart` 필드에 있는 특수 변수 ``+%{KUBERNETES_API}%+``를 사용하여 템플릿화할 수 있습니다. 예를 들어, 패키지화된 Traefik 컴포넌트는 ``+https://%{KUBERNETES_API}%/static/charts/traefik-12.0.000.tgz+``에서 해당 차트를 로드합니다.
+* If `ignoreUpdates` is set to `false` or unspecified, the Secret and all listed keys must exist. Any change to a referenced values Secret will cause the chart to be updated with new values.  
+* If `ignoreUpdates` is set to `true`, the Secret is used if it exists when the Chart is created, or updated due to any other change to related resources. Changes to the Secret will not cause the chart to be updated.
 
-[NOTE]
-====
-`name` 필드는 헬름 차트 명명 규칙을 따라야 합니다. 자세한 내용은 https://helm.sh/docs/chart_best_practices/conventions/#chart-names[헬름 베스트 프랙티스 문서]를 참고하세요.
-====
+An example of deploying a helm chart using an existing Secret with two keys:
+
+[,yaml]
+----
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  namespace: kube-system
+  name: example-app
+spec:
+  targetNamespace: example-namespace
+  createNamespace: true
+  version: v1.2.3
+  chart: example-app
+  repo: https://repo.example.com
+  valuesContent: |-
+    image:
+      tag: v1.2.2
+  valuesSecrets:
+    - name: example-app-custom-values
+      ignoreUpdates: false
+      keys:
+        - someValues
+        - moreValues
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: kube-system
+  name: example-app-custom-values
+stringData:
+  moreValues: |-
+    database:
+      address: db.example.com
+      username: user
+      password: pass
+  someValues: |-
+    adminUser:
+      create: true
+      username: admin
+      password: secret
+----
 
 [#_customizing_packaged_components_with_helmchartconfig]
 == HelmChartConfig로 패키지 컴포넌트 커스터마이징하기
 
-[IMPORTANT]
-.Version Gate
-====
-
-https://github.com/k3s-io/k3s/releases/tag/v1.19.1%2Bk3s1[v1.19.1+k3s1] 부터 사용 가능
-====
-
-
 HelmChart로 배포되는 패키지 컴포넌트(예로 Traefik)의 값을 재정의할 수 있도록, K3s는 HelmChartConfig 리소스를 통해 배포를 사용자 정의할 수 있도록 지원합니다. HelmChartConfig 리소스는 해당 HelmChart의 이름과 네임스페이스와 일치해야 하며, 추가 값 파일로 `helm` 명령에 전달되는 ``valuesContent``를 추가로 제공할 수 있도록 지원합니다.
+
+### HelmChartConfig Field Definitions
+
+|===
+| Field | Description
+
+| metadata.name
+| Helm Chart name - must match the HelmChart resource name.
+
+| spec.valuesContent
+| Override complex default Chart values via YAML file content.
+
+| spec.valuesSecrets
+| Override complect default Chart values via external Secrets.
+
+| spec.failurePolicy
+| Set to `abort` which case the Helm operation is aborted, pending manual intervention by the operator.
+|===
 
 [NOTE]
 ====
-HelmChart `spec.set` 값은 HelmChart 및 HelmChartConfig `spec.valuesContent` 설정을 재정의합니다.
+HelmChart `spec.set` 값은 HelmChart 및 HelmChartConfig `spec.valuesContent` and `spec.valuesSecrets` 설정을 재정의합니다, as described above.
 ====
 
 
@@ -150,8 +338,8 @@ metadata:
 spec:
   valuesContent: |-
     image:
-      name: traefik
-      tag: v2.8.5
+      repository: docker.io/library/traefik
+      tag: 3.3.5
     forwardedHeaders:
       enabled: true
       trustedIPs:
@@ -160,20 +348,3 @@ spec:
       enabled: true
       permanentRedirect: false
 ----
-
-== 헬름 버전 2에서 마이그레이션하기
-
-[IMPORTANT]
-.Version Gate
-====
-v1.17.https://github.com/k3s-io/k3s/releases/tag/v1.17.0%2Bk3s.1[v1.17.0+k3s.1]부터 헬름 v3가 기본적으로 지원 및 사용됩니다.
-====
-
-
-K3s는 헬름 v2 또는 헬름 v3를 처리할 수 있습니다. 헬름 v3로 마이그레이션하려는 경우, https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/[이] 헬름 블로그 게시물에서 플러그인을 사용하여 성공적으로 마이그레이션하는 방법을 설명합니다. 자세한 내용은 헬름 3 공식 문서 https://helm.sh/docs/[여기]를 참고하세요. xref:cluster-access.adoc[클러스터 접근]에 대한 섹션에 따라 kubeconfig를 올바르게 설정했는지 확인하세요.
-
-[NOTE]
-====
-헬름 3에서는 더 이상 Tiller와 `helm init` 명령이 필요하지 않습니다. 자세한 내용은 공식 문서를 참고하세요.
-====
-

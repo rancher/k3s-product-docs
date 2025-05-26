@@ -90,13 +90,12 @@ ServiceLB를 비활성화하려면, 클러스터의 모든 서버에 `--disable=
 
 == 외부 클라우드 컨트롤러 매니저 배포하기
 
-바이너리 크기를 줄이기 위해 K3s는 모든 "인-트리"(빌트인) 클라우드 제공자를 제거합니다. 대신, K3s는 다음을 수행하는 임베디드 클라우드 컨트롤러 관리자(CCM, Cloud Controller Manager) 스텁을 제공합니다:
+K3s provides an embedded Cloud Controller Manager (CCM) that does the following:
 
-* 노드 내부IP 및 외부IP 주소 필드를 `--node-ip` 및 `--node-external-ip` 플래그를 기반으로 설정합니다.
-* ServiceLB LoadBalancer 컨트롤러를 호스팅합니다.
-* 클라우드-프로바이더가 ``external``로 설정된 경우 존재하는 `node.cloudprovider.kubernetes.io/uninitialized` taint를 제거합니다.
-
-외부 CCM을 배포하기 전에 모든 K3s 서버를 `--disable-cloud-controller` 플래그로 시작하여 임베디드 CCM을 비활성화해야 합니다.
+* Hosts the <<_service_load_balancer, Service Load Balancer>> LoadBalancer controller.
+* Clears the `node.cloudprovider.kubernetes.io/uninitialized` taint.
+* Sets node address fields based on the `--node-ip`, `--node-external-ip`, `--node-internal-dns`, and `--node-external-dns` flags.
+외부 CCM을 배포하기 전에 모든 K3s 서버를 `--disable-cloud-controller` 플래그로 시작하여 임베디드 CCM을 비활성화해야 합니다. When using an external CCM, node addresses will be provided by cloud provider instance metadata APIs, instead of the K3s flag values.
 
 [NOTE]
 ====
