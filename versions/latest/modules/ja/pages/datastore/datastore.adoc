@@ -17,10 +17,10 @@ K3sが新しいetcdクラスタを初期化するように設定されている�
 * *外部データベース* +
 複数のサーバーで外部データストアを使用する方法については、xref:datastore/ha.adoc[高可用性外部DB]のドキュメントを参照してください。 +
 以下の外部データストアがサポートされています：
- ** https://etcd.io/[etcd] (バージョン3.5.4に対して認定)
- ** https://www.mysql.com/[MySQL] (バージョン5.7および8.0に対して認定)
- ** https://mariadb.org/[MariaDB] (バージョン10.6.8に対して認定)
- ** https://www.postgresql.org/[PostgreSQL] (バージョン12.16、13.12、14.9および15.4に対して認定)
+ ** https://etcd.io/[etcd] (バージョン3.5.21に対して認定)
+ ** https://www.mysql.com/[MySQL] (バージョン8.0および8.4に対して認定)
+ ** https://mariadb.org/[MariaDB] (バージョン10.11および11.4に対して認定)
+ ** https://www.postgresql.org/[PostgreSQL] (バージョン15.12、16.7および17.3に対して認定)
 
 [CAUTION]
 .プリペアドステートメントサポート
