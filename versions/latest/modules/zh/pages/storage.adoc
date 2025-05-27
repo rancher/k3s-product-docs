@@ -104,7 +104,7 @@ Longhorn 不支持 ARM32。
 
 K3s 支持 https://github.com/longhorn/longhorn[Longhorn]，这是用于 Kubernetes 的开源分布式块存储系统。
 
-下面是一个简单的例子。有关详细信息，请参阅link:https://longhorn.io/docs/latest/[官方文档]。
+下面是一个简单的例子。有关详细信息，请参阅link:https://documentation.suse.com/cloudnative/storage/{longhorn_docs_version}/en/longhorn-documentation.html[官方文档]。
 
 应用 longhorn.yaml 来安装 Longhorn：
 

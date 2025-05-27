@@ -43,7 +43,7 @@ https://github.com/flannel-io/flannel/blob/master/README.md[Flannel]は、Kubern
 K3sは2022-12リリース（v1.26.0+k3s1、v1.25.5+k3s1、v1.24.9+k3s1、v1.23.15+k3s1）以降、strongSwanの``swanctl``および``charon``バイナリを含まなくなりました。これらのリリースにアップグレードまたはインストールする前に、ノードに正しいパッケージをインストールしてください。``ipsec``バックエンドを使用する場合は特に注意が必要です。
 ====
 
-
+[#_migrating_from_wireguard_or_ipsec_to_wireguard_native]
 === ``wireguard``または``ipsec``から``wireguard-native``への移行
 
 従来の``wireguard``バックエンドはホストに``wg``ツールのインストールが必要です。このバックエンドはK3s v1.26以降では利用できず、カーネルと直接インターフェースする``wireguard-native``バックエンドが推奨されます。

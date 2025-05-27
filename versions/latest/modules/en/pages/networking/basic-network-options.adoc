@@ -45,7 +45,7 @@ You must ensure that WireGuard kernel modules are available on every node, both 
 K3s no longer includes strongSwan `swanctl` and `charon` binaries starting with the 2022-12 releases (v1.26.0+k3s1, v1.25.5+k3s1, v1.24.9+k3s1, v1.23.15+k3s1). Please install the correct packages on your node before upgrading to or installing these releases if you want to use the `ipsec` backend.
 ====
 
-
+[#_migrating_from_wireguard_or_ipsec_to_wireguard_native]
 === Migrating from `wireguard` or `ipsec` to `wireguard-native`
 
 The legacy `wireguard` backend requires installation of the `wg` tool on the host. This backend is not available in K3s v1.26 and higher, in favor of `wireguard-native` backend, which directly interfaces with the kernel.

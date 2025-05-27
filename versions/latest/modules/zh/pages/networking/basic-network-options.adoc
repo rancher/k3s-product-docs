@@ -46,6 +46,7 @@ K3s no longer includes strongSwan `swanctl` and `charon` binaries starting with 
 ====
 
 
+[#_migrating_from_wireguard_or_ipsec_to_wireguard_native]
 === Migrating from `wireguard` or `ipsec` to `wireguard-native`
 
 The legacy `wireguard` backend requires installation of the `wg` tool on the host. This backend is not available in K3s v1.26 and higher, in favor of `wireguard-native` backend, which directly interfaces with the kernel.

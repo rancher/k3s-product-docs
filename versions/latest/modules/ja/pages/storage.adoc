@@ -104,7 +104,7 @@ LonghornはARM32をサポートしていません。
 
 K3sは、Kubernetes用のオープンソースの分散ブロックストレージシステムであるlink:https://github.com/longhorn/longhorn[Longhorn]をサポートしています。
 
-以下に簡単な例を示します。詳細については、https://longhorn.io/docs/latest/[公式ドキュメント]を参照してください。
+以下に簡単な例を示します。詳細については、https://documentation.suse.com/cloudnative/storage/{longhorn_docs_version}/en/longhorn-documentation.html[公式ドキュメント]を参照してください。
 
 longhorn.yamlを適用してLonghornをインストールします：
 

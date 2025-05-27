@@ -644,7 +644,7 @@ For more details on what's new, see the https://github.com/kubernetes/kubernetes
 
 This release updates Kubernetes to v1.24.7, and fixes a number of issues.
 
-The K3s https://docs.k3s.io/security/hardening-guide[CIS Hardening Guide] has been updated to include configuration changes required to support embedding ServiceLB in the cloud controller manager. If you have followed the hardening guide, please update your policies and RBAC in accordingly.
+The K3s xref:security/hardening-guide.adoc[CIS Hardening Guide] has been updated to include configuration changes required to support embedding ServiceLB in the cloud controller manager. If you have followed the hardening guide, please update your policies and RBAC in accordingly.
 
 For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.24.md#changelog-since-v1246[Kubernetes release notes].
 

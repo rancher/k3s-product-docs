@@ -917,7 +917,7 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
  ** `--flannel-backed=wireguard` has been completely replaced with `--flannel-backend=wireguard-native`
  ** The `k3s etcd-snapshot` command will now print a help message, to save a snapshot use: `k3s etcd-snapshot save`
  ** The following flags will now cause fatal errors (with full removal coming in v1.28.0):
-  *** `--flannel-backed=ipsec`: replaced with `--flannel-backend=wireguard-native` https://docs.k3s.io/installation/network-options#migrating-from-wireguard-or-ipsec-to-wireguard-native[see docs for more info.]
+  *** `--flannel-backed=ipsec`: replaced with `--flannel-backend=wireguard-native` xref:networking/basic-network-options.adoc#_migrating_from_wireguard_or_ipsec_to_wireguard_native[see docs for more info.]
   *** Supplying multiple `--flannel-backend` values is no longer valid. Use `--flannel-conf` instead.
 * Changed command -v redirection for iptables bin check https://github.com/k3s-io/k3s/pull/7315[(#7315)]
 * Update channel server for april 2023 https://github.com/k3s-io/k3s/pull/7327[(#7327)]
