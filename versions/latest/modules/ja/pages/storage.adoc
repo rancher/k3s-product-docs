@@ -4,27 +4,9 @@
 
 永続ボリューム（PV）はKubernetesクラスター内のストレージの一部であり、永続ボリュームクレーム（PVC）はストレージの要求です。PVとPVCの動作の詳細については、公式Kubernetesドキュメントのlink:https://kubernetes.io/docs/concepts/storage/volumes/[ストレージ]を参照してください。
 
+K3s, as a compliant Kubernetes distribution, uses the https://github.com/container-storage-interface/spec/blob/master/spec.md[Container Storage Interface (CSI)] and https://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/[Cloud Provider Interface (CPI)] to manage persistent storage.
+
 このページでは、ローカルストレージプロバイダーまたは<<_longhornの設定,Longhorn>>を使用して永続ストレージを設定する方法について説明します。
-
-== K3sストレージの違いは何ですか？
-
-K3sは、いくつかのオプションのボリュームプラグインとすべての組み込み（「インツリー」とも呼ばれる）クラウドプロバイダーを削除します。これにより、バイナリサイズを小さくし、多くのK3sの使用ケースで利用できない可能性のあるサードパーティのクラウドやデータセンター技術およびサービスへの依存を避けることができます。これらの削除は、Kubernetesのコア機能や適合性に影響を与えないため可能です。
-
-以下のボリュームプラグインはK3sから削除されました：
-
-* cephfs
-* fc
-* flocker
-* git_repo
-* glusterfs
-* portworx
-* quobyte
-* rbd
-* storageos
-
-両方のコンポーネントには、K3sで使用できるアウトオブツリーの代替手段があります：Kubernetesのlink:https://github.com/container-storage-interface/spec/blob/master/spec.md[コンテナストレージインターフェース（CSI）]およびlink:https://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/[クラウドプロバイダーインターフェース（CPI）]です。
-
-Kubernetesのメンテナは、インツリーボリュームプラグインをCSIドライバーに積極的に移行しています。この移行に関する詳細については、https://kubernetes.io/blog/2021/12/10/storage-in-tree-to-csi-migration-status-update/[こちら]を参照してください。
 
 [#_setting_up_the_local_storage_provider]
 == ローカルストレージプロバイダーの設定
@@ -110,7 +92,7 @@ longhorn.yamlを適用してLonghornをインストールします：
 
 [,bash]
 ----
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.8.1/deploy/longhorn.yaml
 ----
 
 Longhornは``longhorn-system``という名前空間にインストールされます。
