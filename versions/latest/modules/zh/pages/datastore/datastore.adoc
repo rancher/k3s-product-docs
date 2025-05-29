@@ -31,7 +31,7 @@ K3s 需要 DB 的准备语句支持。换言之，https://www.pgbouncer.org/faq.
 [WARNING]
 .Multimaster Setups
 ====
-Multi-master databases that set `auto_increment_increment` or `auto_increment_offset` greater than 1 are not supported. Kine expects that the revision will start at 0 and always move forward by exactly 1 when a key is successfully inserted. This affects products such as Galera for MySQL/MariaDB. 
+Multi-master databases that set `auto_increment_increment` or `auto_increment_offset` greater than 1 are not supported. Kine expects the revision to start at 0 at 0 and always move forward by exactly 1 when a key is successfully inserted. This affects products such as Galera for MySQL/MariaDB. 
 ====
 
 [#_external_datastore_configuration_parameters]
