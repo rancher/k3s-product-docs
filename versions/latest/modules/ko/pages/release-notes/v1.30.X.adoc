@@ -10,6 +10,21 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
 
+| xref:#_release_v1_30_12k3s1[v1.30.12k3s1]
+| May 01 2025
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v13012[v1.30.12]
+| https://github.com/k3s-io/kine/releases/tag/v0.13.14[v0.13.14]
+| https://sqlite.org/releaselog/3_46_1.html[3.46.1]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.21-k3s1[v3.5.21-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.26-k3s1[v1.7.26-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.2.5[v1.2.5]
+| https://github.com/flannel-io/flannel/releases/tag/v0.26.7[v0.26.7]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.2[v0.7.2]
+| https://github.com/traefik/traefik/releases/tag/v2.11.24[v2.11.24]
+| https://github.com/coredns/coredns/releases/tag/v1.12.1[v1.12.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.10[v0.16.10]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31]
+
 | xref:#_release_v1_30_11k3s1[v1.30.11k3s1]
 | Mar 25 2025
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v13011[v1.30.11]
@@ -205,6 +220,31 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.9[v0.16.1]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.26[v0.0.26]
 |===
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.30.12+k3s1[v1.30.12+k3s1]
+// v1.30.12+k3s1
+
+This release updates Kubernetes to v1.30.12, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#changelog-since-v13011[Kubernetes release notes].
+
+=== Changes since v1.30.11+k3s1:
+
+* Improve readiness polling on node startup https://github.com/k3s-io/k3s/pull/12035[(#12035)]
+* Fix issue caused by default authorization-mode apiserver arg https://github.com/k3s-io/k3s/pull/12043[(#12043)]
+* Cleanup anonymous and named volumes for docker tests https://github.com/k3s-io/k3s/pull/12077[(#12077)]
+* Add support for secretbox encryption provider with the `k3s secrets-encrypt` command https://github.com/k3s-io/k3s/pull/12065[(#12065)]
+** Users can now configure secrets encryption to use `secretbox` provider by setting the `secrets-encryption-provider` flag.
+* Add error in certificate check https://github.com/k3s-io/k3s/pull/12099[(#12099)]
+* Backports for 2025-04 https://github.com/k3s-io/k3s/pull/12106[(#12106)]
+* Bump kine for nats-server/v2 CVE-2025-30215 https://github.com/k3s-io/k3s/pull/12143[(#12143)]
+* Drone Test Split and Reduction https://github.com/k3s-io/k3s/pull/12149[(#12149)]
+* More backports for 2025-04 https://github.com/k3s-io/k3s/pull/12169[(#12169)]
+* Fix handler panic when bootstrapper returns empty peer list https://github.com/k3s-io/k3s/pull/12180[(#12180)]
+* Bump traefik to v2.11.24 https://github.com/k3s-io/k3s/pull/12191[(#12191)]
+* Update to v1.30.12-k3s1 and Go 1.23.6 https://github.com/k3s-io/k3s/pull/12208[(#12208)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.30.11+k3s1[v1.30.11k3s1]
 // v1.30.11k3s1
