@@ -88,6 +88,7 @@ The server token is also used as the https://en.wikipedia.org/wiki/PBKDF2[PBKDF2
 
 K3s supports dynamically generated, automatically expiring agent https://kubernetes.io/docs/reference/access-authn-authz/bootstrap-tokens/[bootstrap tokens].
 
+[#_k3s_token_1]
 == k3s トークン
 
 The k3s token CLI tool handles:

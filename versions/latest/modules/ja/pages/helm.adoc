@@ -8,7 +8,156 @@ K3sには、HelmChartカスタムリソース定義（CRD）を使用してHelm�
 
 == Helmコントローラーの使用
 
-https://github.com/k3s-io/helm-controller#helm-controller[HelmChartカスタムリソース]は、通常``helm``コマンドラインツールに渡すほとんどのオプションをキャプチャします。以下は、BitnamiチャートリポジトリからApacheをデプロイし、いくつかのデフォルトチャート値を上書きする例です。HelmChartリソース自体は``kube-system``ネームスペースにありますが、チャートのリソースは同じマニフェストで作成される``web``ネームスペースにデプロイされます。これは、HelmChartリソースをデプロイするリソースから分離して保持したい場合に便利です。
+https://github.com/k3s-io/helm-controller#helm-controller[HelmChartカスタムリソース]は、通常``helm``コマンドラインツールに渡すほとんどのオプションをキャプチャします。
+
+=== HelmChartフィールド定義
+
+[NOTE]
+====
+``name``フィールドはHelmチャートの命名規則に従う必要があります, in addition to Kubernetes rules for https://kubernetes.io/docs/concepts/overview/working-with-objects/names/[object names and IDs]。詳細については、https://helm.sh/docs/chart_best_practices/conventions/#chart-names[Helmベストプラクティスドキュメント]を参照してください。
+====
+
+|===
+| フィールド | デフォルト | 説明 | Helm引数/フラグの同等
+
+| metadata.name
+|
+| Helmチャート名
+| NAME
+
+| spec.chart
+|
+| リポジトリ内のHelmチャート名、またはチャートアーカイブ（.tgz）への完全なHTTPS URL
+| CHART
+
+| spec.chartContent
+|
+| Base64エンコードされたチャートアーカイブ.tgz - spec.chartを上書き
+| CHART
+
+| spec.targetNamespace
+| default
+| Helmチャートのターゲットネームスペース
+| `--namespace`
+
+| spec.createNamespace
+| false
+| ターゲットネームスペースが存在しない場合に作成
+| `--create-namespace`
+
+| spec.version
+|
+| リポジトリからインストールする場合のHelmチャートバージョン
+| `--version`
+
+| spec.repo
+|
+| HelmチャートリポジトリURL
+| `--repo`
+
+| spec.repoCA
+|
+| HTTPS対応サーバーの証明書をこのCAバンドルを使用して検証します。1つ以上のPEMエンコードされたCA証明書を含む文字列である必要があります。
+| `--ca-file`
+
+| spec.repoCAConfigMap
+|
+| Helmが信頼するCA証明書を含むConfigMapへの参照。``repoCA``と一緒に、または代わりに使用できます。
+| `--ca-file`
+
+| spec.plainHTTP
+| false
+| Use insecure HTTP connections for the chart download.
+| `--plain-http`
+
+| spec.insecureSkipTLSVerify
+| false
+| Skip TLS certificate checks for the chart download.
+| `--insecure-skip-tls-verify`
+
+| spec.helmVersion
+| v3
+| Helm version to use. Only `v3` is currently supported.
+|
+
+| spec.bootstrap
+| False
+| このチャートがクラスターをブートストラップするために必要な場合（クラウドコントローラーマネージャーなど）にTrueに設定
+|
+
+| spec.jobImage
+|
+| Helmチャートをインストールする際に使用するイメージを指定します。例：rancher/klipper-helm:v0.3.0。
+|
+
+| spec.podSecurityContext
+|
+| Custom https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#podsecuritycontext-v1-core[`v1.PodSecurityContext`] for the Helm job pod
+|
+
+| spec.securityContext
+|
+| Custom https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#securitycontext-v1-core[`v1.SecurityContext`] for the Helm job pod's containers
+|
+
+| spec.backOffLimit
+| 1000
+| ジョブが失敗と見なされる前に再試行する回数を指定します。
+|
+
+| spec.timeout
+| 300s
+| Helm操作のタイムアウト、https://pkg.go.dev/time#ParseDuration[duration string]（`300s`、`10m`、``1h``など）として指定
+| `--timeout`
+
+| spec.failurePolicy
+| reinstall
+| Helm操作が中止され、オペレーターによる手動介入が必要な場合に``abort``に設定
+|
+
+| spec.authSecret
+|
+| チャートリポジトリの基本認証資格情報を保持する``kubernetes.io/basic-auth``タイプのSecretへの参照。
+|
+
+| spec.authPassCredentials
+| false
+| すべてのドメインに基本認証資格情報を渡します。
+| `--pass-credentials`
+
+| spec.dockerRegistrySecret
+|
+| チャートリポジトリとして機能するOCIベースのレジストリのDocker認証資格情報を保持する``kubernetes.io/dockerconfigjson``タイプのSecretへの参照。
+|
+
+| spec.set
+|
+| シンプルなデフォルトチャート値を上書きします。これらはvaluesContent経由で設定されたオプションよりも優先されます。
+| `--set` / `--set-string`
+
+| spec.valuesContent
+|
+| YAMLファイルの内容を介して複雑なデフォルトチャート値を上書き
+| `--values`
+
+| spec.valuesSecrets
+|
+| Override complex Chart values via references to external Secrets
+| `--values`
+|===
+
+``/var/lib/rancher/k3s/server/static/``に配置されたコンテンツは、クラスター内からKubernetes APIServerを介して匿名でアクセスできます。このURLは、``spec.chart``フィールドで特別な変数``+%{KUBERNETES_API}%+``を使用してテンプレート化できます。例えば、パッケージ化されたTraefikコンポーネントは、``+https://%{KUBERNETES_API}%/static/charts/traefik-VERSION.tgz+``からチャートをロードします。
+
+Chart values are used in the following order, from least to greatest precedence:
+
+. Chart default values
+. HelmChart `spec.valuesContent`
+. HelmChart `spec.valuesSecrets` in listed order of secret name and keys
+. HelmChartConfig `spec.valuesContent`
+. HelmChartConfig `spec.valuesSecrets` in listed order of secret name and keys
+. HelmChart `spec.set`
+
+以下は、BitnamiチャートリポジトリからApacheをデプロイし、いくつかのデフォルトチャート値を上書きする例です。HelmChartリソース自体は``kube-system``ネームスペースにありますが、チャートのリソースは同じマニフェストで作成される``web``ネームスペースにデプロイされます。これは、HelmChartリソースをデプロイするリソースから分離して保持したい場合に便利です。
 
 [,yaml]
 ----
@@ -46,7 +195,7 @@ metadata:
   namespace: kube-system
   name: example-app
 spec:
-  targetNamespace: example-space
+  targetNamespace: example-namespace
   createNamespace: true
   version: v1.2.3
   chart: example-app
@@ -81,129 +230,100 @@ data:
     -----END CERTIFICATE-----
 ----
 
-=== HelmChartフィールド定義
+=== Chart Values from Secrets
+
+Chart values can be read from externally-managed Secrets, instead of storing the values in the `spec.set` or `spec.valuesContent` fields. This should be done when passing confidential information such as credentials in to Charts that do not support referring to existing Secrets via the `existingSecret` pattern.
+
+As with other Secrets (`spec.authSecret` and `spec.dockerRegistrySecret`), Secrets referenced in `spec.valuesSecrets` must be in the same namespace as the HelmChart.
+
+Each listed `valuesSecrets` entry has the following fields:
 
 |===
-| フィールド | デフォルト | 説明 | Helm引数/フラグの同等
+| Field | Description
 
-| metadata.name
-|
-| Helmチャート名
-| NAME
+| name
+| The name of the Secret. Required.
 
-| spec.chart
-|
-| リポジトリ内のHelmチャート名、またはチャートアーカイブ（.tgz）への完全なHTTPS URL
-| CHART
+| keys
+| List of keys to read values from, values are used in the listed order. Required.
 
-| spec.targetNamespace
-| default
-| Helmチャートのターゲットネームスペース
-| `--namespace`
-
-| spec.createNamespace
-| false
-| ターゲットネームスペースが存在しない場合に作成
-| `--create-namespace`
-
-| spec.version
-|
-| リポジトリからインストールする場合のHelmチャートバージョン
-| `--version`
-
-| spec.repo
-|
-| HelmチャートリポジトリURL
-| `--repo`
-
-| spec.repoCA
-|
-| HTTPS対応サーバーの証明書をこのCAバンドルを使用して検証します。1つ以上のPEMエンコードされたCA証明書を含む文字列である必要があります。
-| `--ca-file`
-
-| spec.repoCAConfigMap
-|
-| Helmが信頼するCA証明書を含むConfigMapへの参照。``repoCA``と一緒に、または代わりに使用できます。
-| `--ca-file`
-
-| spec.helmVersion
-| v3
-| 使用するHelmバージョン（``v2``または``v3``）
-|
-
-| spec.bootstrap
-| False
-| このチャートがクラスターをブートストラップするために必要な場合（クラウドコントローラーマネージャーなど）にTrueに設定
-|
-
-| spec.set
-|
-| シンプルなデフォルトチャート値を上書きします。これらはvaluesContent経由で設定されたオプションよりも優先されます。
-| `--set` / `--set-string`
-
-| spec.jobImage
-|
-| Helmチャートをインストールする際に使用するイメージを指定します。例：rancher/klipper-helm:v0.3.0。
-|
-
-| spec.backOffLimit
-| 1000
-| ジョブが失敗と見なされる前に再試行する回数を指定します。
-|
-
-| spec.timeout
-| 300s
-| Helm操作のタイムアウト、https://pkg.go.dev/time#ParseDuration[duration string]（`300s`、`10m`、``1h``など）として指定
-| `--timeout`
-
-| spec.failurePolicy
-| reinstall
-| Helm操作が中止され、オペレーターによる手動介入が必要な場合に``abort``に設定
-|
-
-| spec.authSecret
-|
-| チャートリポジトリの基本認証資格情報を保持する``kubernetes.io/basic-auth``タイプのSecretへの参照。
-|
-
-| spec.authPassCredentials
-| false
-| すべてのドメインに基本認証資格情報を渡します。
-| `--pass-credentials`
-
-| spec.dockerRegistrySecret
-|
-| チャートリポジトリとして機能するOCIベースのレジストリのDocker認証資格情報を保持する``kubernetes.io/dockerconfigjson``タイプのSecretへの参照。
-|
-
-| spec.valuesContent
-|
-| YAMLファイルの内容を介して複雑なデフォルトチャート値を上書き
-| `--values`
-
-| spec.chartContent
-|
-| Base64エンコードされたチャートアーカイブ.tgz - spec.chartを上書き
-| CHART
+| ignoreUpdates
+| Mark this Secret as optional, and do not update the chart if the Secret changes. Optional, defaults to `false`.
 |===
 
-``/var/lib/rancher/k3s/server/static/``に配置されたコンテンツは、クラスター内からKubernetes APIServerを介して匿名でアクセスできます。このURLは、``spec.chart``フィールドで特別な変数``+%{KUBERNETES_API}%+``を使用してテンプレート化できます。例えば、パッケージ化されたTraefikコンポーネントは、``+https://%{KUBERNETES_API}%/static/charts/traefik-12.0.000.tgz+``からチャートをロードします。
+* If `ignoreUpdates` is set to `false` or unspecified, the Secret and all listed keys must exist. Any change to a referenced values Secret will cause the chart to be updated with new values.  
+* If `ignoreUpdates` is set to `true`, the Secret is used if it exists when the Chart is created, or updated due to any other change to related resources. Changes to the Secret will not cause the chart to be updated.
 
-[NOTE]
-====
-``name``フィールドはHelmチャートの命名規則に従う必要があります。詳細については、https://helm.sh/docs/chart_best_practices/conventions/#chart-names[Helmベストプラクティスドキュメント]を参照してください。
-====
+An example of deploying a helm chart using an existing Secret with two keys:
+
+[,yaml]
+----
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  namespace: kube-system
+  name: example-app
+spec:
+  targetNamespace: example-namespace
+  createNamespace: true
+  version: v1.2.3
+  chart: example-app
+  repo: https://repo.example.com
+  valuesContent: |-
+    image:
+      tag: v1.2.2
+  valuesSecrets:
+    - name: example-app-custom-values
+      ignoreUpdates: false
+      keys:
+        - someValues
+        - moreValues
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: kube-system
+  name: example-app-custom-values
+stringData:
+  moreValues: |-
+    database:
+      address: db.example.com
+      username: user
+      password: pass
+  someValues: |-
+    adminUser:
+      create: true
+      username: admin
+      password: secret
+----
 
 [#_customizing_packaged_components_with_helmchartconfig]
 == HelmChartConfigでパッケージ化されたコンポーネントをカスタマイズする
 
 HelmChartsとしてデプロイされるパッケージ化されたコンポーネント（例えばTraefik）の値を上書きするために、K3sはHelmChartConfigリソースを介してデプロイのカスタマイズをサポートします。HelmChartConfigリソースは対応するHelmChartの名前とネームスペースに一致する必要があり、追加の``valuesContent``を提供することができ、これは追加の値ファイルとして``helm``コマンドに渡されます。
 
+### HelmChartConfig Field Definitions
+
+|===
+| Field | Description
+
+| metadata.name
+| Helm Chart name - must match the HelmChart resource name.
+
+| spec.valuesContent
+| Override complex default Chart values via YAML file content.
+
+| spec.valuesSecrets
+| Override complect default Chart values via external Secrets.
+
+| spec.failurePolicy
+| Set to `abort` which case the Helm operation is aborted, pending manual intervention by the operator.
+|===
+
 [NOTE]
 ====
-HelmChartの``spec.set``値は、HelmChartおよびHelmChartConfigの``spec.valuesContent``設定を上書きします。
+HelmChartの``spec.set``値は、HelmChartおよびHelmChartConfigの``spec.valuesContent``and `spec.valuesSecrets` settings, as described above。
 ====
-
 
 例えば、パッケージ化されたTraefikのインバウンド設定をカスタマイズするには、``/var/lib/rancher/k3s/server/manifests/traefik-config.yaml``という名前のファイルを作成し、以下の内容を入力します：
 
@@ -217,21 +337,11 @@ metadata:
 spec:
   valuesContent: |-
     image:
-      name: traefik
-      tag: 2.9.10
+      repository: docker.io/library/traefik
+      tag: 3.3.5
     ports:
       web:
         forwardedHeaders:
           trustedIPs:
             - 10.0.0.0/8
 ----
-
-== Helm v2からの移行
-
-K3sはHelm v2またはHelm v3のいずれかを処理できます。Helm v3に移行したい場合は、Helmのlink:https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/[この]ブログ投稿でプラグインを使用して成功裏に移行する方法を説明しています。詳細については、公式のHelm 3ドキュメントlink:https://helm.sh/docs/[こちら]を参照してください。xref:cluster-access.adoc[クラスターアクセス]のセクションに従ってkubeconfigを正しく設定していることを確認してください。
-
-[NOTE]
-====
-Helm 3はもはやTillerと``helm init``コマンドを必要としません。詳細については公式ドキュメントを参照してください。
-====
-

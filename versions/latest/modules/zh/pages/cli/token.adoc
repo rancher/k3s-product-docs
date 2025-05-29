@@ -88,6 +88,7 @@ Agent Token 以安全格式写入 `/var/lib/rancher/k3s/server/agent-token`。�
 
 K3s supports dynamically generated, automatically expiring agent https://kubernetes.io/docs/reference/access-authn-authz/bootstrap-tokens/[bootstrap tokens].
 
+[#_k3s_token_1]
 == k3s token
 
 The k3s token CLI tool handles:
