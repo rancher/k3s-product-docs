@@ -17,10 +17,10 @@ Embedded etcd will be automatically selected if K3s is configured to initialize 
 * *External Database* +
 See the xref:datastore/ha.adoc[High Availability External DB] documentation for more information on using external datastores with multiple servers. +
 The following external datastores are supported:
- ** https://etcd.io/[etcd] (certified against version 3.5.4)
+ ** https://etcd.io/[etcd] (certified against version 3.5.21)
  ** https://www.mysql.com/[MySQL] (certified against versions 5.7 and 8.0)
- ** https://mariadb.org/[MariaDB] (certified against version 10.6.8)
- ** https://www.postgresql.org/[PostgreSQL] (certified against versions 12.16, 13.12, 14.9 and 15.4)
+ ** https://mariadb.org/[MariaDB] (certified against version 10.11 and 11.4)
+ ** https://www.postgresql.org/[PostgreSQL] (certified against versions 15.12, 16.7, and 17.3)
 
 [CAUTION]
 .Prepared Statement Support
