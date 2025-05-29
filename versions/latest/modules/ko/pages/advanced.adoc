@@ -24,7 +24,12 @@ It is also possible to enable a second static token that can only be used to joi
 
 == HTTP 프록시 구성하기
 
-HTTP 프록시를 통해서만 외부와 연결할 수 있는 환경에서 K3s를 실행하는 경우, K3s 시스템드 서비스에서 프록시 설정을 구성할 수 있습니다. 그러면 이 프록시 설정이 K3s에서 사용되어 내장 컨테이너와 kubelet에 전달됩니다. Note that proxy configuration and other environment variables from the host are NOT passed into Pods.
+HTTP 프록시를 통해서만 외부와 연결할 수 있는 환경에서 K3s를 실행하는 경우, K3s 시스템드 서비스에서 프록시 설정을 구성할 수 있습니다. 그러면 이 프록시 설정이 K3s에서 사용되어 내장 컨테이너와 kubelet에 전달됩니다. 
+
+[NOTE]
+====
+Proxy configuration and other environment variables from the host are NOT passed into Pods.
+====
 
 K3s 설치 스크립트는 자동으로 현재 셸에서 `HTTP_PROXY`, `HTTPS_PROXY` 및 `NO_PROXY` 변수와 `CONTAINERD_HTTP_PROXY`, `CONTAINERD_HTTPS_PROXY` 및 `CONTAINERD_NO_PROXY` 변수가 있는 경우 이를 systemd 서비스의 환경 파일에 작성합니다:
 

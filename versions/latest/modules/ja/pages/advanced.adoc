@@ -24,7 +24,12 @@ It is also possible to enable a second static token that can only be used to joi
 
 == HTTPプロキシの設定
 
-K3sをHTTPプロキシを介してのみ外部接続が可能な環境で実行している場合、K3sのsystemdサービスでプロキシ設定を構成できます。これらのプロキシ設定はK3sで使用され、埋め込まれたcontainerdおよびkubeletに渡されます。Note that proxy configuration and other environment variables from the host are NOT passed into Pods.
+K3sをHTTPプロキシを介してのみ外部接続が可能な環境で実行している場合、K3sのsystemdサービスでプロキシ設定を構成できます。これらのプロキシ設定はK3sで使用され、埋め込まれたcontainerdおよびkubeletに渡されます。
+
+[NOTE]
+====
+Proxy configuration and other environment variables from the host are NOT passed into Pods.
+====
 
 K3sのインストールスクリプトは、現在のシェルに存在する場合、`HTTP_PROXY`、`HTTPS_PROXY`、`NO_PROXY`、および `CONTAINERD_HTTP_PROXY`、`CONTAINERD_HTTPS_PROXY`、`CONTAINERD_NO_PROXY` 変数を自動的に取得し、通常は次の環境ファイルに書き込みます：
 
