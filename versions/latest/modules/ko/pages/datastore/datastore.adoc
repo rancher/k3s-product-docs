@@ -22,6 +22,12 @@ K3s가 새 etcd 클러스터를 초기화하거나 기존 etcd 클러스터에 �
  ** https://mariadb.org/[MariaDB] (10.6.8 버전에 대해 검증됨)
  ** https://www.postgresql.org/[PostgreSQL] (10.7, 11.5, and 14.2 버전에 대해 검증됨)
 
+[WARNING]
+.Multimaster Setups
+====
+Multi-master databases that set `auto_increment_increment` or `auto_increment_offset` greater than 1 are not supported. Kine expects the revision to start at 0 at 0 and always move forward by exactly 1 when a key is successfully inserted. This affects products such as Galera for MySQL/MariaDB. 
+====
+
 [#_external_datastore_configuration_parameters]
 == 외부 데이터스토어 구성 파라미터
 

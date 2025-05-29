@@ -82,7 +82,7 @@ Tailscale統合を有効にしてK3sをデプロイするには、各ノード�
 
 [,bash]
 ----
---vpn-auth="name=tailscale,joinKey=$AUTH-KEY
+--vpn-auth="name=tailscale,joinKey=$AUTH-KEY"
 ----
 
 または、情報をファイルに提供し、次のパラメータを使用します：

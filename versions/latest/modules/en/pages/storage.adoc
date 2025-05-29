@@ -4,27 +4,9 @@ When deploying an application that needs to retain data, you'll need to create p
 
 A persistent volume (PV) is a piece of storage in the Kubernetes cluster, while a persistent volume claim (PVC) is a request for storage. For details on how PVs and PVCs work, refer to the official Kubernetes documentation on https://kubernetes.io/docs/concepts/storage/volumes/[storage.]
 
+K3s, as a compliant Kubernetes distribution, uses the https://github.com/container-storage-interface/spec/blob/master/spec.md[Container Storage Interface (CSI)] and https://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/[Cloud Provider Interface (CPI)] to manage persistent storage.
+
 This page describes how to set up persistent storage with a local storage provider, or with <<_setting_up_longhorn,Longhorn.>>
-
-== What's different about K3s storage?
-
-K3s removes several optional volume plugins and all built-in (sometimes referred to as "in-tree") cloud providers. We do this in order to achieve a smaller binary size and to avoid dependence on third-party cloud or data center technologies and services, which may not be available in many K3s use cases. We are able to do this because their removal affects neither core Kubernetes functionality nor conformance.
-
-The following volume plugins have been removed from K3s:
-
-* cephfs
-* fc
-* flocker
-* git_repo
-* glusterfs
-* portworx
-* quobyte
-* rbd
-* storageos
-
-Both components have out-of-tree alternatives that can be used with K3s: The Kubernetes https://github.com/container-storage-interface/spec/blob/master/spec.md[Container Storage Interface (CSI)] and https://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/[Cloud Provider Interface (CPI)].
-
-Kubernetes maintainers are actively migrating in-tree volume plugins to CSI drivers. For more information on this migration, please refer https://kubernetes.io/blog/2021/12/10/storage-in-tree-to-csi-migration-status-update/[here].
 
 [#_setting_up_the_local_storage_provider]
 == Setting up the Local Storage Provider
@@ -110,7 +92,7 @@ Apply the longhorn.yaml to install Longhorn:
 
 [,bash]
 ----
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.8.1/deploy/longhorn.yaml
 ----
 
 Longhorn will be installed in the namespace `longhorn-system`.
