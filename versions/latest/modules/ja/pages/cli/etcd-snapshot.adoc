@@ -292,6 +292,7 @@ K3s runs through several steps when restoring a snapshot:
 . (optional) Agents and control-plane servers can be started normally. 
 . (optional) Etcd servers can be restarted to rejoin to the cluster after removing old database files.
 
+[#_snapshot_restore_steps]
 === Snapshot Restore Steps
 
 Select the tab below that matches your cluster configuration.

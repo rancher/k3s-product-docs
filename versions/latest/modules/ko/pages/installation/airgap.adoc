@@ -53,6 +53,7 @@ can be pulled by other cluster members without access to an external image regis
 The mirrored images may be sourced from an upstream registry, registry mirror, or airgap image tarball.
 For more information on enabling the embedded distributed registry mirror, see the xref:installation/registry-mirror.adoc[Embedded Registry Mirror] documentation.
 
+[#_install_k3s]
 == Install K3s
 
 === Prerequisites
