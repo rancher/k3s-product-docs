@@ -17,7 +17,7 @@ K3s can be installed in an air-gapped environment with two different methods. Yo
 . ``docker image load k3s-airgap-images-amd64.tar.zst``を使用して、tarファイルからDockerにイメージをインポートします。
 . ``docker tag``と``docker push``を使用して、ロードしたイメージを再タグ付けし、プライベートレジストリにプッシュします。
 . xref:installation/private-registry.adoc[プライベートレジストリの設定]ガイドに従って、``registries.yaml``ファイルを作成および設定します。
-. 以下の<<_k3sのインストール,Install K3s>>セクションに進みます。
+. 以下の<<_install_k3s,Install K3s>>セクションに進みます。
 
 [#_manually_deploy_images_method]
 === 手動デプロイ方式
@@ -37,7 +37,7 @@ sudo mkdir -p /var/lib/rancher/k3s/agent/images/
 sudo curl -L -o /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst "https://github.com/k3s-io/k3s/releases/download/v1.29.1-rc2%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
 ----
 
-. 以下の<<_k3sのインストール,Install K3s>>セクションに進みます。
+. 以下の<<_install_k3s,Install K3s>>セクションに進みます。
 
 [#_embedded_registry_mirror]
 === 埋め込みレジストリミラー
@@ -49,6 +49,7 @@ K3sには、埋め込みの分散型OCI準拠のレジストリミラーが含�
 ミラーリングされたイメージは、上流のレジストリ、レジストリミラー、またはエアギャップイメージtarballから取得できます。
 埋め込み分散レジストリミラーの有効化に関する詳細は、xref:installation/registry-mirror.adoc[埋め込みレジストリミラー]ドキュメントを参照してください。
 
+[#_install_k3s]
 == K3sのインストール
 
 === 前提条件
