@@ -8,7 +8,156 @@ K3s 包含一个 https://github.com/k3s-io/helm-controller/[Helm Controller]，�
 
 == 使用 Helm Controller
 
-https://github.com/k3s-io/helm-controller#helm-controller[HelmChart Custom Resource] 捕获了你通常传递给 `helm` 命令行工具的大部分选项。以下示例说明了如何从 Bitnami Chart 仓库部署 Apache，并覆盖某些默认的 Chart 值。请注意，HelmChart 资源本身位于 `kube-system` 命名空间中，但 Chart 的资源将部署到在同一清单中创建的 `web` 命名空间。如果你希望将 HelmChart 资源与其部署的资源分开，这将很有用。
+https://github.com/k3s-io/helm-controller#helm-controller[HelmChart Custom Resource] 捕获了你通常传递给 `helm` 命令行工具的大部分选项。
+
+=== HelmChart 字段定义
+
+[NOTE]
+====
+`name` 字段需要遵循 Helm Chart 命名约定。有关更多信息，请参阅 https://helm.sh/docs/chart_best_practices/conventions/#chart-names[Helm 最佳实践文档]。
+====
+
+|===
+| 字段 | 默认 | 描述 | Helm 参数/标志等效项
+
+| metadata.name
+|
+| Helm Chart 名称
+| NAME
+
+| spec.chart
+|
+| 仓库中的 Helm Chart 名称，或 chart archive (.tgz) 的完整 HTTPS URL
+| CHART
+
+| spec.chartContent
+|
+| Base64 编码的 chart archive .tgz，覆盖 spec.chart
+| CHART
+
+| spec.targetNamespace
+| default
+| Helm Chart 目标命名空间
+| `--namespace`
+
+| spec.createNamespace
+| false
+| Create target namespace if not present
+| `--create-namespace`
+
+| spec.version
+|
+| Helm Chart 版本（通过仓库安装时）
+| `--version`
+
+| spec.repo
+|
+| Helm Chart 仓库 URL
+| `--repo`
+
+| spec.repoCA
+|
+| 指定启用 HTTPS 的 Server 的证书
+| `--ca-file`
+
+| spec.repoCAConfigMap
+|
+| Reference to a ConfigMap containing CA Certificates to be be trusted by Helm. Can be used along with or instead of `repoCA`
+| `--ca-file`
+
+| spec.plainHTTP
+| false
+| Use insecure HTTP connections for the chart download.
+| `--plain-http`
+
+| spec.insecureSkipTLSVerify
+| false
+| Skip TLS certificate checks for the chart download.
+| `--insecure-skip-tls-verify`
+
+| spec.helmVersion
+| v3
+| Helm version to use. Only `v3` is currently supported.
+|
+
+| spec.bootstrap
+| False
+| 如果需要此 Chart 来引导集群（Cloud Controller Manager 等），请设置为 `True`
+|
+
+| spec.jobImage
+|
+| 指定安装 helm chart 时要使用的镜像。例如：rancher/klipper-helm:v0.3.0
+|
+
+| spec.podSecurityContext
+|
+| Custom https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#podsecuritycontext-v1-core[`v1.PodSecurityContext`] for the Helm job pod
+|
+
+| spec.securityContext
+|
+| Custom https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#securitycontext-v1-core[`v1.SecurityContext`] for the Helm job pod's containers
+|
+
+| spec.backOffLimit
+| 1000
+| Specify the number of retries before considering a job failed.
+|
+
+| spec.timeout
+| 300s
+| Helm 操作的超时，作为 https://pkg.go.dev/time#ParseDuration[duration string]（`300s`、`10m`、`1h` 等）
+| `--timeout`
+
+| spec.failurePolicy
+| reinstall
+| 如果设置为 `abort`，Helm 操作会被中止，等待操作人员的手动干预。
+|
+
+| spec.authSecret
+|
+| Reference to Secret of type `kubernetes.io/basic-auth` holding Basic auth credentials for the Chart repo.
+|
+
+| spec.authPassCredentials
+| false
+| Pass Basic auth credentials to all domains.
+| `--pass-credentials`
+
+| spec.dockerRegistrySecret
+|
+| Reference to Secret of type `kubernetes.io/dockerconfigjson` holding Docker auth credentials for the OCI-based registry acting as the Chart repo.
+|
+
+| spec.set
+|
+| 覆盖简单的默认 Chart 值。优先于通过 valuesContent 设置的选项。
+| `--set` / `--set-string`
+
+| spec.valuesContent
+|
+| 通过 YAML 文件内容覆盖复杂的默认 Chart 值
+| `--values`
+
+| spec.valuesSecrets
+|
+| Override complex Chart values via references to external Secrets
+| `--values`
+|===
+
+你可以通过集群内的 Kubernetes APIServer 匿名访问 `/var/lib/rancher/k3s/server/static/` 中的内容。此 URL 可以使用 `spec.chart` 字段中的特殊变量 `+%{KUBERNETES_API}%+` 进行模板化。例如，打包的 Traefik 组件通过 `+https://%{KUBERNETES_API}%/static/charts/traefik-VERSION.tgz+` 加载 Chart。
+
+Chart values are used in the following order, from least to greatest precedence:
+
+. Chart default values
+. HelmChart `spec.valuesContent`
+. HelmChart `spec.valuesSecrets` in listed order of secret name and keys
+. HelmChartConfig `spec.valuesContent`
+. HelmChartConfig `spec.valuesSecrets` in listed order of secret name and keys
+. HelmChart `spec.set`
+
+以下示例说明了如何从 Bitnami Chart 仓库部署 Apache，并覆盖某些默认的 Chart 值。请注意，HelmChart 资源本身位于 `kube-system` 命名空间中，但 Chart 的资源将部署到在同一清单中创建的 `web` 命名空间。如果你希望将 HelmChart 资源与其部署的资源分开，这将很有用。
 
 [,yaml]
 ----
@@ -36,107 +185,145 @@ spec:
       enabled: true
 ----
 
-=== HelmChart 字段定义
+An example of deploying a helm chart from a private repo with authentication:
+
+[,yaml]
+----
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  namespace: kube-system
+  name: example-app
+spec:
+  targetNamespace: example-namespace
+  createNamespace: true
+  version: v1.2.3
+  chart: example-app
+  repo: https://secure-repo.example.com
+  authSecret:
+    name: example-repo-auth
+  repoCAConfigMap:
+    name: example-repo-ca
+  valuesContent: |-
+    image:
+      tag: v1.2.2
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: kube-system
+  name: example-repo-auth
+type: kubernetes.io/basic-auth
+stringData:
+  username: user
+  password: pass
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: kube-system
+  name: example-repo-ca
+data:
+  ca.crt: |-
+    -----BEGIN CERTIFICATE-----
+    <YOUR CERTIFICATE>
+    -----END CERTIFICATE-----
+----
+
+=== Chart Values from Secrets
+
+Chart values can be read from externally-managed Secrets, instead of storing the values in the `spec.set` or `spec.valuesContent` fields. This should be done when passing confidential information such as credentials in to Charts that do not support referring to existing Secrets via the `existingSecret` pattern.
+
+As with other Secrets (`spec.authSecret` and `spec.dockerRegistrySecret`), Secrets referenced in `spec.valuesSecrets` must be in the same namespace as the HelmChart.
+
+Each listed `valuesSecrets` entry has the following fields:
 
 |===
-| 字段 | 默认 | 描述 | Helm 参数/标志等效项
+| Field | Description
 
-| metadata.name
-|
-| Helm Chart 名称
-| NAME
+| name
+| The name of the Secret. Required.
 
-| spec.chart
-|
-| 仓库中的 Helm Chart 名称，或 chart archive (.tgz) 的完整 HTTPS URL
-| CHART
+| keys
+| List of keys to read values from, values are used in the listed order. Required.
 
-| spec.targetNamespace
-| default
-| Helm Chart 目标命名空间
-| `--namespace`
-
-| spec.version
-|
-| Helm Chart 版本（通过仓库安装时）
-| `--version`
-
-| spec.repo
-|
-| Helm Chart 仓库 URL
-| `--repo`
-
-| spec.repoCA
-|
-| 指定启用 HTTPS 的 Server 的证书
-| `--ca-file`
-
-| spec.helmVersion
-| v3
-| 要使用的 Helm 版本（`v2` 或 `v3`）
-|
-
-| spec.bootstrap
-| False
-| 如果需要此 Chart 来引导集群（Cloud Controller Manager 等），请设置为 `True`
-|
-
-| spec.set
-|
-| 覆盖简单的默认 Chart 值。优先于通过 valuesContent 设置的选项。
-| `--set` / `--set-string`
-
-| spec.jobImage
-|
-| 指定安装 helm chart 时要使用的镜像。例如：rancher/klipper-helm:v0.3.0
-|
-
-| spec.timeout
-| 300s
-| Helm 操作的超时，作为 https://pkg.go.dev/time#ParseDuration[duration string]（`300s`、`10m`、`1h` 等）
-| `--timeout`
-
-| spec.failurePolicy
-| reinstall
-| 如果设置为 `abort`，Helm 操作会被中止，等待操作人员的手动干预。
-|
-
-| spec.valuesContent
-|
-| 通过 YAML 文件内容覆盖复杂的默认 Chart 值
-| `--values`
-
-| spec.chartContent
-|
-| Base64 编码的 chart archive .tgz，覆盖 spec.chart
-| CHART
+| ignoreUpdates
+| Mark this Secret as optional, and do not update the chart if the Secret changes. Optional, defaults to `false`.
 |===
 
-你可以通过集群内的 Kubernetes APIServer 匿名访问 `/var/lib/rancher/k3s/server/static/` 中的内容。此 URL 可以使用 `spec.chart` 字段中的特殊变量 `+%{KUBERNETES_API}%+` 进行模板化。例如，打包的 Traefik 组件通过 `+https://%{KUBERNETES_API}%/static/charts/traefik-12.0.000.tgz+` 加载 Chart。
+* If `ignoreUpdates` is set to `false` or unspecified, the Secret and all listed keys must exist. Any change to a referenced values Secret will cause the chart to be updated with new values.  
+* If `ignoreUpdates` is set to `true`, the Secret is used if it exists when the Chart is created, or updated due to any other change to related resources. Changes to the Secret will not cause the chart to be updated.
 
-[NOTE]
-====
-`name` 字段需要遵循 Helm Chart 命名约定。有关更多信息，请参阅 https://helm.sh/docs/chart_best_practices/conventions/#chart-names[Helm 最佳实践文档]。
-====
+An example of deploying a helm chart using an existing Secret with two keys:
+
+[,yaml]
+----
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  namespace: kube-system
+  name: example-app
+spec:
+  targetNamespace: example-namespace
+  createNamespace: true
+  version: v1.2.3
+  chart: example-app
+  repo: https://repo.example.com
+  valuesContent: |-
+    image:
+      tag: v1.2.2
+  valuesSecrets:
+    - name: example-app-custom-values
+      ignoreUpdates: false
+      keys:
+        - someValues
+        - moreValues
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: kube-system
+  name: example-app-custom-values
+stringData:
+  moreValues: |-
+    database:
+      address: db.example.com
+      username: user
+      password: pass
+  someValues: |-
+    adminUser:
+      create: true
+      username: admin
+      password: secret
+----
 
 [#_customizing_packaged_components_with_helmchartconfig]
 == 使用 HelmChartConfig 自定义打包组件
 
-[IMPORTANT]
-.版本
-====
-
-从 https://github.com/k3s-io/k3s/releases/tag/v1.19.1%2Bk3s1[v1.19.1+k3s1] 起可用
-====
-
-
 为了允许覆盖部署为 HelmCharts（例如 Traefik）的打包组件的值，K3s 支持通过 HelmChartConfig 资源进行自定义部署。HelmChartConfig 资源必须与对应的 HelmChart 名称和命名空间匹配，并且支持提供额外的 `valuesContent`，它作为附加值文件传递给 `helm` 命令。
+
+### HelmChartConfig Field Definitions
+
+|===
+| Field | Description
+
+| metadata.name
+| Helm Chart name - must match the HelmChart resource name.
+
+| spec.valuesContent
+| Override complex default Chart values via YAML file content.
+
+| spec.valuesSecrets
+| Override complect default Chart values via external Secrets.
+
+| spec.failurePolicy
+| Set to `abort` which case the Helm operation is aborted, pending manual intervention by the operator.
+|===
 
 [NOTE]
 ====
-HelmChart `spec.set` 值会覆盖 HelmChart 和 HelmChartConfig `spec.valuesContent` 设置。
+HelmChart `spec.set` 值会覆盖 HelmChart 和 HelmChartConfig `spec.valuesContent` 和 `spec.valuesSecrets` 设置, as described above。
 ====
-
 
 例如，要自定义打包的 Traefik ingress 配置，你可以创建一个名为 `/var/lib/rancher/k3s/server/manifests/traefik-config.yaml` 的文件并使用以下内容填充它：
 
@@ -150,30 +337,11 @@ metadata:
 spec:
   valuesContent: |-
     image:
-      name: traefik
-      tag: v2.8.5
-    forwardedHeaders:
-      enabled: true
-      trustedIPs:
-        - 10.0.0.0/8
-    ssl:
-      enabled: true
-      permanentRedirect: false
+      repository: docker.io/library/traefik
+      tag: 3.3.5
+    ports:
+      web:
+        forwardedHeaders:
+          trustedIPs:
+            - 10.0.0.0/8
 ----
-
-== 从 Helm v2 迁移
-
-[IMPORTANT]
-.版本
-====
-https://github.com/k3s-io/k3s/releases/tag/v1.17.0%2Bk3s.1[v1.17.0+k3s.1] 开始支持 Helm v3 并默认使用它。
-====
-
-
-K3s 可以处理 Helm v2 或 Helm v3。如果你想迁移到 Helm v3，Helm 的link:https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/[这篇博客文章]解释了如何使用插件进行迁移。有关更多信息，请参阅link:https://helm.sh/docs/[官方 Helm 3 文档]。请确保你已按照xref:cluster-access.adoc[集群访问]部分正确设置了 kubeconfig。
-
-[NOTE]
-====
-Helm 3 不再需要 Tiller 和 `helm init` 命令。详情请参阅官方文档。
-====
-
