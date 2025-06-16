@@ -55,6 +55,23 @@ K3sは2022-12リリース（v1.26.0+k3s1、v1.25.5+k3s1、v1.24.9+k3s1、v1.23.1
 . すべてのサーバーノードでK3s設定を更新します。設定ファイルを使用している場合、``/etc/rancher/k3s/config.yaml``に``flannel-backend: wireguard-native``を含め、``flannel-backend: wireguard``または``flannel-backend: ipsec``を置き換えます。systemdユニットでCLIフラグを使用してK3sを設定している場合は、同等のフラグを変更します。
 . サーバーから始めて、すべてのノードを再起動します。
 
+=== Flannel Agent Options
+
+These options are available for each agent and are specific to the Flannel instance running on that node.
+
+|===
+| CLI Flag | Description
+
+| `--flannel-iface` value
+| Override default flannel interface
+
+| `--flannel-conf` value
+| Override default flannel config file
+
+| `--flannel-cni-conf` value
+| Override default flannel cni config file
+|===
+
 == カスタムCNI
 
 ``--flannel-backend=none``でK3sを起動し、任意のCNIをインストールします。ほとんどのCNIプラグインには独自のネットワークポリシーエンジンが付属しているため、競合を避けるために``--disable-network-policy``も設定することをお勧めします。考慮すべき重要な情報は次のとおりです：
