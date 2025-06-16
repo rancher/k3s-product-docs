@@ -24,6 +24,7 @@
 * `--flannel-external-ip`
 * `--flannel-ipv6-masq`
 * `--secrets-encryption`
+* `--secrets-encryption-provider`
 * `--service-cidr`
 
 == よく使用されるオプション
