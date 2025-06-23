@@ -496,7 +496,7 @@ spec:
 [#_additional_logging_sources]
 == Additional Logging Sources
 
-https://rancher.com/docs/rancher/v2.6/en/logging/helm-chart-options/[Rancher logging] for K3s can be installed without using Rancher. The following instructions should be executed to do so:
+https://documentation.suse.com/cloudnative/rancher-manager/latest/en/observability/logging/logging-helm-chart-options.html[Rancher logging] for K3s can be installed without using Rancher. The following instructions should be executed to do so:
 
 [,bash]
 ----

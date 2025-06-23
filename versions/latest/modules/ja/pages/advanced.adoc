@@ -502,7 +502,7 @@ spec:
 [#_additional_logging_sources]
 == 追加のログソース
 
-K3s用のlink:https://rancher.com/docs/rancher/v2.6/en/logging/helm-chart-options/[Rancherロギング]は、Rancherを使用せずにインストールできます。以下の手順を実行してください:
+K3s用のlink:https://documentation.suse.com/cloudnative/rancher-manager/latest/en/observability/logging/logging-helm-chart-options.html[Rancherロギング]は、Rancherを使用せずにインストールできます。以下の手順を実行してください:
 
 [,bash]
 ----
