@@ -583,7 +583,7 @@ spec:
 [#_additional_logging_sources]
 == 其他日志来源
 
-你可以在不使用 Rancher 的情况下为 K3s 安装 https://rancher.com/docs/rancher/v2.6/en/logging/helm-chart-options/[Rancher Logging]。为此，你可以执行以下命令：
+你可以在不使用 Rancher 的情况下为 K3s 安装 https://documentation.suse.com/cloudnative/rancher-manager/latest/en/observability/logging/logging-helm-chart-options.html[Rancher Logging]。为此，你可以执行以下命令：
 
 [,bash]
 ----
