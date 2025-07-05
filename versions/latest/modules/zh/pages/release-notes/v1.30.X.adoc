@@ -10,6 +10,21 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
 
+| xref:#_release_v1_30_13k3s1[v1.30.13+k3s1]
+| May 23 2025
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v13013[v1.30.13]
+| https://github.com/k3s-io/kine/releases/tag/v0.13.15[v0.13.15]
+| https://sqlite.org/releaselog/3_49_1.html[3.49.1]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.21-k3s1[v3.5.21-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v1.7.27-k3s1[v1.7.27-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.2.6[v1.2.6]
+| https://github.com/flannel-io/flannel/releases/tag/v0.26.7[v0.26.7]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.2[v0.7.2]
+| https://github.com/traefik/traefik/releases/tag/v2.11.24[v2.11.24]
+| https://github.com/coredns/coredns/releases/tag/v1.12.1[v1.12.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.10[v0.16.10]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31]
+
 | xref:#_release_v1_30_12k3s1[v1.30.12k3s1]
 | May 01 2025
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#v13012[v1.30.12]
@@ -69,6 +84,7 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/coredns/coredns/releases/tag/v1.12.0[v1.12.0]
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.16.5[v0.16.5]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.30[v0.0.30]
+
 
 | xref:#_release_v1_30_8k3s1[v1.30.8+k3s1]
 | Dec 18 2024
@@ -220,6 +236,25 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.15.9[v0.16.1]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.26[v0.0.26]
 |===
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.30.13+k3s1[v1.30.13+k3s1]
+// v1.30.13+k3s1
+
+This release updates Kubernetes to v1.30.13, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.30.md#changelog-since-v13012[Kubernetes release notes].
+
+=== Changes since v1.30.12+k3s1:
+
+* Testing backports for 2025 May https://github.com/k3s-io/k3s/pull/12235[(#12235)]
+* Backports for May https://github.com/k3s-io/k3s/pull/12316[(#12316)]
+* Backports for 2025-05 https://github.com/k3s-io/k3s/pull/12333[(#12333)]
+* Fix authorization-config/authentication-config handling https://github.com/k3s-io/k3s/pull/12347[(#12347)]
+* Fix secretsencrypt race conditions https://github.com/k3s-io/k3s/pull/12358[(#12358)]
+* Update to v1.30.13-k3s1 and Go 1.23.8 https://github.com/k3s-io/k3s/pull/12364[(#12364)]
+* Fix startup e2e test https://github.com/k3s-io/k3s/pull/12372[(#12372)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.30.12+k3s1[v1.30.12+k3s1]
 // v1.30.12+k3s1

@@ -10,6 +10,21 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
 
+| xref:#_release_v1_33_1k3s1[v1.33.1+k3s1]
+| May 23 2025
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.33.md#v1331[v1.33.1]
+| https://github.com/k3s-io/kine/releases/tag/v0.13.15[v0.13.15]
+| https://sqlite.org/releaselog/3_49_1.html[3.49.1]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.21-k3s1[v3.5.21-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v2.0.5-k3s1[v2.0.5-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.2.6[v1.2.6]
+| https://github.com/flannel-io/flannel/releases/tag/v0.26.7[v0.26.7]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.2[v0.7.2]
+| https://github.com/traefik/traefik/releases/tag/v3.3.6[v3.3.6]
+| https://github.com/coredns/coredns/releases/tag/v1.12.1[v1.12.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.10[v0.16.10]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31]
+
 | xref:#_release_v1_33_0k3s1[v1.33.0k3s1]
 | May 08 2025
 | https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.33.md#v1330[v1.33.0]
@@ -25,6 +40,24 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.16.10[v0.16.10]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31]
 |===
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.33.1+k3s1[v1.33.1+k3s1]
+// v1.33.1+k3s1
+
+This release updates Kubernetes to v1.33.1, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.33.md#changelog-since-v1330[Kubernetes release notes].
+
+=== Changes since v1.33.0+k3s1:
+
+* Backports for May https://github.com/k3s-io/k3s/pull/12319[(#12319)]
+* Backports for 2025-05 https://github.com/k3s-io/k3s/pull/12325[(#12325)]
+* Fix authorization-config/authentication-config handling https://github.com/k3s-io/k3s/pull/12344[(#12344)]
+* Fix secretsencrypt race conditions https://github.com/k3s-io/k3s/pull/12355[(#12355)]
+* Update to v1.33.1-k3s1 https://github.com/k3s-io/k3s/pull/12360[(#12360)]
+* Fix startup e2e test https://github.com/k3s-io/k3s/pull/12370[(#12370)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.33.0+k3s1[v1.33.0+k3s1]
 // v1.33.0+k3s1
