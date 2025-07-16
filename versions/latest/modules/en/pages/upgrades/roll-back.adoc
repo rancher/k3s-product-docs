@@ -4,7 +4,7 @@ You can roll back the K3s Kubernetes version after an upgrade, using a combinati
 
 [WARNING]
 ====
-If you cannot restore the database, you can not roll back to a previous minor version.
+If you cannot restore the database, you cannot roll back to a previous minor version.
 ====
 
 == Important Considerations
@@ -16,7 +16,7 @@ If you cannot restore the database, you can not roll back to a previous minor ve
 == Rolling Back a K3s Cluster
 
 [tabs]
-=====
+======
 
 SQLite::
 +
@@ -71,7 +71,7 @@ k3s server --cluster-reset --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
 +
 [WARNING]
 ====
-This will overwrite all data in the etcd datastore. Verify the snapshot's integrity before restoring. Be aware that large snapshots can take a long time to restore.
+This overwrites all data in the etcd datastore. Verify the snapshot's integrity before restoring. Be aware that large snapshots can take a long time to restore.
 ====
 
 . Start the K3s service on the first server node: 
@@ -154,7 +154,7 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=vX.Y.Zk3s1 INSTALL_K3S_EXEC="
 
 * Air-gapped Clusters:
 
-** Download the artifacts and run the xref:installation/airgap.adoc#_install_k3s[install script] locally. Verify the K3s version after install with `k3s --version` and reapply any custom configurations that where used before the upgrade. 
+** Download the artifacts and run the xref:installation/airgap.adoc#_install_k3s[install script] locally. Verify the K3s version after install with `k3s --version` and reapply any custom configurations that were used before the upgrade. 
 
 . Start the K3s service on each node:
 +
@@ -164,7 +164,7 @@ systemctl start k3s
 ----
 
 . Verify the K3s service status with `systemctl status k3s`.
-=====
+======
 
 == Verification 
 

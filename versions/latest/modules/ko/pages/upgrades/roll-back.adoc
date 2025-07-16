@@ -16,7 +16,7 @@ If you cannot restore the database, you can not roll back to a previous minor ve
 == Rolling Back a K3s Cluster
 
 [tabs]
-=====
+======
 
 SQLite::
 +
@@ -71,7 +71,7 @@ k3s server --cluster-reset --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
 +
 [WARNING]
 ====
-This will overwrite all data in the etcd datastore. Verify the snapshot's integrity before restoring. Be aware that large snapshots can take a long time to restore.
+This overwrites all data in the etcd datastore. Verify the snapshot's integrity before restoring. Be aware that large snapshots can take a long time to restore.
 ====
 
 . Start the K3s service on the first server node: 
@@ -164,7 +164,7 @@ systemctl start k3s
 ----
 
 . Verify the K3s service status with `systemctl status k3s`.
-=====
+======
 
 == Verification 
 
