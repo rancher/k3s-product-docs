@@ -60,7 +60,7 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=vX.Y.Zk3s1 INSTALL_K3S_EXEC="
 
 * Air-gapped Clusters:
 
-** Download the artifacts and run the xref:installation/airgap.adoc#_2_install_k3s[install script] locally. Add the environment variable `INSTALL_K3S_SKIP_START="true"` when running the install script to prevent K3s from starting.
+** Download the artifacts and run the xref:installation/airgap.adoc#_install_k3s[install script] locally. Add the environment variable `INSTALL_K3S_SKIP_START="true"` when running the install script to prevent K3s from starting.
 
 . On the first server node or the node without a `server:` entry in its xref:installation/configuration.adoc[K3s config file], initiate the cluster restore. Refer to the xref:cli/etcd-snapshot.adoc#_snapshot_restore_steps[Snapshot Restore Steps] for more information: 
 +
@@ -154,7 +154,7 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=vX.Y.Zk3s1 INSTALL_K3S_EXEC="
 
 * Air-gapped Clusters:
 
-** Download the artifacts and run the xref:installation/airgap.adoc#_2_install_k3s[install script] locally. Verify the K3s version after install with `k3s --version` and reapply any custom configurations that where used before the upgrade. 
+** Download the artifacts and run the xref:installation/airgap.adoc#_install_k3s[install script] locally. Verify the K3s version after install with `k3s --version` and reapply any custom configurations that where used before the upgrade. 
 
 . Start the K3s service on each node:
 +
