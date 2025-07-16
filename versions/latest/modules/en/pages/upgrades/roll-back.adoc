@@ -20,10 +20,13 @@ If you cannot restore the database, you cannot roll back to a previous minor ver
 
 SQLite::
 +
+--
 To roll back a K3s cluster when using a SQLite database, replace the `.db` file with the copy of the `.db` file you made while backing up your database.
+--
 
 Embedded etcd::
 +
+--
 To roll back a K3s cluster when using an embedded etcd, follow these steps: 
 
 . If the cluster is running and the Kubernetes API is available, gracefully stop workloads by draining all nodes: 
@@ -103,9 +106,11 @@ systemctl start k3s
 ----
 
 . Verify the K3s service status with `systemctl status k3s`. 
+--
 
 External Database:: 
 +
+--
 To roll back a K3s cluster when using an external database (e.g., PostgreSQL, MySQL), follow these steps: 
 
 . If the cluster is running and the Kubernetes API is available, gracefully stop workloads by draining all nodes: 
@@ -164,6 +169,7 @@ systemctl start k3s
 ----
 
 . Verify the K3s service status with `systemctl status k3s`.
+--
 ======
 
 == Verification 
