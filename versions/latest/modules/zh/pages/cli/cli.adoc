@@ -1,4 +1,6 @@
 = CLI 工具
+:revdate: 2024-09-11
+:page-revdate: {revdate}
 
 K3s 二进制文件包含了很多工具，可帮助你管理集群。
 

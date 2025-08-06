@@ -1,4 +1,6 @@
 = パッケージ化されたコンポーネントの管理
+:revdate: 2025-01-06
+:page-revdate: {revdate}
 
 == マニフェストの自動デプロイ (AddOns)
 

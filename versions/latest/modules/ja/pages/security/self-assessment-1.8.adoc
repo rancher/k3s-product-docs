@@ -1,4 +1,6 @@
 = CIS 1.8 セルフアセスメントガイド
+:revdate: 2024-09-11
+:page-revdate: {revdate}
 
 == 概要
 

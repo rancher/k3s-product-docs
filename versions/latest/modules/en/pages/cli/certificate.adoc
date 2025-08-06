@@ -1,4 +1,6 @@
 = k3s certificate
+:revdate: 2025-06-25
+:page-revdate: {revdate}
 
 [#_client_and_server_certificates]
 == Client and Server Certificates

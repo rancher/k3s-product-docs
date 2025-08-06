@@ -1,4 +1,6 @@
 = Requirements
+:revdate: 2025-03-31
+:page-revdate: {revdate}
 
 K3s is very lightweight, but has some minimum requirements as outlined below.
 

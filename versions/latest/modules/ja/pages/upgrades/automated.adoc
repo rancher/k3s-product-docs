@@ -1,4 +1,6 @@
 = 自動アップグレード
+:revdate: 2025-02-27
+:page-revdate: {revdate}
 
 == 概要
 

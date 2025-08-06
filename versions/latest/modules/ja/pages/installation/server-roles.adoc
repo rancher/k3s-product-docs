@@ -1,4 +1,6 @@
 = サーバーロールの管理
+:revdate: 2025-02-27
+:page-revdate: {revdate}
 
 `--cluster-init` オプションを使用して K3s サーバーを起動すると、apiserver、controller-manager、scheduler、および etcd を含むすべてのコントロールプレーンコンポーネントが実行されます。特定のコンポーネントを無効にして、コントロールプレーンと etcd のロールを別々のノードに分割することが可能です。
 

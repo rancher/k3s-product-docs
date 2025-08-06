@@ -1,4 +1,6 @@
 = クラスターアクセス
+:revdate: 2024-09-09
+:page-revdate: {revdate}
 
 `/etc/rancher/k3s/k3s.yaml` に保存されている kubeconfig ファイルは、Kubernetes クラスターへのアクセスを構成するために使用されます。kubectl や helm などの上流の Kubernetes コマンドラインツールをインストールしている場合は、正しい kubeconfig パスでそれらを構成する必要があります。これは、`KUBECONFIG` 環境変数をエクスポートするか、`--kubeconfig` コマンドラインフラグを使用して行うことができます。詳細は以下の例を参照してください。
 

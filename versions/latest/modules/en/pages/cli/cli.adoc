@@ -1,4 +1,6 @@
 = CLI Tools
+:revdate: 2024-09-11
+:page-revdate: {revdate}
 
 The K3s binary contains a number of additional tools the help you manage your cluster.
 

@@ -1,4 +1,6 @@
 = 업그레이드
+:revdate: 2024-09-11
+:page-revdate: {revdate}
 
 == K3s 클러스터 업그레이드하기
 

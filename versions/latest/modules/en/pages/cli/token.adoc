@@ -1,4 +1,6 @@
 = k3s token
+:revdate: 2025-05-26
+:page-revdate: {revdate}
 
 K3s uses tokens to secure the node join process and to encrypt confidential information that is persisted to the datastore. Tokens authenticate the cluster to the joining node, and the node to the cluster.
 

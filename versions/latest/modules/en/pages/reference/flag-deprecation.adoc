@@ -1,4 +1,6 @@
 = Flag Deprecation
+:revdate: 2024-09-09
+:page-revdate: {revdate}
 
 K3s is a fast-moving project, and as such, we need a way to deprecate flags and configuration options. This page outlines the process for deprecating flags and configuration options. In order to ensure that users are not surprised by the removal of flags, the process is similar to the https://kubernetes.io/docs/reference/using-api/deprecation-policy/[Kubernetes Deprecation Policy].
 

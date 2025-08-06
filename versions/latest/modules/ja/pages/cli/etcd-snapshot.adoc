@@ -1,4 +1,6 @@
 = k3s etcd-snapshot
+:revdate: 2025-06-02
+:page-revdate: {revdate}
 
 This page documents the management of etcd snapshots using the `k3s etcd-snapshot` CLI, as well as configuration of etcd scheduled snapshots for the `k3s server` process, and use of the `k3s server --cluster-reset` command to reset etcd cluster membership and optionally restore etcd snapshots.
 

@@ -1,4 +1,6 @@
 = k3s server
+:revdate: 2025-05-26
+:page-revdate: {revdate}
 
 在本节中，你将学习如何配置 K3s Server。
 

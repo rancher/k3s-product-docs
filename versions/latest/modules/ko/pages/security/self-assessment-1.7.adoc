@@ -1,3 +1,5 @@
 = CIS 1.7 Self Assessment Guide
+:revdate: 2024-09-09
+:page-revdate: {revdate}
 
 이 페이지는 번역되지 않았습니다

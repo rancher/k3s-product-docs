@@ -1,4 +1,6 @@
 = Installation
+:revdate: 2024-09-11
+:page-revdate: {revdate}
 
 This section contains instructions for installing K3s in various environments. Please ensure you have met the xref:installation/requirements.adoc[Requirements] before you begin installing K3s.
 

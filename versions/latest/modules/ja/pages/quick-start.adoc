@@ -1,4 +1,6 @@
 = クイックスタートガイド
+:revdate: 2024-09-11
+:page-revdate: {revdate}
 
 このガイドは、デフォルトオプションでクラスターを迅速に起動するのに役立ちます。xref:installation/installation.adoc[インストールセクション]では、K3sのセットアップ方法について詳しく説明しています。
 

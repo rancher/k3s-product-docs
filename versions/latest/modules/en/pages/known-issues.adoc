@@ -1,4 +1,6 @@
 = Known Issues
+:revdate: 2024-10-07
+:page-revdate: {revdate}
 
 The Known Issues are updated periodically and designed to inform you about any issues that may not be immediately addressed in the next upcoming release.
 

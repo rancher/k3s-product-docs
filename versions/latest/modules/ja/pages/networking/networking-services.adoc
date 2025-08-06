@@ -1,4 +1,6 @@
 = ネットワーキングサービス
+:revdate: 2025-05-26
+:page-revdate: {revdate}
 
 このページでは、K3s内でCoreDNS、Traefik Ingressコントローラー、ネットワークポリシーコントローラー、およびServiceLBロードバランサーコントローラーがどのように機能するかを説明します。
 

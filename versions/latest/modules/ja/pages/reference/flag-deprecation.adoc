@@ -1,4 +1,6 @@
 = フラグの非推奨化
+:revdate: 2024-09-09
+:page-revdate: {revdate}
 
 K3sは急速に進化するプロジェクトであり、そのためフラグや設定オプションを非推奨化する方法が必要です。このページでは、フラグや設定オプションを非推奨化するプロセスを説明します。ユーザーがフラグの削除に驚かないようにするために、このプロセスはlink:https://kubernetes.io/docs/reference/using-api/deprecation-policy/[Kubernetesの非推奨ポリシー]に似ています。
 

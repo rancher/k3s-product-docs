@@ -1,4 +1,6 @@
 = 要件
+:revdate: 2025-03-31
+:page-revdate: {revdate}
 
 K3sは非常に軽量ですが、以下に示す最低要件があります。
 

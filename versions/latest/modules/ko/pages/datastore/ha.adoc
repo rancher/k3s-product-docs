@@ -1,4 +1,6 @@
 = High Availability External DB
+:revdate: 2025-02-27
+:page-revdate: {revdate}
 
 This section describes how to install a high-availability K3s cluster with an external database.
 
