@@ -1,4 +1,6 @@
 = Related Projects
+:revdate: 2025-03-31
+:page-revdate: {revdate}
 
 Projects implementing the K3s distribution are welcome additions to help expand the community. These projects help to:
 

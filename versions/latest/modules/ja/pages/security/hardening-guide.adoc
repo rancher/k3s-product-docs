@@ -1,4 +1,6 @@
 = CIS ハードニングガイド
+:revdate: 2025-03-26
+:page-revdate: {revdate}
 
 このドキュメントは、K3s の本番インストールをハードニングするための指針を提供します。これは、Center for Internet Security (CIS) の Kubernetes ベンチマークコントロールに対応するために必要な設定とコントロールを概説しています。
 

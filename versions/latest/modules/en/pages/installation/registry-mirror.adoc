@@ -1,4 +1,6 @@
 = Embedded Registry Mirror
+:revdate: 2025-01-13
+:page-revdate: {revdate}
 
 [IMPORTANT]
 .Version Gate

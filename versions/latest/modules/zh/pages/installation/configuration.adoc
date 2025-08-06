@@ -1,4 +1,6 @@
 = Configuration Options
+:revdate: 2025-03-31
+:page-revdate: {revdate}
 
 This page focuses on the options that are commonly used when setting up K3s for the first time. Refer to the documentation on xref:advanced.adoc[Advanced Options and Configuration] and the xref:cli/server.adoc[server] and xref:cli/agent.adoc[agent] command documentation for more in-depth coverage.
 

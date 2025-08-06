@@ -1,4 +1,6 @@
 = 設定オプション
+:revdate: 2025-03-31
+:page-revdate: {revdate}
 
 このページでは、K3sを初めてセットアップする際によく使用されるオプションに焦点を当てます。詳細については、xref:advanced.adoc[高度なオプションと設定]およびxref:cli/server.adoc[サーバー]とxref:cli/agent.adoc[エージェント]のコマンドドキュメントを参照してください。
 

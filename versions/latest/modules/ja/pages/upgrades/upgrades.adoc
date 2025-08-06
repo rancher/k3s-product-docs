@@ -1,4 +1,6 @@
 = アップグレード
+:revdate: 2024-09-11
+:page-revdate: {revdate}
 
 == K3s クラスターのアップグレード
 

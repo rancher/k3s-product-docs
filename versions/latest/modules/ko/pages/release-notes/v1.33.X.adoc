@@ -1,4 +1,6 @@
 = v1.33.X
+:revdate: 2025-06-24
+:page-revdate: {revdate}
 :page-role: -toc
 
 [CAUTION]

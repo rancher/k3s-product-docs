@@ -1,4 +1,6 @@
 = 環境変数
+:revdate: 2024-12-05
+:page-revdate: {revdate}
 
 xref:quick-start.adoc[クイックスタートガイド]で述べたように、https://get.k3s.io で利用可能なインストールスクリプトを使用して、systemdおよびopenrcベースのシステムにK3sをサービスとしてインストールできます。
 

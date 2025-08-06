@@ -1,4 +1,6 @@
 = 高可用嵌入式 etcd
+:revdate: 2024-09-09
+:page-revdate: {revdate}
 
 [CAUTION]
 ====

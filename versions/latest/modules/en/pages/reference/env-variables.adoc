@@ -1,4 +1,6 @@
 = Environment Variables
+:revdate: 2024-12-05
+:page-revdate: {revdate}
 
 As mentioned in the xref:quick-start.adoc[Quick-Start Guide], you can use the installation script available at https://get.k3s.io to install K3s as a service on systemd and openrc based systems.
 

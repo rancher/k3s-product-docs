@@ -1,4 +1,6 @@
 = 埋め込みレジストリミラー
+:revdate: 2025-01-13
+:page-revdate: {revdate}
 
 [IMPORTANT]
 .バージョンゲート

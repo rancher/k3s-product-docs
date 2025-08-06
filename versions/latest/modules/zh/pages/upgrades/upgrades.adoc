@@ -1,4 +1,6 @@
 = 升级
+:revdate: 2024-09-11
+:page-revdate: {revdate}
 
 == 升级 K3s 集群
 

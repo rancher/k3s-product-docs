@@ -1,4 +1,6 @@
 = Networking
+:revdate: 2024-09-11
+:page-revdate: {revdate}
 
 This section contains instructions for configuring networking in K3s.
 

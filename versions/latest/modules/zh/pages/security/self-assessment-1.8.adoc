@@ -1,4 +1,6 @@
 = CIS 1.8 Self Assessment Guide
+:revdate: 2025-01-06
+:page-revdate: {revdate}
 
 [IMPORTANT]
 ====

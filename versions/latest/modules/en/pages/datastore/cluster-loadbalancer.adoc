@@ -1,4 +1,6 @@
 = Cluster Load Balancer
+:revdate: 2024-09-26
+:page-revdate: {revdate}
 
 This section describes how to install an external load balancer in front of a High Availability (HA) K3s cluster's server nodes. Two examples are provided: Nginx and HAProxy.
 

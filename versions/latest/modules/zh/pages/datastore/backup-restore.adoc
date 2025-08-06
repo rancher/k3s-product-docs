@@ -1,4 +1,6 @@
 = 备份和恢复
+:revdate: 2024-09-11
+:page-revdate: {revdate}
 
 K3s 的备份和恢复方式取决于你使用的数据存储类型。
 

@@ -1,4 +1,6 @@
 = High Availability Embedded etcd
+:revdate: 2025-02-27
+:page-revdate: {revdate}
 
 [CAUTION]
 ====

@@ -1,4 +1,6 @@
 = 停止 K3s
+:revdate: 2024-09-09
+:page-revdate: {revdate}
 
 为了在升级期间实现高可用性，K3s 容器在 K3s 服务停止时会继续运行。
 

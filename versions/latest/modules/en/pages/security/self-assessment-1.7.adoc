@@ -1,4 +1,6 @@
 = CIS 1.7 Self Assessment Guide
+:revdate: 2024-09-11
+:page-revdate: {revdate}
 
 == Overview
 

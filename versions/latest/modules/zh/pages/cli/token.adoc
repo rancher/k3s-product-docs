@@ -1,4 +1,6 @@
 = k3s token
+:revdate: 2025-05-26
+:page-revdate: {revdate}
 
 K3s 使用 Token 来保护加入节点的过程 and to encrypt confidential information that is persisted to the datastore。Token 用于验证加入的节点和集群。
 

@@ -1,4 +1,6 @@
 = Backup and Restore
+:revdate: 2024-09-11
+:page-revdate: {revdate}
 
 The way K3s is backed up and restored depends on which type of datastore is used.
 

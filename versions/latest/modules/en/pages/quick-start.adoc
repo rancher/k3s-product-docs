@@ -1,4 +1,6 @@
 = Quick-Start Guide
+:revdate: 2024-09-11
+:page-revdate: {revdate}
 
 This guide will help you quickly launch a cluster with default options. The xref:installation/installation.adoc[installation section] covers in greater detail how K3s can be set up.
 

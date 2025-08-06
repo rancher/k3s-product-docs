@@ -1,4 +1,6 @@
 = プライベートレジストリの設定
+:revdate: 2025-05-26
+:page-revdate: {revdate}
 
 Containerdはプライベートレジストリに接続し、kubeletが必要とするイメージをプルするために使用するように設定できます。
 

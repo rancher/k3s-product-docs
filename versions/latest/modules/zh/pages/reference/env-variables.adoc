@@ -1,4 +1,6 @@
 = 环境变量
+:revdate: 2025-01-06
+:page-revdate: {revdate}
 
 如xref:quick-start.adoc[快速入门指南]中所述，你可以使用 https://get.k3s.io 上提供的安装脚本在基于 systemd 和 openrc 的系统上将 K3s 安装为服务。
 

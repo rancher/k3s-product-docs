@@ -1,4 +1,6 @@
 = K3s - 軽量なKubernetes
+:revdate: 2024-09-09
+:page-revdate: {revdate}
 
 軽量なKubernetes。インストールが簡単で、メモリ使用量は半分、100MB未満のバイナリにすべてが収まります。
 

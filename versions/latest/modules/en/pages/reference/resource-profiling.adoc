@@ -1,4 +1,6 @@
 = Resource Profiling
+:revdate: 2025-01-06
+:page-revdate: {revdate}
 
 This section captures the results of tests to determine minimum resource requirements for K3s.
 

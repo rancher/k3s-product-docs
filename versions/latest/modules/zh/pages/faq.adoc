@@ -1,4 +1,6 @@
 = 常见问题
+:revdate: 2025-06-25
+:page-revdate: {revdate}
 
 本文会定期更新，用于解答用户常见的 K3s 相关问题。
 

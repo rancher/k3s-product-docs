@@ -1,4 +1,6 @@
 = Stopping K3s
+:revdate: 2024-09-09
+:page-revdate: {revdate}
 
 To allow high availability during upgrades, the K3s containers continue running when the K3s service is stopped.
 

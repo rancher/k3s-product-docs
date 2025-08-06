@@ -1,4 +1,6 @@
 = K3sのアンインストール
+:revdate: 2024-12-05
+:page-revdate: {revdate}
 
 [CAUTION]
 ====

@@ -1,4 +1,6 @@
 = Basic Network Options
+:revdate: 2025-06-16
+:page-revdate: {revdate}
 
 This page describes K3s network configuration options, including configuration or replacement of Flannel, and configuring IPv6 or dualStack.
 
