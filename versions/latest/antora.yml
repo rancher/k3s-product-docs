@@ -5,7 +5,6 @@ display_version: 'Latest'
 start_page: en:introduction.adoc
 asciidoc:
   attributes:
-    product-name: "SUSE® Rancher Prime: K3s"
     longhorn_docs_version: 1.8
 nav:
 - modules/en/nav.adoc
