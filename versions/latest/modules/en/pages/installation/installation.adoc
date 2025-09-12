@@ -1,14 +1,14 @@
 = Installation
-:revdate: 2024-09-11
+:revdate: 2025-09-11
 :page-revdate: {revdate}
 
 This section contains instructions for installing K3s in various environments. Please ensure you have met the xref:installation/requirements.adoc[Requirements] before you begin installing K3s.
 
 xref:installation/configuration.adoc[Configuration Options] provides guidance on the options available to you when installing K3s.
 
-xref:installation/private-registry.adoc[Private Registry Configuration] covers use of `registries.yaml` to configure container image registry mirrors.
+xref:installation/private-registry.adoc[Private Registry Configuration] covers use of `registries.yaml` to configure container image registry authentication and mirroring.
 
-xref:installation/registry-mirror.adoc[Embedded Mirror] shows how to enable the embedded distributed image registry mirror.
+xref:installation/registry-mirror.adoc[Embedded Registry Mirror] shows how to enable the embedded distributed image registry mirror, for peer-to-peer sharing of images between nodes.
 
 xref:installation/airgap.adoc[Air-Gap Install] details how to set up K3s in environments that do not have direct access to the Internet.
 
