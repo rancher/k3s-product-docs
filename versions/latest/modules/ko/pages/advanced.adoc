@@ -1,4 +1,5 @@
 = 고급 옵션 / 설정
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-06-23
 :page-revdate: {revdate}
 

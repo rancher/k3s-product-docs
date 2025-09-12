@@ -1,4 +1,5 @@
 = CIS ハードニングガイド
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-03-26
 :page-revdate: {revdate}
 

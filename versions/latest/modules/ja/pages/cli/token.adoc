@@ -1,4 +1,5 @@
 = k3s トークン
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-05-26
 :page-revdate: {revdate}
 

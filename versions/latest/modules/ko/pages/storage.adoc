@@ -1,4 +1,5 @@
 = 볼륨과 저장소
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-06-16
 :page-revdate: {revdate}
 

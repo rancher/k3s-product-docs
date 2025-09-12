@@ -1,4 +1,5 @@
 = k3s エージェント
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-01-15
 :page-revdate: {revdate}
 
