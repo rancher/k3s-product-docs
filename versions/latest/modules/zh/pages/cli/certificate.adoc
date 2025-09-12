@@ -1,4 +1,5 @@
 = k3s certificate
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-06-25
 :page-revdate: {revdate}
 

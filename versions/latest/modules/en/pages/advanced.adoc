@@ -1,4 +1,5 @@
 = Advanced Options / Configuration
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-06-23
 :page-revdate: {revdate}
 

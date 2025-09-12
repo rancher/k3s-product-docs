@@ -1,4 +1,5 @@
 = 알려진 이슈
+:page-languages: [en, ja, ko, zh]
 :revdate: 2024-10-07
 :page-revdate: {revdate}
 

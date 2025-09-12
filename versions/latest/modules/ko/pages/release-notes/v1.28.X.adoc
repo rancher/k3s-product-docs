@@ -1,4 +1,5 @@
 = v1.28.X
+:page-languages: [en, ja, ko, zh]
 :revdate: 2024-12-10
 :page-revdate: {revdate}
 :page-role: -toc

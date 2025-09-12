@@ -1,4 +1,5 @@
 = k3s etcd-snapshot
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-06-02
 :page-revdate: {revdate}
 
