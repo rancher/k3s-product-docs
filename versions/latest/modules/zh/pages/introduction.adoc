@@ -1,4 +1,5 @@
 = K3s - 轻量级 Kubernetes
+:page-languages: [en, ja, ko, zh]
 :revdate: 2024-09-09
 :page-revdate: {revdate}
 :page-role: -toc

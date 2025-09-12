@@ -1,4 +1,5 @@
 = 高可用外部数据库
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-01-06
 :page-revdate: {revdate}
 

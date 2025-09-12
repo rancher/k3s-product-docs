@@ -1,4 +1,5 @@
 = 自動アップグレード
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-02-27
 :page-revdate: {revdate}
 

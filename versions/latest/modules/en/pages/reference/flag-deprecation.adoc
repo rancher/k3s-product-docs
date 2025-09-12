@@ -1,4 +1,5 @@
 = Flag Deprecation
+:page-languages: [en, ja, ko, zh]
 :revdate: 2024-09-09
 :page-revdate: {revdate}
 

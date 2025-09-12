@@ -1,4 +1,5 @@
 = Multus and IPAM plugins
+:page-languages: [en, ja, ko, zh]
 :revdate: 2024-12-05
 :page-revdate: {revdate}
 
