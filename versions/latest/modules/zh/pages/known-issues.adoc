@@ -1,4 +1,5 @@
 = 已知问题
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-01-06
 :page-revdate: {revdate}
 

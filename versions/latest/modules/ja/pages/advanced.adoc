@@ -1,4 +1,5 @@
 = 高度なオプション / 設定
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-06-23
 :page-revdate: {revdate}
 
