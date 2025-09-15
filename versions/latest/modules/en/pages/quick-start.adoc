@@ -1,19 +1,13 @@
 = Quick-Start Guide
 :page-languages: [en, ja, ko, zh]
-:revdate: 2024-09-11
+:revdate: 2024-09-15
 :page-revdate: {revdate}
 
-This guide will help you quickly launch a cluster with default options. The xref:installation/installation.adoc[installation section] covers in greater detail how K3s can be set up.
+This guide will help you quickly launch a cluster with default options. Make sure your nodes meet the xref:installation/requirements.adoc[requirements] before proceeding.
 
-Make sure your nodes meet the xref:installation/requirements.adoc[requirements] before proceeding.
-
-For information on how K3s components work together, refer to the xref:architecture.adoc[architecture section.]
-
-[IMPORTANT]
-====
-New to Kubernetes? The official Kubernetes docs already have some great tutorials outlining the basics https://kubernetes.io/docs/tutorials/kubernetes-basics/[here].
-====
-
+* Consult the xref:installation/installation.adoc[Installation] page for greater detail on installing and configuring K3s.
+* For information on how K3s components work together, refer to the xref:architecture.adoc[Architecture] page.
+* If you are new to Kubernetes, the https://kubernetes.io/docs/tutorials/kubernetes-basics/[official Kubernetes docs] have great tutorials covering basics that all cluster administrators should be familiar with.
 
 == Install Script
 
@@ -47,4 +41,4 @@ Each machine must have a unique hostname. If your machines do not have unique ho
 ====
 
 
-If interested in having more server nodes, see xref:datastore/ha-embedded.adoc[High Availability Embedded etcd] and xref:datastore/ha.adoc[High Availability External DB] pages for more information.
+If you are interested in having more server nodes, see the xref:datastore/ha-embedded.adoc[High Availability Embedded etcd] and xref:datastore/ha.adoc[High Availability External DB] pages for more information.
