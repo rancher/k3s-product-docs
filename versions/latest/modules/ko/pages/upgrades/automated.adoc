@@ -164,13 +164,13 @@ Here is an example cluster, showing failed upgrade pods and cordoned nodes:
 
 [,console]
 ----
-ubuntu@user:~$ kubectl get pods -n system-upgrade
+$ kubectl get pods -n system-upgrade
 NAME                                                              READY   STATUS    RESTARTS   AGE
 apply-k3s-server-on-ip-172-31-0-16-with-7af95590a5af8e8c3-2cdc6   0/1     Error     0          9m25s
 apply-k3s-server-on-ip-172-31-10-23-with-7af95590a5af8e8c-9xvwg   0/1     Error     0          14m
 apply-k3s-server-on-ip-172-31-13-213-with-7af95590a5af8e8-8j72v   0/1     Error     0          18m
 system-upgrade-controller-7c4b84d5d9-kkzr6                        1/1     Running   0          20m
-ubuntu@user:~$ kubectl get nodes
+$ kubectl get nodes
 NAME               STATUS                     ROLES                       AGE   VERSION
 ip-172-31-0-16     Ready,SchedulingDisabled   control-plane,etcd,master   19h   v1.27.4+k3s1
 ip-172-31-10-23    Ready,SchedulingDisabled   control-plane,etcd,master   19h   v1.27.4+k3s1
