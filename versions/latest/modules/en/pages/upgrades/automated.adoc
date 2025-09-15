@@ -5,7 +5,7 @@
 
 == Overview
 
-You can manage K3s cluster upgrades using Rancher's system-upgrade-controller. This is a Kubernetes-native approach to cluster upgrades. It leverages a https://github.com/rancher/system-upgrade-controller/blob/master/doc/plan.md#planspec[`Plan`]( Custom Resource to declaratively describe what nodes to upgrade, and to what version.
+You can manage K3s cluster upgrades using Rancher's system-upgrade-controller. This is a Kubernetes-native approach to cluster upgrades. It leverages a https://github.com/rancher/system-upgrade-controller/blob/master/doc/plan.md#planspec[`Plan`] Custom Resource to declaratively describe what nodes to upgrade, and to what version.
 
 The plan defines upgrade policies and requirements. It also defines which nodes should be upgraded through a https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/[label selector]. See below for plans with defaults appropriate for upgrading a K3s cluster. For more advanced plan configuration options, see the Plan documentation linked above.
 
