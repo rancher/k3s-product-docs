@@ -1,6 +1,6 @@
 = v1.31.X
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-06-24
+:revdate: 2025-09-15
 :page-revdate: {revdate}
 :page-role: -toc
 
@@ -12,6 +12,36 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
+
+| xref:#_release_v1_31_11k3s1[v1.31.11+k3s1]
+| Jul 26 2025
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.31.md#v13111[v1.31.11]
+| https://github.com/k3s-io/kine/releases/tag/v0.13.17[v0.13.17]
+| https://sqlite.org/releaselog/3_49_1.html[3.49.1]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.21-k3s1[v3.5.21-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v2.0.5-k3s2.32[v2.0.5-k3s2.32]
+| https://github.com/opencontainers/runc/releases/tag/v1.2.6[v1.2.6]
+| https://github.com/flannel-io/flannel/releases/tag/v0.27.0[v0.27.0]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.2[v0.7.2]
+| https://github.com/traefik/traefik/releases/tag/v2.11.24[v2.11.24]
+| https://github.com/coredns/coredns/releases/tag/v1.12.1[v1.12.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.13[v0.16.13]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31]
+
+| xref:_release_v1_31_10k3s1[v1.31.10+k3s1] 
+| Jun 30 2025
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.31.md#v13110[v1.31.10]
+| https://github.com/k3s-io/kine/releases/tag/v0.13.15[v0.13.15]
+| https://sqlite.org/releaselog/3_49_1.html[3.49.1]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.21-k3s1[v3.5.21-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v2.0.5-k3s1.32[v2.0.5-k3s1.32]
+| https://github.com/opencontainers/runc/releases/tag/v1.2.6[v1.2.6]
+| https://github.com/flannel-io/flannel/releases/tag/v0.27.0[v0.27.0]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.2[v0.7.2]
+| https://github.com/traefik/traefik/releases/tag/v2.11.24[v2.11.24]
+| https://github.com/coredns/coredns/releases/tag/v1.12.1[v1.12.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.11[v0.16.11]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31]
 
 | xref:#_release_v1_31_9k3s1[v1.31.9+k3s1]
 | May 23 2025
@@ -163,6 +193,41 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.16.3[v0.16.3]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.28[v0.0.28]
 |===
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.31.11+k3s1[v1.31.11+k3s1]
+// v1.31.11+k3s1
+
+This release updates Kubernetes to v1.31.11, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.31.md#changelog-since-v13110[Kubernetes release notes].
+
+=== Changes since v1.31.10+k3s1:
+
+* Add usage description for etcd-snapshot https://github.com/k3s-io/k3s/pull/12572[(#12572)]
+* Refac shell completion to a better command structure https://github.com/k3s-io/k3s/pull/12604[(#12604)]
+** K3s completion shell command will now be separate to specific subcommands for bash and zsh
+* GHA + Testing Backports https://github.com/k3s-io/k3s/pull/12610[(#12610)]
+* Backports for 2025-07 https://github.com/k3s-io/k3s/pull/12642[(#12642)]
+* Update to v1.31.11-k3s1 https://github.com/k3s-io/k3s/pull/12650[(#12650)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.31.10+k3s1[v1.31.10+k3s1]
+// v1.31.10+k3s1
+
+This release updates Kubernetes to v1.31.10, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.31.md#changelog-since-v1319[Kubernetes release notes].
+
+=== Changes since v1.31.9+k3s1:
+
+* GHCR image release https://github.com/k3s-io/k3s/pull/12461[(#12461)]
+* Backports for 2025-06 https://github.com/k3s-io/k3s/pull/12498[(#12498)]
+* Bump helm-controller https://github.com/k3s-io/k3s/pull/12520[(#12520)]
+* Update network components https://github.com/k3s-io/k3s/pull/12515[(#12515)]
+* Update to v1.31.10-k3s1 and Go 1.23.10 https://github.com/k3s-io/k3s/pull/12531[(#12531)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.31.9+k3s1[v1.31.9+k3s1]
 // v1.31.9+k3s1
