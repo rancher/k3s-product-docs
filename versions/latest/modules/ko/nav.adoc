@@ -45,6 +45,7 @@
 * 레퍼런스
 ** xref:reference/env-variables.adoc[]
 ** xref:reference/flag-deprecation.adoc[]
+** xref:reference/metrics.adoc[]
 ** xref:reference/resource-profiling.adoc[]
 * Release Notes
 ** xref:release-notes/v1.33.X.adoc[]
