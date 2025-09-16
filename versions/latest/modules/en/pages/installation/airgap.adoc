@@ -1,6 +1,6 @@
 = Air-Gap Install
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-09-12
+:revdate: 2025-09-16
 :page-revdate: {revdate}
 
 This guide walks you through installing K3s in an air-gapped environment using a three-step process.
@@ -45,13 +45,20 @@ This method requires you to manually deploy the necessary images to each node, a
 [pass]
 <h3><a class="anchor" id="_prepare_the_images_directory_and_airgap_image_tarball" href="#_prepare_the_images_directory_and_airgap_image_tarball"></a>Prepare the Images Directory and Airgap Image Tarball</h3>
 
-. Obtain the images archive for your architecture from the https://github.com/k3s-io/k3s/releases[releases] page for the version of K3s you will be running.
-. Download the images archive to the agent's images directory, for example:
+. On an internet accessible machine, download the images archive for your architecture from the https://github.com/k3s-io/k3s/releases[releases] page for the version of K3s you plan to install. For example:
++
+[,bash]
+----
+curl -L -o k3s-airgap-images-amd64.tar.zst "https://github.com/k3s-io/k3s/releases/download/v1.33.1%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
+----
+
+. Transfer the images archive to the airgap nodes. Place them in the agent's image directory, for example:
 +
 [,bash]
 ----
 sudo mkdir -p /var/lib/rancher/k3s/agent/images/
 sudo curl -L -o /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst "https://github.com/k3s-io/k3s/releases/download/v1.33.1%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
+cp k3s-airgap-images-amd64.tar.zst /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst
 ----
 
 . Proceed to the <<_install_k3s,Install K3s>> section below.
@@ -106,31 +113,46 @@ For more information on enabling the embedded distributed registry mirror, see t
 
 Before installing K3s, choose one of the xref:#_load_images[Load Images] options above to prepopulate the images that K3s needs to install.
 
-==== Binaries
+==== Download the binary and script
 
 * Download the K3s binary from the https://github.com/k3s-io/k3s/releases[releases] page, matching the same version used to get the airgap images. Place the binary in `/usr/local/bin` on each air-gapped node and ensure it is executable.
++
+[,bash]
+----
+sudo curl -Lo /usr/local/bin/k3s https://github.com/k3s-io/k3s/releases/download/v1.33.3%2Bk3s1/k3s
+sudo chmod +x /usr/local/bin/k3s
+----
+
 * Download the K3s install script at https://get.k3s.io[get.k3s.io]. Place the install script anywhere on each air-gapped node, and name it `install.sh`.
++
+[,bash]
+----
+curl -Lo install.sh https://get.k3s.io
+chmod +x install.sh
+----
 
-==== Default Network Route
-
+.**Set Default Network Route** - required for nodes without a default route
+[%collapsible]
+======
 If your nodes do not have an interface with a default route, a default route must be configured; even a black-hole route via a dummy interface will suffice. K3s requires a default route in order to auto-detect the node's primary IP, and for kube-proxy ClusterIP routing to function properly. To add a dummy route, do the following:
 
+[,bash]
 ----
 ip link add dummy0 type dummy
 ip link set dummy0 up
 ip addr add 203.0.113.254/31 dev dummy0
 ip route add default via 203.0.113.255 dev dummy0 metric 1000
 ----
+======
 
-When running the K3s script with the `INSTALL_K3S_SKIP_DOWNLOAD` environment variable, K3s will use the local version of the script and binary.
-
-==== SELinux RPM
-
+.**Download SELinux RPM** - required for airgapped nodes with SELinux enabled
+[%collapsible]
+======
 If running on an air-gapped node with SELinux enabled, you must manually install the k3s-selinux RPM before installing K3s. This RPM includes the necessary SELinux policies for K3s to run properly. The latest version of the RPM can be found https://github.com/k3s-io/k3s-selinux/releases/latest[here]. For example, on CentOS 8:
 
 [,bash]
 ----
-# On internet accessible machine:
+# On an internet accessible machine:
 curl -LO https://github.com/k3s-io/k3s-selinux/releases/download/v1.6.stable.1/k3s-selinux-1.6-1.el8.noarch.rpm
 
 # Transfer RPM to air-gapped machine
@@ -144,8 +166,9 @@ The k3s-selinux RPM installation requires the following dependencies to be avail
 * selinux-policy
 
 See the xref:advanced.adoc#_selinux_support[SELinux] section for more information.
+======
 
-=== Installing K3s in an Air-Gapped Environment
+=== Running Install Script
 
 You can install K3s on one or more servers as described below.
 
