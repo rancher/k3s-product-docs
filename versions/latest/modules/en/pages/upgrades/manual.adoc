@@ -1,6 +1,6 @@
 = Manual Upgrades
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-03-25
+:revdate: 2025-09-16
 :page-revdate: {revdate}
 
 You can upgrade K3s by using the installation script, or by manually installing the binary of the desired version.
@@ -19,13 +19,13 @@ Upgrades performed via the installation script or using our xref:upgrades/automa
 | Channel | Description
 
 | stable
-| (Default) Stable is recommended for production environments. These releases have been through a period of community hardening.
+| (Default) Stable is recommended for production environments. These releases have been through a period of community testing.
 
 | latest
-| Latest is recommended for trying out the latest features.  These releases have not yet been through a period of community hardening.
+| Latest always points at the highest non-prerelease version available, as determined by semver ordering rules. These releases have not yet been through a period of community testing.
 
-| v1.26 (example)
-| There is a release channel tied to each Kubernetes minor version, including versions that are end-of-life. These channels will select the latest patch available, not necessarily a stable release.
+| v1.33 (example)
+| There is a release channel tied to each Kubernetes minor version, including versions that are end-of-life. These channels select the latest release available for that minor version, not necessarily a stable release.
 |===
 
 For an exhaustive and up-to-date list of channels, you can visit the https://update.k3s.io/v1-release/channels[k3s channel service API]. For more technical details on how channels work, you see the https://github.com/rancher/channelserver[channelserver project].

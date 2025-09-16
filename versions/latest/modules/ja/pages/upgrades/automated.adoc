@@ -1,6 +1,6 @@
 = 自動アップグレード
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-02-27
+:revdate: 2025-09-16
 :page-revdate: {revdate}
 
 == 概要
@@ -91,7 +91,7 @@ spec:
   serviceAccountName: system-upgrade
   upgrade:
     image: rancher/k3s-upgrade
-  version: v1.24.6+k3s1
+  channel: https://update.k3s.io/v1-release/channels/stable
 ---
 # エージェントプラン
 apiVersion: upgrade.cattle.io/v1
@@ -114,7 +114,7 @@ spec:
   serviceAccountName: system-upgrade
   upgrade:
     image: rancher/k3s-upgrade
-  version: v1.24.6+k3s1
+  channel: https://update.k3s.io/v1-release/channels/stable
 ----
 
 これらのプランに関して重要な点をいくつか挙げます：
