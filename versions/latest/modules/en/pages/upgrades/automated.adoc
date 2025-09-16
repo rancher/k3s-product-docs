@@ -1,6 +1,6 @@
 = Automated Upgrades
 :page-languages: [en, ja, ko, zh]
-:revdate: 2024-09-15
+:revdate: 2025-09-16
 :page-revdate: {revdate}
 
 == Overview
