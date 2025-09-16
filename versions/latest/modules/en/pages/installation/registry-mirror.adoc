@@ -149,7 +149,7 @@ If image integrity is important, you should use image digests instead of tags, a
 == Sharing Air-gap or Manually Loaded Images
 
 Image sharing is controlled based on the source registry.
-Images loaded directly into containerd via xref:installation/airgap.adoc#_manually_deploy_images_method[air-gap tarballs], xref:import-images.adoc#_pre_import_images[pre-imported] or loaded directly into containerd's image store using the `ctr` command line tool are shared between nodes if they are tagged as being from a registry that is enabled for mirroring.
+Images loaded directly into containerd via xref:installation/airgap.adoc#_tabs_1_manually_deploy_images_method[air-gap tarballs], xref:import-images.adoc#_pre_import_images[pre-imported] or loaded directly into containerd's image store using the `ctr` command line tool are shared between nodes if they are tagged as being from a registry that is enabled for mirroring.
 
 Note that the upstream registry that the images appear to come from does not actually have to exist or be reachable.
 For example, you could tag images as being from a fictitious upstream registry, and import those images into containerd's image store.
