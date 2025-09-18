@@ -1,4 +1,4 @@
-= {product-name}
+= {k3s-product-name}
 :page-languages: [en, ja, ko, zh]
 :revdate: 2024-10-23
 :page-revdate: {revdate}
