@@ -1,4 +1,5 @@
 = 高可用性組み込みetcd
+:page-languages: [en, ja, ko, zh]
 :revdate: 2024-09-11
 :page-revdate: {revdate}
 

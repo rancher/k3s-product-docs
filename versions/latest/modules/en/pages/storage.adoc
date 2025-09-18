@@ -1,4 +1,5 @@
 = Volumes and Storage
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-06-16
 :page-revdate: {revdate}
 

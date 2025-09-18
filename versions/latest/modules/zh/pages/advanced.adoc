@@ -1,4 +1,5 @@
 = 高级选项和配置
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-06-23
 :page-revdate: {revdate}
 :aliases: ["/k3s/latest/en/running/", "/k3s/latest/en/configuration/"]
@@ -166,9 +167,8 @@ The template is executed with a https://github.com/k3s-io/k3s/blob/master/pkg/ag
 You can extend the K3s base template instead of copy-pasting the complete stock template out of the K3s source code. This is useful if you only need to build on the existing configuration by adding a few extra lines before or after the defaults.
 
 [,toml]
+./var/lib/rancher/k3s/agent/etc/containerd/config-v3.toml.tmpl
 ----
-#/var/lib/rancher/k3s/agent/etc/containerd/config-v3.toml.tmpl
-
 {{ template "base" . }}
 
 [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.'custom']

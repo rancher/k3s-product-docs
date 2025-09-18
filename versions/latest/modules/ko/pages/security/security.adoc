@@ -1,4 +1,5 @@
 = 보안
+:page-languages: [en, ja, ko, zh]
 :revdate: 2025-05-06
 :page-revdate: {revdate}
 
