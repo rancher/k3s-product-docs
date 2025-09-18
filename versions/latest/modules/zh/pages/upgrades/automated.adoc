@@ -1,6 +1,6 @@
 = 自动升级
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-02-27
+:revdate: 2025-09-16
 :page-revdate: {revdate}
 
 == Overview
@@ -84,7 +84,7 @@ spec:
   serviceAccountName: system-upgrade
   upgrade:
     image: rancher/k3s-upgrade
-  version: v1.24.6+k3s1
+  channel: https://update.k3s.io/v1-release/channels/stable
 ---
 # Agent plan
 apiVersion: upgrade.cattle.io/v1
@@ -107,7 +107,7 @@ spec:
   serviceAccountName: system-upgrade
   upgrade:
     image: rancher/k3s-upgrade
-  version: v1.24.6+k3s1
+  channel: https://update.k3s.io/v1-release/channels/stable
 ----
 
 关于这些计划，有几个重要的事情需要注意：
