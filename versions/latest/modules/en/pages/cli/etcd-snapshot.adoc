@@ -10,16 +10,16 @@ K3s etcd snapshots are stored on the node file system, and may optionally be upl
 |===
 | Subcommand | Description
 
-| delete
+| `delete`
 | Delete given snapshot(s)
 
-| ls, list, l
+| `ls`, `list`, `l`
 | List snapshots
 
-| prune
+| `prune`
 | Remove snapshots that exceed the configured retention count
 
-| save
+| `save`
 | Trigger an on-demand etcd snapshot
 |===
 
@@ -85,7 +85,7 @@ The following options control the operation of on-demand snapshots:
 
 The data-dir value defaults to `/var/lib/rancher/k3s` and can be changed independently by setting the `--data-dir` flag.
 
-The `--name` flag can only be set when running the `k3s etcd-snapshot save` command. The other two can also be part of the `k3s server` xref:installation/configuration.adoc#_configuration_file[configuration file]
+The `--name` flag can only be set when running the `k3s etcd-snapshot save` command. The other two can also be part of the `k3s server` xref:installation/configuration.adoc#_configuration_file[configuration file].
 
 On-demand snapshots are saved to the path set by the server's `--etcd-snapshot-dir` value. If you want them replicated in S3 compatible object stores, refer to xref:#_s3_compatible_object_store_support[S3 configuration options].
 --
