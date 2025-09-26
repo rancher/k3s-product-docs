@@ -6,7 +6,7 @@ site:
 content:
   sources: 
   - url: .
-    start_path: versions/latest
+    start_path: docs/latest
     branches: HEAD
 ui:
   bundle:
