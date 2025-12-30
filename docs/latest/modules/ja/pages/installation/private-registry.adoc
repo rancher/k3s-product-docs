@@ -1,6 +1,6 @@
 = プライベートレジストリの設定
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-05-26
+:revdate: 2025-12-30
 :page-revdate: {revdate}
 
 Containerdはプライベートレジストリに接続し、kubeletが必要とするイメージをプルするために使用するように設定できます。
@@ -29,7 +29,7 @@ Rewrites are not applied to pulls against the default endpoint.
 [IMPORTANT]
 .バージョンゲート
 ====
-``--disable-default-registry-endpoint``オプションは2024年1月のリリースから実験的機能として利用可能です：v1.26.13+k3s1、v1.27.10+k3s1、v1.28.6+k3s1、v1.29.1+k3s1
+``--disable-default-registry-endpoint``オプションは2024年1月のリリースからとして利用可能です：v1.26.13+k3s1、v1.27.10+k3s1、v1.28.6+k3s1、v1.29.1+k3s1
 ====
 
 
@@ -288,7 +288,7 @@ ____
 
 Kubernetesがイメージのプルに問題を抱えている場合、kubeletによって表示されるエラーは、デフォルトエンドポイントに対して行われたプル試行から返された最終エラーのみを反映することがあり、設定されたエンドポイントが使用されていないように見えることがあります。
 
-ノードの``/var/lib/rancher/k3s/agent/containerd/containerd.log``にあるcontainerdログを確認して、失敗の根本原因に関する詳細情報を確認してください。
+ノードの``/var/lib/rancher/k3s/agent/containerd/containerd.log``にあるcontainerdログを確認して、失敗の根本原因に関する詳細情報を確認してください。Note that you must look at the logs on the node where the pod is scheduled. You can check which node your pod is scheduled to by issuing `kubectl get pod -o wide -n NAMESPACE POD` and checking the NODE column.
 
 == プライベートレジストリへのイメージの追加
 
