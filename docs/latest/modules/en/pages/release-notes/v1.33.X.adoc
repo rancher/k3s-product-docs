@@ -1,6 +1,6 @@
 = v1.33.X
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-09-15
+:revdate: 2025-12-30
 :page-revdate: {revdate}
 :page-role: -toc
 
@@ -12,6 +12,36 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
+
+| xref:#_release_v1_33_5k3s1[v1.33.5+k3s1]
+| Sep 22 2025
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.33.md#v1335[v1.33.5]
+| https://github.com/k3s-io/kine/releases/tag/v0.14.0[v0.14.0]
+| https://sqlite.org/releaselog/3_50_4.html[3.50.4]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.21-k3s1[v3.5.21-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v2.1.4-k3s1[v2.1.4-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.3.1[v1.3.1]
+| https://github.com/flannel-io/flannel/releases/tag/v0.27.0[v0.27.0]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.8.0[v0.8.0]
+| https://github.com/traefik/traefik/releases/tag/v3.3.6[v3.3.6]
+| https://github.com/coredns/coredns/releases/tag/v1.12.3[v1.12.3]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.13[v0.16.13]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31]
+
+| xref:#_release_v1_33_4k3s1[v1.33.4+k3s1]
+| Aug 25 2025
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.33.md#v1334[v1.33.4]
+| https://github.com/k3s-io/kine/releases/tag/v0.13.17[v0.13.17]
+| https://sqlite.org/releaselog/3_49_1.html[3.49.1]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.21-k3s1[v3.5.21-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v2.0.5-k3s2[v2.0.5-k3s2]
+| https://github.com/opencontainers/runc/releases/tag/v1.2.6[v1.2.6]
+| https://github.com/flannel-io/flannel/releases/tag/v0.27.0[v0.27.0]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.8.0[v0.8.0]
+| https://github.com/traefik/traefik/releases/tag/v3.3.6[v3.3.6]
+| https://github.com/coredns/coredns/releases/tag/v1.12.3[v1.12.3]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.13[v0.16.13]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31]
 
 | xref:#_release_v1_33_3k3s1[v1.33.3+k3s1]
 | Jul 26 2025
@@ -73,6 +103,53 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.16.10[v0.16.10]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31]
 |===
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.33.5+k3s1[v1.33.5+k3s1]
+// v1.33.5+k3s1
+
+This release updates Kubernetes to v1.33.5, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.33.md#changelog-since-v1334[Kubernetes release notes].
+
+=== Changes since v1.33.4+k3s1:
+
+* Backports for 2025-09 https://github.com/k3s-io/k3s/pull/12885[(#12885)]
+** Bump rancher libs: wrangler/lasso/remotedialer
+** Wire cri-dockerd --log-level=debug up to k3s --debug flag
+** Fix spegel logging and startup sequence
+** Update to runc v1.3.0 
+** Do not bootstrap etcd-only nodes from existing supervisor
+** Add retry on etcd MemberAdd timeout
+** Bump containerd to v2.1.4
+** Retry CRD creation in case of conflict
+** Wire up kine metrics
+** Wire up remotedialer metrics
+** Fix etcd join timeout handling
+** Bump k3s-root to v0.15.0
+** Add opencontainers/runc pin to v1.3.1
+** Move data dir into position before creating CNI symlinks
+* Update to v1.33.5-k3s1 and Go 1.24.6 https://github.com/k3s-io/k3s/pull/12895[(#12895)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.33.4+k3s1[v1.33.4+k3s1]
+// v1.33.4+k3s1
+
+This release updates Kubernetes to v1.33.4, and fixes a number of issues.
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.33.md#changelog-since-v1333[Kubernetes release notes].
+
+=== Changes since v1.33.3+k3s1:
+
+* Add retention flag specific for s3 https://github.com/k3s-io/k3s/pull/12694[(#12694)]
+* Backports for August https://github.com/k3s-io/k3s/pull/12718[(#12718)]
+* Bump coredns to 1.12.3 https://github.com/k3s-io/k3s/pull/12728[(#12728)]
+* Bump metrics-server to v0.8.0 https://github.com/k3s-io/k3s/pull/12741[(#12741)]
+* Fix cert startup check events https://github.com/k3s-io/k3s/pull/12746[(#12746)]
+* Emit certs OK event on startup, if no certs need renewal https://github.com/k3s-io/k3s/pull/12760[(#12760)]
+* Update to v1.33.4-k3s1 and Go 1.24.5 https://github.com/k3s-io/k3s/pull/12758[(#12758)]
+* Update metric help to be more descriptive https://github.com/k3s-io/k3s/pull/12764[(#12764)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.33.3+k3s1[v1.33.3+k3s1]
 // v1.33.3+k3s1
