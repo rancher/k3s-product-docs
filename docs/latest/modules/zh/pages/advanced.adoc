@@ -159,8 +159,8 @@ See the https://github.com/containerd/containerd/blob/release/1.7/docs/cri/confi
 Containerd 2.0 is backwards compatible with prior config versions, and k3s will continue to render legacy version 2 configuration from `config.toml.tmpl` if `config-v3.toml.tmpl` is not found.
 
 The template file is rendered into the containerd config using the https://pkg.go.dev/text/template[`text/template`] library.
-See `ContainerdConfigTemplateV3` and `ContainerdConfigTemplate` in https://github.com/k3s-io/k3s/blob/master/pkg/agent/templates/templates.go[`templates.go`] for the default template content.
-The template is executed with a https://github.com/k3s-io/k3s/blob/master/pkg/agent/templates/templates.go#L22-L33[`ContainerdConfig`] struct as its dot value (data argument).
+See `ContainerdConfigTemplateV3` and `ContainerdConfigTemplate` in https://github.com/k3s-io/k3s/blob/main/pkg/agent/templates/templates.go[`templates.go`] for the default template content.
+The template is executed with a https://github.com/k3s-io/k3s/blob/main/pkg/agent/templates/templates.go#L22-L33[`ContainerdConfig`] struct as its dot value (data argument).
 
 ### Base template
 
@@ -276,7 +276,7 @@ Rootless 模式允许非特权用户运行 K3s Server，这样可以保护主机
 
 * 启用 cgroup v2 授权，请参阅 https://rootlesscontaine.rs/getting-started/common/cgroup2/。
  此步骤是必需的。如果没有正确的 cgroups 授权，rootless kubelet 将无法启动。
-* 从 https://github.com/k3s-io/k3s/blob/master/k3s-rootless.service[`+https://github.com/k3s-io/k3s/blob/<VERSION>/k3s-rootless.service+`] 下载 `k3s-rootless.service`。
+* 从 https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`+https://github.com/k3s-io/k3s/blob/<VERSION>/k3s-rootless.service+`] 下载 `k3s-rootless.service`。
  确保使用了相同版本的 `k3s-rootless.service` 和 `k3s`。
 * 将 `k3s-rootless.service` 安装到 `~/.config/systemd/user/k3s-rootless.service`。
  不支持将此文件安装为全系统服务 (`+/etc/systemd/...+`)。

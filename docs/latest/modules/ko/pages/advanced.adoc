@@ -158,8 +158,8 @@ See the https://github.com/containerd/containerd/blob/release/1.7/docs/cri/confi
 Containerd 2.0 is backwards compatible with prior config versions, and k3s will continue to render legacy version 2 configuration from `config.toml.tmpl` if `config-v3.toml.tmpl` is not found.
 
 The template file is rendered into the containerd config using the https://pkg.go.dev/text/template[`text/template`] library.
-See `ContainerdConfigTemplateV3` and `ContainerdConfigTemplate` in https://github.com/k3s-io/k3s/blob/master/pkg/agent/templates/templates.go[`templates.go`] for the default template content.
-The template is executed with a https://github.com/k3s-io/k3s/blob/master/pkg/agent/templates/templates.go#L22-L33[`ContainerdConfig`] struct as its dot value (data argument).
+See `ContainerdConfigTemplateV3` and `ContainerdConfigTemplate` in https://github.com/k3s-io/k3s/blob/main/pkg/agent/templates/templates.go[`templates.go`] for the default template content.
+The template is executed with a https://github.com/k3s-io/k3s/blob/main/pkg/agent/templates/templates.go#L22-L33[`ContainerdConfig`] struct as its dot value (data argument).
 
 ### Base template
 
@@ -275,7 +275,7 @@ Cgroup v1 및 하이브리드 v1/v2는 지원되지 않으며, 순수 Cgroup v2�
 
 * https://rootlesscontaine.rs/getting-started/common/cgroup2/ 을 참조하여 cgroup v2 위임을 활성화합니다.
 이 단계는 필수이며, 적절한 cgroups가 위임되지 않으면 루트리스 kubelet을 시작하지 못합니다.
-* `+https://github.com/k3s-io/k3s/blob/<VERSION>/k3s-rootless.service+`](https://github.com/k3s-io/k3s/blob/master/k3s-rootless.service)에서 ``k3s-rootless.service``를 다운로드한다.
+* `+https://github.com/k3s-io/k3s/blob/<VERSION>/k3s-rootless.service+`](https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service)에서 ``k3s-rootless.service``를 다운로드한다.
 ``k3s-rootless.service``와 ``k3s``의 버전이 같은 것을 사용해야 합니다.
 * ``k3s-rootless.service``를 ``~/.config/systemd/user/k3s-rootless.service``에 설치합니다.
 이 파일을 시스템 전체 서비스(`+/etc/systemd/...+`)로 설치하는 것은 지원되지 않습니다.

@@ -33,7 +33,7 @@ K3s 버전 1.20 이하에는 Traefik v1이 포함됩니다. K3s 버전 1.21 이�
 
 == 네트워크 정책 컨트롤러 (Network Policy Controller)
 
-K3s에는 임베디드 네트워크 정책 컨트롤러가 포함되어 있습니다. 기본 구현은 https://github.com/cloudnativelabs/kube-router[kube-router의] netpol 컨트롤러 라이브러리이며(다른 kube-router 기능은 없음), https://github.com/k3s-io/k3s/tree/master/pkg/agent/netpol[여기]에서 확인할 수 있습니다.
+K3s에는 임베디드 네트워크 정책 컨트롤러가 포함되어 있습니다. 기본 구현은 https://github.com/cloudnativelabs/kube-router[kube-router의] netpol 컨트롤러 라이브러리이며(다른 kube-router 기능은 없음), https://github.com/k3s-io/k3s/tree/main/pkg/agent/netpol[여기]에서 확인할 수 있습니다.
 
 비활성화하려면, 각 서버를 `--disable-network-policy` 플래그로 시작합니다.
 

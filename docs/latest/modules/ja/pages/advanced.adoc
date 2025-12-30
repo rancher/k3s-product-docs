@@ -158,8 +158,8 @@ See the https://github.com/containerd/containerd/blob/release/1.7/docs/cri/confi
 Containerd 2.0 is backwards compatible with prior config versions, and k3s will continue to render legacy version 2 configuration from `config.toml.tmpl` if `config-v3.toml.tmpl` is not found.
 
 The template file is rendered into the containerd config using the https://pkg.go.dev/text/template[`text/template`] library.
-See `ContainerdConfigTemplateV3` and `ContainerdConfigTemplate` in https://github.com/k3s-io/k3s/blob/master/pkg/agent/templates/templates.go[`templates.go`] for the default template content.
-The template is executed with a https://github.com/k3s-io/k3s/blob/master/pkg/agent/templates/templates.go#L22-L33[`ContainerdConfig`] struct as its dot value (data argument).
+See `ContainerdConfigTemplateV3` and `ContainerdConfigTemplate` in https://github.com/k3s-io/k3s/blob/main/pkg/agent/templates/templates.go[`templates.go`] for the default template content.
+The template is executed with a https://github.com/k3s-io/k3s/blob/main/pkg/agent/templates/templates.go#L22-L33[`ContainerdConfig`] struct as its dot value (data argument).
 
 === ベーステンプレート
 
@@ -277,7 +277,7 @@ Cgroup v1 およびハイブリッド v1/v2 はサポートされていません
 
 * cgroup v2 デリゲーションを有効にします。詳細は https://rootlesscontaine.rs/getting-started/common/cgroup2/ を参照してください。
 このステップは必須です。適切な cgroups がデリゲートされていないと、ルートレス kubelet は起動に失敗します。
-* https://github.com/k3s-io/k3s/blob/master/k3s-rootless.service[`+https://github.com/k3s-io/k3s/blob/<VERSION>/k3s-rootless.service+`] から `k3s-rootless.service` をダウンロードします。
+* https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`+https://github.com/k3s-io/k3s/blob/<VERSION>/k3s-rootless.service+`] から `k3s-rootless.service` をダウンロードします。
 `k3s-rootless.service` と `k3s` のバージョンが同じであることを確認してください。
 * `k3s-rootless.service` を `~/.config/systemd/user/k3s-rootless.service` にインストールします。
 このファイルをシステム全体のサービス (`+/etc/systemd/...+`) としてインストールすることはサポートされていません。
