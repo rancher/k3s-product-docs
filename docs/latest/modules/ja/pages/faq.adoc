@@ -23,7 +23,7 @@ K3sはCNCF認定のKubernetesディストリビューションであり、標準
 
 == ソースからビルドするにはどうすればよいですか？
 
-K3sのlink:https://github.com/k3s-io/k3s/blob/master/BUILDING.md[BUILDING.md]を参照してください。
+K3sのlink:https://github.com/k3s-io/k3s/blob/main/BUILDING.md[BUILDING.md]を参照してください。
 
 == K3sのログはどこにありますか？
 

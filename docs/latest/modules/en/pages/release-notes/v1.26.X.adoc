@@ -799,7 +799,7 @@ For more details on what's new, see the https://github.com/kubernetes/kubernetes
 * Bump deps: trivy, sonobuoy, dapper, golangci-lint, gopls https://github.com/k3s-io/k3s/pull/6807[(#6807)]
 * Fix check for (open)SUSE version https://github.com/k3s-io/k3s/pull/6791[(#6791)]
 * Add support for user-provided CA certificates https://github.com/k3s-io/k3s/pull/6615[(#6615)]
- ** K3s now functions properly when the cluster CA certificates are signed by an existing root or intermediate CA. You can find a sample script for generating such certificates before K3s starts in the github repo at https://github.com/k3s-io/k3s/blob/master/contrib/util/certs.sh[contrib/util/certs.sh].
+ ** K3s now functions properly when the cluster CA certificates are signed by an existing root or intermediate CA. You can find a sample script for generating such certificates before K3s starts in the github repo at https://github.com/k3s-io/k3s/blob/main/contrib/util/certs.sh[contrib/util/certs.sh].
 * Ignore value conflicts when reencrypting secrets https://github.com/k3s-io/k3s/pull/6850[(#6850)]
 * Add `kubeadm` style bootstrap token secret support https://github.com/k3s-io/k3s/pull/6663[(#6663)]
  ** K3s now supports `kubeadm` style join tokens. `k3s token create` now creates join token secrets, optionally with a limited TTL.

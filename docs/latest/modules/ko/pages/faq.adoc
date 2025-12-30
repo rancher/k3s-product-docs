@@ -19,7 +19,7 @@ K3s는 CNCF 인증을 받은 Kubernetes 배포판으로, 표준 Kubernetes 클�
 
 == 소스로부터 빌드하려면 어떻게 해야 하나요?
 
-K3s https://github.com/k3s-io/k3s/blob/master/BUILDING.md[BUILDING.md]에서 지침을 참조하시기 바랍니다.
+K3s https://github.com/k3s-io/k3s/blob/main/BUILDING.md[BUILDING.md]에서 지침을 참조하시기 바랍니다.
 
 == K3s 로그는 어디에 있나요?
 
