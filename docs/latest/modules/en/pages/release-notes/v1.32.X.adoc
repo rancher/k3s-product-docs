@@ -1,6 +1,6 @@
 = v1.32.X
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-12-30
+:revdate: 2025-12-31
 :page-revdate: {revdate}
 :page-role: -toc
 
@@ -12,6 +12,36 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
+
+| xref:#_release_v1_32_11k3s1[v1.32.11+k3s1]
+| Dec 19 2025
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md#v13211[v1.32.11]
+| https://github.com/k3s-io/kine/releases/tag/v0.14.9-k3s1.32[v0.14.9-k3s1.32]
+| https://sqlite.org/releaselog/3_50_4.html[3.50.4]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.25-k3s1[v3.5.25-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v2.1.5-k3s1.32[v2.1.5-k3s1.32]
+| https://github.com/opencontainers/runc/releases/tag/v1.2.9[v1.2.9]
+| https://github.com/flannel-io/flannel/releases/tag/v0.27.4[v0.27.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.8.0[v0.8.0]
+| https://github.com/traefik/traefik/releases/tag/v3.5.1[v3.5.1]
+| https://github.com/coredns/coredns/releases/tag/v1.13.1[v1.13.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.17[v0.16.17]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.32[v0.0.32]
+
+| xref:#_release_v1_32_10k3s1[v1.32.10+k3s1]
+| Nov 20 2025
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md#v13210[v1.32.10]
+| https://github.com/k3s-io/kine/releases/tag/v0.14.6-k3s1.32[v0.14.6-k3s1.32]
+| https://sqlite.org/releaselog/3_50_4.html[3.50.4]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.21-k3s1[v3.5.21-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v2.1.5-k3s1.32[v2.1.5-k3s1.32]
+| https://github.com/opencontainers/runc/releases/tag/v1.2.8[v1.2.8]
+| https://github.com/flannel-io/flannel/releases/tag/v0.27.4[v0.27.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.8.0[v0.8.0]
+| https://github.com/traefik/traefik/releases/tag/v3.5.1[v3.5.1]
+| https://github.com/coredns/coredns/releases/tag/v1.13.1[v1.13.1]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.16[v0.16.16]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.32[v0.0.32]
 
 | xref:#_release_v1_32_9k3s1[v1.32.9+k3s1]
 | Sep 22 2025
@@ -163,6 +193,88 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.16.5[v0.16.5]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.30[v0.0.30]
 |===
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.32.11+k3s1[v1.32.11+k3s1]
+// v1.32.11+k3s1
+
+This release updates Kubernetes to v1.32.11, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md#changelog-since-v13210[Kubernetes release notes].
+
+=== Changes since v1.32.10+k3s1:
+
+* Update busybox version to 1.37.0 https://github.com/k3s-io/k3s/pull/13239[(#13239)]
+* Add multus e2e test https://github.com/k3s-io/k3s/pull/13266[(#13266)]
+* Backports for 2025-12 https://github.com/k3s-io/k3s/pull/13299[(#13299)]
+** Add docker dualstack test
+** Fix windows build os
+** Fix for clusters with few nodes and a lot of pod churn when webhooks are accessed using egress-selector
+** Fix spegel sharing of imported images
+** Bump opencontainers/selinux
+** Remove remaining references to drone
+** Bump actions/checkout from 5 to 6
+** Reorganize Executor interface to make CNI startup part of Executor implementation
+** Bump kine and etcd
+** Bump runc to v1.4.0
+** Consolidate test util functions
+** Define DefaultHelmJobImage in K3s, overriding what helm-controller defaults to
+** Bump actions/setup-go from 5 to 6
+* Fix tailscale setup in case of an already running configuration https://github.com/k3s-io/k3s/pull/13269[(#13269)]
+* Update kube-router to v2.6.2 https://github.com/k3s-io/k3s/pull/13290[(#13290)]
+* Fix cross-platform image save https://github.com/k3s-io/k3s/pull/13313[(#13313)]
+* Bump kine to v0.14.9 https://github.com/k3s-io/k3s/pull/13320[(#13320)]
+* Fix arm airgap platforms https://github.com/k3s-io/k3s/pull/13333[(#13333)]
+* Fix release CI https://github.com/k3s-io/k3s/pull/13342[(#13342)]
+* Override DefaultHelmJob at build time https://github.com/k3s-io/k3s/pull/13363[(#13363)]
+* Validate collected release artifact list before uploading https://github.com/k3s-io/k3s/pull/13360[(#13360)]
+* Update to v1.32.11-k3s1 and Go 1.24.11 https://github.com/k3s-io/k3s/pull/13365[(#13365)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.32.10+k3s1[v1.32.10+k3s1]
+// v1.32.10+k3s1 -->
+
+This release updates Kubernetes to v1.32.10, and fixes a number of issues.
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md#changelog-since-v1329[Kubernetes release notes].
+
+=== Changes since v1.32.9+k3s1:
+
+* Bump traefik to 3.5.1 https://github.com/k3s-io/k3s/pull/12959[(#12959)]
+* Fix garbled CLI https://github.com/k3s-io/k3s/pull/13034[(#13034)]
+* Update flannel, kube-router and cni plugins https://github.com/k3s-io/k3s/pull/13042[(#13042)]
+* Backports for 2025-10 https://github.com/k3s-io/k3s/pull/13059[(#13059)]
+** Fix netpol fatal error when changing node IP
+** Bump dynamiclistener for stacked update fix
+** Bump Klipper Helm and Helm Controller version
+** Bump Local Path Provisioner version
+** Fix IPv6 handling for loadbalancer addresses
+** Fix multiple issues with server shutdown sequencing
+** Fix etcd member promotion
+** Bump spegel to v0.4.0
+** Fix kine metrics registration without –kine-tls
+** Bump kine to v0.14.2
+** Fix: default forward after override imports
+** Fix handling of vendored dependencies in version script
+** Fix helm controller apiserver address for bootstrap charts on ipv6-only nodes
+** Create dynamic-cert-regenerate file in CA cert rotation handler
+** Fix ability to rotate server token to an invalid format
+** Drop calls to rand.Seed
+** Bump kine for postgres object count fix
+** Bump kine=v0.14.5
+** Bump coredns to 1.13.1
+* Update dispatch script https://github.com/k3s-io/k3s/pull/13076[(#13076)]
+* Bump helm-controller/klipper-helm https://github.com/k3s-io/k3s/pull/13093[(#13093)]
+* Backports for 2025-11 https://github.com/k3s-io/k3s/pull/13127[(#13127)]
+* Inclusive naming proposal https://github.com/k3s-io/k3s/pull/13134[(#13134)]
+* Migrate release pipeline into GitHub Actions https://github.com/k3s-io/k3s/pull/13117[(#13117)]
+* Bump runc to v1.2.8 https://github.com/k3s-io/k3s/pull/13148[(#13148)]
+* Add Prime assets upload https://github.com/k3s-io/k3s/pull/13157[(#13157)]
+* More backports for 2025-11 https://github.com/k3s-io/k3s/pull/13179[(#13179)]
+* Bump klipper-helm and helm-controller https://github.com/k3s-io/k3s/pull/13195[(#13195)]
+* Update to v1.32.10-k3s1 and Go 1.24.9 https://github.com/k3s-io/k3s/pull/13202[(#13202)]
+* Add id-token https://github.com/k3s-io/k3s/pull/13206[(#13206)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.32.9+k3s1[v1.32.9+k3s1]
 // v1.32.9+k3s1
