@@ -1,6 +1,6 @@
 = 基本的なネットワークオプション
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-06-16
+:revdate: 2025-12-31
 :page-revdate: {revdate}
 
 このページでは、Flannelの設定や置き換え、IPv6やデュアルスタックの設定を含むK3sのネットワーク設定オプションについて説明します。
@@ -200,8 +200,8 @@ K3sでデュアルスタックを有効にするには、すべてのサーバ�
 
 有効な``cluster-cidr``および``service-cidr``値を設定できますが、上記のマスクが推奨されます。``cluster-cidr``マスクを変更する場合は、計画されたノードごとのポッド数および総ノード数に合わせて``node-cidr-mask-size-ipv4``および``node-cidr-mask-size-ipv6``値も変更する必要があります。サポートされる最大の``service-cidr``マスクはIPv4の場合は/12、IPv6の場合は/112です。パブリッククラウドにデプロイする場合は、IPv6トラフィックを許可することを忘れないでください。
 
-
 When using IPv6 addresses that are not publicly routed, for example in the ULA range, you might want to add the `--flannel-ipv6-masq` option to enable IPv6 NAT, as per default pods use their pod IPv6 address for outgoing traffic.
+If, however, publicly routed IPv6 addresses are used you need to ensure that those addresses are routed towards your cluster. Otherwise, pods cannot receive responses for packets originating from their IPv6 address. While it is outside the scope of K3s to automatically communicate which addresses are used on which node to outside routing infrastructure, cluster members can forward pod traffic correctly so you can point your routes to any node belonging to the cluster.
 
 カスタムCNIプラグイン、つまりFlannel以外のCNIプラグインを使用している場合、追加の設定が必要になることがあります。プラグインのデュアルスタックドキュメントを参照し、ネットワークポリシーが有効にできるか確認してください。
 
