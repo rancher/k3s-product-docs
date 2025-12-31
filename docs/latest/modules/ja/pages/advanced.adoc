@@ -1,6 +1,6 @@
 = 高度なオプション / 設定
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-06-23
+:revdate: 2025-12-31
 :page-revdate: {revdate}
 
 このセクションには、K3sを実行および管理するさまざまな方法や、K3sの使用に向けてホストOSを準備するために必要な手順についての高度な情報が含まれています。
@@ -24,6 +24,51 @@ K3sのクライアントおよびサーバー証明書は、発行日から365�
 デフォルトでは、K3sはサーバーとエージェントの両方に対して単一の静的トークンを使用します。With care, this token can be rotated once the cluster has been created.
 It is also possible to enable a second static token that can only be used to join agents, or to create temporary `kubeadm` style join tokens that expire automatically.
 詳細については、xref:cli/token.adoc#_k3s_token_1[`k3s token` コマンドのドキュメント]を参照してください。
+
+== Configuring DNS Resolution
+
+=== Nameserver Viability Checks
+
+On startup, each node checks the files at `/etc/resolv.conf` and `/run/systemd/resolve/resolv.conf` for loopback, multicast, or link-local nameservers. 
+If any such entries are present, the configuration file is not used, as such entries would not function properly within pods that https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy[inherit name resolution configuration] from their node.
+If no usable resolv.conf is found, K3s prints a warning message to the logs, and generate a stub resolv.conf that uses `8.8.8.8` and `2001:4860:4860::8888` as the nameservers.
+
+If you want to provide K3s with an alternative resolver configuration without modifying the system configuration files, you may use the `--resolv-conf` option to specify the path to a suitable file.
+Manually specified resolver configuration files are not subject to viability checks.
+
+=== CoreDNS Custom Configuration Imports
+
+In order to customize the CoreDNS configuration, you may create a ConfigMap named `coredns-custom` in the `kube-system` namespace.
+Keys matching `+*.override+` are imported into the `:.53` Server Block.
+Additional Server Blocks may be placed in keys matching `+*.server+`.
+Additional content (zone files, etc) may also be present, and are mounted under `/etc/coredns/custom` in the coredns pods.
+
+Here is an example ConfigMap that forwards lookups to `example.com` to a nameserver at `10.0.0.1`, and serves `example.net` from an https://datatracker.ietf.org/doc/html/rfc1035#section-5[RFC 1035] compliant text file:
+
+[,yaml]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  example-com.override: |
+    forward example.com 10.0.0.1
+  example-net.server: |
+    example.net:53 {
+      log
+      errors
+      file /etc/coredns/custom/db.example.net
+    }
+  db.example.net: |
+    $ORIGIN example.net.
+    @       3600 IN SOA    sns.dns.icann.org. noc.dns.icann.org. 2017042745 7200 3600 1209600 3600
+            3600 IN NS     a.iana-servers.net.
+            3600 IN NS     b.iana-servers.net.
+    www          IN A      127.0.0.1
+                 IN AAAA   ::1
+----
 
 == HTTPプロキシの設定
 
