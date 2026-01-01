@@ -40,6 +40,10 @@ Some OSs have additional setup requirements:
 SUSE Linux Enterprise / openSUSE::
 +
 --
+[#_sle_opensuse_firewalld]
+[pass]
+<h3><a class="anchor" id="_sle_opensuse_firewalld" href="#_sle_opensuse_firewalld"></a>Firewalld</h3>
+
 It is recommended to turn off firewalld:
 
 [,bash]
@@ -63,6 +67,21 @@ Additional ports may need to be opened depending on your setup. See <<_inbound_r
 Red Hat Enterprise Linux / CentOS / Fedora::
 +
 --
+[#_rhel10]
+[pass]
+<h3><a class="anchor" id="_rhel10" href="#_rhel10"></a>RHEL 10</h3>
+
+On RHEL 10, an additional package is required:
+
+[,bash]
+----
+sudo dnf install -y kernel-modules-extra
+----
+
+[#_rhel_centos_fedora_firewalld]
+[pass]
+<h3><a class="anchor" id="_rhel_centos_fedora_firewalld" href="#_rhel_centos_fedora_firewalld"></a>Firewalld</h3>
+
 It is recommended to turn off firewalld:
 
 [,bash]
@@ -98,6 +117,10 @@ reboot
 Ubuntu / Debian::
 +
 --
+[#_ubuntu_debian_ufw]
+[pass]
+<h3><a class="anchor" id="_ubuntu_debian_ufw" href="#_ubuntu_debian_ufw"></a>UFW</h3>
+
 Older Debian release may suffer from a known iptables bug. See xref:known-issues.adoc#_iptables[Known Issues].
 
 It is recommended to turn off ufw (uncomplicated firewall):
