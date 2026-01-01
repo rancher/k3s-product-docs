@@ -1,6 +1,6 @@
 = CIS Hardening Guide
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-09-15
+:revdate: 2025-12-31
 :page-revdate: {revdate}
 
 This document provides prescriptive guidance for hardening a production installation of K3s. It outlines the configurations and controls required to address Kubernetes benchmark controls from the Center for Internet Security (CIS).
@@ -33,6 +33,77 @@ vm.overcommit_memory=1
 kernel.panic=10
 kernel.panic_on_oops=1
 ----
+
+== Configuration for Kubernetes Components
+
+The configuration below should be placed in the xref:installation/configuration.adoc#_configuration_file[configuration file], and contains all the necessary remediations to harden the Kubernetes components.
+
+[tabs,sync-group-id=pod-sec]
+======
+v1.29 and Newer::
++
+[,yaml]
+----
+protect-kernel-defaults: true
+secrets-encryption: true
+kube-apiserver-arg:
+  - "enable-admission-plugins=NodeRestriction,EventRateLimit"
+  - 'admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml'
+  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
+  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
+  - 'audit-log-maxage=30'
+  - 'audit-log-maxbackup=10'
+  - 'audit-log-maxsize=100'
+  - 'service-account-extend-token-expiration=false' 
+kube-controller-manager-arg:
+  - 'terminated-pod-gc-threshold=100'
+kubelet-arg:
+  - 'streaming-connection-idle-timeout=5m'
+  - "tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+----
+
+v1.25 - v1.28::
++
+[,yaml]
+----
+protect-kernel-defaults: true
+secrets-encryption: true
+kube-apiserver-arg:
+  - "enable-admission-plugins=NodeRestriction,EventRateLimit"
+  - 'admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml'
+  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
+  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
+  - 'audit-log-maxage=30'
+  - 'audit-log-maxbackup=10'
+  - 'audit-log-maxsize=100'
+kube-controller-manager-arg:
+  - 'terminated-pod-gc-threshold=10'
+kubelet-arg:
+  - 'streaming-connection-idle-timeout=5m'
+  - "tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+----
+
+v1.24 and Older::
++
+[,yaml]
+----
+protect-kernel-defaults: true
+secrets-encryption: true
+kube-apiserver-arg:
+  - 'enable-admission-plugins=NodeRestriction,PodSecurityPolicy,NamespaceLifecycle,ServiceAccount'
+  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
+  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
+  - 'audit-log-maxage=30'
+  - 'audit-log-maxbackup=10'
+  - 'audit-log-maxsize=100'
+kube-controller-manager-arg:
+  - 'terminated-pod-gc-threshold=10'
+kubelet-arg:
+  - 'streaming-connection-idle-timeout=5m'
+  - 'make-iptables-util-chains=true'
+  - "tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+----
+======
 
 == Kubernetes Runtime Requirements
 
@@ -526,55 +597,6 @@ sudo systemctl daemon-reload
 sudo systemctl restart k3s.service
 ----
 
-== Configuration for Kubernetes Components
-
-The configuration below should be placed in the xref:installation/configuration.adoc#_configuration_file[configuration file], and contains all the necessary remediations to harden the Kubernetes components.
-
-[tabs,sync-group-id=pod-sec]
-======
-v1.25 and Newer::
-+
-[,yaml]
-----
-protect-kernel-defaults: true
-secrets-encryption: true
-kube-apiserver-arg:
-  - "enable-admission-plugins=NodeRestriction,EventRateLimit"
-  - 'admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml'
-  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
-  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
-  - 'audit-log-maxage=30'
-  - 'audit-log-maxbackup=10'
-  - 'audit-log-maxsize=100'
-kube-controller-manager-arg:
-  - 'terminated-pod-gc-threshold=10'
-kubelet-arg:
-  - 'streaming-connection-idle-timeout=5m'
-  - "tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
-----
-
-v1.24 and Older::
-+
-[,yaml]
-----
-protect-kernel-defaults: true
-secrets-encryption: true
-kube-apiserver-arg:
-  - 'enable-admission-plugins=NodeRestriction,PodSecurityPolicy,NamespaceLifecycle,ServiceAccount'
-  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
-  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
-  - 'audit-log-maxage=30'
-  - 'audit-log-maxbackup=10'
-  - 'audit-log-maxsize=100'
-kube-controller-manager-arg:
-  - 'terminated-pod-gc-threshold=10'
-kubelet-arg:
-  - 'streaming-connection-idle-timeout=5m'
-  - 'make-iptables-util-chains=true'
-  - "tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
-----
-======
-
 == Manual Operations
 The following are controls that K3s currently does not pass by with the above configuration applied. These controls require manual intervention to fully comply with the CIS Benchmark.
 
@@ -698,4 +720,4 @@ kubectl patch serviceaccount --namespace kube-public default --patch '{"automoun
 
 == Conclusion
 
-If you have followed this guide, your K3s cluster will be configured to comply with the CIS Kubernetes Benchmark. You can review the xref:security/self-assessment-1.8.adoc[CIS 1.8 Self-Assessment Guide] to understand the expectations of each of the benchmark's checks and how you can do the same on your cluster.
+If you have followed this guide, your K3s cluster will be configured to comply with the CIS Kubernetes Benchmark. You can review the xref:security/self-assessment-1.11.adoc[CIS 1.11 Self-Assessment Guide] to understand the expectations of each of the benchmark's checks and how you can do the same on your cluster.

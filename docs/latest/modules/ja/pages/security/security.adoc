@@ -1,6 +1,6 @@
 = セキュリティ
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-05-06
+:revdate: 2025-12-31
 :page-revdate: {revdate}
 
 このセクションでは、K3s クラスターを保護するための方法論と手段について説明します。2つのセクションに分かれています。これらのガイドは、k3s が埋め込み型 etcd で動作していることを前提としています。
@@ -11,5 +11,6 @@
 
 次に、ハードニングされたクラスターを検証するための自己評価があります。現在、2つの異なる評価が利用可能です：
 
-* xref:security/self-assessment-1.7.adoc[CIS 1.7 ベンチマーク自己評価ガイド]、K3s バージョン v1.25-v1.26 用
-* xref:security/self-assessment-1.8.adoc[CIS 1.8 ベンチマーク自己評価ガイド]、K3s バージョン v1.27-v1.29 用
+* xref:security/self-assessment-1.9.adoc[CIS 1.9 ベンチマーク自己評価ガイド]、K3s バージョン v1.27-v1.29 用
+* xref:security/self-assessment-1.10.adoc[CIS 1.10 ベンチマーク自己評価ガイド]、K3s バージョン v1.28-v1.31 用
+* xref:security/self-assessment-1.11.adoc[CIS 1.11 ベンチマーク自己評価ガイド]、K3s バージョン v1.29-v1.34 用

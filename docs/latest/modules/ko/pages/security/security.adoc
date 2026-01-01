@@ -1,6 +1,6 @@
 = 보안
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-05-06
+:revdate: 2025-12-31
 :page-revdate: {revdate}
 
 이 섹션에서는 K3s 클러스터를 보호하는 방법론과 수단에 대해 설명합니다. 두 섹션으로 나뉘어져 있습니다. 이 가이드는 K3s가 임베디드 etcd로 실행되고 있다고 가정합니다.
@@ -11,5 +11,6 @@
 
 Second, is the self assessment to validate a hardened cluster. We currently have two different assessments available:
 
-* xref:security/self-assessment-1.7.adoc[CIS 1.7 Benchmark Self-Assessment Guide], for K3s version v1.25
-* xref:security/self-assessment-1.8.adoc[CIS 1.8 Benchmark Self-Assessment Guide], for K3s version v1.26-v1.29
+* xref:security/self-assessment-1.9.adoc[CIS 1.9 Benchmark Self-Assessment Guide], for K3s version v1.27-v1.29
+* xref:security/self-assessment-1.10.adoc[CIS 1.10 Benchmark Self-Assessment Guide], for K3s version v1.28-v1.31
+* xref:security/self-assessment-1.11.adoc[CIS 1.11 Benchmark Self-Assessment Guide], for K3s version v1.29-v1.34

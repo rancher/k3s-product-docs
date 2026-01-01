@@ -22,6 +22,7 @@
 * xref:security/security.adoc[]
 ** xref:security/secrets-encryption.adoc[]
 ** xref:security/hardening-guide.adoc[]
+** xref:security/self-assessment-1.11.adoc[]
 ** xref:security/self-assessment-1.10.adoc[]
 ** xref:security/self-assessment-1.9.adoc[]
 ** xref:security/self-assessment-1.8.adoc[]
