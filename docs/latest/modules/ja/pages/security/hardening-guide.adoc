@@ -1,6 +1,6 @@
 = CIS ハードニングガイド
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-03-26
+:revdate: 2025-12-31
 :page-revdate: {revdate}
 
 このドキュメントは、K3s の本番インストールをハードニングするための指針を提供します。これは、Center for Internet Security (CIS) の Kubernetes ベンチマークコントロールに対応するために必要な設定とコントロールを概説しています。
@@ -35,6 +35,77 @@ vm.overcommit_memory=1
 kernel.panic=10
 kernel.panic_on_oops=1
 ----
+
+== Kubernetes コンポーネントの設定
+
+以下の設定はxref:installation/configuration.adoc#_configuration_file[設定ファイル]に配置する必要があり、Kubernetes コンポーネントを強化するために必要なすべての修正が含まれています。
+
+[tabs,sync-group-id=pod-sec]
+======
+v1.29 and Newer::
++
+[,yaml]
+----
+protect-kernel-defaults: true
+secrets-encryption: true
+kube-apiserver-arg:
+  - "enable-admission-plugins=NodeRestriction,EventRateLimit"
+  - 'admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml'
+  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
+  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
+  - 'audit-log-maxage=30'
+  - 'audit-log-maxbackup=10'
+  - 'audit-log-maxsize=100'
+  - 'service-account-extend-token-expiration=false' 
+kube-controller-manager-arg:
+  - 'terminated-pod-gc-threshold=100'
+kubelet-arg:
+  - 'streaming-connection-idle-timeout=5m'
+  - "tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+----
+
+v1.25 - v1.28::
++
+[,yaml]
+----
+protect-kernel-defaults: true
+secrets-encryption: true
+kube-apiserver-arg:
+  - "enable-admission-plugins=NodeRestriction,EventRateLimit"
+  - 'admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml'
+  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
+  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
+  - 'audit-log-maxage=30'
+  - 'audit-log-maxbackup=10'
+  - 'audit-log-maxsize=100'
+kube-controller-manager-arg:
+  - 'terminated-pod-gc-threshold=10'
+kubelet-arg:
+  - 'streaming-connection-idle-timeout=5m'
+  - "tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+----
+
+v1.24 and Older::
++
+[,yaml]
+----
+protect-kernel-defaults: true
+secrets-encryption: true
+kube-apiserver-arg:
+  - 'enable-admission-plugins=NodeRestriction,PodSecurityPolicy,NamespaceLifecycle,ServiceAccount'
+  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
+  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
+  - 'audit-log-maxage=30'
+  - 'audit-log-maxbackup=10'
+  - 'audit-log-maxsize=100'
+kube-controller-manager-arg:
+  - 'terminated-pod-gc-threshold=10'
+kubelet-arg:
+  - 'streaming-connection-idle-timeout=5m'
+  - 'make-iptables-util-chains=true'
+  - "tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+----
+======
 
 == Kubernetes ランタイム要件
 
@@ -522,59 +593,6 @@ sudo systemctl daemon-reload
 sudo systemctl restart k3s.service
 ----
 
-== Kubernetes コンポーネントの設定
-
-以下の設定はxref:installation/configuration.adoc#_configuration_file[設定ファイル]に配置する必要があり、Kubernetes コンポーネントを強化するために必要なすべての修正が含まれています。
-
-[tabs]
-======
-v1.25 and Newer::
-+
-[,yaml]
-----
-protect-kernel-defaults: true
-secrets-encryption: true
-kube-apiserver-arg:
-  - 'admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml'
-  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
-  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
-  - 'audit-log-maxage=30'
-  - 'audit-log-maxbackup=10'
-  - 'audit-log-maxsize=100'
-  - 'request-timeout=300s'
-  - 'service-account-lookup=true'
-kube-controller-manager-arg:
-  - 'terminated-pod-gc-threshold=10'
-  - 'use-service-account-credentials=true'
-kubelet-arg:
-  - 'streaming-connection-idle-timeout=5m'
-  - 'make-iptables-util-chains=true'
-----
-
-v1.24 and Older::
-+
-[,yaml]
-----
-protect-kernel-defaults: true
-secrets-encryption: true
-kube-apiserver-arg:
-  - 'enable-admission-plugins=NodeRestriction,PodSecurityPolicy,NamespaceLifecycle,ServiceAccount'
-  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
-  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
-  - 'audit-log-maxage=30'
-  - 'audit-log-maxbackup=10'
-  - 'audit-log-maxsize=100'
-  - 'request-timeout=300s'
-  - 'service-account-lookup=true'
-kube-controller-manager-arg:
-  - 'terminated-pod-gc-threshold=10'
-  - 'use-service-account-credentials=true'
-kubelet-arg:
-  - 'streaming-connection-idle-timeout=5m'
-  - 'make-iptables-util-chains=true'
-----
-======
-
 == コントロールプレーンの実行と引数
 
 以下に、K3s コントロールプレーンコンポーネントと、デフォルトで開始時に与えられる引数を示します。右側にコメントとして、それらが満たす CIS 1.6 コントロールが記載されています。
@@ -862,4 +880,4 @@ Kubernetesは、ポッドに特定のサービスアカウントが割り当て�
 
 == 結論
 
-このガイドに従った場合、K3sクラスターはCIS Kubernetesベンチマークに準拠するように構成されます。各ベンチマークのチェックの期待事項と、クラスターで同じことを行う方法を理解するために、xref:security/self-assessment-1.8.adoc[CIS 1.8 自己評価ガイド] を確認できます。
+このガイドに従った場合、K3sクラスターはCIS Kubernetesベンチマークに準拠するように構成されます。各ベンチマークのチェックの期待事項と、クラスターで同じことを行う方法を理解するために、xref:security/self-assessment-1.11.adoc[CIS 1.11 自己評価ガイド] を確認できます。
