@@ -40,6 +40,10 @@ K3sはほとんどの最新のLinuxシステムで動作することが期待さ
 SUSE Linux Enterprise / openSUSE::
 +
 --
+[#_sle_opensuse_firewalld]
+[pass]
+<h3><a class="anchor" id="_sle_opensuse_firewalld" href="#_sle_opensuse_firewalld"></a>Firewalld</h3>
+
 firewalldをオフにすることをお勧めします:
 
 [,bash]
@@ -63,6 +67,21 @@ firewall-cmd --reload
 Red Hat Enterprise Linux / CentOS / Fedora::
 +
 --
+[#_rhel10]
+[pass]
+<h3><a class="anchor" id="_rhel10" href="#_rhel10"></a>RHEL 10</h3>
+
+On RHEL 10, an additional package is required:
+
+[,bash]
+----
+sudo dnf install -y kernel-modules-extra
+----
+
+[#_rhel_centos_fedora_firewalld]
+[pass]
+<h3><a class="anchor" id="_rhel_centos_fedora_firewalld" href="#_rhel_centos_fedora_firewalld"></a>Firewalld</h3>
+
 firewalldをオフにすることをお勧めします:
 
 [,bash]
@@ -82,18 +101,26 @@ firewall-cmd --reload
 
 セットアップに応じて追加のポートを開く必要がある場合があります。詳細については<<#_inbound_rules_for_k3s_nodes,インバウンドルール>>を参照してください。ポッドやサービスのデフォルトCIDRを変更する場合は、ファイアウォールルールを更新する必要があります。
 
-有効になっている場合は、nm-cloud-setupを無効にしてノードを再起動する必要があります:
+[WARNING]
+.Older RHEL/CentOS Releases
+====
+OS versions prior to RHEL 8.4 carry NetworkManager with a known bug that interferes with K3s networking. If using an older release, it is required to disable nm-cloud-setup and reboot the node:
 
 [,bash]
 ----
 systemctl disable nm-cloud-setup.service nm-cloud-setup.timer
 reboot
 ----
+====
 --
 
 Ubuntu / Debian::
 +
 --
+[#_ubuntu_debian_ufw]
+[pass]
+<h3><a class="anchor" id="_ubuntu_debian_ufw" href="#_ubuntu_debian_ufw"></a>UFW</h3>
+
 古いDebianリリースには既知のiptablesバグがある可能性があります。詳細はxref:known-issues.adoc#_iptables[既知の問題]を参照してください。
 
 ufw（uncomplicated firewall）をオフにすることをお勧めします:

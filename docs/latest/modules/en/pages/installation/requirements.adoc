@@ -1,6 +1,6 @@
 = Requirements
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-03-31
+:revdate: 2025-12-31
 :page-revdate: {revdate}
 
 K3s is very lightweight, but has some minimum requirements as outlined below.
@@ -40,6 +40,10 @@ Some OSs have additional setup requirements:
 SUSE Linux Enterprise / openSUSE::
 +
 --
+[#_sle_opensuse_firewalld]
+[pass]
+<h3><a class="anchor" id="_sle_opensuse_firewalld" href="#_sle_opensuse_firewalld"></a>Firewalld</h3>
+
 It is recommended to turn off firewalld:
 
 [,bash]
@@ -63,6 +67,21 @@ Additional ports may need to be opened depending on your setup. See <<_inbound_r
 Red Hat Enterprise Linux / CentOS / Fedora::
 +
 --
+[#_rhel10]
+[pass]
+<h3><a class="anchor" id="_rhel10" href="#_rhel10"></a>RHEL 10</h3>
+
+On RHEL 10, an additional package is required:
+
+[,bash]
+----
+sudo dnf install -y kernel-modules-extra
+----
+
+[#_rhel_centos_fedora_firewalld]
+[pass]
+<h3><a class="anchor" id="_rhel_centos_fedora_firewalld" href="#_rhel_centos_fedora_firewalld"></a>Firewalld</h3>
+
 It is recommended to turn off firewalld:
 
 [,bash]
@@ -82,18 +101,26 @@ firewall-cmd --reload
 
 Additional ports may need to be opened depending on your setup. See <<_inbound_rules_for_k3s_nodes,Inbound Rules>> for more information. If you change the default CIDR for pods or services, you will need to update the firewall rules accordingly.
 
-If enabled, it is required to disable nm-cloud-setup and reboot the node:
+[WARNING]
+.Older RHEL/CentOS Releases
+====
+OS versions prior to RHEL 8.4 carry NetworkManager with a known bug that interferes with K3s networking. If using an older release, it is required to disable nm-cloud-setup and reboot the node:
 
 [,bash]
 ----
 systemctl disable nm-cloud-setup.service nm-cloud-setup.timer
 reboot
 ----
+====
 --
 
 Ubuntu / Debian::
 +
 --
+[#_ubuntu_debian_ufw]
+[pass]
+<h3><a class="anchor" id="_ubuntu_debian_ufw" href="#_ubuntu_debian_ufw"></a>UFW</h3>
+
 Older Debian release may suffer from a known iptables bug. See xref:known-issues.adoc#_iptables[Known Issues].
 
 It is recommended to turn off ufw (uncomplicated firewall):
