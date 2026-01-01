@@ -82,13 +82,17 @@ firewall-cmd --reload
 
 セットアップに応じて追加のポートを開く必要がある場合があります。詳細については<<#_inbound_rules_for_k3s_nodes,インバウンドルール>>を参照してください。ポッドやサービスのデフォルトCIDRを変更する場合は、ファイアウォールルールを更新する必要があります。
 
-有効になっている場合は、nm-cloud-setupを無効にしてノードを再起動する必要があります:
+[WARNING]
+.Older RHEL/CentOS Releases
+====
+OS versions prior to RHEL 8.4 carry NetworkManager with a known bug that interferes with K3s networking. If using an older release, it is required to disable nm-cloud-setup and reboot the node:
 
 [,bash]
 ----
 systemctl disable nm-cloud-setup.service nm-cloud-setup.timer
 reboot
 ----
+====
 --
 
 Ubuntu / Debian::
