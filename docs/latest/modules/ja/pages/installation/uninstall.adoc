@@ -1,6 +1,6 @@
 = K3sのアンインストール
 :page-languages: [en, ja, ko, zh]
-:revdate: 2024-12-05
+:revdate: 2026-01-05
 :page-revdate: {revdate}
 
 [CAUTION]
@@ -10,7 +10,7 @@ Uninstalling K3s may cause data loss!
 
 インストールスクリプトを使用してK3sをインストールした場合、インストール中にK3sをアンインストールするためのスクリプトが生成されました。
 
-Running the uninstall script stops K3s and all running pods, and deletes the local cluster datastore, xref:storage.adoc#_setting_up_the_local_storage_provider[Local Storage] Persistent Volume data, node configuration, and all of the scripts and CLI tools.
+Running the uninstall script stops K3s and all running pods, and deletes the local cluster datastore, xref:add-ons/storage.adoc#_setting_up_the_local_storage_provider[Local Storage] Persistent Volume data, node configuration, and all of the scripts and CLI tools.
 
 It does not remove any data from external datastores, or created by pods using external Kubernetes Persistent Volumes.
 
