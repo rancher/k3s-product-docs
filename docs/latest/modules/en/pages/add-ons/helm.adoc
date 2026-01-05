@@ -1,46 +1,47 @@
-= 헬름(Helm)
+= Helm
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-05-26
+:revdate: 2026-01-05
 :page-revdate: {revdate}
+:page-aliases: helm.adoc
 
-헬름(Helm)은 쿠버네티스를 위한 패키지 관리 도구입니다. 헬름 차트는 쿠버네티스 YAML 매니페스트 문서를 위한 템플릿 구문을 제공합니다. 개발자 또는 클러스터 관리자는 헬름을 사용하여 정적 매니페스트만 사용하는 대신 차트라는 구성 가능한 템플릿을 만들 수 있다. 자신만의 차트 카탈로그 생성에 대한 자세한 내용은 link:https://helm.sh/docs/intro/quickstart/[] 에서 문서를 확인하세요.
+Helm is the package management tool of choice for Kubernetes. Helm charts provide templating syntax for Kubernetes YAML manifest documents. With Helm, developers or cluster administrators can create configurable templates known as Charts, instead of just using static manifests. For more information about creating your own Chart catalog, check out the docs at https://helm.sh/docs/intro/quickstart/.
 
-K3s는 헬름을 지원하기 위한 별도의 구성이 필요하지 않습니다. 다만, xref:cluster-access.adoc[클러스터 액세스] 문서에 따라 kubeconfig 경로를 올바르게 설정했는지 확인하면 됩니다.
+K3s does not require any special configuration to support Helm. Just be sure you have properly set the kubeconfig path as per the xref:cluster-access.adoc[cluster access] documentation.
 
-K3s에는 헬름 차트의 설치, 업그레이드/재구성 및 제거를 관리하는 https://github.com/k3s-io/helm-controller/[Helm Controller]가 포함되어 있으며, 헬름 차트 커스텀 리소스 정의(CRD)를 사용하여 헬름 차트를 설치, 업그레이드/재구성 및 제거할 수 있습니다. 애드온 매니페스트 자동 배포](./installation/packaged-components.md)와 함께 사용하면 디스크에 단일 파일을 생성하여 클러스터에 헬름 차트를 설치하는 것을 자동화할 수 있습니다.
+K3s includes a https://github.com/k3s-io/helm-controller/[Helm Controller] that manages installing, upgrading/reconfiguring, and uninstalling Helm charts using a HelmChart Custom Resource Definition (CRD). Paired with xref:installation/packaged-components.adoc[auto-deploying AddOn manifests], installing a Helm chart on your cluster can be automated by creating a single file on disk.
 
-== 헬름 컨트롤러 사용하기
+== Using the Helm Controller
 
-https://github.com/k3s-io/helm-controller#helm-controller[헬름 차트 커스텀 리소스]는 일반적으로 `helm` 명령줄 도구에 전달할 대부분의 옵션을 담고 있습니다. 
+The https://github.com/k3s-io/helm-controller#helm-controller[HelmChart Custom Resource] captures most of the options you would normally pass to the `helm` command-line tool.
 
-=== HelmChart 필드 정의
+=== HelmChart Field Definitions
 
 [NOTE]
 ====
-`name` 필드는 헬름 차트 명명 규칙을 따라야 합니다, in addition to Kubernetes rules for https://kubernetes.io/docs/concepts/overview/working-with-objects/names/[object names and IDs]. 자세한 내용은 https://helm.sh/docs/chart_best_practices/conventions/#chart-names[헬름 베스트 프랙티스 문서]를 참고하세요.
+The `name` field should follow the Helm chart naming conventions, in addition to Kubernetes rules for https://kubernetes.io/docs/concepts/overview/working-with-objects/names/[object names and IDs]. Refer to the https://helm.sh/docs/chart_best_practices/conventions/#chart-names[Helm Best Practices documentation] to learn more.
 ====
 
 |===
-| 필드 | 기본값 | 설명 | 헬름 인수 / 플래그 상응값
+| Field | Default | Description | Helm Argument / Flag Equivalent
 
 | metadata.name
 |
-| 헬름 차트 이름
+| Helm Chart name
 | NAME
 
 | spec.chart
 |
-| 리포지토리에 있는 헬름 차트 이름 또는 차트 아카이브(.tgz)에 대한 전체 HTTPS URL
+| Helm Chart name in repository, or complete HTTPS URL to chart archive (.tgz)
 | CHART
 
 | spec.chartContent
 |
-| Base64로 인코딩된 차트 아카이브 .tgz - spec.chart를 재정의합니다.
+| Base64-encoded chart archive .tgz - overrides spec.chart
 | CHART
 
 | spec.targetNamespace
 | default
-| 헬름 차트 대상 네임스페이스
+| Helm Chart target namespace
 | `--namespace`
 
 | spec.createNamespace
@@ -50,17 +51,17 @@ https://github.com/k3s-io/helm-controller#helm-controller[헬름 차트 커스�
 
 | spec.version
 |
-| 헬름 차트 버전(리포지토리에서 설치하는 경우)
+| Helm Chart version (when installing from repository)
 | `--version`
 
 | spec.repo
 |
-| 헬름 차트 리포지토리 URL
+| Helm Chart repository URL
 | `--repo`
 
 | spec.repoCA
 |
-| HTTPS 사용 서버의 인증서를 지정
+| Verify certificates of HTTPS-enabled servers using this CA bundle. Should be a string containing one or more PEM-encoded CA Certificates.
 | `--ca-file`
 
 | spec.repoCAConfigMap
@@ -80,17 +81,17 @@ https://github.com/k3s-io/helm-controller#helm-controller[헬름 차트 커스�
 
 | spec.helmVersion
 | v3
-| 사용할 헬름 버전 (`v2` 혹은 `v3`)
+| Helm version to use. Only `v3` is currently supported.
 |
 
 | spec.bootstrap
 | False
-| 클러스터(클라우드 컨트롤러 관리자 등)를 부트스트랩하는 데 이 차트가 필요한 경우 True로 설정합니다.
+| Set to True if this chart is needed to bootstrap the cluster (Cloud Controller Manager, etc)
 |
 
 | spec.jobImage
 |
-| 헬름 차트를 설치할 때 사용할 이미지를 지정합니다. 예시. rancher/klipper-helm:v0.3.0 .
+| Specify the image to use when installing the helm chart. E.g. rancher/klipper-helm:v0.3.0 .
 |
 
 | spec.podSecurityContext
@@ -109,13 +110,13 @@ https://github.com/k3s-io/helm-controller#helm-controller[헬름 차트 커스�
 |
 
 | spec.timeout
-| 300
-| 헬름 작업 시간 초과(초)
+| 300s
+| Timeout for Helm operations, as a https://pkg.go.dev/time#ParseDuration[duration string] (`300s`, `10m`, `1h`, etc)
 | `--timeout`
 
 | spec.failurePolicy
 | reinstall
-| ``abort``로 설정하면 헬름 작업이 중단되고 운영자의 수동 개입이 있을 때까지 중단된다.
+| Set to `abort` which case the Helm operation is aborted, pending manual intervention by the operator.
 |
 
 | spec.authSecret
@@ -135,12 +136,13 @@ https://github.com/k3s-io/helm-controller#helm-controller[헬름 차트 커스�
 
 | spec.set
 |
-| 간단한 기본 차트 값을 재정의합니다. 값을 통해 설정된 옵션보다 우선합니다.
+| Override simple default Chart values. These take precedence over options set via valuesContent.
 | `--set` / `--set-string`
+
 
 | spec.valuesContent
 |
-| YAML 파일 콘텐츠를 통해 복잡한 기본 차트 값 재정의
+| Override complex default Chart values via YAML file content
 | `--values`
 
 | spec.valuesSecrets
@@ -149,7 +151,7 @@ https://github.com/k3s-io/helm-controller#helm-controller[헬름 차트 커스�
 | `--values`
 |===
 
-``/var/lib/rancher/k3s/server/static/``에 위치한 콘텐츠는 클러스터 내에서 쿠버네티스 APIServer를 통해 익명으로 액세스할 수 있습니다. 이 URL은 `spec.chart` 필드에 있는 특수 변수 ``+%{KUBERNETES_API}%+``를 사용하여 템플릿화할 수 있습니다. 예를 들어, 패키지화된 Traefik 컴포넌트는 ``+https://%{KUBERNETES_API}%/static/charts/traefik-VERSION.tgz+``에서 해당 차트를 로드합니다.
+Content placed in `/var/lib/rancher/k3s/server/static/` can be accessed anonymously via the Kubernetes APIServer from within the cluster. This URL can be templated using the special variable `+%{KUBERNETES_API}%+` in the `spec.chart` field. For example, the packaged Traefik component loads its chart from `+https://%{KUBERNETES_API}%/static/charts/traefik-VERSION.tgz+`.
 
 Chart values are used in the following order, from least to greatest precedence:
 
@@ -160,7 +162,7 @@ Chart values are used in the following order, from least to greatest precedence:
 . HelmChartConfig `spec.valuesSecrets` in listed order of secret name and keys
 . HelmChart `spec.set`
 
-다음은 Bitnami 차트 저장소에서 아파치를 배포하여 기본 차트 값 중 일부를 재정의하는 방법에 대한 예제입니다. HelmChart 리소스 자체는 `kube-system` 네임스페이스에 있지만, 차트의 리소스는 동일한 매니페스트에 생성되는 `web` 네임스페이스에 배포된다는 점에 유의하세요. 이는 HelmChart 리소스를 배포하는 리소스와 분리하여 유지하려는 경우에 유용할 수 있습니다.
+Here's an example of how you might deploy Apache from the Bitnami chart repository, overriding some of the default chart values. Note that the HelmChart resource itself is in the `kube-system` namespace, but the chart's resources will be deployed to the `web` namespace, which is created in the same manifest. This can be useful if you want to keep your HelmChart resources separated from the resources they deploy.
 
 [,yaml]
 ----
@@ -301,9 +303,9 @@ stringData:
 ----
 
 [#_customizing_packaged_components_with_helmchartconfig]
-== HelmChartConfig로 패키지 컴포넌트 커스터마이징하기
+== Customizing Packaged Components with HelmChartConfig
 
-HelmChart로 배포되는 패키지 컴포넌트(예로 Traefik)의 값을 재정의할 수 있도록, K3s는 HelmChartConfig 리소스를 통해 배포를 사용자 정의할 수 있도록 지원합니다. HelmChartConfig 리소스는 해당 HelmChart의 이름과 네임스페이스와 일치해야 하며, 추가 값 파일로 `helm` 명령에 전달되는 ``valuesContent``를 추가로 제공할 수 있도록 지원합니다.
+To allow overriding values for packaged components that are deployed as HelmCharts (such as Traefik), K3s supports customizing deployments via a HelmChartConfig resources. The HelmChartConfig resource must match the name and namespace of its corresponding HelmChart, and it supports providing additional `valuesContent`, which is passed to the `helm` command as an additional value file.
 
 ### HelmChartConfig Field Definitions
 
@@ -325,11 +327,10 @@ HelmChart로 배포되는 패키지 컴포넌트(예로 Traefik)의 값을 재�
 
 [NOTE]
 ====
-HelmChart `spec.set` 값은 HelmChart 및 HelmChartConfig `spec.valuesContent` and `spec.valuesSecrets` 설정을 재정의합니다, as described above.
+HelmChart `spec.set` values override HelmChart and HelmChartConfig `spec.valuesContent` and `spec.valuesSecrets` settings, as described above.
 ====
 
-
-예를 들어, 패키징된 트래픽 인그레스 구성을 사용자 정의하려면 ``/var/lib/rancher/k3s/server/manifests/traefik-config.yaml``이라는 파일을 생성하고 다음 내용으로 채우면 됩니다:
+For example, to customize the packaged Traefik ingress configuration, you can create a file named `/var/lib/rancher/k3s/server/manifests/traefik-config.yaml` and populate it with the following content:
 
 [,yaml]
 ----
@@ -343,11 +344,9 @@ spec:
     image:
       repository: docker.io/library/traefik
       tag: 3.3.5
-    forwardedHeaders:
-      enabled: true
-      trustedIPs:
-        - 10.0.0.0/8
-    ssl:
-      enabled: true
-      permanentRedirect: false
+    ports:
+      web:
+        forwardedHeaders:
+          trustedIPs:
+            - 10.0.0.0/8
 ----

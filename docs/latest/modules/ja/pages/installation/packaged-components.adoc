@@ -1,6 +1,6 @@
 = パッケージ化されたコンポーネントの管理
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-01-06
+:revdate: 2026-01-05
 :page-revdate: {revdate}
 
 == マニフェストの自動デプロイ (AddOns)
@@ -72,4 +72,4 @@ kube-system   coredns-85cb69466-vcq7j                  1/1     Running   0      
 
 == Helm AddOns
 
-自動デプロイマニフェストを介してHelmチャートを管理する方法については、xref:helm.adoc[Helm]セクションを参照してください。
+自動デプロイマニフェストを介してHelmチャートを管理する方法については、xref:add-ons/helm.adoc[Helm]セクションを参照してください。

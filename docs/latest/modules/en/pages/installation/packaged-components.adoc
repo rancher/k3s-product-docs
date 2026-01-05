@@ -1,6 +1,6 @@
 = Managing Packaged Components
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-01-06
+:revdate: 2026-01-05
 :page-revdate: {revdate}
 
 == Auto-Deploying Manifests (AddOns)
@@ -74,4 +74,4 @@ If Traefik had already been deployed prior to creating the `traefik.skip` file, 
 
 == Helm AddOns
 
-For information about managing Helm charts via auto-deploying manifests, refer to the section about xref:helm.adoc[Helm.]
+For information about managing Helm charts via auto-deploying manifests, refer to the section about xref:add-ons/helm.adoc[Helm.]
