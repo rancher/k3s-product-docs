@@ -1,6 +1,6 @@
 = Air-Gap Install
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-09-16
+:revdate: 2026-01-05
 :page-revdate: {revdate}
 
 This guide walks you through installing K3s in an air-gapped environment using a three-step process.
@@ -58,7 +58,7 @@ curl -L -o k3s-airgap-images-amd64.tar.zst "https://github.com/k3s-io/k3s/releas
 ----
 sudo mkdir -p /var/lib/rancher/k3s/agent/images/
 sudo curl -L -o /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst "https://github.com/k3s-io/k3s/releases/download/v1.33.1%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
-cp k3s-airgap-images-amd64.tar.zst /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst
+sudo cp k3s-airgap-images-amd64.tar.zst /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst
 ----
 
 . Proceed to the <<_install_k3s,Install K3s>> section below.
