@@ -1,6 +1,6 @@
 = 環境変数
 :page-languages: [en, ja, ko, zh]
-:revdate: 2024-12-05
+:revdate: 2026-03-03
 :page-revdate: {revdate}
 
 xref:quick-start.adoc[クイックスタートガイド]で述べたように、https://get.k3s.io で利用可能なインストールスクリプトを使用して、systemdおよびopenrcベースのシステムにK3sをサービスとしてインストールできます。
@@ -9,7 +9,7 @@ xref:quick-start.adoc[クイックスタートガイド]で述べたように、
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -
 ----
 
 この方法を使用してK3sをインストールする場合、次の環境変数を使用してインストールを構成できます：
@@ -67,7 +67,7 @@ curl -sfL https://get.k3s.io | sh -
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=latest sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_CHANNEL=latest sh -
 ----
 
 ``K3S_``で始まる環境変数は、systemdおよびopenrcサービスで使用するために保持されます。

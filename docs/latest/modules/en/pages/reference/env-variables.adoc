@@ -9,7 +9,7 @@ The simplest form of this command is as follows:
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -
 ----
 
 When using this method to install K3s, the following environment variables can be used to configure the installation:
@@ -67,7 +67,7 @@ This example shows where to place aforementioned environment variables as option
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=latest sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_CHANNEL=latest sh -
 ----
 
 Environment variables which begin with `K3S_` will be preserved for the systemd and openrc services to use.

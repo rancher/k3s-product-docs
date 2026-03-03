@@ -1,6 +1,6 @@
 = 設定オプション
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-03-31
+:revdate: 2026-03-03
 :page-revdate: {revdate}
 
 このページでは、K3sを初めてセットアップする際によく使用されるオプションに焦点を当てます。詳細については、xref:advanced.adoc[高度なオプションと設定]およびxref:cli/server.adoc[サーバー]とxref:cli/agent.adoc[エージェント]のコマンドドキュメントを参照してください。
@@ -18,22 +18,22 @@ xref:quick-start.adoc[クイックスタートガイド]で述べたように、
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server" sh -s - --flannel-backend none --token 12345
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --flannel-backend none" K3S_TOKEN=12345 sh -s -
-curl -sfL https://get.k3s.io | K3S_TOKEN=12345 sh -s - server --flannel-backend none
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_EXEC="server" sh -s - --flannel-backend none --token 12345
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_EXEC="server --flannel-backend none" K3S_TOKEN=12345 sh -s -
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=12345 sh -s - server --flannel-backend none
 # K3S_URLがないため、以下ではサーバーが想定されます
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--flannel-backend none --token 12345" sh -s -
-curl -sfL https://get.k3s.io | sh -s - --flannel-backend none --token 12345
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_EXEC="--flannel-backend none --token 12345" sh -s -
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - --flannel-backend none --token 12345
 ----
 
 エージェントを登録する場合、以下のコマンドはすべて同じ動作をもたらします：
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="agent --server https://k3s.example.com --token mypassword" sh -s -
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="agent" K3S_TOKEN="mypassword" sh -s - --server https://k3s.example.com
-curl -sfL https://get.k3s.io | K3S_URL=https://k3s.example.com sh -s - agent --token mypassword
-curl -sfL https://get.k3s.io | K3S_URL=https://k3s.example.com K3S_TOKEN=mypassword sh -s - # K3S_URLがあるためエージェントが想定されます
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_EXEC="agent --server https://k3s.example.com --token mypassword" sh -s -
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_EXEC="agent" K3S_TOKEN="mypassword" sh -s - --server https://k3s.example.com
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_URL=https://k3s.example.com sh -s - agent --token mypassword
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_URL=https://k3s.example.com K3S_TOKEN=mypassword sh -s - # K3S_URLがあるためエージェントが想定されます
 ----
 
 すべての環境変数の詳細については、xref:reference/env-variables.adoc[環境変数]を参照してください。
@@ -196,7 +196,7 @@ debug: true
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="server" sh -s - --flannel-backend none
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="server" sh -s - --flannel-backend none
 ----
 
 または、すでにK3sバイナリをインストールしている場合：

@@ -1,6 +1,6 @@
 = High Availability Embedded etcd
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-02-27
+:revdate: 2026-03-03
 :page-revdate: {revdate}
 
 [CAUTION]
@@ -30,7 +30,7 @@ To get started, first launch a server node with the `cluster-init` flag to enabl
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | K3S_TOKEN=SECRET sh -s - server \
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - server \
     --cluster-init \
     --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
 ----
@@ -39,7 +39,7 @@ After launching the first server, join the second and third servers to the clust
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | K3S_TOKEN=SECRET sh -s - server \
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - server \
     --server https://<ip or hostname of server1>:6443 \
     --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
 ----
@@ -59,7 +59,7 @@ Now you have a highly available control plane. Any successfully clustered server
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | K3S_TOKEN=SECRET sh -s - agent --server https://<ip or hostname of server>:6443
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - agent --server https://<ip or hostname of server>:6443
 ----
 
 There are a few config flags that must be the same in all server nodes:

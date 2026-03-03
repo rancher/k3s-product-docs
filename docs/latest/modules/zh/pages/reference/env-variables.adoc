@@ -9,7 +9,7 @@
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -
 ----
 
 [NOTE]
@@ -77,7 +77,7 @@ curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIR
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=latest sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_CHANNEL=latest sh -
 ----
 
 以 `K3S_` 开头的环境变量将被保留，供 systemd 和 openrc 服务使用。

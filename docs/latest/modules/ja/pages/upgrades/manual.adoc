@@ -1,6 +1,6 @@
 = 手動アップグレード
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-12-30
+:revdate: 2026-03-03
 :page-revdate: {revdate}
 
 K3sをアップグレードするには、インストールスクリプトを使用するか、希望するバージョンのバイナリを手動でインストールすることができます。
@@ -66,21 +66,21 @@ Containers for Pods continue running even when K3s is stopped. The install scrip
 
 [,sh]
 ----
-curl -sfL https://get.k3s.io | <EXISTING_K3S_ENV> sh -s - <EXISTING_K3S_ARGS>
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s <EXISTING_K3S_ENV> sh -s - <EXISTING_K3S_ARGS>
 ----
 
 特定のチャンネル（例えばlatest）の新しいバージョンにアップグレードしたい場合は、チャンネルを指定できます：
 
 [,sh]
 ----
-curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=latest <EXISTING_K3S_ENV> sh -s - <EXISTING_K3S_ARGS>
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_CHANNEL=latest <EXISTING_K3S_ENV> sh -s - <EXISTING_K3S_ARGS>
 ----
 
 特定のバージョンにアップグレードしたい場合は、以下のコマンドを実行できます：
 
 [,sh]
 ----
-curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=vX.Y.Z+k3s1 <EXISTING_K3S_ENV> sh -s - <EXISTING_K3S_ARGS>
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_VERSION=vX.Y.Z+k3s1 <EXISTING_K3S_ENV> sh -s - <EXISTING_K3S_ARGS>
 ----
 
 [TIP]

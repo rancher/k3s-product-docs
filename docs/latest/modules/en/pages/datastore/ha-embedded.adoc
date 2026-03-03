@@ -1,6 +1,6 @@
 = High Availability Embedded etcd
 :page-languages: [en, ja, ko, zh]
-:revdate: 2024-09-11
+:revdate: 2026-03-03
 :page-revdate: {revdate}
 
 [CAUTION]
@@ -30,7 +30,7 @@ To get started, first launch a server node with the `cluster-init` flag to enabl
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | K3S_TOKEN=SECRET sh -s - server \
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - server \
     --cluster-init \
     --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
 ----
@@ -39,10 +39,12 @@ After launching the first server, join the second and third servers to the clust
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | K3S_TOKEN=SECRET sh -s - server \
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - server \
     --server https://<ip or hostname of server1>:6443 \
     --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
 ----
+
+Where `INSTALL_K3S_ARTIFACT_URL` is the https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL]
 
 Check to see that the second and third servers are now part of the cluster:
 
@@ -59,7 +61,7 @@ Now you have a highly available control plane. Any successfully clustered server
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | K3S_TOKEN=SECRET sh -s - agent --server https://<ip or hostname of server>:6443
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - agent --server https://<ip or hostname of server>:6443
 ----
 
 There are a few config flags that must be the same in all server nodes:
@@ -69,13 +71,6 @@ There are a few config flags that must be the same in all server nodes:
 * Feature related flags: `--secrets-encryption`
 
 == Existing single-node clusters
-
-[IMPORTANT]
-.Version Gate
-====
-Available as of https://github.com/k3s-io/k3s/releases/tag/v1.22.2%2Bk3s1[v1.22.2+k3s1]
-====
-
 
 If you have an existing cluster using the default embedded SQLite database, you can convert it to etcd by simply restarting your K3s server with the `--cluster-init` flag. Once you've done that, you'll be able to add additional instances as described above.
 

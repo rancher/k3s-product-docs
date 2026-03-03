@@ -1,9 +1,9 @@
 = High Availability External DB
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-02-27
+:revdate: 2026-03-03
 :page-revdate: {revdate}
 
-This section describes how to install a high-availability K3s cluster with an external database.
+This section describes how to install a high-availability {k3s-product-name} cluster with an external database.
 
 [NOTE]
 ====
@@ -30,7 +30,7 @@ You will first need to create an external datastore for the cluster. See the xre
 
 === 2. Launch Server Nodes
 
-K3s requires two or more server nodes for this HA configuration. See the xref:installation/requirements.adoc[Requirements] guide for minimum machine requirements.
+{k3s-product-name} requires two or more server nodes for this HA configuration. See the xref:installation/requirements.adoc[Requirements] guide for minimum machine requirements.
 
 When running the `k3s server` command on these nodes, you must set the `datastore-endpoint` parameter so that K3s knows how to connect to the external datastore. The `token` parameter can also be used to set a deterministic token when adding nodes. When empty, this token will be generated automatically for further use.
 
@@ -38,11 +38,13 @@ For example, a command like the following could be used to install the K3s serve
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | sh -s - server \
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server \
   --token=SECRET \
   --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name" \
   --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
 ----
+
+Where `INSTALL_K3S_ARTIFACT_URL` is the https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL]
 
 The datastore endpoint format differs based on the database type. For details, refer to the section on xref:datastore/datastore.adoc#_datastore_endpoint_format_and_functionality[datastore endpoint formats.]
 
@@ -73,7 +75,7 @@ Additional server nodes can then be added xref:cli/server.adoc#_cluster_options[
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | sh -s - server \
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server \
   --token=SECRET \
   --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name"
 ----

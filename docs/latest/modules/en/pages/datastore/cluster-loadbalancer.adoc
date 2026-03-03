@@ -1,6 +1,6 @@
 = Cluster Load Balancer
 :page-languages: [en, ja, ko, zh]
-:revdate: 2024-09-26
+:revdate: 2026-03-03
 :page-revdate: {revdate}
 
 This section describes how to install an external load balancer in front of a High Availability (HA) K3s cluster's server nodes. Two examples are provided: Nginx and HAProxy.
@@ -124,8 +124,9 @@ systemctl restart keepalived
 +
 [,bash]
 ----
-curl -sfL https://get.k3s.io | K3S_TOKEN=lb-cluster-gd sh -s - agent --server https://10.10.10.100:6443
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=lb-cluster-gd sh -s - agent --server https://10.10.10.100:6443
 ----
+Where `INSTALL_K3S_ARTIFACT_URL` is the https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL]
 +
 You can now use `kubectl` from server node to interact with the cluster.
 +
@@ -195,7 +196,7 @@ systemctl start nginx
 +
 [,bash]
 ----
-curl -sfL https://get.k3s.io | K3S_TOKEN=lb-cluster-gd sh -s - agent --server https://10.10.10.98:6443
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=lb-cluster-gd sh -s - agent --server https://10.10.10.98:6443
 ----
 +
 You can now use `kubectl` from server node to interact with the cluster.
