@@ -1,6 +1,6 @@
 = High Availability External DB
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-02-27
+:revdate: 2026-03-03
 :page-revdate: {revdate}
 
 This section describes how to install a high-availability K3s cluster with an external database.
@@ -38,7 +38,7 @@ For example, a command like the following could be used to install the K3s serve
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | sh -s - server \
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server \
   --token=SECRET \
   --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name" \
   --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
@@ -73,7 +73,7 @@ Additional server nodes can then be added xref:cli/server.adoc#_cluster_options[
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | sh -s - server \
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server \
   --token=SECRET \
   --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name"
 ----

@@ -1,6 +1,6 @@
 = 高可用嵌入式 etcd
 :page-languages: [en, ja, ko, zh]
-:revdate: 2024-09-09
+:revdate: 2026-03-03
 :page-revdate: {revdate}
 
 [CAUTION]
@@ -25,7 +25,7 @@ HA 嵌入式 etcd 集群必须由奇数个 Server 节点组成，以便 etcd 维
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | K3S_TOKEN=SECRET sh -s - server \
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - server \
     --cluster-init \
     --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
 ----
@@ -34,7 +34,7 @@ curl -sfL https://get.k3s.io | K3S_TOKEN=SECRET sh -s - server \
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | K3S_TOKEN=SECRET sh -s - server \
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - server \
     --server https://<ip or hostname of server1>:6443 \
     --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
 ----
@@ -54,7 +54,7 @@ server3     Ready    control-plane,etcd,master   10m   vX.Y.Z
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | K3S_TOKEN=SECRET sh -s - agent --server https://<ip or hostname of server>:6443
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - agent --server https://<ip or hostname of server>:6443
 ----
 
 有几个配置标志在所有 Server 节点中必须是相同的:

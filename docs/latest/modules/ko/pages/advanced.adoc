@@ -121,7 +121,7 @@ curl https://releases.rancher.com/install-docker/20.10.sh | sh
 +
 [,bash]
 ----
-curl -sfL https://get.k3s.io | sh -s - --docker
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - --docker
 ----
 
 . 클러스터를 사용할 수 있는지 확인합니다:
@@ -394,7 +394,7 @@ ____
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_START=true INSTALL_K3S_SKIP_ENABLE=true sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_SKIP_START=true INSTALL_K3S_SKIP_ENABLE=true sh -
 ----
 
 == 추가 OS 준비 사항

@@ -1,6 +1,6 @@
 = サーバーロールの管理
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-02-27
+:revdate: 2026-03-03
 :page-revdate: {revdate}
 
 `--cluster-init` オプションを使用して K3s サーバーを起動すると、apiserver、controller-manager、scheduler、および etcd を含むすべてのコントロールプレーンコンポーネントが実行されます。特定のコンポーネントを無効にして、コントロールプレーンと etcd のロールを別々のノードに分割することが可能です。
@@ -16,7 +16,7 @@
 `etcd` ロールのみを持つサーバーを作成するには、すべてのコントロールプレーンコンポーネントを無効にして K3s を起動します:
 
 ----
-curl -fL https://get.k3s.io | sh -s - server --cluster-init --disable-apiserver --disable-controller-manager --disable-scheduler
+curl -fL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server --cluster-init --disable-apiserver --disable-controller-manager --disable-scheduler
 ----
 
 この最初のノードは etcd を起動し、追加の `etcd` および/または `control-plane` ノードが参加するのを待ちます。クラスターは、`control-plane` コンポーネントが有効な追加のサーバーが参加するまで使用できません。
@@ -33,7 +33,7 @@ curl -fL https://get.k3s.io | sh -s - server --cluster-init --disable-apiserver 
 
 [,bash]
 ----
-curl -fL https://get.k3s.io | sh -s - server --token <token> --disable-etcd --server https://<etcd-only-node>:6443
+curl -fL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server --token <token> --disable-etcd --server https://<etcd-only-node>:6443
 ----
 
 専用のサーバーノードを作成した後、選択したロールは `kubectl get node` で確認できます:
