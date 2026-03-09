@@ -19,14 +19,14 @@ You can use any K3s Prime version listed on the Prime Artifacts URL for the asse
 
 {k3s-product-name} provides an installation script that is a convenient way to install it as a service on systemd or openrc based systems. This script is available at https://get.k3s.io. To install {k3s-product-name} using this method, do the following:
 
-. Run the installer, where `INSTALL_K3S_ARTIFACT_URL` is the https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL] and `INSTALL_K3S_CHANNEL` is a release channel you can subscribe to and defaults to `stable`. In this example, `INSTALL_K3S_CHANNEL="latest"` gives you the latest version of {k3s-product-name}.
+Run the installer, where `INSTALL_K3S_ARTIFACT_URL` is the https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL] and `INSTALL_K3S_CHANNEL` is a release channel you can subscribe to and defaults to `stable`. In this example, `INSTALL_K3S_CHANNEL="latest"` gives you the latest version of {k3s-product-name}.
 
 [,bash]
 ----
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_CHANNEL="latest" sh -
 ----
-If you want to specify a version, set the `INSTALL_RKE2_VERSION` environment variable.
-+
+If you want to specify a version, set the `INSTALL_RKE2_VERSION` environment variable:
+
 [,bash]
 ----
 curl -sfL https://get.k3s.io/ | sudo INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_VERSION="<VERSION>" sh -
