@@ -1,0 +1,264 @@
+= Ressourcenprofilierung
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-01-06
+:page-revdate: {revdate}
+
+Dieser Abschnitt erfasst die Ergebnisse von Tests zur Bestimmung der minimalen Ressourcenanforderungen für K3s.
+
+== Minimale Ressourcenanforderungen für K3s
+
+Die Ergebnisse sind wie folgt zusammengefasst:
+
+|===
+| Komponenten | Prozessor | Min CPU | Min RAM mit Kine/SQLite | Min RAM mit eingebettetem etcd
+
+| K3s-Server mit einer Arbeitslast
+| Intel 8375C CPU, 2,90 GHz
+| 6 % eines Kerns
+| 1596 M
+| 1606 M
+
+| K3s-Cluster mit einem einzelnen Agenten
+| Intel 8375C CPU, 2,90 GHz
+| 5 % eines Kerns
+| 1428 M
+| 1450 M
+
+| K3s-Agent
+| Intel 8375C CPU, 2,90 GHz
+| 3 % eines Kerns
+| 275 M
+| 275 M
+
+| K3s-Server mit einer Arbeitslast
+| Pi4B BCM2711, 1,50 GHz
+| 30 % eines Kerns
+| 1588 M
+| 1613 M
+
+| K3s-Cluster mit einem einzelnen Agenten
+| Pi4B BCM2711, 1,50 GHz
+| 25 % eines Kerns
+| 1215 M
+| 1413 M
+
+| K3s-Agent
+| Pi4B BCM2711, 1,50 GHz
+| 10 % eines Kerns
+| 268 M
+| 268 M
+|===
+
+=== Umfang der Ressourcentests
+
+Die Ressourcentests sollten die folgenden Problemstellungen adressieren:
+
+* Bestimmen Sie in einem Cluster mit einem einzelnen Knoten die legitime Mindestmenge an CPU, Speicher und IOPs, die reserviert werden sollte, um den gesamten K3s-Serverstack auszuführen, vorausgesetzt, dass eine echte Arbeitslast im Cluster bereitgestellt wird.
+* Bestimmen Sie auf einem Agenten (Arbeits-)Knoten die legitime Mindestmenge an CPU, Speicher und IOPs, die für die Kubernetes- und K3s-Steuerungskomponenten (das Kubelet und den K3s-Agenten) reserviert werden sollte.
+
+=== Eingeschlossene Komponenten für Basislinienmessungen
+
+Die getesteten Komponenten sind:
+
+* K3s v1.26.5 mit allen aktivierten Paket-Komponenten
+* Prometheus + Grafana Überwachungsstack
+* https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[Kubernetes Beispiel Nginx Bereitstellung]
+
+Dies sind Basislinienwerte für ein stabiles System, das nur K3s-Paket-Komponenten (Traefik Ingress, Klipper lb, local-path storage) verwendet, das einen standardmäßigen Überwachungsstack (Prometheus und Grafana) und die Beispiel-App Guestbook ausführt.
+
+Die Ressourcenwerte einschließlich IOPS gelten nur für den Kubernetes-Datenspeicher und die Steuerungsebene und beinhalten nicht den Overhead für System-Level-Management-Agenten oder Protokollierung, Container-Image-Management oder spezifische Anforderungen an die Arbeitslast.
+
+=== Methode
+
+Eine eigenständige Instanz von Prometheus v2.43.0 wurde verwendet, um CPU-, Speicher- und Festplatten-I/O-Statistiken des Hosts zu sammeln, wobei `prometheus-node-exporter` über apt installiert wurde.
+
+`systemd-cgtop` wurde verwendet, um die CPU- und Speichernutzung auf der Systemd-Cgroup-Ebene stichprobenartig zu überprüfen. `system.slice/k3s.service` verfolgt die Ressourcennutzung sowohl für K3s als auch für containerd, während einzelne Pods unter der `kubepods`-Hierarchie stehen.
+
+Zusätzliche detaillierte K3s-Speichernutzungsdaten wurden von `kubectl top node` unter Verwendung des integrierten Metrics-Servers für die Server- und Agentenprozesse gesammelt.
+
+Die Nutzungswerte basierten auf den 95. Perzentilwerten aus dem stabilen Betriebszustand auf Knoten, die die beschriebenen Arbeitslasten ausführen.
+
+=== Umgebung
+
+|===
+| Arch | BS | System | PROZESSOR | RAM | Festplatte
+
+| x86-64
+| Ubuntu 22.04
+| AWS c6id.xlarge
+| Intel Xeon Platinum 8375C CPU, 4 Kerne 2,90 GHz
+| 8 GB
+| NVME SSD
+
+| aarch64
+| Raspberry Pi OS 11
+| Raspberry Pi 4 Model B
+| BCM2711, 4 Kerne 1,50 GHz
+| 8 GB
+| UHS-III SDXC
+|===
+
+=== Basisressourcenanforderungen
+
+Dieser Abschnitt erfasst die Ergebnisse von Tests zur Bestimmung der minimalen Ressourcenanforderungen für den grundlegenden K3s-Betrieb.
+
+==== K3s-Server mit einer Arbeitslast
+
+Dies sind die Anforderungen für einen Ein-Knoten-Cluster, in dem der K3s-Server Ressourcen mit einer https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[einfachen Arbeitslast] teilt.
+
+Die CPU-Anforderungen sind:
+
+|===
+| System | CPU-Kernnutzung
+
+| Intel 8375C
+| 6 % eines Kerns
+
+| Pi4B
+| 30 % eines Kerns
+|===
+
+Die Arbeitsspeicheranforderungen sind:
+
+|===
+| Getesteter Datenspeicher | System | Arbeitsspeicher
+
+| Kine/SQLite
+| Intel 8375C
+| 1596 M
+
+|
+| Pi4B
+| 1588 M
+
+| Embedded etcd
+| Intel 8375C
+| 1606 M
+
+|
+| Pi4B
+| 1613 M
+|===
+
+Die Festplattenanforderungen sind:
+
+|===
+| Getesteter Datenspeicher | IOPS | KiB/sec | Latenz
+
+| Kine/SQLite
+| 10
+| 500
+| < 10 ms
+
+| Embedded etcd
+| 50
+| 250
+| < 5 ms
+|===
+
+==== K3s-Cluster mit einem einzelnen Agenten
+
+Dies sind die grundlegenden Anforderungen für einen K3s-Cluster mit einem K3s-Serverknoten und einem K3s-Agenten, jedoch ohne Arbeitslast.
+
+===== K3s-Server
+
+Die CPU-Anforderungen sind:
+
+|===
+| System | CPU-Kernnutzung
+
+| Intel 8375C
+| 5 % eines Kerns
+
+| Pi4B
+| 25 % eines Kerns
+|===
+
+Die Arbeitsspeicheranforderungen sind:
+
+|===
+| Getesteter Datenspeicher | System | Arbeitsspeicher
+
+| Kine/SQLite
+| Intel 8375C
+| 1428 M
+
+|
+| Pi4B
+| 1215 M
+
+| Embedded etcd
+| Intel 8375C
+| 1450 M
+
+|
+| Pi4B
+| 1413 M
+|===
+
+===== K3s-Agent
+
+Die Anforderungen sind:
+
+|===
+| System | CPU-Kernnutzung | RAM
+
+| Intel 8375C
+| 3 % eines Kerns
+| 275 M
+
+| Pi4B
+| 5 % eines Kerns
+| 268 M
+|===
+
+=== Analyse der primären Treiber der Ressourcennutzung
+
+Die Nutzungszahlen des K3s-Servers werden hauptsächlich durch die Unterstützung des Kubernetes-Datenspeichers (Kine oder etcd), des API-Servers, des Controller-Managers und der Scheduler-Steuerschleifen sowie durch alle Verwaltungsaufgaben, die erforderlich sind, um Änderungen am Zustand des Systems vorzunehmen, bestimmt. Betriebe, die zusätzliche Last auf die Kubernetes-Steuerungsebene legen, wie das Erstellen, Ändern oder Löschen von Ressourcen, führen zu vorübergehenden Spitzen in der Nutzung. Die Verwendung von Operatoren oder Anwendungen, die umfangreich auf den Kubernetes-Datenspeicher zugreifen (wie Rancher oder andere Operator-Anwendungen), erhöht die Ressourcenanforderungen des Servers. Das Hochskalieren des Clusters durch Hinzufügen zusätzlicher Knoten oder das Erstellen vieler Clusterressourcen erhöht die Ressourcenanforderungen des Servers.
+
+Die Nutzungszahlen des K3s-Agenten werden hauptsächlich durch die Unterstützung der Kontrollschleifen für das Container-Lebenszyklusmanagement bestimmt. Betriebe, die das Verwalten von Images, die Bereitstellung von Speicher oder das Erstellen/Zerstören von Containern umfassen, führen zu vorübergehenden Spitzen in der Nutzung. Insbesondere das Herunterladen von Images ist typischerweise stark CPU- und I/O-gebunden, da es das Dekomprimieren von Image-Inhalte auf die Festplatte umfasst. Wenn möglich, sollte der Speicher für Arbeitslasten (ephemerer Speicher für Pods und Volumes) von den Agentenkomponenten (/var/lib/rancher/k3s/agent) isoliert werden, um sicherzustellen, dass es keine Ressourcenkonflikte gibt.
+
+=== Verhinderung von Störungen zwischen Agenten und Arbeitslasten im Cluster-Datenspeicher.
+
+Wenn in einer Umgebung gearbeitet wird, in der der Server auch Arbeitslast-Pods hostet, sollte darauf geachtet werden, dass die IOPS von Agenten und Arbeitslasten nicht mit dem Datenspeicher interferieren.
+
+Dies kann am besten erreicht werden, indem die Serverkomponenten (/var/lib/rancher/k3s/server) auf einem anderen Speichermedium als die Agentenkomponenten (/var/lib/rancher/k3s/agent) platziert werden, zu denen auch der Containerd-Image-Speicher gehört.
+
+Der Speicher für Arbeitslasten (ephemerer Speicher für Pods und Volumes) sollte ebenfalls vom Datenspeicher isoliert werden.
+
+Das Nichteinhalten der Durchsatz- und Latenzanforderungen des Datenspeichers kann zu verzögerten Reaktionszeiten der Steuerungsebene und/oder dazu führen, dass diese den Systemzustand nicht aufrechterhält.
+
+[#_server_sizing_requirements_for_k3s]
+== Anforderungen an die Serverdimensionierung für K3s.
+
+=== Umgebung
+
+* Alle Agenten waren t3.medium AWS EC2-Instanzen.
+** Ein einzelner Agent war eine c5.4xlarge Instanz. Dies hostete den Grafana-Überwachungsstack und verhinderte, dass er mit den Ressourcen der Steuerungsebene interferiert.
+* Der Server war eine c5 AWS EC2-Instanz. Mit der Zunahme der Anzahl der Agenten wurde der Server auf größere c5-Instanzen aufgerüstet.
+
+=== Methode
+
+Diese Daten wurden unter spezifischen Testbedingungen abgerufen. Es wird je nach Umgebung und Arbeitslasten variieren. Die folgenden Schritte geben einen Überblick über den Test, der durchgeführt wurde, um dies abzurufen. Er wurde zuletzt auf v1.31.0+k3s1 durchgeführt. Alle Maschinen wurden in AWS mit standardmäßigen 20 GiB gp3-Volumes bereitgestellt. Der Test wurde mit den folgenden Schritten durchgeführt:
+
+. Ressourcen in Grafana mit der Prometheus-Datenquelle überwachen. 
+. Arbeitslasten so bereitstellen, dass eine kontinuierliche Clusteraktivität simuliert wird:
+** Eine grundlegende Arbeitslast, die kontinuierlich hoch- und herunterskaliert.
+** Eine Arbeitslast, die in einer Schleife gelöscht und neu erstellt wird.
+** Eine konstante Arbeitslast, die mehrere andere Ressourcen, einschließlich CRDs, enthält.
+. Agentenknoten in Gruppen von 50-100 gleichzeitig beitreten.
+. Das Hinzufügen von Agenten ist zu stoppen, wenn die CPU-Auslastung des Servers beim Beitreten von Agenten über 90 % steigt oder wenn der RAM über 80 % ausgelastet ist. 
+
+=== Beobachtungen
+
+* Beim Beitritt von Agenten verzeichnete die CPU des Servers Spitzen von etwa 20 % über dem Basiswert.
+* Typischerweise war der begrenzende Faktor die CPU, nicht der RAM. Bei den meisten Tests lag die RAM-Auslastung bei etwa 60 %, als die CPU 90 % Auslastung erreichte.
+
+==== Eine Anmerkung zur hohen Verfügbarkeit (HA)
+
+Am Ende jedes Tests wurden zwei zusätzliche Server hinzugefügt (was einen grundlegenden 3-Knoten-HA-Cluster bildet), um zu beobachten, welche Auswirkungen dies auf die ursprünglichen Serverressourcen hatte. Die Wirkung war:
+
+* Ein merklicher Rückgang der CPU-Auslastung, normalerweise 30-50%.
+* Die RAM-Auslastung blieb gleich.
+
+Obwohl dies nicht getestet wurde, wird erwartet, dass sich die Anzahl der Agenten, die beitreten können, bei einem 3-Knoten-HA-Cluster um ca. 50 % erhöhen würde, wenn die CPU-Auslastung auf einem einzelnen Server der begrenzende Faktor ist.

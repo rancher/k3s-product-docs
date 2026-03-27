@@ -1,0 +1,118 @@
+= Banco de Dados Externo de Alta Disponibilidade
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-03-03
+:page-revdate: {revdate}
+
+Esta seção descreve como instalar um cluster de alta disponibilidade {k3s-product-name} com um banco de dados externo.
+
+[NOTE]
+====
+Para implantar rapidamente grandes clusters de HA, veja xref:related-projects.adoc[Projetos Relacionados]
+====
+
+
+Clusters de servidor único podem atender a uma variedade de casos de uso, mas para ambientes onde o tempo de atividade do plano de controle do Kubernetes é crítico, você pode executar o K3s em uma configuração de HA. Um cluster HA K3s é composto por:
+
+* Dois ou mais *nós de servidor* que servirão a API do Kubernetes e executarão outros serviços do plano de controle
+* Um *banco de dados externo* (em oposição ao banco de dados SQLite embutido usado em configurações de servidor único)
+* Opcional: Zero ou mais *nós agentes* que são designados para executar seus aplicativos e serviços
+* Opcional: Um *endereço de registro fixo* para que os nós agentes se registrem no cluster
+
+Para mais detalhes sobre como esses componentes funcionam juntos, consulte a xref:architecture.adoc#_high_availability_k3s[seção de arquitetura.]
+
+== Esboço da Instalação
+
+Configurar um cluster de alta disponibilidade requer os seguintes passos:
+
+=== 1. Criar um Banco de Dados Externo
+
+Você precisará primeiro criar um banco de dados externo para o cluster. Consulte a documentação de xref:datastore/datastore.adoc[Opções de Banco de Dados do Cluster] para mais detalhes.
+
+=== 2. Iniciar Nós de Servidor
+
+{k3s-product-name} requer dois ou mais nós de servidor para esta configuração de HA. Consulte o guia de xref:installation/requirements.adoc[Requisitos] para os requisitos mínimos da máquina.
+
+Ao executar o comando `k3s server` nesses nós, você deve definir o parâmetro `datastore-endpoint` para que o K3s saiba como se conectar ao banco de dados externo. O parâmetro `token` também pode ser usado para definir um token determinístico ao adicionar nós. Quando vazio, esse token será gerado automaticamente para uso posterior.
+
+Por exemplo, um comando como o seguinte pode ser usado para instalar o servidor K3s com um banco de dados MySQL como o banco de dados externo e xref:cli/server.adoc#_cluster_options[definir um token]:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server \
+  --token=SECRET \
+  --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name" \
+  --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
+----
+
+Onde `INSTALL_K3S_ARTIFACT_URL` é a https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[URL dos Artefatos Primários]
+
+O formato do endpoint do banco de dados difere com base no tipo de banco de dados. Para detalhes, consulte a seção sobre xref:datastore/datastore.adoc#_datastore_endpoint_format_and_functionality[formatos de endpoint do banco de dados].
+
+Para configurar certificados TLS ao iniciar nós de servidor, consulte o xref:datastore/datastore.adoc#_external_datastore_configuration_parameters[guia de configuração do banco de dados].
+
+[NOTE]
+====
+As mesmas opções de instalação disponíveis para instalações de servidor único também estão disponíveis para instalações de alta disponibilidade. Para mais detalhes, consulte a documentação xref:installation/configuration.adoc[Opções de Configuração].
+====
+
+
+Por padrão, os nós de servidor serão agendáveis e, portanto, suas cargas de trabalho podem ser iniciadas neles. Se você deseja ter um plano de controle dedicado onde nenhuma carga de trabalho de usuário será executada, pode usar taints. O parâmetro `node-taint` permitirá que você configure nós com taints, por exemplo `--node-taint CriticalAddonsOnly=true:NoExecute`.
+
+Uma vez que você tenha iniciado o processo `k3s server` em todos os nós de servidor, certifique-se de que o cluster foi iniciado corretamente com `k3s kubectl get nodes`. Você deve ver seus nós de servidor no estado Pronto.
+
+=== 3. Opcional: Adicionar nós de servidor adicionais
+
+O mesmo comando de exemplo na Etapa 2 pode ser usado para adicionar nós de servidor adicionais, onde o token do primeiro nó precisa ser utilizado.
+
+Se o primeiro nó de servidor foi iniciado sem a flag CLI `--token` ou a variável `K3S_TOKEN`, o valor do token pode ser recuperado de qualquer servidor já adicionado ao cluster:
+
+[,bash]
+----
+cat /var/lib/rancher/k3s/server/token
+----
+
+Nós de servidor adicionais podem então ser adicionados xref:cli/server.adoc#_cluster_options[usando o token]:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server \
+  --token=SECRET \
+  --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name"
+----
+
+Existem algumas flags de configuração que devem ser as mesmas em todos os nós de servidor:
+
+* Flags relacionadas à rede: `--cluster-dns`, `--cluster-domain`, `--cluster-cidr`, `--service-cidr`
+* Flags que controlam a implantação de certos componentes: `--disable-helm-controller`, `--disable-kube-proxy`, `--disable-network-policy` e qualquer componente passado para `--disable`
+* Flags relacionadas a recursos: `--secrets-encryption`
+
+[NOTE]
+====
+Certifique-se de manter uma cópia deste token, pois ele é necessário ao restaurar de um backup e adicionar nós. Anteriormente, o K3s não exigia o uso de um token ao usar bancos de dados SQL externos.
+====
+
+
+=== 4. Opcional: Configure um Endereço de Registro Fixo
+
+Os nós agentes precisam de uma URL para se registrar. Isso pode ser o IP ou o nome do host de qualquer nó de servidor, mas em muitos casos, esses podem mudar ao longo do tempo. Por exemplo, se você estiver executando seu cluster em uma nuvem que suporta grupos de escalonamento, os nós podem ser criados e destruídos ao longo do tempo, mudando para diferentes IPs do conjunto inicial de nós de servidor. Seria melhor ter um ponto de extremidade estável na frente dos nós de servidor que não mudará ao longo do tempo. Esse ponto de extremidade pode ser configurado usando várias abordagens, como:
+
+* Um balanceador de carga de camada 4 (TCP)
+* DNS round-robin
+* Endereços IP virtuais ou elásticos
+
+Veja xref:datastore/cluster-loadbalancer.adoc[Cluster Loadbalancer] para configurações de exemplo.
+
+Esse ponto de extremidade também pode ser usado para acessar a API do Kubernetes. Assim, você pode, por exemplo, modificar seu arquivo https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/[kubeconfig] para apontar para ele em vez de um nó específico.
+
+Para evitar erros de certificado em tal configuração, você deve configurar o servidor com a opção `--tls-san=YOUR_IP_OR_HOSTNAME_HERE`. Essa opção adiciona um nome de host ou IP adicional como um Nome Alternativo de Assunto no certificado TLS, e pode ser especificada várias vezes se você quiser acessar tanto pelo IP quanto pelo nome do host.
+
+=== 5. Opcional: Adicionar nós agentes
+
+Como os nós do servidor K3s são agendáveis por padrão, os nós agentes não são necessários para um cluster HA K3s. No entanto, você pode desejar ter nós agentes dedicados para executar seus aplicativos e serviços.
+
+A junção de nós agentes em um cluster HA é a mesma que a junção de nós agentes em um cluster de servidor único. Você só precisa especificar a URL à qual o agente deve se registrar (seja um dos IPs dos nós de servidor ou um endereço de registro fixo) e o token que deve usar.
+
+[,bash]
+----
+K3S_TOKEN=SECRET k3s agent --server https://server-or-fixed-registration-address:6443
+----

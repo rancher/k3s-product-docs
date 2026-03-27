@@ -1,12 +1,14 @@
 = 集群访问
 :page-languages: [en, ja, ko, zh]
-:revdate: 2024-09-09
+:revdate: 2025-09-15
 :page-revdate: {revdate}
 
-`/etc/rancher/k3s/k3s.yaml` 中存储的 kubeconfig 文件用于配置对 Kubernetes 集群的访问。如果你已经安装了上游的 Kubernetes 命令行工具（如 kubectl 或 helm)，你需要用正确的 kubeconfig 路径配置它们。这可以通过导出 `KUBECONFIG` 环境变量或调用 `--kubeconfig` 命令行标志来完成。有关详细信息，请参阅以下示例。
+存储在 `/etc/rancher/k3s/k3s.yaml` 的管理员 kubeconfig 文件可用于提供对 Kubernetes 集群的访问。该文件以 `system:admin` 用户和 `system:masters` 组的身份授予访问权限，这些权限由 Kubernetes 硬编码为对集群内所有资源具有无限制访问权限。
 
-使用 KUBECONFIG 环境变量：
+K3s 附带的 `kubectl` 命令默认配置为从此路径加载配置。如果您已经安装了上游 Kubernetes 命令行工具（如 kubectl 或 Helm），则需要为它们配置正确的 kubeconfig 路径。这可以通过导出 `KUBECONFIG` 环境变量或调用 `--kubeconfig` 命令行标志来完成。请参阅下面的示例以获取详细信息。
 
+* 导出 KUBECONFIG 环境变量：
++
 [,bash]
 ----
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
@@ -14,8 +16,7 @@ kubectl get pods --all-namespaces
 helm ls --all-namespaces
 ----
 
-或者在命令中指定 kubeconfig 文件的位置：
-
+* 在命令中指定 kubeconfig 文件的位置：
 [,bash]
 ----
 kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get pods --all-namespaces
@@ -24,4 +25,9 @@ helm --kubeconfig /etc/rancher/k3s/k3s.yaml ls --all-namespaces
 
 == 使用 kubectl 从外部访问集群
 
-将 `/etc/rancher/k3s/k3s.yaml` 复制到位于集群外部的主机上的 `~/.kube/config`。然后，将 `server` 字段的值替换为你 K3s Server 的 IP 或名称。现在，你可以使用 `kubectl` 来管理 K3s 集群。
+将位于集群外的机器上的 `/etc/rancher/k3s/k3s.yaml` 复制为 `~/.kube/config`。然后将 `server` 字段的值替换为您的 K3s 服务器的 IP 或名称。`kubectl` 现在可以管理您的 K3s 集群。
+
+[NOTE]
+====
+K3s 每次启动时会自动更新管理员 kubeconfig 中的证书。如果您复制了此文件，您需要手动更新这些副本，以确保内联证书不会过期。
+====

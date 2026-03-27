@@ -1,0 +1,90 @@
+= Deteniendo K3s
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-26
+:page-revdate: {revdate}
+
+Para permitir alta disponibilidad durante las actualizaciones, los contenedores de K3s continúan ejecutándose cuando se detiene el servicio de K3s.
+
+== Servicio de K3s
+
+Detener y reiniciar K3s es compatible con el guion de instalación para systemd y OpenRC.
+
+[tabs]
+======
+systemd::
++
+--
+Para detener servidores:
+
+[,sh]
+----
+sudo systemctl stop k3s
+----
+
+Para reiniciar servidores:
+
+[,sh]
+----
+sudo systemctl start k3s
+----
+
+Para detener agentes:
+
+[,sh]
+----
+sudo systemctl stop k3s-agent
+----
+
+Para reiniciar agentes:
+
+[,sh]
+----
+sudo systemctl start k3s-agent
+----
+--
+
+OpenRC::
++
+--
+Para detener servidores:
+
+[,sh]
+----
+sudo rc-service k3s stop
+----
+
+Para reiniciar servidores:
+
+[,sh]
+----
+sudo rc-service k3s restart
+----
+
+Para detener agentes:
+
+[,sh]
+----
+sudo rc-service k3s-agent stop
+----
+
+Para reiniciar agentes:
+
+[,sh]
+----
+sudo rc-service k3s-agent restart
+----
+--
+======
+
+== Guion killall
+
+Para detener todos los contenedores de K3s y restablecer el estado de containerd, se puede utilizar el guion `k3s-killall.sh`.
+
+El guion killall limpia contenedores, directorios de K3s y componentes de red, mientras que también elimina la cadena de iptables con todas las reglas asociadas. Los datos del clúster no se eliminarán.
+
+Para ejecutar el guion killall desde un nodo de servidor, ejecuta:
+
+[,bash]
+----
+/usr/local/bin/k3s-killall.sh
+----

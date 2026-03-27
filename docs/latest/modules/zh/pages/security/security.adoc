@@ -1,16 +1,16 @@
-= 安全
+= 安全性
 :page-languages: [en, ja, ko, zh]
 :revdate: 2025-12-31
 :page-revdate: {revdate}
 
-本节介绍了加强 K3s 集群安全性的方法，包括 2 个部分。本指南假设 K3s 与嵌入式 etcd 一起运行。
+本节描述了保护K3s集群的方法和手段。它分为两个部分。这些指南假设k3s正在运行嵌入式etcd。
 
-以下文档适用于 CIS Kubernetes Benchmark v1.23。
+首先，安全强化指南提供了一系列安全最佳实践，以保护K3s集群。
 
 * xref:security/hardening-guide.adoc[强化指南]
 
-Second, is the self assessment to validate a hardened cluster. We currently have two different assessments available:
+其次，是自我评估以验证安全强化后的集群。我们目前有两种不同的评估可用：
 
-* xref:security/self-assessment-1.9.adoc[CIS 1.9 Benchmark Self-Assessment Guide], for K3s version v1.27-v1.29
-* xref:security/self-assessment-1.10.adoc[CIS 1.10 Benchmark Self-Assessment Guide], for K3s version v1.28-v1.31
-* xref:security/self-assessment-1.11.adoc[CIS 1.11 Benchmark Self-Assessment Guide], for K3s version v1.29-v1.34
+* xref:security/self-assessment-1.9.adoc[CIS 1.9基准自我评估指南]，适用于K3s版本v1.27-v1.29
+* xref:security/self-assessment-1.10.adoc[CIS 1.10基准自我评估指南]，适用于K3s版本v1.28-v1.31
+* xref:security/self-assessment-1.11.adoc[CIS 1.11基准自我评估指南]，适用于K3s版本v1.29-v1.34

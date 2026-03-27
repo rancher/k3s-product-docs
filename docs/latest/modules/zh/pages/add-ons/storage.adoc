@@ -4,20 +4,20 @@
 :page-revdate: {revdate}
 :page-aliases: storage.adoc
 
-在部署需要保​​留数据的应用时，你需要创建持久存储。持久存储允许你在运行应用的 pod 之外存储应用数据。即使运行应用的 pod 发生故障，这种存储方式也能让你保留应用数据。
+当部署需要保留数据的应用程序时，您需要创建持久化存储。持久化存储允许您将应用程序数据存储在运行应用程序的 Pod 之外。这种存储实践使您能够维护应用程序数据，即使应用程序的 Pod 失败。
 
-持久卷 (PV) 是 Kubernetes 集群中的一块存储，而持久卷声明 (PVC) 是对存储的请求。有关 PV 和 PVC 工作原理的详细信息，请参阅 https://kubernetes.io/docs/concepts/storage/volumes/[Kubernetes 存储相关的官方文档]。
+持久卷（PV）是 Kubernetes 集群中的一块存储，而持久卷声明（PVC）是对存储的请求。有关 PV 和 PVC 工作原理的详细信息，请参阅官方 Kubernetes 文档 https://kubernetes.io/docs/concepts/storage/volumes/[storage.]。
 
-K3s, as a compliant Kubernetes distribution, uses the https://github.com/container-storage-interface/spec/blob/master/spec.md[Container Storage Interface (CSI)] and https://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/[Cloud Provider Interface (CPI)] to manage persistent storage.
+K3s 作为符合标准的 Kubernetes 发行版，使用 https://github.com/container-storage-interface/spec/blob/master/spec.md[容器存储接口（CSI）] 和 https://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/[云提供商接口（CPI）] 来管理持久化存储。
 
-本文介绍如何使用本地存储提供程序或 <<_设置_longhorn,Longhorn>> 设置持久存储。
+本页面介绍如何通过本地存储提供商或 <<_setting_up_longhorn,Longhorn.>> 设置持久化存储。
 
 [#_setting_up_the_local_storage_provider]
-== 设置本地存储提供程序
+== 设置本地存储提供商
 
-K3s 自带 Rancher 的 Local Path Provisioner，这使得能够使用各自节点上的本地存储来开箱即用地创建持久卷声明。下面是一个简单的例子。有关更多信息，请参阅link:https://github.com/rancher/local-path-provisioner/blob/master/README.md#usage[官方文档]。
+K3s 附带 Rancher 的本地路径提供程序，这使得能够使用相应节点上的本地存储开箱即用地创建持久卷声明。下面我们介绍一个简单的示例。有关更多信息，请参考官方文档 https://github.com/rancher/local-path-provisioner/blob/master/README.md#usage[这里]。
 
-创建一个 hostPath 支持的持久卷声明和一个使用它的 Pod：
+创建一个以 HostPath 为基础的持久卷声明和一个使用它的 Pod：
 
 === pvc.yaml
 
@@ -70,7 +70,7 @@ kubectl create -f pvc.yaml
 kubectl create -f pod.yaml
 ----
 
-确认创建了 PV 和 PVC：
+确认 PV 和 PVC 已创建：
 
 [,bash]
 ----
@@ -78,7 +78,7 @@ kubectl get pv
 kubectl get pvc
 ----
 
-状态都应该是 Bound。
+每个的状态应为已绑定。
 
 == 设置 Longhorn
 
@@ -88,9 +88,9 @@ Longhorn 不支持 ARM32。
 ====
 
 
-K3s 支持 https://github.com/longhorn/longhorn[Longhorn]，这是用于 Kubernetes 的开源分布式块存储系统。
+K3s 支持 https://github.com/longhorn/longhorn[Longhorn]，这是一个用于 Kubernetes 的开源分布式块存储系统。
 
-下面是一个简单的例子。有关详细信息，请参阅link:https://documentation.suse.com/cloudnative/storage/{longhorn_docs_version}/en/longhorn-documentation.html[官方文档]。
+下面我们介绍一个简单的示例。有关详细信息，请参考https://documentation.suse.com/cloudnative/storage/{longhorn_docs_version}/en/longhorn-documentation.html[官方文档]。
 
 应用 longhorn.yaml 来安装 Longhorn：
 
@@ -99,9 +99,9 @@ K3s 支持 https://github.com/longhorn/longhorn[Longhorn]，这是用于 Kuberne
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.8.1/deploy/longhorn.yaml
 ----
 
-Longhorn 将安装在命名空间 `longhorn-system` 中。
+Longhorn 将安装在名称空间 `longhorn-system` 中。
 
-Create a persistent volume claim and a pod to utilize it:
+创建一个持久卷声明和一个 Pod 来使用它：
 
 === pvc.yaml
 
@@ -153,7 +153,7 @@ kubectl create -f pvc.yaml
 kubectl create -f pod.yaml
 ----
 
-确认创建了 PV 和 PVC：
+确认 PV 和 PVC 已创建：
 
 [,bash]
 ----
@@ -161,4 +161,4 @@ kubectl get pv
 kubectl get pvc
 ----
 
-状态都应该是 Bound。
+每个的状态应为已绑定。

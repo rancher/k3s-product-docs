@@ -1,99 +1,99 @@
-= CIS 1.11 Self Assessment Guide
+= CIS 1.11 自我评估指南
 :page-languages: [en, ja, ko, zh]
 :revdate: 2025-12-31
 :page-revdate: {revdate}
 
-== Overview
+== 概述
 
-This document is a companion to the xref:security/hardening-guide.adoc[K3s security hardening guide]. The hardening guide provides prescriptive guidance for hardening a production installation of K3s, and this benchmark guide is meant to help you evaluate the level of security of the hardened cluster against each control in the CIS Kubernetes Benchmark. It is to be used by K3s operators, security teams, auditors, and decision-makers.
+本文件是 xref:security/hardening-guide.adoc[K3s 安全强化指南] 的补充。安全强化指南为 K3s 的生产安装提供了具体的安全强化指导，而本基准指南旨在帮助您评估加固集群在 CIS Kubernetes 基准中的每个控制项的安全级别。该指南供 K3s 操作员、安全团队、审计员和决策者使用。
 
-This guide is specific to the **v1.29-v1.34** release line of K3s and the **v1.11** release of the CIS Kubernetes Benchmark.
+本指南特定于 K3s 的 **v1.29-v1.34** 版本线和 CIS Kubernetes 基准的 **v1.11** 版本。
 
-For more information about each control, including detailed descriptions and remediations for failing tests, you can refer to the corresponding section of the CIS Kubernetes Benchmark v1.9. You can download the benchmark, after creating a free account, in https://www.cisecurity.org/benchmark/kubernetes[Center for Internet Security (CIS)].
+有关每个控制项的更多信息，包括详细描述和针对失败测试的修复措施，您可以参考 CIS Kubernetes 基准 v1.9 的相应部分。您可以在 https://www.cisecurity.org/benchmark/kubernetes[互联网安全中心 (CIS)] 创建免费账户后下载基准。
 
-=== Testing controls methodology
+=== 控制项测试方法
 
-Each control in the CIS Kubernetes Benchmark was evaluated against a K3s cluster that was configured according to the accompanying hardening guide.
+CIS Kubernetes 基准中的每个控制项都是针对根据附带的安全强化指南配置的 K3s 集群进行评估的。
 
-Where control audits differ from the original CIS benchmark, the audit commands specific to K3s are provided for testing.
+当控制审计与原始 CIS 基准不同时，提供了特定于 K3s 的审计命令以供测试。
 
-These are the possible results for each control:
+以下是每个控制项的可能结果：
 
-- **Pass** - The K3s cluster under test passed the audit outlined in the benchmark.
-- **Not Applicable** - The control is not applicable to K3s because of how it is designed to operate. The remediation section will explain why this is so.
-- **Warn** - The control is manual in the CIS benchmark and it depends on the cluster's use case or some other factor that must be determined by the cluster operator. These controls have been evaluated to ensure K3s does not prevent their implementation, but no further configuration or auditing of the cluster under test has been performed.
+- **通过** - 被测试的 K3s 集群通过了基准中概述的审计。
+- **不适用** - 由于 K3s 的设计方式，该控制项不适用于 K3s。修复部分将解释原因。
+- **警告** - CIS 基准中的控制项是手动的，取决于集群的使用案例或其他必须由集群操作员确定的因素。这些控制项已被评估，以确保 K3s 不会阻止其实施，但未对被测试的集群进行进一步的配置或审计。
 
-This guide makes the assumption that K3s is running as a Systemd unit. Your installation may vary and will require you to adjust the "audit" commands to fit your scenario.
+本指南假设 K3s 作为 Systemd 单元运行。您的安装可能会有所不同，需要您调整 "审计" 命令以适应您的场景。
 
-== 1.1 Control Plane Node Configuration Files
+== 1.1 控制平面节点配置文件
 
-=== 1.1.1 Ensure that the API server pod specification file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.1 确保 API 服务器 pod 规范文件的权限设置为 600 或更严格（自动化）
 
-**Result:** Not Applicable
+**结果：**不适用
 
-**Rationale:**
+**说明:**
 
-By default, K3s embeds the api server within the k3s process. There is no API server pod specification file.
+默认情况下，K3s 将 API 服务器嵌入到 k3s 进程中。没有 API 服务器 pod 规范文件。
 
-=== 1.1.2 Ensure that the API server pod specification file ownership is set to root:root (Automated)
+=== 1.1.2 确保 API 服务器 pod 规范文件的所有权设置为 root:root（自动化）
 
-**Result:** Not Applicable
+**结果：**不适用
 
-**Rationale:**
+**说明:**
 
-By default, K3s embeds the api server within the k3s process. There is no API server pod specification file.
+默认情况下，K3s 将 API 服务器嵌入到 k3s 进程中。没有 API 服务器 pod 规范文件。
 
-=== 1.1.3 Ensure that the controller manager pod specification file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.3 确保控制器管理器 pod 规范文件的权限设置为 600 或更严格（自动化）
 
-**Result:** Not Applicable
+**结果：**不适用
 
-**Rationale:**
+**说明:**
 
-By default, K3s embeds the controller manager within the k3s process. There is no controller manager pod specification file.
+默认情况下，K3s 将控制器管理器嵌入到 k3s 进程中。没有控制器管理器 pod 规范文件。
 
-=== 1.1.4 Ensure that the controller manager pod specification file ownership is set to root:root (Automated)
+=== 1.1.4 确保控制器管理器 pod 规范文件的所有权设置为 root:root（自动化）
 
-**Result:** Not Applicable
+**结果：**不适用
 
-**Rationale:**
+**说明:**
 
-By default, K3s embeds the controller manager within the k3s process. There is no controller manager pod specification file.
+默认情况下，K3s 将控制器管理器嵌入到 k3s 进程中。没有控制器管理器 pod 规范文件。
 
-=== 1.1.5 Ensure that the scheduler pod specification file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.5 确保调度程序 pod 规范文件的权限设置为 600 或更严格（自动化）
 
-**Result:** Not Applicable
+**结果：**不适用
 
-**Rationale:**
+**说明:**
 
-By default, K3s embeds the scheduler within the k3s process. There is no scheduler pod specification file.
+默认情况下，K3s 将调度程序嵌入到 k3s 进程中。没有调度程序 pod 规范文件。
 
-=== 1.1.6 Ensure that the scheduler pod specification file ownership is set to root:root (Automated)
+=== 1.1.6 确保调度程序 pod 规范文件的所有权设置为 root:root（自动化）
 
-**Result:** Not Applicable
+**结果：**不适用
 
-**Rationale:**
+**说明:**
 
-By default, K3s embeds the scheduler within the k3s process. There is no scheduler pod specification file.
+默认情况下，K3s 将调度程序嵌入到 k3s 进程中。没有调度程序 pod 规范文件。
 
-=== 1.1.7 Ensure that the etcd pod specification file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.7 确保 etcd pod 规范文件的权限设置为 600 或更严格（自动化）
 
-**Result:** Not Applicable
+**结果：**不适用
 
-**Rationale:**
+**说明:**
 
-By default, K3s embeds etcd within the k3s process. There is no etcd pod specification file.
+默认情况下，K3s 将 etcd 嵌入到 k3s 进程中。没有 etcd pod 规范文件。
 
-=== 1.1.8 Ensure that the etcd pod specification file ownership is set to root:root (Automated)
+=== 1.1.8 确保 etcd pod 规范文件的所有权设置为 root:root（自动化）
 
-**Result:** Not Applicable
+**结果：**不适用
 
-**Rationale:**
+**说明:**
 
-By default, K3s embeds etcd within the k3s process. There is no etcd pod specification file.
+默认情况下，K3s 将 etcd 嵌入到 k3s 进程中。没有 etcd pod 规范文件。
 
-=== 1.1.9 Ensure that the Container Network Interface file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.9 确保容器网络接口文件的权限设置为 600 或更严格（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -102,10 +102,10 @@ By default, K3s embeds etcd within the k3s process. There is no etcd pod specifi
 find /var/lib/cni/networks -type f ! -name lock 2> /dev/null | xargs --no-run-if-empty stat -c permissions=%a
 ----
 
-**Expected Result:** permissions has permissions 600, expected 600 or more restrictive
+**预期结果:** 权限为 600，预期为 600 或更严格
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -120,18 +120,18 @@ permissions=600
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修复:*
 ======
 
-By default, K3s sets the CNI file permissions to 600.
-Note that for many CNIs, a lock file is created with permissions 750. This is expected and can be ignored.
-If you modify your CNI configuration, ensure that the permissions are set to 600.
-For example, `chmod 600 /var/lib/cni/networks/<filename>`
+默认情况下，K3s 将 CNI 文件权限设置为 600。
+请注意，对于许多 CNI，会创建一个权限为 750 的锁定文件。这是预期的，可以忽略。
+如果您修改了 CNI 配置，请确保权限设置为 600。
+例如，`chmod 600 /var/lib/cni/networks/<filename>`
 ======
 
-=== 1.1.10 Ensure that the Container Network Interface file ownership is set to root:root (Automated)
+=== 1.1.10 确保容器网络接口文件的所有权设置为 root:root（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -140,10 +140,10 @@ For example, `chmod 600 /var/lib/cni/networks/<filename>`
 find /var/lib/cni/networks -type f 2> /dev/null | xargs --no-run-if-empty stat -c %U:%G
 ----
 
-**Expected Result:** 'root:root' is present
+**预期结果:** 'root:root' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -159,17 +159,16 @@ root:root
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Run the below command (based on the file location on your system) on the control plane node.
-For example,
-`chown root:root /var/lib/cni/networks/<filename>`
+在控制平面节点上运行以下命令（根据您系统上的文件位置）。
+例如，`chown root:root /var/lib/cni/networks/<filename>`
 ======
 
-=== 1.1.11 Ensure that the etcd data directory permissions are set to 700 or more restrictive (Manual)
+=== 1.1.11 确保 etcd 目录的权限设置为 700 或更严格（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -178,10 +177,10 @@ For example,
 stat -c permissions=%a /var/lib/rancher/k3s/server/db/etcd
 ----
 
-**Expected Result:** permissions has permissions 700, expected 700 or more restrictive
+**预期结果:** 权限为 700，预期为 700 或更严格
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -191,29 +190,26 @@ permissions=700
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修复：*
 ======
 
-Not applicable for the non-etcd cluster. If running master only with no etcd role, this check is not applicable.
-If controlplane and etcd roles are present on the same nodes but this check is warn then
-On the etcd server node, get the etcd data directory, passed as an argument --data-dir,
-from the command 'ps -ef | grep etcd'.
-Run the below command (based on the etcd data directory found above). For example,
-`chmod 700 /var/lib/rancher/k3s/server/db/etcd`
+不适用于非 etcd 集群。如果仅运行主节点而没有 etcd 角色，则此检查不适用。
+如果控制平面和 etcd 角色在同一节点上，但此检查为警告，则在 etcd 服务器节点上，获取 etcd 数据目录，作为参数 --data-dir，从命令 'ps -ef | grep etcd' 中获取。
+运行以下命令（根据上面找到的 etcd 数据目录）。例如，`chmod 700 /var/lib/rancher/k3s/server/db/etcd`
 ======
 
-=== 1.1.12 Ensure that the etcd data directory ownership is set to etcd:etcd (Automated)
+=== 1.1.12 确保 etcd 数据目录的所有权设置为 etcd:etcd（自动化）
 
-**Result:** Not Applicable
+**结果：**不适用
 
-**Rationale:**
+**说明:**
 
-For K3s, etcd is embedded within the k3s process. There is no separate etcd process.
-Therefore the etcd data directory ownership is managed by the k3s process and should be root:root.
+对于 K3s，etcd 嵌入在 k3s 进程中。没有单独的 etcd 进程。
+因此，etcd 数据目录的所有权由 k3s 进程管理，应该是 root:root。
 
-=== 1.1.13 Ensure that the admin.conf file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.13 确保 admin.conf 文件的权限设置为 600 或更严格（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -222,10 +218,10 @@ Therefore the etcd data directory ownership is managed by the k3s process and sh
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/server/cred/admin.kubeconfig; then stat -c permissions=%a /var/lib/rancher/k3s/server/cred/admin.kubeconfig; fi'
 ----
 
-**Expected Result:** permissions has permissions 600, expected 600 or more restrictive
+**预期结果:** 权限为 600，预期为 600 或更严格
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -235,16 +231,16 @@ permissions=600
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修复：*
 ======
 
-Run the below command (based on the file location on your system) on the control plane node.
-For example, `chmod 600 /var/lib/rancher/k3s/server/cred/admin.kubeconfig`
+在控制平面节点上运行以下命令（根据您系统上的文件位置）。
+例如，`chmod 600 /var/lib/rancher/k3s/server/cred/admin.kubeconfig`
 ======
 
-=== 1.1.14 Ensure that the admin.conf file ownership is set to root:root (Automated)
+=== 1.1.14 确保 admin.conf 文件的所有权设置为 root:root（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -253,10 +249,10 @@ For example, `chmod 600 /var/lib/rancher/k3s/server/cred/admin.kubeconfig`
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/server/cred/admin.kubeconfig; then stat -c %U:%G /var/lib/rancher/k3s/server/cred/admin.kubeconfig; fi'
 ----
 
-**Expected Result:** 'root:root' is equal to 'root:root'
+**预期结果:** 'root:root' 等于 'root:root'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -266,16 +262,16 @@ root:root
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修复：*
 ======
 
-Run the below command (based on the file location on your system) on the control plane node.
-For example, `chown root:root /var/lib/rancher/k3s/server/cred/admin.kubeconfig`
+在控制平面节点上运行以下命令（根据您系统上的文件位置）。
+例如，`chown root:root /var/lib/rancher/k3s/server/cred/admin.kubeconfig`
 ======
 
-=== 1.1.15 Ensure that the scheduler.conf file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.15 确保 scheduler.conf 文件的权限设置为 600 或更严格（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -284,10 +280,10 @@ For example, `chown root:root /var/lib/rancher/k3s/server/cred/admin.kubeconfig`
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig; then stat -c permissions=%a /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig; fi'
 ----
 
-**Expected Result:** permissions has permissions 600, expected 600 or more restrictive
+**预期结果:** 权限为 600，预期为 600 或更严格
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -297,17 +293,16 @@ permissions=600
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修复：*
 ======
 
-Run the below command (based on the file location on your system) on the control plane node.
-For example,
-`chmod 600 /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig`
+在控制平面节点上运行以下命令（根据您系统上的文件位置）。
+例如，`chmod 600 /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig`
 ======
 
-=== 1.1.16 Ensure that the scheduler.conf file ownership is set to root:root (Automated)
+=== 1.1.16 确保 scheduler.conf 文件的所有权设置为 root:root（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -316,10 +311,10 @@ For example,
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig; then stat -c %U:%G /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig; fi'
 ----
 
-**Expected Result:** 'root:root' is present
+**预期结果:** 'root:root' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -329,17 +324,16 @@ root:root
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修复：*
 ======
 
-Run the below command (based on the file location on your system) on the control plane node.
-For example,
-`chown root:root /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig`
+在控制平面节点上运行以下命令（根据您系统上的文件位置）。
+例如，`chown root:root /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig`
 ======
 
-=== 1.1.17 Ensure that the controller-manager.conf file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.17 确保 controller-manager.conf 文件的权限设置为 600 或更严格（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -348,10 +342,10 @@ For example,
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/server/cred/controller.kubeconfig; then stat -c permissions=%a /var/lib/rancher/k3s/server/cred/controller.kubeconfig; fi'
 ----
 
-**Expected Result:** permissions has permissions 600, expected 600 or more restrictive
+**预期结果:** 权限为 600，预期为 600 或更严格
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -361,17 +355,16 @@ permissions=600
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修复:*
 ======
 
-Run the below command (based on the file location on your system) on the control plane node.
-For example,
-`chmod 600 /var/lib/rancher/k3s/server/cred/controller.kubeconfig`
+在控制平面节点上运行以下命令（根据您系统上的文件位置）。
+例如，`chmod 600 /var/lib/rancher/k3s/server/cred/controller.kubeconfig`
 ======
 
-=== 1.1.18 Ensure that the controller-manager.conf file ownership is set to root:root (Automated)
+=== 1.1.18 确保 controller-manager.conf 文件的所有权设置为 root:root（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -380,10 +373,10 @@ For example,
 stat -c %U:%G /var/lib/rancher/k3s/server/cred/controller.kubeconfig
 ----
 
-**Expected Result:** 'root:root' is equal to 'root:root'
+**预期结果：** 'root:root' 等于 'root:root'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -393,17 +386,16 @@ root:root
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-Run the below command (based on the file location on your system) on the control plane node.
-For example,
-`chown root:root /var/lib/rancher/k3s/server/cred/controller.kubeconfig`
+在控制平面节点上运行以下命令（根据您系统上的文件位置）。
+例如，`chown root:root /var/lib/rancher/k3s/server/cred/controller.kubeconfig`
 ======
 
-=== 1.1.19 Ensure that the Kubernetes PKI directory and file ownership is set to root:root (Automated)
+=== 1.1.19 确保 Kubernetes PKI 目录和文件的所有权设置为 root:root（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -412,10 +404,10 @@ For example,
 stat -c %U:%G /var/lib/rancher/k3s/server/tls
 ----
 
-**Expected Result:** 'root:root' is present
+**预期结果：** 'root:root' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -425,17 +417,16 @@ root:root
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-Run the below command (based on the file location on your system) on the control plane node.
-For example,
-`chown -R root:root /var/lib/rancher/k3s/server/tls`
+在控制平面节点上运行以下命令（根据您系统上的文件位置）。
+例如，`chown -R root:root /var/lib/rancher/k3s/server/tls`
 ======
 
-=== 1.1.20 Ensure that the Kubernetes PKI certificate file permissions are set to 644 or more restrictive (Automated)
+=== 1.1.20 确保 Kubernetes PKI 证书文件的权限设置为 644 或更严格（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -444,10 +435,10 @@ For example,
 /bin/sh -c 'stat -c permissions=%a /var/lib/rancher/k3s/server/tls/*.crt'
 ----
 
-**Expected Result:** permissions has permissions 644, expected 644 or more restrictive
+**预期结果：** 权限为 644，预期为 644 或更严格
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -469,18 +460,16 @@ permissions=644
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-Run the below command (based on the file location on your system) on the master node.
-For example,
-`chmod -R 644 /var/lib/rancher/k3s/server/tls/*.crt`
-By default, k3s sets PKI certificate file permissions to 644, more restrictive permissions such as 600 are supported.
+在主节点上运行以下命令（根据您系统上的文件位置）。
+例如，`chmod -R 644 /var/lib/rancher/k3s/server/tls/*.crt` 默认情况下，k3s 将 PKI 证书文件的权限设置为 644，支持更严格的权限，例如 600。
 ======
 
-=== 1.1.21 Ensure that the Kubernetes PKI key file permissions are set to 600 (Automated)
+=== 1.1.21 确保 Kubernetes PKI 密钥文件的权限设置为 600（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -489,10 +478,10 @@ By default, k3s sets PKI certificate file permissions to 644, more restrictive p
 /bin/sh -c 'stat -c permissions=%a /var/lib/rancher/k3s/server/tls/*.key'
 ----
 
-**Expected Result:** permissions has permissions 600, expected 600 or more restrictive
+**预期结果：** 权限为 600，预期为 600 或更严格
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -518,19 +507,18 @@ permissions=600
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-Run the below command (based on the file location on your system) on the master node.
-For example,
-`chmod -R 600 /var/lib/rancher/k3s/server/tls/*.key`
+在主节点上运行以下命令（根据您系统上的文件位置）。
+例如，`chmod -R 600 /var/lib/rancher/k3s/server/tls/*.key`
 ======
 
-== 1.2 API Server
+== 1.2 API 服务器
 
-=== 1.2.1 Ensure that the --anonymous-auth argument is set to false (Automated)
+=== 1.2.1 确保 --anonymous-auth 参数设置为 false（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -539,10 +527,10 @@ For example,
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'anonymous-auth'
 ----
 
-**Expected Result:** '--anonymous-auth' is equal to 'false'
+**预期结果：** '--anonymous-auth' 等于 'false'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -552,20 +540,20 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-By default, K3s sets the --anonymous-auth argument to false.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove anything similar to below.
+默认情况下，K3s 将 --anonymous-auth 参数设置为 false。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并删除类似以下内容的内容。
 ----
 kube-apiserver-arg:
   - "anonymous-auth=true"
 ----
 ======
 
-=== 1.2.2 Ensure that the --token-auth-file parameter is not set (Automated)
+=== 1.2.2 确保 --token-auth-file 参数未设置（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -574,10 +562,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-**Expected Result:** '--token-auth-file' is not present
+**预期结果：** '--token-auth-file' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -587,32 +575,32 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-Follow the documentation and configure alternate mechanisms for authentication.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove anything similar to below.
+遵循文档并配置替代身份验证机制。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并删除类似以下内容的内容。
 ----
 kube-apiserver-arg:
   - "token-auth-file=<path>"
 ----
 ======
 
-=== 1.2.3 Ensure that the --DenyServiceExternalIPs is set (Manual)
+=== 1.2.3 确保 --DenyServiceExternalIPs 已设置（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-By default, K3s does not set DenyServiceExternalIPs.
-To enable this flag, edit the K3s config file /etc/rancher/k3s/config.yaml like below.
+**修正：**
+默认情况下，K3s 不会设置 DenyServiceExternalIPs。
+要启用此标志，请按如下方式编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml。
 ----
 kube-apiserver-arg:
   - "enable-admission-plugins=DenyServiceExternalIPs"
 ----
 
-=== 1.2.4 Ensure that the --kubelet-client-certificate and --kubelet-client-key arguments are set as appropriate (Automated)
+=== 1.2.4 确保 --kubelet-client-certificate 和 --kubelet-client-key 参数已适当设置（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -621,10 +609,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-**Expected Result:** '--kubelet-client-certificate' is present AND '--kubelet-client-key' is present
+**预期结果：** '--kubelet-client-certificate' 存在且 '--kubelet-client-key' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -634,13 +622,11 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-By default, K3s automatically provides the kubelet client certificate and key.
-They are generated and located at /var/lib/rancher/k3s/server/tls/client-kube-apiserver.crt and /var/lib/rancher/k3s/server/tls/client-kube-apiserver.key
-If for some reason you need to provide your own certificate and key, you can set the
-below parameters in the K3s config file /etc/rancher/k3s/config.yaml.
+默认情况下，K3s 会自动提供 kubelet 客户端证书和密钥。
+它们会在 /var/lib/rancher/k3s/server/tls/client-kube-apiserver.crt 和 /var/lib/rancher/k3s/server/tls/client-kube-apiserver.key 生成和存放。如果出于某种原因您需要提供自己的证书和密钥，可以在 K3s 配置文件 /etc/rancher/k3s/config.yaml 中设置以下参数。
 ----
 kube-apiserver-arg:
   - "kubelet-client-certificate=<path/to/client-cert-file>"
@@ -648,9 +634,9 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.5 Ensure that the --kubelet-certificate-authority argument is set as appropriate (Automated)
+=== 1.2.5 确保 --kubelet-certificate-authority 参数已适当设置（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -659,10 +645,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'kubelet-certificate-authority'
 ----
 
-**Expected Result:** '--kubelet-certificate-authority' is present
+**预期结果：** '--kubelet-certificate-authority' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -672,21 +658,21 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-By default, K3s automatically provides the kubelet CA cert file, at /var/lib/rancher/k3s/server/tls/server-ca.crt.
-If for some reason you need to provide your own ca certificate, look at using the k3s certificate command line tool.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+默认情况下，K3s 会自动提供 kubelet CA 证书文件，位于 /var/lib/rancher/k3s/server/tls/server-ca.crt。
+如果出于某种原因您需要提供自己的 CA 证书，请考虑使用 k3s 证书命令行工具。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml 并删除任何如下的行。
 ----
 kube-apiserver-arg:
   - "kubelet-certificate-authority=<path/to/ca-cert-file>"
 ----
 ======
 
-=== 1.2.6 Ensure that the --authorization-mode argument is not set to AlwaysAllow (Automated)
+=== 1.2.6 确保 --authorization-mode 参数未设置为 AlwaysAllow（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -695,10 +681,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'authorization-mode'
 ----
 
-**Expected Result:** '--authorization-mode' does not have 'AlwaysAllow'
+**预期结果：** '--authorization-mode' 不包含 'AlwaysAllow'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -708,20 +694,20 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-By default, K3s does not set the --authorization-mode to AlwaysAllow.
-If this check fails, edit K3s config file /etc/rancher/k3s/config.yaml, remove any lines like below.
+默认情况下，K3s 不会将 --authorization-mode 设置为 AlwaysAllow。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，删除任何如下的行。
 ----
 kube-apiserver-arg:
   - "authorization-mode=AlwaysAllow"
 ----
 ======
 
-=== 1.2.7 Ensure that the --authorization-mode argument includes Node (Automated)
+=== 1.2.7 确保 --authorization-mode 参数包含 Node（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -730,10 +716,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'authorization-mode'
 ----
 
-**Expected Result:** '--authorization-mode' has 'Node'
+**预期结果：** '--authorization-mode' 包含 'Node'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -743,17 +729,16 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-By default, K3s sets the --authorization-mode to Node and RBAC.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml,
-ensure that you are not overriding authorization-mode.
+默认情况下，K3s 将 --authorization-mode 设置为 Node 和 RBAC。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，确保您没有覆盖 authorization-mode。
 ======
 
-=== 1.2.8 Ensure that the --authorization-mode argument includes RBAC (Automated)
+=== 1.2.8 确保 --authorization-mode 参数包含 RBAC（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -762,10 +747,10 @@ ensure that you are not overriding authorization-mode.
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'authorization-mode'
 ----
 
-**Expected Result:** '--authorization-mode' has 'RBAC'
+**预期结果：** '--authorization-mode' 包含 'RBAC'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -775,30 +760,29 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-By default, K3s sets the --authorization-mode to Node and RBAC.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml,
-ensure that you are not overriding authorization-mode.
+默认情况下，K3s 将 --authorization-mode 设置为 Node 和 RBAC。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，确保您没有覆盖 authorization-mode。
 ======
 
-=== 1.2.9 Ensure that the admission control plugin EventRateLimit is set (Manual)
+=== 1.2.9 确保入场控制插件 EventRateLimit 已设置（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Follow the Kubernetes documentation and set the desired limits in a configuration file.
-Then, edit the K3s config file /etc/rancher/k3s/config.yaml and set the below parameters.
+**修正:**
+请遵循 Kubernetes 文档，并在配置文件中设置所需的限制。
+然后，编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并设置以下参数。
 ----
 kube-apiserver-arg:
   - "enable-admission-plugins=...,EventRateLimit,..."
   - "admission-control-config-file=<path/to/configuration/file>"
 ----
 
-=== 1.2.10 Ensure that the admission control plugin AlwaysAdmit is not set (Automated)
+=== 1.2.10 确保入场控制插件 AlwaysAdmit 未设置（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -807,10 +791,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'enable-admission-plugins'
 ----
 
-**Expected Result:** '--enable-admission-plugins' does not have 'AlwaysAdmit' OR '--enable-admission-plugins' is not present
+**预期结果:** '--enable-admission-plugins' 不包含 'AlwaysAdmit' 或者 '--enable-admission-plugins' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -820,35 +804,32 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s does not set the --enable-admission-plugins to AlwaysAdmit.
-If this check fails, edit K3s config file /etc/rancher/k3s/config.yaml, remove any lines like below.
+默认情况下，K3s 不会将 --enable-admission-plugins 设置为 AlwaysAdmit。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，去除任何如下的行。
 ----
 kube-apiserver-arg:
   - "enable-admission-plugins=AlwaysAdmit"
 ----
 ======
 
-=== 1.2.11 Ensure that the admission control plugin AlwaysPullImages is set (Manual)
+=== 1.2.11 确保入场控制插件 AlwaysPullImages 已设置（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Permissive, per CIS guidelines,
-"This setting could impact offline or isolated clusters, which have images pre-loaded and
-do not have access to a registry to pull in-use images. This setting is not appropriate for
-clusters which use this configuration."
-Edit the K3s config file /etc/rancher/k3s/config.yaml and set the below parameter.
+**修正:**
+根据 CIS 指南，这是一个宽松的设置，“此设置可能会影响离线或隔离的集群，这些集群已预加载了镜像，并且无法访问注册表以拉取正在使用的镜像。”此设置不适合使用此配置的集群。
+编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并设置以下参数。
 ----
 kube-apiserver-arg:
   - "enable-admission-plugins=...,AlwaysPullImages,..."
 ----
 
-=== 1.2.12 Ensure that the admission control plugin ServiceAccount is set (Automated)
+=== 1.2.12 确保入场控制插件 ServiceAccount 已设置（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -857,10 +838,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-**Expected Result:** '--disable-admission-plugins' is present OR '--disable-admission-plugins' is not present
+**预期结果：** '--disable-admission-plugins' 存在或者 '--disable-admission-plugins' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -870,21 +851,21 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-By default, K3s does not set the --disable-admission-plugins to anything.
-Follow the documentation and create ServiceAccount objects as per your environment.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+默认情况下，K3s 不会将 --disable-admission-plugins 设置为任何值。
+请遵循文档，并根据您的环境创建 ServiceAccount 对象。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml 并去除任何如下的行。
 ----
 kube-apiserver-arg:
   - "disable-admission-plugins=ServiceAccount"
 ----
 ======
 
-=== 1.2.13 Ensure that the admission control plugin NamespaceLifecycle is set (Automated)
+=== 1.2.13 确保入场控制插件 NamespaceLifecycle 已设置（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -893,10 +874,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-**Expected Result:** '--disable-admission-plugins' is present OR '--disable-admission-plugins' is not present
+**预期结果：** '--disable-admission-plugins' 存在或者 '--disable-admission-plugins' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -906,20 +887,20 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-By default, K3s does not set the --disable-admission-plugins to anything.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+默认情况下，K3s 不会将 --disable-admission-plugins 设置为任何值。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml 并去除任何如下的行。
 ----
 kube-apiserver-arg:
   - "disable-admission-plugins=...,NamespaceLifecycle,..."
 ----
 ======
 
-=== 1.2.14 Ensure that the admission control plugin NodeRestriction is set (Automated)
+=== 1.2.14 确保入场控制插件 NodeRestriction 已设置（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -928,10 +909,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'enable-admission-plugins'
 ----
 
-**Expected Result:** '--enable-admission-plugins' has 'NodeRestriction'
+**预期结果：** '--enable-admission-plugins' 包含 'NodeRestriction'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -941,21 +922,21 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-By default, K3s sets the --enable-admission-plugins to NodeRestriction.
-If using the K3s config file /etc/rancher/k3s/config.yaml, check that you are not overriding the admission plugins.
-If you are, include NodeRestriction in the list.
+默认情况下，K3s 将 --enable-admission-plugins 设置为 NodeRestriction。
+如果使用 K3s 配置文件 /etc/rancher/k3s/config.yaml，请检查是否未覆盖准入插件。
+如果是，请在列表中包含 NodeRestriction。
 ----
 kube-apiserver-arg:
   - "enable-admission-plugins=...,NodeRestriction,..."
 ----
 ======
 
-=== 1.2.15 Ensure that the --profiling argument is set to false (Automated)
+=== 1.2.15 确保 --profiling 参数设置为 false（自动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -964,10 +945,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'profiling'
 ----
 
-**Expected Result:** '--profiling' is equal to 'false'
+**预期结果:** '--profiling' 等于 'false'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -977,20 +958,20 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s sets the --profiling argument to false.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+默认情况下，K3s 将 --profiling 参数设置为 false。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并去除如下所示的任何行。
 ----
 kube-apiserver-arg:
   - "profiling=true"
 ----
 ======
 
-=== 1.2.16 Ensure that the --audit-log-path argument is set (Manual)
+=== 1.2.16 确保 --audit-log-path 参数已设置（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -999,10 +980,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-**Expected Result:** '--audit-log-path' is present
+**预期结果:** '--audit-log-path' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1012,20 +993,19 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Edit the K3s config file /etc/rancher/k3s/config.yaml and set the audit-log-path parameter to a suitable path and
-file where you would like audit logs to be written, for example,
+编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并将 audit-log-path 参数设置为您希望审计日志写入的合适路径和文件，例如，
 ----
 kube-apiserver-arg:
   - "audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log"
 ----
 ======
 
-=== 1.2.17 Ensure that the --audit-log-maxage argument is set to 30 or as appropriate (Manual)
+=== 1.2.17 确保 --audit-log-maxage 参数设置为 30 或适当的值（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1034,10 +1014,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-**Expected Result:** '--audit-log-maxage' is greater or equal to 30
+**预期结果:** '--audit-log-maxage' 大于或等于 30
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1047,20 +1027,19 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Edit the K3s config file /etc/rancher/k3s/config.yaml on the control plane node and
-set the audit-log-maxage parameter to 30 or as an appropriate number of days, for example,
+在控制平面节点上编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并将 audit-log-maxage 参数设置为 30 或适当的天数，例如，
 ----
 kube-apiserver-arg:
   - "audit-log-maxage=30"
 ----
 ======
 
-=== 1.2.18 Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate (Manual)
+=== 1.2.18 确保 --audit-log-maxbackup 参数设置为 10 或适当的值（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1069,10 +1048,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-**Expected Result:** '--audit-log-maxbackup' is greater or equal to 10
+**预期结果:** '--audit-log-maxbackup' 大于或等于 10
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1082,20 +1061,19 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Edit the K3s config file /etc/rancher/k3s/config.yaml on the control plane node and
-set the audit-log-maxbackup parameter to 10 or to an appropriate value. For example,
+在控制平面节点上编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并将 audit-log-maxbackup 参数设置为 10 或适当的值。例如，
 ----
 kube-apiserver-arg:
   - "audit-log-maxbackup=10"
 ----
 ======
 
-=== 1.2.19 Ensure that the --audit-log-maxsize argument is set to 100 or as appropriate (Manual)
+=== 1.2.19 确保 --audit-log-maxsize 参数设置为 100 或适当的值（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1104,10 +1082,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-**Expected Result:** '--audit-log-maxsize' is greater or equal to 100
+**预期结果:** '--audit-log-maxsize' 大于或等于 100
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1117,34 +1095,31 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Edit the K3s config file /etc/rancher/k3s/config.yaml on the control plane node and
-set the audit-log-maxsize parameter to an appropriate size in MB. For example,
+在控制平面节点上编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并将 audit-log-maxsize 参数设置为合适的 MB 大小。例如，
 ----
 kube-apiserver-arg:
   - "audit-log-maxsize=100"
 ----
 ======
 
-=== 1.2.20 Ensure that the --request-timeout argument is set as appropriate (Manual)
+=== 1.2.20 确保 --request-timeout 参数设置为适当的值（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Permissive, per CIS guidelines,
-"it is recommended to set this limit as appropriate and change the default limit of 60 seconds only if needed".
-Edit the K3s config file /etc/rancher/k3s/config.yaml
-and set the below parameter if needed. For example,
+**修正:**
+根据 CIS 指南，"建议根据需要设置此限制，并仅在必要时更改默认限制 60 秒"。
+编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并在需要时设置以下参数。例如，
 ----
 kube-apiserver-arg:
   - "request-timeout=300s"
 ----
 
-=== 1.2.21 Ensure that the --service-account-lookup argument is set to true (Automated)
+=== 1.2.21 确保 --service-account-lookup 参数设置为 true（自动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1153,10 +1128,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-**Expected Result:** '--service-account-lookup' is not present OR '--service-account-lookup' is present
+**预期结果：** '--service-account-lookup' 不存在 或者 '--service-account-lookup' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -1166,22 +1141,21 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-By default, K3s does not set the --service-account-lookup argument.
-Edit the K3s config file /etc/rancher/k3s/config.yaml and set the service-account-lookup. For example,
+默认情况下，K3s 不会设置 --service-account-lookup 参数。
+编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml 并设置 service-account-lookup。例如，
 ----
 kube-apiserver-arg:
   - "service-account-lookup=true"
 ----
-Alternatively, you can delete the service-account-lookup parameter from this file so
-that the default takes effect.
+或者，您可以从此文件中删除 service-account-lookup 参数，以便使用默认值。
 ======
 
-=== 1.2.22 Ensure that the --service-account-key-file argument is set as appropriate (Automated)
+=== 1.2.22 确保 --service-account-key-file 参数适当设置（自动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1190,10 +1164,10 @@ that the default takes effect.
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-**Expected Result:** '--service-account-key-file' is present
+**预期结果：** '--service-account-key-file' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -1203,21 +1177,21 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-K3s automatically generates and sets the service account key file.
-It is located at /var/lib/rancher/k3s/server/tls/service.key.
-If this check fails, edit K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+K3s 会自动生成并设置服务账户密钥文件。
+它位于 /var/lib/rancher/k3s/server/tls/service.key。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml 并去除以下类似的行。
 ----
 kube-apiserver-arg:
   - "service-account-key-file=<path>"
 ----
 ======
 
-=== 1.2.23 Ensure that the --etcd-certfile and --etcd-keyfile arguments are set as appropriate (Automated)
+=== 1.2.23 确保 --etcd-certfile 和 --etcd-keyfile 参数适当设置（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1230,10 +1204,10 @@ else
 fi
 ----
 
-**Expected Result:** '--etcd-certfile' is present AND '--etcd-keyfile' is present
+**预期结果：** '--etcd-certfile' 存在 且 '--etcd-keyfile' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -1243,12 +1217,12 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-K3s automatically generates and sets the etcd certificate and key files.
-They are located at /var/lib/rancher/k3s/server/tls/etcd/client.crt and /var/lib/rancher/k3s/server/tls/etcd/client.key.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+K3s 会自动生成并设置 etcd 证书和密钥文件。
+它们位于 /var/lib/rancher/k3s/server/tls/etcd/client.crt 和 /var/lib/rancher/k3s/server/tls/etcd/client.key。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml 并去除任何如下的行。
 ----
 kube-apiserver-arg:
   - "etcd-certfile=<path>"
@@ -1256,9 +1230,9 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.24 Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate (Automated)
+=== 1.2.24 确保 --tls-cert-file 和 --tls-private-key-file 参数设置正确（自动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1267,10 +1241,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep -A1 'Running kube-apiserver' | tail -n2
 ----
 
-**Expected Result:** '--tls-cert-file' is present AND '--tls-private-key-file' is present
+**预期结果：** '--tls-cert-file' 存在 且 '--tls-private-key-file' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -1281,12 +1255,11 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-By default, K3s automatically generates and provides the TLS certificate and private key for the apiserver.
-They are generated and located at /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.crt and /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.key
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+默认情况下，K3s 会自动生成并提供 apiserver 的 TLS 证书和私钥。
+它们被生成并位于 /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.crt 和 /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.key。如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml 并去除以下类似的行。
 ----
 kube-apiserver-arg:
   - "tls-cert-file=<path>"
@@ -1294,9 +1267,9 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.25 Ensure that the --client-ca-file argument is set as appropriate (Automated)
+=== 1.2.25 确保 --client-ca-file 参数适当设置（自动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1305,10 +1278,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'client-ca-file'
 ----
 
-**Expected Result:** '--client-ca-file' is present
+**预期结果:** '--client-ca-file' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1318,22 +1291,22 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s automatically provides the client certificate authority file.
-It is generated and located at /var/lib/rancher/k3s/server/tls/client-ca.crt.
-If for some reason you need to provide your own ca certificate, look at using the k3s certificate command line tool.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+默认情况下，K3s 会自动提供客户端证书颁发机构文件。
+它生成后存放在 /var/lib/rancher/k3s/server/tls/client-ca.crt。
+如果出于某种原因您需要提供自己的 CA 证书，请考虑使用 k3s 证书命令行工具。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml 并去除任何如下的行。
 ----
 kube-apiserver-arg:
   - "client-ca-file=<path>"
 ----
 ======
 
-=== 1.2.26 Ensure that the --etcd-cafile argument is set as appropriate (Automated)
+=== 1.2.26 确保 --etcd-cafile 参数设置正确（自动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1342,10 +1315,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'etcd-cafile'
 ----
 
-**Expected Result:** '--etcd-cafile' is present
+**预期结果:** '--etcd-cafile' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1355,22 +1328,22 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s automatically provides the etcd certificate authority file.
-It is generated and located at /var/lib/rancher/k3s/server/tls/client-ca.crt.
-If for some reason you need to provide your own ca certificate, look at using the k3s certificate command line tool.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+默认情况下，K3s 会自动提供 etcd 证书颁发机构文件。
+它生成后存放在 /var/lib/rancher/k3s/server/tls/client-ca.crt。
+如果出于某种原因您需要提供自己的 CA 证书，请考虑使用 k3s 证书命令行工具。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml 并去除任何如下的行。
 ----
 kube-apiserver-arg:
   - "etcd-cafile=<path>"
 ----
 ======
 
-=== 1.2.27 Ensure that the --encryption-provider-config argument is set as appropriate (Manual)
+=== 1.2.27 确保 --encryption-provider-config 参数设置正确（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1379,10 +1352,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'encryption-provider-config'
 ----
 
-**Expected Result:** '--encryption-provider-config' is present
+**预期结果:** '--encryption-provider-config' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1392,19 +1365,17 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-K3s can be configured to use encryption providers to encrypt secrets at rest.
-Edit the K3s config file /etc/rancher/k3s/config.yaml on the control plane node and set the below parameter.
-secrets-encryption: true
-Secrets encryption can then be managed with the k3s secrets-encrypt command line tool.
-If needed, you can find the generated encryption config at /var/lib/rancher/k3s/server/cred/encryption-config.json.
+K3s 可以配置为使用加密提供程序对静态数据中的密文进行加密。
+在控制平面节点上编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并设置以下参数：secrets-encryption: true。之后，可以使用 k3s secrets-encrypt 命令行工具管理秘密的加密。
+如有需要，您可以在 /var/lib/rancher/k3s/server/cred/encryption-config.json 找到生成的加密配置。
 ======
 
-=== 1.2.28 Ensure that encryption providers are appropriately configured (Manual)
+=== 1.2.28 确保加密提供程序配置正确（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1414,10 +1385,10 @@ ENCRYPTION_PROVIDER_CONFIG=$(journalctl -m -u k3s | grep 'Running kube-apiserver
 if test -e $ENCRYPTION_PROVIDER_CONFIG; then grep -o 'providers\"\:\[.*\]' $ENCRYPTION_PROVIDER_CONFIG | grep -o "[A-Za-z]*" | head -2 | tail -1  | sed 's/^/provider=/'; fi
 ----
 
-**Expected Result:** 'provider' contains valid elements from 'aescbc,kms,secretbox'
+**预期结果:** 'provider' 包含来自 'aescbc,kms,secretbox' 的有效元素
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1427,19 +1398,17 @@ provider=aescbc
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-K3s can be configured to use encryption providers to encrypt secrets at rest. K3s will utilize the aescbc provider.
-Edit the K3s config file /etc/rancher/k3s/config.yaml on the control plane node and set the below parameter.
-secrets-encryption: true
-Secrets encryption can then be managed with the k3s secrets-encrypt command line tool.
-If needed, you can find the generated encryption config at /var/lib/rancher/k3s/server/cred/encryption-config.json
+K3s 可以配置为使用加密提供程序对静态存储的秘密进行加密。K3s 将使用 aescbc 提供程序。
+在控制平面节点上编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并设置以下参数：secrets-encryption: true。之后，可以使用 k3s secrets-encrypt 命令行工具管理秘密的加密。
+如有需要，您可以在 /var/lib/rancher/k3s/server/cred/encryption-config.json 找到生成的加密配置。
 ======
 
-=== 1.2.29 Ensure that the API Server only makes use of Strong Cryptographic Ciphers (Automated)
+=== 1.2.29 确保 API 服务器仅使用强加密密码（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1448,10 +1417,10 @@ If needed, you can find the generated encryption config at /var/lib/rancher/k3s/
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'tls-cipher-suites'
 ----
 
-**Expected Result:** '--tls-cipher-suites' contains valid elements from 'TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384'
+**预期结果：** '--tls-cipher-suites' 包含来自 'TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384' 的有效元素
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1461,21 +1430,21 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, the K3s kube-apiserver complies with this test. Changes to these values may cause regression, therefore ensure that all apiserver clients support the new TLS configuration before applying it in production deployments.
-If a custom TLS configuration is required, consider also creating a custom version of this rule that aligns with your requirements.
-If this check fails, remove any custom configuration around `tls-cipher-suites` or update the /etc/rancher/k3s/config.yaml file to match the default by adding the following:
+默认情况下，K3s kube-apiserver 符合此测试。对这些值的更改可能会导致回归，因此在生产部署中应用之前，请确保所有 apiserver 客户端支持新的 TLS 配置。
+如果需要自定义 TLS 配置，请考虑创建与您的要求相符的此规则的自定义版本。
+如果此检查失败，请去除与`tls-cipher-suites`相关的任何自定义配置，或通过添加以下内容更新/etc/rancher/k3s/config.yaml文件以匹配默认值：
 ----
 kube-apiserver-arg:
   - "tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
 ----
 ======
 
-=== 1.2.30 Ensure that the --service-account-extend-token-expiration parameter is set to false (Automated)
+=== 1.2.30 确保--service-account-extend-token-expiration参数设置为false（自动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1484,10 +1453,10 @@ kube-apiserver-arg:
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'service-account-extend-token-expiration'
 ----
 
-**Expected Result:** '--service-account-extend-token-expiration' is equal to 'false'
+**预期结果:** '--service-account-extend-token-expiration' 等于 'false'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1497,20 +1466,20 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Edit the K3s config file /etc/rancher/k3s/config.yaml and set the --service-account-extend-token-expiration parameter to false before reloading k3s, as below:
-kube-apiserver-arg:
- - "service-account-extend-token-expiration=false"
-By default, this parameter is set to true.
+编辑K3s配置文件/etc/rancher/k3s/config.yaml，并在重新加载k3s之前将--service-account-extend-token-expiration参数设置为false，如下所示： +
+kube-apiserver-arg: +
+ - "service-account-extend-token-expiration=false" +
+默认情况下，此参数设置为true。
 ======
 
-== 1.3 Controller Manager
+== 1.3 控制器管理器
 
-=== 1.3.1 Ensure that the --terminated-pod-gc-threshold argument is set as appropriate (Manual)
+=== 1.3.1 确保--terminated-pod-gc-threshold参数设置为适当值（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1519,10 +1488,10 @@ By default, this parameter is set to true.
 journalctl -m -u k3s | grep 'Running kube-controller-manager' | tail -n1 | grep 'terminated-pod-gc-threshold'
 ----
 
-**Expected Result:** '--terminated-pod-gc-threshold' is present
+**预期结果:** '--terminated-pod-gc-threshold' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1532,20 +1501,19 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Edit the K3s config file /etc/rancher/k3s/config.yaml on the control plane node
-and set the --terminated-pod-gc-threshold to an appropriate threshold,
+在控制平面节点上编辑K3s配置文件/etc/rancher/k3s/config.yaml，并将--terminated-pod-gc-threshold设置为适当的阈值，
 ----
 kube-controller-manager-arg:
   - "terminated-pod-gc-threshold=10"
 ----
 ======
 
-=== 1.3.2 Ensure that the --profiling argument is set to false (Automated)
+=== 1.3.2 确保--profiling参数设置为false（自动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1554,10 +1522,10 @@ kube-controller-manager-arg:
 journalctl -m -u k3s | grep 'Running kube-controller-manager' | tail -n1 | grep 'profiling'
 ----
 
-**Expected Result:** '--profiling' is equal to 'false'
+**预期结果:** '--profiling' 等于 'false'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1567,20 +1535,20 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s sets the --profiling argument to false.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+默认情况下，K3s 将 --profiling 参数设置为 false。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml 并去除任何如下的行。
 ----
 kube-controller-manager-arg:
   - "profiling=true"
 ----
 ======
 
-=== 1.3.3 Ensure that the --use-service-account-credentials argument is set to true (Automated)
+=== 1.3.3 确保--use-service-account-credentials参数设置为true（自动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1589,10 +1557,10 @@ kube-controller-manager-arg:
 journalctl -m -u k3s | grep 'Running kube-controller-manager' | tail -n1 | grep 'use-service-account-credentials'
 ----
 
-**Expected Result:** '--use-service-account-credentials' is not equal to 'false'
+**预期结果:** '--use-service-account-credentials' 不等于 'false'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1602,20 +1570,20 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s sets the --use-service-account-credentials argument to true.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+默认情况下，K3s 将--use-service-account-credentials参数设置为true。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml 并去除任何如下的行。
 ----
 kube-controller-manager-arg:
   - "use-service-account-credentials=false"
 ----
 ======
 
-=== 1.3.4 Ensure that the --service-account-private-key-file argument is set as appropriate (Automated)
+=== 1.3.4 确保--service-account-private-key-file参数设置为适当值（自动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1624,10 +1592,10 @@ kube-controller-manager-arg:
 journalctl -m -u k3s | grep 'Running kube-controller-manager' | tail -n1 | grep 'service-account-private-key-file'
 ----
 
-**Expected Result:** '--service-account-private-key-file' is present
+**预期结果:** '--service-account-private-key-file' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1637,21 +1605,21 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s automatically provides the service account private key file.
-It is generated and located at /var/lib/rancher/k3s/server/tls/service.current.key.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+默认情况下，K3s 会自动提供服务账户私钥文件。
+它生成并位于 /var/lib/rancher/k3s/server/tls/service.current.key。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并去除以下类似的行。
 ----
 kube-controller-manager-arg:
   - "service-account-private-key-file=<path>"
 ----
 ======
 
-=== 1.3.5 Ensure that the --root-ca-file argument is set as appropriate (Automated)
+=== 1.3.5 确保 --root-ca-file 参数设置正确（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1660,10 +1628,10 @@ kube-controller-manager-arg:
 journalctl -m -u k3s | grep 'Running kube-controller-manager' | tail -n1 | grep 'root-ca-file'
 ----
 
-**Expected Result:** '--root-ca-file' is present
+**预期结果:** '--root-ca-file' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1673,22 +1641,22 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s automatically provides the root CA file.
-It is generated and located at /var/lib/rancher/k3s/server/tls/server-ca.crt.
-If for some reason you need to provide your own ca certificate, look at using the k3s certificate command line tool.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+默认情况下，K3s 自动提供根 CA 文件。
+它生成并位于 /var/lib/rancher/k3s/server/tls/server-ca.crt。
+如果出于某种原因需要提供自己的 CA 证书，请考虑使用 k3s 证书命令行工具。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并去除以下类似的行。
 ----
 kube-controller-manager-arg:
   - "root-ca-file=<path>"
 ----
 ======
 
-=== 1.3.6 Ensure that the RotateKubeletServerCertificate argument is set to true (Automated)
+=== 1.3.6 确保 RotateKubeletServerCertificate 参数设置为 true（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1697,10 +1665,10 @@ kube-controller-manager-arg:
 journalctl -m -u k3s | grep 'Running kube-controller-manager' | tail -n1
 ----
 
-**Expected Result:** '--feature-gates' is present OR '--feature-gates' is not present
+**预期结果:** '--feature-gates' 存在 或 '--feature-gates' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1710,21 +1678,21 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s does not set the RotateKubeletServerCertificate feature gate.
-If you have enabled this feature gate, you should remove it.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml, remove any lines like below.
+默认情况下，K3s 不设置 RotateKubeletServerCertificate 功能开关。
+如果您启用了此功能开关，则应去除它。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，去除以下类似的行。
 ----
 kube-controller-manager-arg:
   - "feature-gate=RotateKubeletServerCertificate"
 ----
 ======
 
-=== 1.3.7 Ensure that the --bind-address argument is set to 127.0.0.1 (Automated)
+=== 1.3.7 确保 --bind-address 参数设置为 127.0.0.1（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1733,10 +1701,10 @@ kube-controller-manager-arg:
 journalctl -m -u k3s | grep 'Running kube-controller-manager' | tail -n1
 ----
 
-**Expected Result:** '--bind-address' is equal to '127.0.0.1' OR '--bind-address' is not present
+**预期结果:** '--bind-address' 等于 '127.0.0.1' 或 '--bind-address' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1746,22 +1714,21 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s sets the --bind-address argument to 127.0.0.1
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+默认情况下，K3s 将 --bind-address 参数设置为 127.0.0.1。如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并去除以下类似的行。
 ----
 kube-controller-manager-arg:
   - "bind-address=<IP>"
 ----
 ======
 
-== 1.4 Scheduler
+== 1.4 调度程序
 
-=== 1.4.1 Ensure that the --profiling argument is set to false (Automated)
+=== 1.4.1 确保 --profiling 参数设置为 false（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1770,10 +1737,10 @@ kube-controller-manager-arg:
 journalctl -m -u k3s | grep 'Running kube-scheduler' | tail -n1 | grep 'profiling'
 ----
 
-**Expected Result:** '--profiling' is equal to 'false'
+**预期结果:** '--profiling' 等于 'false'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1783,20 +1750,20 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s sets the --profiling argument to false.
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+默认情况下，K3s 将 --profiling 参数设置为 false。
+如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并去除以下类似的行。
 ----
 kube-scheduler-arg:
   - "profiling=true"
 ----
 ======
 
-=== 1.4.2 Ensure that the --bind-address argument is set to 127.0.0.1 (Automated)
+=== 1.4.2 确保 --bind-address 参数设置为 127.0.0.1（自动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1805,10 +1772,10 @@ kube-scheduler-arg:
 journalctl -m -u k3s | grep 'Running kube-scheduler' | tail -n1 | grep 'bind-address'
 ----
 
-**Expected Result:** '--bind-address' is equal to '127.0.0.1' OR '--bind-address' is not present
+**预期结果:** '--bind-address' 等于 '127.0.0.1' 或 '--bind-address' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1818,22 +1785,21 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s sets the --bind-address argument to 127.0.0.1
-If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+默认情况下，K3s 将 --bind-address 参数设置为 127.0.0.1。如果此检查失败，请编辑 K3s 配置文件 /etc/rancher/k3s/config.yaml，并去除以下类似的行。
 ----
 kube-scheduler-arg:
   - "bind-address=<IP>"
 ----
 ======
 
-== 2 Etcd Node Configuration
+== 2 Etcd节点配置
 
-=== 2.1 Ensure that the --cert-file and --key-file arguments are set as appropriate (Manual)
+=== 2.1 确保--cert-file和--key-file参数设置为适当值（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1842,10 +1808,10 @@ kube-scheduler-arg:
 
 ----
 
-**Expected Result:** '.client-transport-security.cert-file' is equal to '/var/lib/rancher/k3s/server/tls/etcd/server-client.crt' AND '.client-transport-security.key-file' is equal to '/var/lib/rancher/k3s/server/tls/etcd/server-client.key'
+**预期结果:** '.client-transport-security.cert-file'等于'/var/lib/rancher/k3s/server/tls/etcd/server-client.crt' 且 '.client-transport-security.key-file'等于'/var/lib/rancher/k3s/server/tls/etcd/server-client.key'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1885,19 +1851,18 @@ socket-options:
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-If running on with sqlite or a external DB, etcd checks are Not Applicable.
-When running with embedded-etcd, K3s generates cert and key files for etcd.
-These are located in /var/lib/rancher/k3s/server/tls/etcd/.
-If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config
-has not been modified to use custom cert and key files.
+如果使用sqlite或外部数据库，etcd检查不适用。
+当使用嵌入式etcd时，K3s为etcd生成证书和密钥文件。
+这些文件位于/var/lib/rancher/k3s/server/tls/etcd/。
+如果此检查失败，请确保配置文件/var/lib/rancher/k3s/server/db/etcd/config未被修改为使用自定义证书和密钥文件。
 ======
 
-=== 2.2 Ensure that the --client-cert-auth argument is set to true (Manual)
+=== 2.2 确保--client-cert-auth参数设置为true（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1906,10 +1871,10 @@ has not been modified to use custom cert and key files.
 
 ----
 
-**Expected Result:** '.client-transport-security.client-cert-auth' is equal to 'true'
+**预期结果:** '.client-transport-security.client-cert-auth'等于'true'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -1949,18 +1914,17 @@ socket-options:
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-If running on with sqlite or a external DB, etcd checks are Not Applicable.
-When running with embedded-etcd, K3s sets the --client-cert-auth parameter to true.
-If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config
-has not been modified to disable client certificate authentication.
+如果使用sqlite或外部数据库，etcd检查不适用。
+当使用嵌入式etcd时，K3s将--client-cert-auth参数设置为true。
+如果此检查失败，请确保配置文件/var/lib/rancher/k3s/server/db/etcd/config未被修改为禁用客户端证书认证。
 ======
 
-=== 2.3 Ensure that the --auto-tls argument is not set to true (Manual)
+=== 2.3 确保--auto-tls参数未设置为true（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -1969,10 +1933,10 @@ has not been modified to disable client certificate authentication.
 
 ----
 
-**Expected Result:** '.client-transport-security.auto-tls' is present OR '.client-transport-security.auto-tls' is not present
+**预期结果:** '.client-transport-security.auto-tls'存在或'.client-transport-security.auto-tls'不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2012,20 +1976,18 @@ socket-options:
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-If running on with sqlite or a external DB, etcd checks are Not Applicable.
-When running with embedded-etcd, K3s does not set the --auto-tls parameter.
-If this check fails, edit the etcd pod specification file /var/lib/rancher/k3s/server/db/etcd/config on the master
-node and either remove the --auto-tls parameter or set it to false.
-client-transport-security:
+如果使用sqlite或外部数据库，etcd检查不适用。
+当使用嵌入式etcd时，K3s不设置--auto-tls参数。
+如果此检查失败，请编辑主节点上的 etcd pod 规格文件 /var/lib/rancher/k3s/server/db/etcd/config，去除 --auto-tls 参数或将其设置为 false。client-transport-security:
   auto-tls: false
 ======
 
-=== 2.4 Ensure that the --peer-cert-file and --peer-key-file arguments are set as appropriate (Manual)
+=== 2.4 确保--peer-cert-file和--peer-key-file参数设置为适当值（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2034,10 +1996,10 @@ client-transport-security:
 
 ----
 
-**Expected Result:** '.peer-transport-security.cert-file' is equal to '/var/lib/rancher/k3s/server/tls/etcd/peer-server-client.crt' AND '.peer-transport-security.key-file' is equal to '/var/lib/rancher/k3s/server/tls/etcd/peer-server-client.key'
+**预期结果:** '.peer-transport-security.cert-file'等于'/var/lib/rancher/k3s/server/tls/etcd/peer-server-client.crt' 且 '.peer-transport-security.key-file'等于'/var/lib/rancher/k3s/server/tls/etcd/peer-server-client.key'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2077,19 +2039,18 @@ socket-options:
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-If running on with sqlite or a external DB, etcd checks are Not Applicable.
-When running with embedded-etcd, K3s generates peer cert and key files for etcd.
-These are located in /var/lib/rancher/k3s/server/tls/etcd/.
-If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config
-has not been modified to use custom peer cert and key files.
+如果使用 sqlite 或一个外部数据库，etcd 检查不适用。
+当使用嵌入式etcd时，K3s为etcd生成对等证书和密钥文件。
+这些文件位于/var/lib/rancher/k3s/server/tls/etcd/。
+如果此检查失败，请确保配置文件 /var/lib/rancher/k3s/server/db/etcd/config 未被修改为使用自定义的对等证书和密钥文件。
 ======
 
-=== 2.5 Ensure that the --peer-client-cert-auth argument is set to true (Manual)
+=== 2.5 确保 --peer-client-cert-auth 参数设置为 true（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2098,10 +2059,10 @@ has not been modified to use custom peer cert and key files.
 
 ----
 
-**Expected Result:** '.peer-transport-security.client-cert-auth' is equal to 'true'
+**预期结果:** '.peer-transport-security.client-cert-auth' 等于 'true'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2141,18 +2102,17 @@ socket-options:
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-If running on with sqlite or a external DB, etcd checks are Not Applicable.
-When running with embedded-etcd, K3s sets the --peer-cert-auth parameter to true.
-If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config
-has not been modified to disable peer client certificate authentication.
+如果使用 sqlite 或一个外部数据库，etcd 检查不适用。
+在使用嵌入式 etcd 时，K3s 将 --peer-cert-auth 参数设置为 true。
+如果此检查失败，请确保配置文件 /var/lib/rancher/k3s/server/db/etcd/config 未被修改为禁用对等客户端证书认证。
 ======
 
-=== 2.6 Ensure that the --peer-auto-tls argument is not set to true (Manual)
+=== 2.6 确保 --peer-auto-tls 参数未设置为 true（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2161,10 +2121,10 @@ has not been modified to disable peer client certificate authentication.
 
 ----
 
-**Expected Result:** '.peer-transport-security.auto-tls' is present OR '.peer-transport-security.auto-tls' is not present
+**预期结果:** '.peer-transport-security.auto-tls' 存在 或 '.peer-transport-security.auto-tls' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2204,20 +2164,18 @@ socket-options:
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-If running on with sqlite or a external DB, etcd checks are Not Applicable.
-When running with embedded-etcd, K3s does not set the --peer-auto-tls parameter.
-If this check fails, edit the etcd pod specification file /var/lib/rancher/k3s/server/db/etcd/config on the master
-node and either remove the --peer-auto-tls parameter or set it to false.
-peer-transport-security:
+如果使用 sqlite 或一个外部数据库，etcd 检查不适用。
+在使用嵌入式 etcd 时，K3s 不会设置 --peer-auto-tls 参数。
+如果此检查失败，请编辑主节点上的 etcd pod 规格文件 /var/lib/rancher/k3s/server/db/etcd/config，并去除 --peer-auto-tls 参数或将其设置为 false。peer-transport-security:
   auto-tls: false
 ======
 
-=== 2.7 Ensure that a unique Certificate Authority is used for etcd (Manual)
+=== 2.7 确保为 etcd 使用唯一的证书颁发机构（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2226,10 +2184,10 @@ peer-transport-security:
 
 ----
 
-**Expected Result:** '.peer-transport-security.trusted-ca-file' is equal to '/var/lib/rancher/k3s/server/tls/etcd/peer-ca.crt'
+**预期结果:** '.peer-transport-security.trusted-ca-file' 等于 '/var/lib/rancher/k3s/server/tls/etcd/peer-ca.crt'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2269,39 +2227,38 @@ socket-options:
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-If running on with sqlite or a external DB, etcd checks are Not Applicable.
-When running with embedded-etcd, K3s generates a unique certificate authority for etcd.
-This is located at /var/lib/rancher/k3s/server/tls/etcd/peer-ca.crt.
-If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config
-has not been modified to use a shared certificate authority.
+如果使用 sqlite 或一个外部数据库，etcd 检查不适用。
+在使用嵌入式 etcd 时，K3s 为 etcd 生成唯一的证书颁发机构。
+该文件位于 /var/lib/rancher/k3s/server/tls/etcd/peer-ca.crt。
+如果此检查失败，请确保配置文件 /var/lib/rancher/k3s/server/db/etcd/config 未被修改为使用共享证书颁发机构。
 ======
 
-== 4.1 Worker Node Configuration Files
+== 4.1 工作节点配置文件
 
-=== 4.1.1 Ensure that the kubelet service file permissions are set to 600 or more restrictive (Automated)
+=== 4.1.1 确保 kubelet 服务文件权限设置为 600 或更严格（自动）
 
-**Result:** Not Applicable
+**结果：**不适用
 
-**Rationale:**
+**基本原理:**
 
-The kubelet is embedded in the k3s process. There is no kubelet service file, all configuration is passed in as arguments at runtime.
+kubelet 嵌入在 k3s 进程中。没有 kubelet 服务文件，所有配置在运行时作为参数传递。
 
-=== 4.1.2 Ensure that the kubelet service file ownership is set to root:root (Automated)
+=== 4.1.2 确保 kubelet 服务文件的所有权设置为 root:root（自动）
 
-**Result:** Not Applicable
+**结果：**不适用
 
-**Rationale:**
+**基本原理:**
 
-The kubelet is embedded in the k3s process. There is no kubelet service file, all configuration is passed in as arguments at runtime.
+kubelet 嵌入在 k3s 进程中。没有 kubelet 服务文件，所有配置在运行时作为参数传递。
 
  All configuration is passed in as arguments at container run time.
 
-=== 4.1.3 If proxy kubeconfig file exists ensure permissions are set to 600 or more restrictive (Automated)
+=== 4.1.3 如果代理 kubeconfig 文件存在，请确保权限设置为 600 或更严格（自动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2310,10 +2267,10 @@ The kubelet is embedded in the k3s process. There is no kubelet service file, al
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig; then stat -c permissions=%a /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig; fi' 
 ----
 
-**Expected Result:** permissions has permissions 600, expected 600 or more restrictive
+**预期结果:** 权限为 600，预期为 600 或更严格
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2323,17 +2280,16 @@ permissions=600
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Run the below command (based on the file location on your system) on the each worker node.
-For example,
-`chmod 600 /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig`
+在每个工作节点上运行以下命令（根据您系统上的文件位置）。
+例如，`chmod 600 /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig`
 ======
 
-=== 4.1.4 If proxy kubeconfig file exists ensure ownership is set to root:root (Automated)
+=== 4.1.4 如果代理 kubeconfig 文件存在，请确保所有权设置为 root:root（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2342,10 +2298,10 @@ For example,
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig; then stat -c %U:%G /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig; fi' 
 ----
 
-**Expected Result:** 'root:root' is present
+**预期结果:** 'root:root' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2355,16 +2311,16 @@ root:root
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Run the below command (based on the file location on your system) on the each worker node.
-For example, `chown root:root /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig`
+在每个工作节点上运行以下命令（根据您系统上的文件位置）。
+例如，`chown root:root /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig`
 ======
 
-=== 4.1.5 Ensure that the --kubeconfig kubelet.conf file permissions are set to 600 or more restrictive (Automated)
+=== 4.1.5 确保 --kubeconfig kubelet.conf 文件权限设置为 600 或更严格（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2373,10 +2329,10 @@ For example, `chown root:root /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig`
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/agent/kubelet.kubeconfig; then stat -c permissions=%a /var/lib/rancher/k3s/agent/kubelet.kubeconfig; fi' 
 ----
 
-**Expected Result:** permissions has permissions 600, expected 600 or more restrictive
+**预期结果:** 权限为 600，预期为 600 或更严格
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2386,17 +2342,16 @@ permissions=600
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Run the below command (based on the file location on your system) on the each worker node.
-For example,
-`chmod 600 /var/lib/rancher/k3s/agent/kubelet.kubeconfig`
+在每个工作节点上运行以下命令（根据您系统上的文件位置）。
+例如，`chmod 600 /var/lib/rancher/k3s/agent/kubelet.kubeconfig`
 ======
 
-=== 4.1.6 Ensure that the --kubeconfig kubelet.conf file ownership is set to root:root (Automated)
+=== 4.1.6 确保 --kubeconfig kubelet.conf 文件所有权设置为 root:root（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2405,10 +2360,10 @@ For example,
 stat -c %U:%G /var/lib/rancher/k3s/agent/kubelet.kubeconfig
 ----
 
-**Expected Result:** 'root:root' is present
+**预期结果:** 'root:root' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2418,17 +2373,16 @@ root:root
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Run the below command (based on the file location on your system) on the each worker node.
-For example,
-`chown root:root /var/lib/rancher/k3s/agent/kubelet.kubeconfig`
+在每个工作节点上运行以下命令（根据您系统上的文件位置）。
+例如，`chown root:root /var/lib/rancher/k3s/agent/kubelet.kubeconfig`
 ======
 
-=== 4.1.7 Ensure that the certificate authorities file permissions are set to 600 or more restrictive (Automated)
+=== 4.1.7 确保证书颁发机构文件权限设置为 600 或更严格（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2437,10 +2391,10 @@ For example,
 stat -c permissions=%a /var/lib/rancher/k3s/agent/client-ca.crt
 ----
 
-**Expected Result:** permissions has permissions 600, expected 600 or more restrictive
+**预期结果:** 权限为 600，预期为 600 或更严格
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2450,16 +2404,15 @@ permissions=600
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Run the following command to modify the file permissions of the
---client-ca-file `chmod 600 /var/lib/rancher/k3s/agent/client-ca.crt`
+运行以下命令以修改 --client-ca-file `chmod 600 /var/lib/rancher/k3s/agent/client-ca.crt` 的文件权限
 ======
 
-=== 4.1.8 Ensure that the client certificate authorities file ownership is set to root:root (Automated)
+=== 4.1.8 确保客户端证书颁发机构文件所有权设置为 root:root（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2468,10 +2421,10 @@ Run the following command to modify the file permissions of the
 stat -c %U:%G /var/lib/rancher/k3s/agent/client-ca.crt
 ----
 
-**Expected Result:** 'root:root' is equal to 'root:root'
+**预期结果:** 'root:root' 等于 'root:root'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2481,34 +2434,33 @@ root:root
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Run the following command to modify the ownership of the --client-ca-file.
-`chown root:root /var/lib/rancher/k3s/agent/client-ca.crt`
+运行以下命令以修改 --client-ca-file 的所有权。`chown root:root /var/lib/rancher/k3s/agent/client-ca.crt`
 ======
 
-=== 4.1.9 Ensure that the kubelet --config configuration file has permissions set to 600 or more restrictive (Automated)
+=== 4.1.9 确保 kubelet --config 配置文件的权限设置为 600 或更严格（自动化）
 
-**Result:** Not Applicable
+**结果：**不适用
 
-**Rationale:**
+**基本原理:**
 
-The kubelet is embedded in the k3s process. There is no kubelet config file, all configuration is passed in as arguments at runtime.
+kubelet 嵌入在 k3s 进程中。没有 kubelet 配置文件，所有配置在运行时作为参数传递。
 
-=== 4.1.10 Ensure that the kubelet --config configuration file ownership is set to root:root (Automated)
+=== 4.1.10 确保 kubelet --config 配置文件的所有权设置为 root:root（自动化）
 
-**Result:** Not Applicable
+**结果：**不适用
 
-**Rationale:**
+**基本原理:**
 
-The kubelet is embedded in the k3s process. There is no kubelet config file, all configuration is passed in as arguments at runtime.
+kubelet 嵌入在 k3s 进程中。没有 kubelet 配置文件，所有配置在运行时作为参数传递。
 
 == 4.2 Kubelet
 
-=== 4.2.1 Ensure that the --anonymous-auth argument is set to false (Automated)
+=== 4.2.1 确保 --anonymous-auth 参数设置为 false（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2517,10 +2469,10 @@ The kubelet is embedded in the k3s process. There is no kubelet config file, all
 /bin/sh -c 'if test $(journalctl -m -u k3s | grep  "Running kube-apiserver" | wc -l) -gt 0; then journalctl -m -u k3s | grep  "Running kube-apiserver" | tail -n1 | grep "anonymous-auth" | grep -v grep; else echo "--anonymous-auth=false"; fi' 
 ----
 
-**Expected Result:** '--anonymous-auth' is equal to 'false'
+**预期结果:** '--anonymous-auth' 等于 'false'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2530,25 +2482,20 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s sets the --anonymous-auth to false. If you have set this to a different value, you
-should set it back to false. If using the K3s config file /etc/rancher/k3s/config.yaml, remove any lines similar to below.
+默认情况下，K3s 将 --anonymous-auth 设置为 false。如果您将此设置为其他值，您应该将其恢复为 false。如果使用 K3s 配置文件 /etc/rancher/k3s/config.yaml，请删除任何类似于以下内容的行。
 ----
 kubelet-arg:
   - "anonymous-auth=true"
 ----
-If using the command line, edit the K3s service file and remove the below argument.
---kubelet-arg="anonymous-auth=true"
-Based on your system, restart the k3s service. For example,
-systemctl daemon-reload
-systemctl restart k3s.service
+如果使用命令行，请编辑 K3s 服务文件并删除以下参数。--kubelet-arg="anonymous-auth=true"。根据您的系统，重启 k3s 服务。例如，systemctl daemon-reload systemctl restart k3s.service
 ======
 
-=== 4.2.2 Ensure that the --authorization-mode argument is not set to AlwaysAllow (Automated)
+=== 4.2.2 确保 --authorization-mode 参数未设置为 AlwaysAllow（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2557,10 +2504,10 @@ systemctl restart k3s.service
 /bin/sh -c 'if test $(journalctl -m -u k3s | grep  "Running kube-apiserver" | wc -l) -gt 0; then journalctl -m -u k3s | grep  "Running kube-apiserver" | tail -n1 | grep "authorization-mode"; else echo "--authorization-mode=Webhook"; fi' 
 ----
 
-**Expected Result:** '--authorization-mode' does not have 'AlwaysAllow'
+**预期结果:** '--authorization-mode' 不包含 'AlwaysAllow'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2570,25 +2517,21 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s does not set the --authorization-mode to AlwaysAllow.
-If using the K3s config file /etc/rancher/k3s/config.yaml, remove any lines similar to below.
+默认情况下，K3s 不会将 --authorization-mode 设置为 AlwaysAllow。
+如果使用 K3s 配置文件 /etc/rancher/k3s/config.yaml，请删除任何类似于以下内容的行。
 ----
 kubelet-arg:
   - "authorization-mode=AlwaysAllow"
 ----
-If using the command line, edit the K3s service file and remove the below argument.
---kubelet-arg="authorization-mode=AlwaysAllow"
-Based on your system, restart the k3s service. For example,
-systemctl daemon-reload
-systemctl restart k3s.service
+如果使用命令行，请编辑 K3s 服务文件并删除以下参数。--kubelet-arg="authorization-mode=AlwaysAllow"。根据您的系统，重启 k3s 服务。例如，systemctl daemon-reload systemctl restart k3s.service
 ======
 
-=== 4.2.3 Ensure that the --client-ca-file argument is set as appropriate (Automated)
+=== 4.2.3 确保 --client-ca-file 参数设置为适当值（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2597,10 +2540,10 @@ systemctl restart k3s.service
 /bin/sh -c 'if test $(journalctl -m -u k3s | grep  "Running kube-apiserver" | wc -l) -gt 0; then journalctl -m -u k3s | grep  "Running kube-apiserver" | tail -n1 | grep "client-ca-file"; else echo "--client-ca-file=/var/lib/rancher/k3s/server/tls/request-header-ca.crt"; fi' 
 ----
 
-**Expected Result:** '--client-ca-file' is present
+**预期结果:** '--client-ca-file' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2610,16 +2553,16 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s automatically provides the client ca certificate for the Kubelet.
-It is generated and located at /var/lib/rancher/k3s/agent/client-ca.crt
+默认情况下，K3s 会自动为 Kubelet 提供客户端 CA 证书。
+它会生成并存放在 /var/lib/rancher/k3s/agent/client-ca.crt。
 ======
 
-=== 4.2.4 Verify that if defined, the --read-only-port argument is set to 0 (Automated)
+=== 4.2.4 验证如果定义了 --read-only-port 参数，则其设置为 0（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2628,10 +2571,10 @@ It is generated and located at /var/lib/rancher/k3s/agent/client-ca.crt
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-**Expected Result:** '--read-only-port' is equal to '0' OR '--read-only-port' is not present
+**预期结果:** '--read-only-port' 等于 '0' 或 '--read-only-port' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2641,25 +2584,20 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s sets the --read-only-port to 0. If you have set this to a different value, you
-should set it back to 0. If using the K3s config file /etc/rancher/k3s/config.yaml, remove any lines similar to below.
+默认情况下，K3s 将 --read-only-port 设置为 0。如果您将此设置为其他值，您应该将其恢复为 0。如果使用 K3s 配置文件 /etc/rancher/k3s/config.yaml，请去除任何类似于以下内容的行。
 ----
 kubelet-arg:
   - "read-only-port=XXXX"
 ----
-If using the command line, edit the K3s service file and remove the below argument.
---kubelet-arg="read-only-port=XXXX"
-Based on your system, restart the k3s service. For example,
-systemctl daemon-reload
-systemctl restart k3s.service
+如果使用命令行，请编辑 K3s 服务文件并去除以下参数。--kubelet-arg="read-only-port=XXXX"。根据您的系统，重启 k3s 服务。例如，systemctl daemon-reload systemctl restart k3s.service
 ======
 
-=== 4.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0 (Manual)
+=== 4.2.5 确保 --streaming-connection-idle-timeout 参数未设置为 0（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2668,10 +2606,10 @@ systemctl restart k3s.service
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-**Expected Result:** '--streaming-connection-idle-timeout' is not equal to '0' OR '--streaming-connection-idle-timeout' is not present
+**预期结果:** '--streaming-connection-idle-timeout' 不等于 '0' 或 '--streaming-connection-idle-timeout' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2681,22 +2619,21 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-If using the K3s config file /etc/rancher/k3s/config.yaml, set the following parameter to an appropriate value.
+如果使用 K3s 配置文件 /etc/rancher/k3s/config.yaml，请将以下参数设置为适当值。
 ----
 kubelet-arg:
   - "streaming-connection-idle-timeout=5m"
 ----
-If using the command line, run K3s with --kubelet-arg="streaming-connection-idle-timeout=5m".
-Based on your system, restart the k3s service. For example,
-systemctl restart k3s.service
+如果使用命令行，请运行 K3s，使用 --kubelet-arg="streaming-connection-idle-timeout=5m"。
+根据您的系统，重启 k3s 服务。例如，systemctl restart k3s.service
 ======
 
-=== 4.2.6 Ensure that the --make-iptables-util-chains argument is set to true (Automated)
+=== 4.2.6 确保 --make-iptables-util-chains 参数设置为 true（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2705,10 +2642,10 @@ systemctl restart k3s.service
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-**Expected Result:** '--make-iptables-util-chains' is equal to 'true' OR '--make-iptables-util-chains' is not present
+**预期结果:** '--make-iptables-util-chains' 等于 'true' 或者 '--make-iptables-util-chains' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2718,31 +2655,29 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-If using the K3s config file /etc/rancher/k3s/config.yaml, set the following parameter.
+如果使用 K3s 配置文件 /etc/rancher/k3s/config.yaml，请设置以下参数。
 ----
 kubelet-arg:
   - "make-iptables-util-chains=true"
 ----
-If using the command line, run K3s with --kubelet-arg="make-iptables-util-chains=true".
-Based on your system, restart the k3s service. For example,
-systemctl restart k3s.service
+如果使用命令行，请运行 K3s，使用 --kubelet-arg="make-iptables-util-chains=true"。
+根据您的系统，重启 k3s 服务。例如，systemctl restart k3s.service
 ======
 
-=== 4.2.7 Ensure that the --hostname-override argument is not set (Automated)
+=== 4.2.7 确保 --hostname-override 参数未设置（自动化）
 
-**Result:** Not Applicable
+**结果：**不适用
 
-**Rationale:**
+**基本原理:**
 
-By default, K3s does set the --hostname-override argument. Per CIS guidelines, this is to comply
-with cloud providers that require this flag to ensure that hostname matches node names.
+默认情况下，K3s 会设置 --hostname-override 参数。根据 CIS 指南，这是为了遵守要求此标志的云提供商，以确保主机名与节点名称匹配。
 
-=== 4.2.8 Ensure that the eventRecordQPS argument is set to a level which ensures appropriate event capture (Manual)
+=== 4.2.8 确保 eventRecordQPS 参数设置为确保适当事件捕获的级别（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2751,10 +2686,10 @@ with cloud providers that require this flag to ensure that hostname matches node
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-**Expected Result:** '--event-qps' is greater or equal to 0 OR '--event-qps' is not present
+**预期结果:** '--event-qps' 大于或等于 0 或者 '--event-qps' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2764,23 +2699,21 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s sets the event-qps to 0. Should you wish to change this,
-If using the K3s config file /etc/rancher/k3s/config.yaml, set the following parameter to an appropriate value.
+默认情况下，K3s 将 event-qps 设置为 0。如果您希望更改此设置，使用 K3s 配置文件 /etc/rancher/k3s/config.yaml，请将以下参数设置为适当的值。
 ----
 kubelet-arg:
   - "event-qps=<value>"
 ----
-If using the command line, run K3s with --kubelet-arg="event-qps=&lt;value&gt;".
-Based on your system, restart the k3s service. For example,
-systemctl restart k3s.service
+如果使用命令行，请运行 K3s，使用 --kubelet-arg="event-qps=&lt;value&gt;"。
+根据您的系统，重启 k3s 服务。例如，systemctl restart k3s.service
 ======
 
-=== 4.2.9 Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate (Automated)
+=== 4.2.9 确保 --tls-cert-file 和 --tls-private-key-file 参数设置为适当（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2789,10 +2722,10 @@ systemctl restart k3s.service
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-**Expected Result:** '--tls-cert-file' is present AND '--tls-private-key-file' is present
+**预期结果:** '--tls-cert-file' 存在并且 '--tls-private-key-file' 存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2802,13 +2735,11 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s automatically provides the TLS certificate and private key for the Kubelet.
-They are generated and located at /var/lib/rancher/k3s/agent/serving-kubelet.crt and /var/lib/rancher/k3s/agent/serving-kubelet.key
-If for some reason you need to provide your own certificate and key, you can set the
-below parameters in the K3s config file /etc/rancher/k3s/config.yaml.
+默认情况下，K3s 会自动提供 Kubelet 的 TLS 证书和私钥。
+它们被生成并位于 /var/lib/rancher/k3s/agent/serving-kubelet.crt 和 /var/lib/rancher/k3s/agent/serving-kubelet.key。如果出于某种原因您需要提供自己的证书和密钥，可以在 K3s 配置文件 /etc/rancher/k3s/config.yaml 中设置以下参数。
 ----
 kubelet-arg:
   - "tls-cert-file=<path/to/tls-cert-file>"
@@ -2816,9 +2747,9 @@ kubelet-arg:
 ----
 ======
 
-=== 4.2.10 Ensure that the --rotate-certificates argument is not set to false (Automated)
+=== 4.2.10 确保 --rotate-certificates 参数未设置为 false（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2827,10 +2758,10 @@ kubelet-arg:
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-**Expected Result:** '--rotate-certificates' is present OR '--rotate-certificates' is not present
+**预期结果:** '--rotate-certificates' 存在 或 '--rotate-certificates' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2840,19 +2771,18 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s does not set the --rotate-certificates argument. If you have set this flag with a value of `false`, you should either set it to `true` or completely remove the flag.
-If using the K3s config file /etc/rancher/k3s/config.yaml, remove any rotate-certificates parameter.
-If using the command line, remove the K3s flag --kubelet-arg="rotate-certificates".
-Based on your system, restart the k3s service. For example,
-systemctl restart k3s.service
+默认情况下，K3s 不会设置 --rotate-certificates 参数。如果您将此标志设置为 `false`，则应将其设置为 `true` 或完全删除该标志。
+如果使用 K3s 配置文件 /etc/rancher/k3s/config.yaml，请删除任何 rotate-certificates 参数。
+如果使用命令行，请删除 K3s 标志 --kubelet-arg="rotate-certificates"。
+根据您的系统，重启 k3s 服务。例如，systemctl restart k3s.service
 ======
 
-=== 4.2.11 Verify that the RotateKubeletServerCertificate argument is set to true (Automated)
+=== 4.2.11 验证 RotateKubeletServerCertificate 参数是否设置为 true（自动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2861,10 +2791,10 @@ systemctl restart k3s.service
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-**Expected Result:** 'RotateKubeletServerCertificate' is present OR 'RotateKubeletServerCertificate' is not present
+**预期结果:**'RotateKubeletServerCertificate' 存在 或 'RotateKubeletServerCertificate' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -2874,20 +2804,19 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-By default, K3s does not set the RotateKubeletServerCertificate feature gate.
-If you have enabled this feature gate, you should remove it.
-If using the K3s config file /etc/rancher/k3s/config.yaml, remove any feature-gate=RotateKubeletServerCertificate parameter.
-If using the command line, remove the K3s flag --kubelet-arg="feature-gate=RotateKubeletServerCertificate".
-Based on your system, restart the k3s service. For example,
-systemctl restart k3s.service
+默认情况下，K3s 不设置 RotateKubeletServerCertificate 功能开关。
+如果您启用了此功能开关，则应将其删除。
+如果使用 K3s 配置文件 /etc/rancher/k3s/config.yaml，请删除任何 feature-gate=RotateKubeletServerCertificate 参数。
+如果使用命令行，请删除 K3s 标志 --kubelet-arg="feature-gate=RotateKubeletServerCertificate"。
+根据您的系统，重启 k3s 服务。例如，systemctl restart k3s.service
 ======
 
-=== 4.2.12 Ensure that the Kubelet only makes use of Strong Cryptographic Ciphers (Manual)
+=== 4.2.12 确保 Kubelet 仅使用强加密套件（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2896,10 +2825,10 @@ systemctl restart k3s.service
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-**Expected Result:** '--tls-cipher-suites' contains valid elements from 'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256'
+**预期结果：** '--tls-cipher-suites' 包含来自 'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256' 的有效元素。
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -2909,47 +2838,42 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-If using a K3s config file /etc/rancher/k3s/config.yaml, edit the file to set `TLSCipherSuites` to
+如果使用 K3s 配置文件 /etc/rancher/k3s/config.yaml，请编辑该文件以将 `TLSCipherSuites` 设置为
 ----
 kubelet-arg:
   - "tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
 ----
-or to a subset of these values.
-If using the command line, add the K3s flag --kubelet-arg="tls-cipher-suites=&lt;same values as above&gt;"
-Based on your system, restart the k3s service. For example,
-systemctl restart k3s.service
+或这些值的子集。
+如果使用命令行，请添加 K3s 标志 --kubelet-arg="tls-cipher-suites=&lt;与上面相同的值&gt;"。根据您的系统，重启 k3s 服务。例如，systemctl restart k3s.service
 ======
 
-=== 4.2.13 Ensure that a limit is set on pod PIDs (Manual)
+=== 4.2.13 确保对 pod PIDs 设置了限制（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Decide on an appropriate level for this parameter and set it,
-If using a K3s config file /etc/rancher/k3s/config.yaml, edit the file to set `podPidsLimit` to
+**修正:**
+决定此参数的适当级别并进行设置，如果使用 K3s 配置文件 /etc/rancher/k3s/config.yaml，请编辑该文件将 `podPidsLimit` 设置为。
 ----
 kubelet-arg:
   - "pod-max-pids=<value>"
 ----
 
-=== 4.2.14 Ensure that the --seccomp-default parameter is set to true (Manual)
+=== 4.2.14 确保 --seccomp-default 参数设置为 true（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-If enabled, the kubelet will use the RuntimeDefault seccomp profile by default, which is defined by the container runtime, instead of using the Unconfined (seccomp disabled) mode (default).
-If using a K3s config file /etc/rancher/k3s/config.yaml, edit the file to set `seccomp-default` to
-kubelet-arg:
- - "seccomp-default=true"
+**修正:**
+如果启用，kubelet 将默认使用 RuntimeDefault seccomp 配置文件，该配置文件由容器运行时定义，而不是使用 Unconfined（禁用 seccomp）模式（默认）。
+如果使用 K3s 配置文件 /etc/rancher/k3s/config.yaml，请编辑该文件以将 `seccomp-default` 设置为 kubelet-arg: - "seccomp-default=true"
 
 == 4.3 kube-proxy
 
-=== 4.3.1 Ensure that the kube-proxy metrics service is bound to localhost (Automated)
+=== 4.3.1 确保 kube-proxy 指标服务绑定到 localhost（自动化）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2958,10 +2882,10 @@ kubelet-arg:
 journalctl -m -u k3s -u k3s-agent | grep 'Running kube-proxy' | tail -n1
 ----
 
-**Expected Result:** '--metrics-bind-address' is present OR '--metrics-bind-address' is not present
+**预期结果：** '--metrics-bind-address' 存在 或者 '--metrics-bind-address' 不存在
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -2971,18 +2895,18 @@ Sep 16 15:47:27 server-0 k3s[2233]: time="2025-09-16T15:47:27Z" level=info msg="
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-Modify or remove any values which bind the metrics service to a non-localhost address.
-The default value is 127.0.0.1:10249.
+修改或删除任何将指标服务绑定到非 localhost 地址的值。
+默认值是 127.0.0.1:10249。
 ======
 
-== 5.1 RBAC and Service Accounts
+== 5.1 RBAC 和服务账户
 
-=== 5.1.1 Ensure that the cluster-admin role is only used where required (Manual)
+=== 5.1.1 确保 cluster-admin 角色仅在需要时使用（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -2991,10 +2915,10 @@ The default value is 127.0.0.1:10249.
 kubectl get clusterrolebindings -o=custom-columns=ROLE:.roleRef.name,NAME:.metadata.name,SUBJECT:.subjects[*].name --no-headers |  grep cluster-admin
 ----
 
-**Expected Result:** 'cluster-admin' contains valid elements from 'cluster-admin, helm-kube-system-traefik, helm-kube-system-traefik-crd'
+**预期结果：** 'cluster-admin' 包含来自 'cluster-admin, helm-kube-system-traefik, helm-kube-system-traefik-crd' 的有效元素
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -3006,23 +2930,19 @@ cluster-admin                                                   helm-kube-system
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-Identify all clusterrolebindings to the cluster-admin role. Check if they are used and
-if they need this role or if they could use a role with fewer privileges. K3s gives exceptions
-to the helm-kube-system-traefik and helm-kube-system-traefik-crd clusterrolebindings
-as these are required for traefik installation into the kube-system namespace for regular operations.
-Where possible, first bind users to a lower privileged role and then remove the
-clusterrolebinding to the cluster-admin role:
+识别所有与 cluster-admin 角色相关的 clusterrolebindings。检查它们是否被使用，以及它们是否需要此角色，或者是否可以使用具有更少权限的角色。K3s 对 helm-kube-system-traefik 和 helm-kube-system-traefik-crd clusterrolebindings 给予例外，因为这些是常规操作中将 traefik 安装到 kube-system 名称空间所必需的。
+在可能的情况下，首先将用户绑定到较低权限的角色，然后去除与 cluster-admin 角色的 clusterrolebinding：
 ----
 kubectl delete clusterrolebinding [name]
 ----
 ======
 
-=== 5.1.2 Minimize access to secrets (Manual)
+=== 5.1.2 最小化对机密的访问（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -3031,10 +2951,10 @@ kubectl delete clusterrolebinding [name]
 echo "canGetListWatchSecretsAsSystemAuthenticated: $(kubectl auth can-i get,list,watch secrets --all-namespaces --as=system:authenticated)"
 ----
 
-**Expected Result:** 'canGetListWatchSecretsAsSystemAuthenticated' is equal to 'no'
+**预期结果:** 'canGetListWatchSecretsAsSystemAuthenticated' 等于 'no'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -3044,15 +2964,15 @@ canGetListWatchSecretsAsSystemAuthenticated: no
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Where possible, remove get, list and watch access to Secret objects in the cluster.
+在可能的情况下，去除对集群中 Secret 对象的获取、列出和监视访问。
 ======
 
-=== 5.1.3 Minimize wildcard use in Roles and ClusterRoles (Manual)
+=== 5.1.3 最小化角色和集群角色中的通配符使用（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -3087,10 +3007,10 @@ do
 done
 ----
 
-**Expected Result:** 'is_compliant' is equal to 'true'
+**预期结果:** 'is_compliant' 等于 'true'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -3178,20 +3098,16 @@ done
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Where possible replace any use of wildcards in clusterroles and roles with specific objects or actions.
-K3s gives exceptions for following cluster roles, which are required for regular operations:
-- k3s-cloud-controller-manager, local-path-provisioner-role, cluster-admin
-- system:kube-controller-manager, system:kubelet-api-admin, system:controller:namespace-controller,
-- system:controller:disruption-controller, system:controller:generic-garbage-collector,
-- system:controller:horizontal-pod-autoscaler, system:controller:resourcequota-controller
+在可能的情况下，将集群角色和角色中的任何通配符使用替换为特定对象或操作。
+K3s 对以下集群角色给予例外，这些角色是常规操作所必需的：- k3s-cloud-controller-manager, local-path-provisioner-role, cluster-admin - system:kube-controller-manager, system:kubelet-api-admin, system:controller:名称空间-controller, - system:controller:disruption-controller, system:controller:generic-garbage-collector, - system:controller:horizontal-pod-autoscaler, system:controller:resourcequota-controller
 ======
 
-=== 5.1.4 Minimize access to create pods (Manual)
+=== 5.1.4 最小化创建 Pod 的访问（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -3200,10 +3116,10 @@ K3s gives exceptions for following cluster roles, which are required for regular
 echo "canCreatePodsAsSystemAuthenticated: $(kubectl auth can-i create pods --all-namespaces --as=system:authenticated)"
 ----
 
-**Expected Result:** 'canCreatePodsAsSystemAuthenticated' is equal to 'no'
+**预期结果:** 'canCreatePodsAsSystemAuthenticated' 等于 'no'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -3213,31 +3129,28 @@ canCreatePodsAsSystemAuthenticated: no
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Where possible, remove create access to pod objects in the cluster.
+在可能的情况下，去除对集群中 pod 对象的创建访问权限。
 ======
 
-=== 5.1.5 Ensure that default service accounts are not actively used. (Manual)
+=== 5.1.5 确保默认服务帐户未被积极使用。（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Create explicit service accounts wherever a Kubernetes workload requires specific access
-to the Kubernetes API server.
-K3s makes an exception for the default service account in the kube-system namespace.
-Modify the configuration of each default service account to include this value
-automountServiceAccountToken: false
-Or using kubectl:
+**修正:**
+在 Kubernetes 工作负载需要特定访问 Kubernetes API 服务器的地方创建显式服务帐户。
+K3s 对 kube-system 名称空间中的默认服务帐户做了例外处理。
+修改每个默认服务帐户的配置，添加以下值：automountServiceAccountToken: false，或者使用 kubectl：
 [,bash]
 ----
 kubectl patch serviceaccount --namespace <NAMESPACE> default --patch '{"automountServiceAccountToken": false}'
 ----
 
-=== 5.1.6 Ensure that Service Account Tokens are only mounted where necessary (Manual)
+=== 5.1.6 确保服务帐户令牌仅在必要时挂载（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -3259,10 +3172,10 @@ do
 done
 ----
 
-**Expected Result:** 'is_compliant' is equal to 'true' OR 'service_account' contains valid elements from 'coredns, helm-traefik, helm-traefik-crd, traefik, metrics-server, svclb, local-path-provisioner-service-account'
+**预期结果:** 'is_compliant' 等于 'true' 或 'service_account' 包含来自 'coredns, helm-traefik, helm-traefik-crd, traefik, metrics-server, svclb, local-path-provisioner-service-account' 的有效元素。
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -3278,81 +3191,79 @@ done
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Modify the definition of ServiceAccounts and Pods which do not need to mount service
-account tokens to disable it, with `automountServiceAccountToken: false`.
-If both the ServiceAccount and the Pod's .spec specify a value for automountServiceAccountToken, the Pod spec takes precedence.
-Condition: Pod is_compliant to true when
-  - ServiceAccount is automountServiceAccountToken: false and Pod is automountServiceAccountToken: false or notset
-  - ServiceAccount is automountServiceAccountToken: true notset and Pod is automountServiceAccountToken: false
-K3s gives exceptions to the following service-accounts, which are required for regular operations:
+修改不需要挂载服务帐户令牌的 ServiceAccounts 和 Pods 的定义，以禁用它，使用 `automountServiceAccountToken: false`。
+如果 ServiceAccount 和 Pod 的 .spec 都指定了 automountServiceAccountToken 的值，则 Pod 的 .spec 优先。
+条件：当满足以下条件时，Pod 的 is_compliant 为 true： +
+  - ServiceAccount 的 automountServiceAccountToken 为 false 且 Pod 的 automountServiceAccountToken 为 false 或未设置； +
+  - ServiceAccount 的 automountServiceAccountToken 为 true 或未设置，且 Pod 的 automountServiceAccountToken 为 false。 +
+K3s 对以下服务帐户给予例外，这些帐户为常规操作所必需： +
   - coredns, helm-traefik, helm-traefik-crd, traefik, metrics-server, svclb, local-path-provisioner-service-account
 ======
 
-=== 5.1.7 Avoid use of system:masters group (Manual)
+=== 5.1.7 避免使用 system:masters 组（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Remove the system:masters group from all users in the cluster.
+**修正:**
+从集群中的所有用户中去除 system:masters 组。
 
-=== 5.1.8 Limit use of the Bind, Impersonate and Escalate permissions in the Kubernetes cluster (Manual)
+=== 5.1.8 限制在 Kubernetes 集群中使用 Bind、Impersonate 和 Escalate 权限（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Where possible, remove the impersonate, bind and escalate rights from subjects.
+**修正:**
+在可能的情况下，从主体中去除 impersonate、bind 和 escalate 权限。
 
-=== 5.1.9 Minimize access to create persistent volumes (Manual)
+=== 5.1.9 最小化创建持久卷的访问权限（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Where possible, remove create access to PersistentVolume objects in the cluster.
+**修正:**
+在可能的情况下，去除对集群中 PersistentVolume 对象的创建访问权限。
 
-=== 5.1.10 Minimize access to the proxy sub-resource of nodes (Manual)
+=== 5.1.10 最小化对节点的代理子资源的访问（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Where possible, remove access to the proxy sub-resource of node objects.
+**修正:**
+在可能的情况下，去除对节点对象的代理子资源的访问权限。
 
-=== 5.1.11 Minimize access to the approval sub-resource of certificatesigningrequests objects (Manual)
+=== 5.1.11 最小化对证书签名请求对象的审批子资源的访问（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Where possible, remove access to the approval sub-resource of certificatesigningrequests objects.
+**修正:**
+在可能的情况下，去除对证书签名请求对象的审批子资源的访问。
 
-=== 5.1.12 Minimize access to webhook configuration objects (Manual)
+=== 5.1.12 最小化对 webhook 配置对象的访问（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Where possible, remove access to the validatingwebhookconfigurations or mutatingwebhookconfigurations objects
+**修正:**
+在可能的情况下，去除对验证 webhook 配置或变更 webhook 配置对象的访问。
 
-=== 5.1.13 Minimize access to the service account token creation (Manual)
+=== 5.1.13 最小化对服务账户令牌创建的访问（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Where possible, remove access to the token sub-resource of serviceaccount objects.
+**修正:**
+在可能的情况下，去除对服务账户对象的令牌子资源的访问。
 
-== 5.2 Pod Security Standards
+== 5.2 Pod 安全标准
 
-=== 5.2.1 Ensure that the cluster has at least one active policy control mechanism in place (Manual)
+=== 5.2.1 确保集群中至少有一个活动的策略控制机制（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Ensure that either Pod Security Admission or an external policy control system is in place
-for every namespace which contains user workloads.
+**修正:**
+确保每个包含用户工作负载的名称空间中都有 Pod 安全准入或外部策略控制系统。
 
-=== 5.2.2 Minimize the admission of privileged containers (Manual)
+=== 5.2.2 最小化特权容器的准入（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -3376,10 +3287,10 @@ do
 done
 ----
 
-**Expected Result:** 'is_compliant' is equal to 'true'
+**预期结果:** 'is_compliant' 等于 'true'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -3396,19 +3307,18 @@ done
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Add policies to each namespace in the cluster which has user workloads to restrict the
-admission of privileged containers.
-Audit: the audit list all pods' containers to retrieve their .securityContext.privileged value.
-Condition: is_compliant is false if container's `.securityContext.privileged` is set to `true`.
-Default: by default, there are no restrictions on the creation of privileged containers.
+为集群中每个包含用户工作负载的命名空间添加策略，以限制特权容器的准入。
+审计：列出所有 Pod 的容器以检索其 .securityContext.privileged 值。
+条件：如果容器的 `.securityContext.privileged` 设置为 `true`，则 is_compliant 为 false。
+默认：默认情况下，对特权容器的创建没有限制。
 ======
 
-=== 5.2.3 Minimize the admission of containers wishing to share the host process ID namespace (Manual)
+=== 5.2.3 最小化希望共享主机进程 ID 名称空间的容器的准入（手动）。
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -3427,10 +3337,10 @@ do
 done
 ----
 
-**Expected Result:** 'is_compliant' is equal to 'true'
+**预期结果:** 'is_compliant' 等于 'true'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -3446,19 +3356,18 @@ done
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Add policies to each namespace in the cluster which has user workloads to restrict the
-admission of `hostPID` containers.
-Audit: the audit retrieves each Pod' spec.hostPID.
-Condition: is_compliant is false if Pod's spec.hostPID is set to `true`.
-Default: by default, there are no restrictions on the creation of hostPID containers.
+为集群中每个包含用户工作负载的命名空间添加策略，以限制 `hostPID` 容器的准入。
+审计：检索每个 Pod 的 spec.hostPID。
+条件：如果 Pod 的 spec.hostPID 设置为 `true`，则 is_compliant 为 false。
+默认：默认情况下，对 hostPID 容器的创建没有限制。
 ======
 
-=== 5.2.4 Minimize the admission of containers wishing to share the host IPC namespace (Manual)
+=== 5.2.4 最小化希望共享主机 IPC 名称空间的容器的准入（手动）。
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -3477,10 +3386,10 @@ do
 done
 ----
 
-**Expected Result:** 'is_compliant' is equal to 'true'
+**预期结果:** 'is_compliant' 等于 'true'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -3496,19 +3405,18 @@ done
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Add policies to each namespace in the cluster which has user workloads to restrict the
-admission of `hostIPC` containers.
-Audit: the audit retrieves each Pod' spec.IPC.
-Condition: is_compliant is false if Pod's spec.hostIPC is set to `true`.
-Default: by default, there are no restrictions on the creation of hostIPC containers.
+为集群中每个包含用户工作负载的命名空间添加策略，以限制 `hostIPC` 容器的准入。
+审计：检索每个 Pod 的 spec.IPC。
+条件：如果 Pod 的 spec.hostIPC 设置为 `true`，则 is_compliant 为 false。
+默认：默认情况下，对 hostIPC 容器的创建没有限制。
 ======
 
-=== 5.2.5 Minimize the admission of containers wishing to share the host network namespace (Manual)
+=== 5.2.5 最小化希望共享主机网络名称空间的容器的准入（手动）。
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -3527,10 +3435,10 @@ do
 done
 ----
 
-**Expected Result:** 'is_compliant' is equal to 'true'
+**预期结果:** 'is_compliant' 等于 'true'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -3546,19 +3454,18 @@ done
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正:*
 ======
 
-Add policies to each namespace in the cluster which has user workloads to restrict the
-admission of `hostNetwork` containers.
-Audit: the audit retrieves each Pod' spec.hostNetwork.
-Condition: is_compliant is false if Pod's spec.hostNetwork is set to `true`.
-Default: by default, there are no restrictions on the creation of hostNetwork containers.
+为集群中每个包含用户工作负载的命名空间添加策略，以限制 `hostNetwork` 容器的准入。
+审计：检索每个 Pod 的 spec.hostNetwork。
+条件：如果 Pod 的 spec.hostNetwork 设置为 `true`，则 is_compliant 为 false。
+默认：默认情况下，对 hostNetwork 容器的创建没有限制。
 ======
 
-=== 5.2.6 Minimize the admission of containers with allowPrivilegeEscalation (Manual)
+=== 5.2.6 最小化允许特权提升的容器的准入（手动）。
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -3582,10 +3489,10 @@ do
 done
 ----
 
-**Expected Result:** 'is_compliant' is equal to 'true'
+**预期结果:** 'is_compliant' 等于 'true'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值:*
 ======
 
 [,log]
@@ -3602,36 +3509,32 @@ done
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-Add policies to each namespace in the cluster which has user workloads to restrict the
-admission of containers with `.securityContext.allowPrivilegeEscalation` set to `true`.
-Audit: the audit retrieves each Pod's container(s) `.securityContext.allowPrivilegeEscalation`.
-Condition: is_compliant is false if container's `.securityContext.allowPrivilegeEscalation` is set to `true`.
-Default: If notset, privilege escalation is allowed (default to true). However if PSP/PSA is used with a `restricted` profile,
-privilege escalation is explicitly disallowed unless configured otherwise.
+为每个集群中具有用户工作负载的名称空间添加策略，以限制具有 `.securityContext.allowPrivilegeEscalation` 设置为 `true` 的容器的接纳。
+审计：审计检索每个 Pod 的容器 `.securityContext.allowPrivilegeEscalation`。
+条件：如果容器的 `.securityContext.allowPrivilegeEscalation` 设置为 `true`，则 is_compliant 为 false。
+默认值：如果未设置，则允许特权升级（默认为 true）。但是，如果与 `restricted` 控制文件一起使用 PSP/PSA，则除非另行配置，否则明确不允许特权升级。
 ======
 
-=== 5.2.7 Minimize the admission of root containers (Manual)
+=== 5.2.7 最小化 root 容器的接纳（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Create a policy for each namespace in the cluster, ensuring that either `MustRunAsNonRoot`
-or `MustRunAs` with the range of UIDs not including 0, is set.
+**修正：**
+为集群中的每个名称空间创建一个策略，确保设置 `MustRunAsNonRoot` 或 `MustRunAs`，并且 UID 范围不包括 0。
 
-=== 5.2.8 Minimize the admission of containers with the NET_RAW capability (Manual)
+=== 5.2.8 最小化具有 NET_RAW 能力的容器的接纳（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Add policies to each namespace in the cluster which has user workloads to restrict the
-admission of containers with the `NET_RAW` capability.
+**修正：**
+为每个集群中具有用户工作负载的名称空间添加策略，以限制具有 `NET_RAW` 能力的容器的接纳。
 
-=== 5.2.9 Minimize the admission of containers with added capabilities (Manual)
+=== 5.2.9 最小化具有附加能力的容器的接纳（手动）
 
-**Result:** PASS
+**结果：**PASS
 
 **Audit:**
 
@@ -3677,10 +3580,10 @@ do
 done
 ----
 
-**Expected Result:** 'is_compliant' is equal to 'true'
+**预期结果：** 'is_compliant' 等于 'true'
 
 [%collapsible]
-.*Returned Value:*
+.*返回值：*
 ======
 
 [,log]
@@ -3697,131 +3600,116 @@ done
 ======
 
 [%collapsible]
-.*Remediation:*
+.*修正：*
 ======
 
-Ensure that `allowedCapabilities` is not present in policies for the cluster unless
-it is set to an empty array.
-Audit: the audit retrieves each Pod's container(s) added capabilities.
-Condition: is_compliant is false if added capabilities are added for a given container.
-Default: Containers run with a default set of capabilities as assigned by the Container Runtime.
-K3s gives exceptions to the following pods, which are required for regular operations:
-  - coredns, svclb-traefik
+确保 `allowedCapabilities` 不存在于集群的策略中，除非将其设置为空数组。
+审计：审计检索每个 Pod 的容器的附加能力。
+条件：如果为给定容器添加了附加能力，则 is_compliant 为 false。
+默认值：容器以容器运行时分配的默认能力集运行。
+K3s 对以下 Pod 给予例外，这些 Pod 是正常操作所需的： - coredns，svclb-traefik
 ======
 
-=== 5.2.10 Minimize the admission of containers with capabilities assigned (Manual)
+=== 5.2.10 最小化具有分配能力的容器的入场（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Review the use of capabilities in applications running on your cluster. Where a namespace
-contains applications which do not require any Linux capabities to operate consider adding
-a PSP which forbids the admission of containers which do not drop all capabilities.
+**修正：**
+审查在您的集群上运行的应用程序中能力的使用。如果一个命名空间包含不需要任何 Linux 能力的应用程序，请考虑添加一个禁止接纳不放弃所有能力的容器的 PSP。
 
-=== 5.2.11 Minimize the admission of Windows HostProcess containers (Manual)
+=== 5.2.11 最小化 Windows HostProcess 容器的接纳（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Add policies to each namespace in the cluster which has user workloads to restrict the
-admission of containers that have `.securityContext.windowsOptions.hostProcess` set to `true`.
+**修正:**
+为集群中具有用户工作负载的每个名称空间添加策略，以限制接纳 `.securityContext.windowsOptions.hostProcess` 设置为 `true` 的容器。
 
-=== 5.2.12 Minimize the admission of HostPath volumes (Manual)
+=== 5.2.12 最小化 HostPath 卷的接纳（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Add policies to each namespace in the cluster which has user workloads to restrict the
-admission of containers with `hostPath` volumes.
+**修正：**
+为集群中具有用户工作负载的每个名称空间添加策略，以限制接纳具有 `hostPath` 卷的容器。
 
-=== 5.2.13 Minimize the admission of containers which use HostPorts (Manual)
+=== 5.2.13 最小化使用 HostPorts 的容器的接纳（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Add policies to each namespace in the cluster which has user workloads to restrict the
-admission of containers which use `hostPort` sections.
+**修正：**
+为集群中具有用户工作负载的每个名称空间添加策略，以限制接纳使用 `hostPort` 部分的容器。
 
-== 5.3 Network Policies and CNI
+== 5.3 网络策略和 CNI
 
-=== 5.3.1 Ensure that the CNI in use supports NetworkPolicies (Manual)
+=== 5.3.1 确保所使用的 CNI 支持网络策略（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-If the CNI plugin in use does not support network policies, consideration should be given to
-making use of a different plugin, or finding an alternate mechanism for restricting traffic
-in the Kubernetes cluster.
+**修正：**
+如果所使用的 CNI 插件不支持网络策略，则应考虑使用不同的插件，或寻找其他机制来限制 Kubernetes 集群中的流量。
 
-=== 5.3.2 Ensure that all Namespaces have NetworkPolicies defined (Manual)
+=== 5.3.2 确保所有名称空间都定义了网络策略（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Follow the documentation and create NetworkPolicy objects as you need them.
+**修正：**
+按照文档创建所需的 NetworkPolicy 对象。
 
-== 5.4 Secrets Management
+== 5.4 秘密管理
 
-=== 5.4.1 Prefer using Secrets as files over Secrets as environment variables (Manual)
+=== 5.4.1 优先使用文件形式的 Secrets 而不是环境变量形式的 Secrets（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-If possible, rewrite application code to read Secrets from mounted secret files, rather than
-from environment variables.
+**修正：**
+如果可能，重写应用程序代码以从挂载的 Secrets 文件中读取 Secrets，而不是从环境变量中读取。
 
-=== 5.4.2 Consider external secret storage (Manual)
+=== 5.4.2 考虑外部秘密存储（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Refer to the Secrets management options offered by your cloud provider or a third-party
-secrets management solution.
+**修正：**
+参考您的云服务提供商或第三方秘密管理解决方案提供的秘密管理选项。
 
-== 5.5 Extensible Admission Control
+== 5.5 可扩展的接纳控制
 
-=== 5.5.1 Configure Image Provenance using ImagePolicyWebhook admission controller (Manual)
+=== 5.5.1 使用 ImagePolicyWebhook 接纳控制器配置图像溯源（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Follow the Kubernetes documentation and setup image provenance.
+**修正：**
+遵循 Kubernetes 文档并设置图像溯源。
 
-== 5.6 General Policies
+== 5.6 一般策略
 
-=== 5.6.1 Create administrative boundaries between resources using namespaces (Manual)
+=== 5.6.1 使用名称空间在资源之间创建管理边界（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Follow the documentation and create namespaces for objects in your deployment as you need
-them.
+**修正：**
+按照文档的要求，根据需要为您的部署创建对象的名称空间。
 
-=== 5.6.2 Ensure that the seccomp profile is set to docker/default in your Pod definitions (Manual)
+=== 5.6.2 确保在您的 Pod 定义中将 seccomp 控制文件设置为 docker/default（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Use `securityContext` to enable the docker/default seccomp profile in your pod definitions.
-An example is as below:
-  securityContext:
-    seccompProfile:
-      type: RuntimeDefault
+**修正：**
+在您的 Pod 定义中使用 `securityContext` 启用 docker/default seccomp 控制文件。
+示例如下： +
+  securityContext: +
+    seccompProfile: +
+      type:RuntimeDefault
 
-=== 5.6.3 Apply SecurityContext to your Pods and Containers (Manual)
+=== 5.6.3 将 SecurityContext 应用到您的 Pods 和容器（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Follow the Kubernetes documentation and apply SecurityContexts to your Pods. For a
-suggested list of SecurityContexts, you may refer to the CIS Security Benchmark for Docker
-Containers.
+**修正：**
+遵循 Kubernetes 文档并将 SecurityContexts 应用到您的 Pods。有关建议的 SecurityContexts 列表，您可以参考 CIS Docker 容器安全基准。
 
-=== 5.6.4 The default namespace should not be used (Manual)
+=== 5.6.4 不应使用默认名称空间（手动）
 
-**Result:** WARN
+**结果：**警告
 
-**Remediation:**
-Ensure that namespaces are created to allow for appropriate segregation of Kubernetes
-resources and that all new resources are created in a specific namespace.
+**修正：**
+确保创建名称空间以允许适当的 Kubernetes 资源隔离，并且所有新资源都在特定名称空间中创建。
 

@@ -1,0 +1,58 @@
+= Guide de démarrage rapide
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-03-03
+:page-revdate: {revdate}
+
+Ce guide vous aidera à lancer rapidement un cluster avec les options par défaut. Assurez-vous que vos nœuds répondent aux xref:installation/requirements.adoc[exigences] avant de continuer.
+
+* Consultez la page xref:installation/installation.adoc[Installation] pour plus de détails sur l'installation et la configuration de K3s.
+* Pour des informations sur le fonctionnement des composants K3s ensemble, référez-vous à la page xref:architecture.adoc[Architecture].
+* Si vous êtes nouveau dans Kubernetes, la https://kubernetes.io/docs/tutorials/kubernetes-basics/[documentation officielle de Kubernetes] propose d'excellents tutoriels couvrant les bases que tous les administrateurs de cluster devraient connaître.
+
+[IMPORTANT]
+====
+Vous pouvez utiliser n'importe quelle version de K3s Prime répertoriée sur l'URL des Artéfacts Prime pour les ressources mentionnées dans ces étapes. Pour en savoir plus sur l'URL des Artéfacts Prime, consultez notre https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[documentation réservée aux Prime]. Une authentification est requise. Utilisez vos identifiants https://scc.suse.com/home[du Centre Client SUSE (SCC)] pour vous connecter.
+====
+
+
+== Script d'installation
+
+{k3s-product-name} fournit un script d'installation qui est un moyen pratique de l'installer en tant que service sur des systèmes basés sur systemd ou openrc. Ce script est disponible sur https://get.k3s.io.. Pour installer {k3s-product-name} en utilisant cette méthode, procédez comme suit :
+
+Exécutez l'installateur, où `INSTALL_K3S_ARTIFACT_URL` est l'https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[URL des Artéfacts Prime] et `INSTALL_K3S_CHANNEL` est un canal de version auquel vous pouvez vous abonner et a pour valeur par défaut `stable`. Dans cet exemple, `INSTALL_K3S_CHANNEL="latest"` vous donne la dernière version de {k3s-product-name}.
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_CHANNEL="latest" sh -
+----
+Si vous souhaitez spécifier une version, définissez la variable d'environnement `INSTALL_RKE2_VERSION` :
+
+[,bash]
+----
+curl -sfL https://get.k3s.io/ | sudo INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_VERSION="<VERSION>" sh -
+----
+
+Après avoir exécuté cette installation :
+
+* Le service K3s sera configuré pour redémarrer automatiquement après les redémarrages des nœuds ou si le processus plante ou est tué
+* Des utilitaires supplémentaires seront installés, y compris `kubectl`, `crictl`, `ctr`, `k3s-killall.sh` et `k3s-uninstall.sh`
+* Un fichier https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/[kubeconfig] sera écrit dans `/etc/rancher/k3s/k3s.yaml` et le kubectl installé par {k3s-product-name} l'utilisera automatiquement.
+
+Une installation de serveur à nœud unique est un cluster Kubernetes entièrement fonctionnel, comprenant tous les composants nécessaires au stockage de données, au plan de contrôle, au kubelet et à l'environnement d'exécution de conteneur pour héberger des pods de charge de travail. Il n'est pas nécessaire d'ajouter des nœuds de serveur ou d'agents supplémentaires, mais vous pouvez le faire pour ajouter de la capacité ou de la redondance à votre cluster.
+
+Pour installer des nœuds d'agents supplémentaires et les ajouter au cluster, exécutez le script d'installation avec les variables d'environnement `K3S_URL` et `K3S_TOKEN`. Voici un exemple montrant comment rejoindre un agent :
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_URL=https://myserver:6443 K3S_TOKEN=mynodetoken sh -
+----
+
+Définir le paramètre `K3S_URL` amène l'installateur à configurer K3s en tant qu'agent, au lieu d'un serveur. L'agent K3s s'enregistrera auprès du serveur K3s écoutant à l'URL fournie. La valeur à utiliser pour `K3S_TOKEN` est stockée à `/var/lib/rancher/k3s/server/node-token` sur votre nœud de serveur.
+
+[NOTE]
+====
+Chaque machine doit avoir un nom d'hôte unique. Si vos machines n'ont pas de noms d'hôte uniques, passez la variable d'environnement `K3S_NODE_NAME` et fournissez une valeur avec un nom d'hôte valide et unique pour chaque nœud.
+====
+
+
+Si vous êtes intéressé par l'ajout de plus de nœuds de serveur, consultez les pages xref:datastore/ha-embedded.adoc[haute disponibilité Embedded etcd] et xref:datastore/ha.adoc[haute disponibilité External DB] pour plus d'informations.

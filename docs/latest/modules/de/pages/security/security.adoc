@@ -1,0 +1,16 @@
+= Sicherheit
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-12-31
+:page-revdate: {revdate}
+
+Dieser Abschnitt beschreibt die Methodik und die Mittel zur Sicherung eines K3s-Clusters. Er ist in zwei Abschnitte unterteilt. Diese Leitfäden setzen voraus, dass k3s mit eingebettetem etcd läuft.
+
+Zunächst bietet der Leitfaden zur Härtung eine Liste von Sicherheitsbest Practices zur Sicherung eines K3s-Clusters.
+
+* xref:security/hardening-guide.adoc[Härtungshandbuch]
+
+Zweitens gibt es die Selbstbewertung zur Validierung eines gehärteten Clusters. Derzeit haben wir zwei verschiedene Bewertungen verfügbar:
+
+* xref:security/self-assessment-1.9.adoc[CIS 1.9 Benchmark Selbstbewertungsleitfaden], für K3s-Version v1.27-v1.29
+* xref:security/self-assessment-1.10.adoc[CIS 1.10 Benchmark Selbstbewertungsleitfaden], für K3s-Version v1.28-v1.31
+* xref:security/self-assessment-1.11.adoc[CIS 1.11 Benchmark Selbstbewertungsleitfaden], für K3s-Version v1.29-v1.34

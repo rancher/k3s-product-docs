@@ -1,0 +1,352 @@
+= Helm
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-01-05
+:page-revdate: {revdate}
+:page-aliases: helm.adoc
+
+Helm ist das bevorzugte Paketverwaltungstool für Kubernetes. Helm-Charts bieten eine Vorlagensyntax für Kubernetes-YAML-Manifestdokumente. Mit Helm können Entwickler oder Clusteradministratoren konfigurierbare Vorlagen erstellen, die als Charts bekannt sind, anstatt nur statische Manifeste zu verwenden. Für weitere Informationen zur Erstellung Ihres eigenen Chart-Katalogs, schauen Sie sich die Dokumentation unter https://helm.sh/docs/intro/quickstart/. an.
+
+K3s erfordert keine spezielle Konfiguration, um Helm zu unterstützen. Stellen Sie sicher, dass Sie den kubeconfig-Pfad gemäß der xref:cluster-access.adoc[Clusterzugriff]-Dokumentation korrekt eingestellt haben.
+
+K3s enthält einen https://github.com/k3s-io/helm-controller/[Helm-Controller], der das Installieren, Aktualisieren/Neu-Konfigurieren und Deinstallieren von Helm-Charts mithilfe einer HelmChart Custom Resource Definition (CRD) verwaltet. In Kombination mit xref:installation/packaged-components.adoc[automatisch bereitgestellten AddOn-Manifests] kann die Installation eines Helm-Charts auf Ihrem Cluster automatisiert werden, indem eine einzelne Datei auf der Festplatte erstellt wird.
+
+== Verwendung des Helm-Controllers
+
+Die https://github.com/k3s-io/helm-controller#helm-controller[HelmChart Custom Resource] erfasst die meisten Optionen, die Sie normalerweise an das `helm` Befehlszeilenwerkzeug übergeben würden.
+
+=== HelmChart-Felddefinitionen
+
+[NOTE]
+====
+Das `name` Feld sollte den Namenskonventionen für Helm-Charts folgen, zusätzlich zu den Kubernetes-Regeln für https://kubernetes.io/docs/concepts/overview/working-with-objects/names/[Objektnamen und IDs]. Verweisen Sie auf die https://helm.sh/docs/chart_best_practices/conventions/#chart-names[Dokumentation zu den besten Praktiken von Helm], um mehr zu erfahren.
+====
+
+|===
+| Feld | Standard | Beschreibung | Helm-Argument / Flag-Äquivalent
+
+| metadata.name
+|
+| Helm-Chartname
+| NAME
+
+| spec.chart
+|
+| Helm-Chartname im Repository oder vollständige HTTPS-URL zum Chart-Archiv (.tgz)
+| CHART
+
+| spec.chartContent
+|
+| Base64-kodiertes Chart-Archiv .tgz - überschreibt spec.chart
+| CHART
+
+| spec.targetNamespace
+| default
+| Ziel-Namespace für das Helm-Chart
+| `--namespace`
+
+| spec.createNamespace
+| false
+| Ziel-Namespace erstellen, falls nicht vorhanden
+| `--create-namespace`
+
+| spec.version
+|
+| Version des Helm-Charts (bei Installation aus dem Repository)
+| `--version`
+
+| spec.repo
+|
+| URL des Helm-Chart-Repositories
+| `--repo`
+
+| spec.repoCA
+|
+| Zertifikate von HTTPS-fähigen Servern mit diesem CA-Bundle überprüfen. Sollte eine Zeichenkette sein, die ein oder mehrere PEM-kodierte CA-Zertifikate enthält.
+| `--ca-file`
+
+| spec.repoCAConfigMap
+|
+| Verweis auf eine ConfigMap, die CA-Zertifikate enthält, die von Helm vertraut werden sollen. Kann zusammen mit oder anstelle von `repoCA` verwendet werden
+| `--ca-file`
+
+| spec.plainHTTP
+| false
+| Unsichere HTTP-Verbindungen für den Chart-Download verwenden.
+| `--plain-http`
+
+| spec.insecureSkipTLSVerify
+| false
+| TLS-Zertifikatsprüfungen für den Chart-Download überspringen.
+| `--insecure-skip-tls-verify`
+
+| spec.helmVersion
+| v3
+| Zu verwendende Helm-Version. Nur `v3` wird derzeit unterstützt.
+|
+
+| spec.bootstrap
+| Falsch
+| Auf Wahr setzen, wenn dieses Chart benötigt wird, um den Cluster zu initialisieren (z. B. für den Cloud Controller Manager usw.).
+|
+
+| spec.jobImage
+|
+| Geben Sie das Bild an, das bei der Installation des Helm-Charts verwendet werden soll. Z. B. rancher/klipper-helm:v0.3.0 .
+|
+
+| spec.podSecurityContext
+|
+| Benutzerdefiniertes https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#podsecuritycontext-v1-core[`v1.PodSecurityContext`] für den Helm-Job-Pod
+|
+
+| spec.securityContext
+|
+| Benutzerdefiniertes https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#securitycontext-v1-core[`v1.SecurityContext`] für die Container des Helm-Job-Pods
+|
+
+| spec.backOffLimit
+| 1000
+| Geben Sie die Anzahl der Versuche an, bevor ein Job als fehlgeschlagen betrachtet wird.
+|
+
+| spec.timeout
+| 300s
+| Zeitüberschreitung für Helm-Operationen, als https://pkg.go.dev/time#ParseDuration[duration string] (`300s`, `10m`, `1h` usw.)
+| `--timeout`
+
+| spec.failurePolicy
+| reinstall
+| Setzen Sie auf `abort`, in diesem Fall wird die Helm-Operation abgebrochen, bis der Betreiber manuell eingreift.
+|
+
+| spec.authSecret
+|
+| Verweis auf ein Secret vom Typ `kubernetes.io/basic-auth`, das die grundlegenden Authentifizierungsanmeldeinformationen für das Chart-Repository enthält.
+|
+
+| spec.authPassCredentials
+| false
+| Geben Sie grundlegende Authentifizierungsanmeldeinformationen an alle Domains weiter.
+| `--pass-credentials`
+
+| spec.dockerRegistrySecret
+|
+| Verweis auf ein Secret vom Typ `kubernetes.io/dockerconfigjson`, das die Docker-Authentifizierungsanmeldeinformationen für das OCI-basierte Repository enthält, das als Chart-Repository fungiert.
+|
+
+| spec.set
+|
+| Überschreiben Sie einfache Standard-Chart-Werte. Diese haben Vorrang vor Optionen, die über valuesContent festgelegt wurden.
+| `--set` / `--set-string`
+
+
+| spec.valuesContent
+|
+| Überschreiben Sie komplexe Standard-Chart-Werte über den Inhalt der YAML-Datei
+| `--values`
+
+| spec.valuesSecrets
+|
+| Überschreiben Sie komplexe Chart-Werte über Verweise auf externe Secrets
+| `--values`
+|===
+
+In `/var/lib/rancher/k3s/server/static/` platzierter Inhalt kann anonym über den Kubernetes APIServer innerhalb des Clusters zugegriffen werden. Diese URL kann unter Verwendung der speziellen Variablen `%{KUBERNETES_API}%` im `spec.chart`-Feld templatiert werden. Zum Beispiel lädt die verpackte Traefik-Komponente ihr Chart von `https://%{KUBERNETES_API}%/static/charts/traefik-VERSION.tgz`.
+
+Chart-Werte werden in der folgenden Reihenfolge verwendet, von der geringsten bis zur höchsten Priorität:
+
+. Standardwerte des Charts
+. HelmChart `spec.valuesContent`
+. HelmChart `spec.valuesSecrets` in aufgelisteter Reihenfolge von Secret-Namen und Schlüsseln
+. HelmChartConfig `spec.valuesContent`
+. HelmChartConfig `spec.valuesSecrets` in aufgelisteter Reihenfolge von Secret-Namen und Schlüsseln
+. HelmChart `spec.set`
+
+Hier ist ein Beispiel, wie Sie Apache aus dem Bitnami-Chart-Repository bereitstellen können, wobei einige der Standard-Chart-Werte überschrieben werden. Beachten Sie, dass die HelmChart-Ressource selbst im `kube-system` Namespace ist, die Ressourcen des Charts jedoch im `web` Namespace bereitgestellt werden, der im selben Manifest erstellt wird. Dies kann nützlich sein, wenn Sie Ihre HelmChart-Ressourcen von den Ressourcen, die sie bereitstellen, getrennt halten möchten.
+
+[,yaml]
+----
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: web
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: apache
+  namespace: kube-system
+spec:
+  repo: https://charts.bitnami.com/bitnami
+  chart: apache
+  targetNamespace: web
+  valuesContent: |-
+    service:
+      type: ClusterIP
+    ingress:
+      enabled: true
+      hostname: www.example.com
+    metrics:
+      enabled: true
+----
+
+Ein Beispiel für die Bereitstellung eines Helm-Charts aus einem privaten Repository mit Authentifizierung:
+
+[,yaml]
+----
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  namespace: kube-system
+  name: example-app
+spec:
+  targetNamespace: example-namespace
+  createNamespace: true
+  version: v1.2.3
+  chart: example-app
+  repo: https://secure-repo.example.com
+  authSecret:
+    name: example-repo-auth
+  repoCAConfigMap:
+    name: example-repo-ca
+  valuesContent: |-
+    image:
+      tag: v1.2.2
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: kube-system
+  name: example-repo-auth
+type: kubernetes.io/basic-auth
+stringData:
+  username: user
+  password: pass
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: kube-system
+  name: example-repo-ca
+data:
+  ca.crt: |-
+    -----BEGIN CERTIFICATE-----
+    <YOUR CERTIFICATE>
+    -----END CERTIFICATE-----
+----
+
+=== Chart-Werte aus Secrets
+
+Chart-Werte können aus extern verwalteten Secrets gelesen werden, anstatt die Werte in den Feldern `spec.set` oder `spec.valuesContent` zu speichern. Dies sollte erfolgen, wenn vertrauliche Informationen wie Anmeldeinformationen in Charts übergeben werden, die nicht unterstützen, auf vorhandene Secrets über das `existingSecret`-Muster zu verweisen.
+
+Wie bei anderen Secrets (`spec.authSecret` und `spec.dockerRegistrySecret`) müssen Secrets, die in `spec.valuesSecrets` referenziert werden, im selben Namespace wie das HelmChart sein.
+
+Jeder aufgeführte `valuesSecrets`-Eintrag hat die folgenden Felder:
+
+|===
+| Feld | Beschreibung
+
+| name
+| Der Name des Secrets. Erforderlich.
+
+| Schlüssel
+| Liste der Schlüssel, um Werte zu lesen, die Werte werden in der aufgeführten Reihenfolge verwendet. Erforderlich.
+
+| ignoreUpdates
+| Markieren Sie dieses Secret als optional und aktualisieren Sie das Chart nicht, wenn sich das Secret ändert. Optional, Standardwert ist `false`.
+|===
+
+* Wenn `ignoreUpdates` auf `false` oder nicht angegeben gesetzt ist, müssen das Secret und alle aufgeführten Schlüssel existieren. Jede Änderung an einem referenzierten Werte-Secret führt dazu, dass das Chart mit neuen Werten aktualisiert wird.
+* Wenn `ignoreUpdates` auf `true` gesetzt ist, wird das Secret verwendet, wenn es existiert, wenn das Chart erstellt oder aufgrund einer anderen Änderung an verwandten Ressourcen aktualisiert wird. Änderungen am Secret führen nicht dazu, dass das Chart aktualisiert wird.
+
+Ein Beispiel dafür, wie ein Helm-Chart mit einem vorhandenen Secret mit zwei Schlüsseln bereitgestellt wird:
+
+[,yaml]
+----
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  namespace: kube-system
+  name: example-app
+spec:
+  targetNamespace: example-namespace
+  createNamespace: true
+  version: v1.2.3
+  chart: example-app
+  repo: https://repo.example.com
+  valuesContent: |-
+    image:
+      tag: v1.2.2
+  valuesSecrets:
+    - name: example-app-custom-values
+      ignoreUpdates: false
+      keys:
+        - someValues
+        - moreValues
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: kube-system
+  name: example-app-custom-values
+stringData:
+  moreValues: |-
+    database:
+      address: db.example.com
+      username: user
+      password: pass
+  someValues: |-
+    adminUser:
+      create: true
+      username: admin
+      password: secret
+----
+
+[#_customizing_packaged_components_with_helmchartconfig]
+== Anpassen von Paket-Komponenten mit HelmChartConfig
+
+Um das Überschreiben von Werten für Paket-Komponenten, die als HelmCharts bereitgestellt werden (wie Traefik), zu ermöglichen, unterstützt K3s die Anpassung von Implementierungen über Ressourcen vom Typ HelmChartConfig. Die HelmChartConfig-Ressource muss mit dem Namen und dem Namespace des entsprechenden HelmCharts übereinstimmen und unterstützt die Bereitstellung von zusätzlichen `valuesContent`, die als zusätzliche Wertedatei an den `helm`-Befehl übergeben wird.
+
+### Felddefinitionen von HelmChartConfig
+
+|===
+| Feld | Beschreibung
+
+| metadata.name
+| Name des Helm Charts - muss mit dem Namen der HelmChart-Ressource übereinstimmen.
+
+| spec.valuesContent
+| Überschreiben Sie komplexe Standardwerte des Charts über den Inhalt einer YAML-Datei.
+
+| spec.valuesSecrets
+| Überschreiben Sie komplexe Standardwerte des Charts über externe Secrets.
+
+| spec.failurePolicy
+| Setzen Sie auf `abort`, in diesem Fall wird die Helm-Operation abgebrochen, bis der Betreiber manuell eingreift.
+|===
+
+[NOTE]
+====
+Die Werte von HelmChart `spec.set` überschreiben die Einstellungen von HelmChart und HelmChartConfig `spec.valuesContent` und `spec.valuesSecrets`, wie oben beschrieben.
+====
+
+Um beispielsweise die Paket-Traefik-Ingress-Konfiguration anzupassen, können Sie eine Datei mit dem Namen `/var/lib/rancher/k3s/server/manifests/traefik-config.yaml` erstellen und sie mit folgendem Inhalt füllen:
+
+[,yaml]
+----
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    image:
+      repository: docker.io/library/traefik
+      tag: 3.3.5
+    ports:
+      web:
+        forwardedHeaders:
+          trustedIPs:
+            - 10.0.0.0/8
+----

@@ -1,0 +1,38 @@
+= {k3s-product-name}
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-10-23
+:page-revdate: {revdate}
+:page-role: -toc
+
+K3s es un proyecto sandbox oficial de https://www.cncf.io[CNCF] que ofrece una distribución certificada de Kubernetes, ligera pero potente, diseñada para cargas de trabajo de producción en ubicaciones remotas con recursos limitados o en dispositivos de Internet de las cosas. Cuando se utiliza con SUSE® Rancher Prime, K3s es una distribución de Kubernetes fácil de instalar, ligera y de alta disponibilidad, que se puede gestionar de forma sencilla dentro de la plataforma de orquestación Rancher.
+
+== Funciones clave
+
+* Distribuido como un único binario o imagen de contenedor mínima.
+* Almacenamiento ligero basado en sqlite3 como el backend de almacenamiento por defecto. etcd3, MySQL y Postgres también están disponibles.
+* Envuelto en un lanzador simple que maneja gran parte de la complejidad de TLS y opciones.
+* Seguro por defecto con configuraciones razonables para entornos ligeros.
+* La operación de todos los componentes del plano de control de Kubernetes está encapsulada en un único binario y proceso, lo que permite a K3s automatizar y gestionar operaciones complejas de clúster como la distribución de certificados.
+* Las dependencias externas se han minimizado; los únicos requisitos son un núcleo moderno y montajes de cgroup.
+* Empaqueta las dependencias requeridas para una fácil creación de clúster "con baterías incluidas":
+ ** Entorno de ejecución de contenedor containerd / cri-dockerd (CRI)
+ ** Interfaz de red de contenedores Flannel (CNI)
+ ** CoreDNS Cluster DNS
+ ** Controlador de ingreso Traefik
+ ** Controlador de balanceo de carga ServiceLB
+ ** Controlador de políticas de red Kube-router
+ ** Controlador de volumen persistente Local-path-provisioner
+ ** Espejo de registro de imágenes de contenedor distribuido Spegel
+ ** Utilidades de host (paquete de tablas IP, socat, etc)
+
+== Ideal para:
+
+* Edge
+* Homelab
+* Internet de las cosas (IoT)
+* Integración continua (CI)
+* Desarrollo
+* Ordenadores de placa única (ARM)
+* Entornos aislados
+* K8s embebido
+* Situaciones donde un doctorado en clusterología de K8s es inviable

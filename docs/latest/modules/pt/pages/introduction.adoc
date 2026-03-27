@@ -1,0 +1,38 @@
+= {k3s-product-name}
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-10-23
+:page-revdate: {revdate}
+:page-role: -índice
+
+O K3s é um projeto oficial https://www.cncf.io[CNCF] sandbox que oferece uma distribuição certificada do Kubernetes leve, porém poderosa, projetada para cargas de trabalho de produção em locais remotos com recursos limitados ou em dispositivos IoT. Quando usado com o SUSE® Rancher Prime, o K3s é uma distribuição Kubernetes simples de instalar, leve, porém com alta disponibilidade, que pode ser facilmente gerenciada na plataforma de orquestração Rancher.
+
+== Principais recursos
+
+* Distribuído como um único binário ou uma imagem de contêiner mínima.
+* Repositório de dados leve baseado no sqlite3 como mecanismo de armazenamento padrão. O etcd3, o MySQL e o Postgres também estão disponíveis.
+* Envolto em um lançador simples que lida com grande parte da complexidade do TLS e das opções.
+* Seguro por padrão com configurações razoáveis para ambientes leves.
+* A operação de todos os componentes do plano de controle do Kubernetes é encapsulada em um único binário e processo, permitindo que o K3s automatize e gerencie operações complexas de cluster, como a distribuição de certificados.
+* As dependências externas foram minimizadas; os únicos requisitos são um kernel moderno e montagens de cgroup.
+* Empacota as dependências necessárias para uma fácil criação de cluster "baterias incluídas":
+ ** Tempo de execução do contêiner containerd / cri-dockerd (CRI)
+ ** Interface de rede de contêiner Flannel (CNI)
+ ** CoreDNS Cluster DNS
+ ** Controlador de Ingress Traefik
+ ** Controlador de Load-Balancer ServiceLB
+ ** Controlador de política de rede Kube-router
+ ** Controlador de Volume Persistente local-path-provisioner
+ ** Espelho distribuído do registro de imagens de contêiner Spegel.
+ ** Utilitários de host (iptables, socat, etc)
+
+== Ótimo para:
+
+* Edge
+* Homelab
+* Internet das Coisas (IoT)
+* Integração Contínua (CI)
+* Desenvolvimento
+* Computadores de placa única (ARM)
+* Ambientes air-gapped
+* K8s embarcado
+* Situações em que um doutorado em clusterologia de K8s é inviável.

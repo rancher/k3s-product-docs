@@ -1,65 +1,65 @@
 = 手動アップグレード
 :page-languages: [en, ja, ko, zh]
-:revdate: 2026-03-03
+:revdate: 2025-12-30
 :page-revdate: {revdate}
 
-K3sをアップグレードするには、インストールスクリプトを使用するか、希望するバージョンのバイナリを手動でインストールすることができます。
+インストールスクリプトを使用するか、希望するバージョンのバイナリを手動でインストールすることでK3sをアップグレードできます。
 
 [NOTE]
 ====
-アップグレードする際は、まずサーバーノードを1つずつアップグレードし、その後にエージェントノードをアップグレードしてください。
+アップグレードする際は、まずサーバーノードを1つずつアップグレードし、その後エージェントノードをアップグレードしてください。
 ====
 
 [#_release_channels]
-== リリースチャンネル
+== リリースチャネル
 
-インストールスクリプトを使用したアップグレードや、xref:upgrades/automated.adoc[自動アップグレード]機能を使用したアップグレードは、異なるリリースチャンネルに結びつけることができます。以下のチャンネルが利用可能です：
+インストールスクリプトを介して行われるアップグレードや、xref:upgrades/automated.adoc[自動アップグレード]機能を使用することで、異なるリリースチャネルに関連付けることができます。以下のチャネルが利用可能です：
 
 |===
-| チャンネル | 説明
+| チャネル | 説明
 
-| stable
-| (デフォルト) Stableは本番環境に推奨されます。これらのリリースはコミュニティによるハードニング期間を経ています。
+| 安定版
+| （デフォルト）安定版は本番環境に推奨されます。これらのリリースはコミュニティテストの期間を経ています。
 
-| latest
-| Latestは最新の機能を試すのに推奨されます。これらのリリースはまだコミュニティによるハードニング期間を経ていません。
+| 最新
+| 最新は常に、semverの順序規則によって決定された最高の非プレリリースバージョンを指します。これらのリリースはまだコミュニティテストの期間を経ていません。
 
-| v1.26 (例)
-| 各Kubernetesのマイナーバージョンに結びついたリリースチャンネルがあり、サポート終了バージョンも含まれます。これらのチャンネルは最新のパッチを選択しますが、必ずしも安定版リリースではありません。
+| v1.33（例）
+| 各Kubernetesマイナーバージョンにはリリースチャネルが関連付けられており、サービス終了となったバージョンも含まれます。これらのチャネルは、そのマイナーバージョンで利用可能な最新のリリースを選択しますが、必ずしも安定版リリースではありません。
 |===
 
-チャンネルの包括的かつ最新のリストについては、https://update.k3s.io/v1-release/channels[k3sチャンネルサービスAPI]を参照してください。チャンネルの動作に関する技術的な詳細については、https://github.com/rancher/channelserver[channelserverプロジェクト]を参照してください。
+チャネルの包括的で最新のリストについては、https://update.k3s.io/v1-release/channels[k3sチャネルサービスAPI]を訪問してください。チャネルの動作に関する詳細な技術情報については、https://github.com/rancher/channelserver[channelserverプロジェクト]をご覧ください。
 
 [TIP]
 ====
-K3sの新しいバージョンにアップグレードする際には、https://kubernetes.io/docs/setup/release/version-skew-policy/[Kubernetesバージョンスキューポリシー]が適用されます。アップグレード時に中間のマイナーバージョンをスキップしないように計画を立ててください。system-upgrade-controller自体は、Kubernetesバージョンのサポートされていない変更を防ぐことはありません。
+K3sの新しいバージョンにアップグレードしようとする際は、https://kubernetes.io/docs/setup/release/version-skew-policy/[Kubernetesバージョンスキューポリシー]が適用されます。アップグレードする際に中間のマイナーバージョンをスキップしないようにしてください。システムアップグレードコントローラー自体は、サポートされていないKubernetesバージョンへの変更を防ぐことはできません。
 ====
 
 
 == インストールスクリプトを使用してK3sをアップグレードする
 
-古いバージョンのK3sをアップグレードするには、インストールスクリプトを再実行し、最初にインストールスクリプトを実行したときと同じ構成オプションを使用します。
+古いバージョンからK3sをアップグレードするには、インストールスクリプトを再実行し、最初に実行したときと同じ設定オプションを使用できます。
 
 [IMPORTANT]
-.Note
+.注意
 ====
-``INSTALL_K3S_EXEC``変数、``K3S_``変数、および末尾のシェル引数はすべて、インストールスクリプトによってsystemdユニットおよび環境ファイルを生成するために使用されます。
-最初にインストールスクリプトを実行したときに設定を行った場合でも、再実行時に再設定しないと、元の値は失われます。
+`INSTALL_K3S_EXEC`変数、`K3S_`変数、および末尾のシェル引数はすべて、インストールスクリプトによってsystemdユニットおよび環境ファイルを生成するために使用されます。
+インストールスクリプトを最初に実行した際に設定を行った場合でも、再実行時に再度設定しないと、元の値は失われます。
 
-xref:installation/configuration.adoc#_configuration_file[構成ファイル]の内容はインストールスクリプトによって管理されません。
-インストールスクリプトから独立した構成を希望する場合は、環境変数や引数をインストールスクリプトに渡すのではなく、構成ファイルを使用するべきです。
+xref:installation/configuration.adoc#_configuration_file[設定ファイル]の内容は、インストールスクリプトによって管理されません。
+インストールスクリプトから独立した設定を望む場合は、環境変数や引数をインストールスクリプトに渡すのではなく、設定ファイルを使用するべきです。
 ====
 
 
-インストールスクリプトを実行すると、以下のことが行われます：
+インストールスクリプトを実行すると、
 
-. 新しいk3sバイナリをダウンロード
-. インストールスクリプトに渡された引数を反映するようにsystemdユニットまたはopenrc initスクリプトを更新
-. k3sサービスを再起動
+. 新しいk3sバイナリをダウンロードします。
+. インストールスクリプトに渡された引数を反映するようにsystemdユニットまたはopenrc initスクリプトを更新します。
+. k3sサービスを再起動します。
 
 [NOTE]
 ====
-Containers for Pods continue running even when K3s is stopped. The install script does not drain or cordon the node before restarting K3s. If your workload is sensitive to brief API server outages, you should manually https://kubernetes.io/docs/reference/kubectl/generated/kubectl_drain/[drain and cordon] the node using `kubectl` before re-running the install script to upgrade K3s or modify the configuration, and uncordon it afterwards.
+K3sが停止しても、Podのコンテナは実行を続けます。インストールスクリプトは、K3sを再起動する前にノードをドレインまたはコーディンすることはありません。ワークロードがAPIサーバーの短時間の停止に敏感な場合は、K3sをアップグレードするためにインストールスクリプトを再実行する前に、https://kubernetes.io/docs/reference/kubectl/generated/kubectl_drain/[ノードをドレインしてコーディンする]ために`kubectl`を使用し、その後ノードのコーディンを解除してください。
 ====
 
 例えば、現在の安定版リリースにアップグレードするには：
@@ -69,14 +69,14 @@ Containers for Pods continue running even when K3s is stopped. The install scrip
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s <EXISTING_K3S_ENV> sh -s - <EXISTING_K3S_ARGS>
 ----
 
-特定のチャンネル（例えばlatest）の新しいバージョンにアップグレードしたい場合は、チャンネルを指定できます：
+特定のチャネル（最新など）で新しいバージョンにアップグレードしたい場合は、チャネルを指定できます：
 
 [,sh]
 ----
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_CHANNEL=latest <EXISTING_K3S_ENV> sh -s - <EXISTING_K3S_ARGS>
 ----
 
-特定のバージョンにアップグレードしたい場合は、以下のコマンドを実行できます：
+特定のバージョンにアップグレードしたい場合は、次のコマンドを実行できます：
 
 [,sh]
 ----
@@ -85,19 +85,19 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3
 
 [TIP]
 ====
-新しいバージョンのk3sをダウンロードするだけで起動しない場合は、``INSTALL_K3S_SKIP_START=true``環境変数を使用できます。
+新しいバージョンのk3sをダウンロードしたいが、起動したくない場合は、`INSTALL_K3S_SKIP_START=true`環境変数を使用できます。
 ====
 
 
 == バイナリを使用してK3sをアップグレードする
 
-K3sを手動でアップグレードするには、希望するバージョンのK3sバイナリをダウンロードし、既存のバイナリを新しいものに置き換えます。
+K3sを手動でアップグレードするには、希望するバージョンのK3sバイナリをダウンロードし、既存のバイナリを新しいものと置き換えることができます。
 
-. https://github.com/k3s-io/k3s/releases[リリース]から希望するバージョンのK3sバイナリをダウンロード
-. ダウンロードしたバイナリを``/usr/local/bin/k3s``（または希望する場所）にコピー
-. Restart the k3s or k3s-agent service or restart the k3s process (binary)
+. https://github.com/k3s-io/k3s/releases[リリース]から希望するK3sバイナリのバージョンをダウンロードしてください。
+. ダウンロードしたバイナリを`/usr/local/bin/k3s`（または希望する場所）にコピーしてください。
+. k3sまたはk3s-agentサービスを再起動するか、k3sプロセス（バイナリ）を再起動してください。
 
 [NOTE]
 ====
-Containers for Pods continue running even when K3s is stopped. It is generally safe to restart K3s without draining pods and cordoning the node. If your workload is sensitive to brief API server outages, you should manually https://kubernetes.io/docs/reference/kubectl/generated/kubectl_drain/[drain and cordon] the node using `kubectl` before restarting K3s, and uncordon it afterwards.
+K3sが停止しても、Podのコンテナは実行を続けます。ポッドをドレインしたりノードをコーデンしたりせずにK3sを再起動することは一般的に安全です。ワークロードが短時間のAPIサーバーの停止に敏感な場合は、K3sを再起動する前に`kubectl`を使用してノードを手動でhttps://kubernetes.io/docs/reference/kubectl/generated/kubectl_drain/[ドレインしてコーデン]し、その後ノードのコーデンを解除してください。
 ====

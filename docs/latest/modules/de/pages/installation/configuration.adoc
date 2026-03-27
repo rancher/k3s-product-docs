@@ -1,0 +1,229 @@
+= Konfigurationsoptionen
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-03-03
+:page-revdate: {revdate}
+
+Diese Seite konzentriert sich auf die Optionen, die häufig verwendet werden, wenn K3s zum ersten Mal eingerichtet wird. Siehe die Dokumentation zu xref:advanced.adoc[Erweiterte Optionen und Konfiguration] sowie die Dokumentation der xref:cli/server.adoc[Server]- und xref:cli/agent.adoc[Agent]-Befehle für eine detailliertere Abdeckung.
+
+[#_configuration_with_install_script]
+== Konfiguration mit Installationsskript
+
+Wie in der xref:quick-start.adoc[Kurzanleitung] erwähnt, können Sie das Installationsskript unter https://get.k3s.io verwenden, um K3s als Dienst auf systemd- und openrc-basierten Systemen zu installieren.
+
+Sie können eine Kombination aus `INSTALL_K3S_EXEC`, `K3S_` Umgebungsvariablen und Befehlsflags verwenden, um Konfiguration an die Dienstkonfiguration zu übergeben.
+Die vorangestellten Umgebungsvariablen, der `INSTALL_K3S_EXEC` Wert und die nachfolgenden Shell-Argumente werden alle in die Dienstkonfiguration übernommen.
+Nach der Installation kann die Konfiguration durch Bearbeiten der Umgebungsdatei, Bearbeiten der Dienstkonfiguration oder einfaches erneutes Ausführen des Installationsprogramms mit neuen Optionen geändert werden.
+Für {k3s-product-name} müssen Sie `INSTALL_K3S_ARTIFACT_URL` verwenden, das auf die https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL] verweist.
+
+Um dies zu veranschaulichen, führen die folgenden Befehle alle zum gleichen Verhalten, indem sie einen Server ohne Flannel und mit einem Token registrieren:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_EXEC="server" sh -s - --flannel-backend none --token 12345
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_EXEC="server --flannel-backend none" K3S_TOKEN=12345 sh -s -
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=12345 sh -s - server --flannel-backend none
+# server is assumed below because there is no K3S_URL
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_EXEC="--flannel-backend none --token 12345" sh -s -
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - --flannel-backend none --token 12345
+----
+
+Beim Registrieren eines Agents führen die folgenden Befehle alle zum gleichen Verhalten:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_EXEC="agent --server https://k3s.example.com --token mypassword" sh -s -
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_EXEC="agent" K3S_TOKEN="mypassword" sh -s - --server https://k3s.example.com
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_URL=https://k3s.example.com sh -s - agent --token mypassword
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_URL=https://k3s.example.com K3S_TOKEN=mypassword sh -s - # agent is assumed because of K3S_URL
+----
+
+Für Details zu allen Umgebungsvariablen siehe xref:reference/env-variables.adoc[Umgebungsvariablen.]
+
+[IMPORTANT]
+.Hinweis
+====
+Wenn Sie die Konfiguration beim Ausführen des Installationsskripts festlegen, diese jedoch nicht erneut festlegen, wenn Sie das Installationsskript erneut ausführen, gehen die ursprünglichen Werte verloren.
+
+Der Inhalt der <<_configuration_file,Konfigurationsdatei>> wird nicht vom Installationsskript verwaltet.
+Wenn Sie möchten, dass Ihre Konfiguration unabhängig vom Installationsskript ist, sollten Sie eine Konfigurationsdatei verwenden, anstatt Umgebungsvariablen oder Argumente an das Installationsskript zu übergeben.
+====
+
+
+== Konfiguration mit Binärdatei
+
+Das Installationsskript befasst sich hauptsächlich mit der Konfiguration von K3s, um als Systemdienst zu laufen. Wenn Sie sich entscheiden, das Installationsskript nicht zu verwenden, können Sie K3s einfach ausführen, indem Sie die Binärdatei von unserer https://github.com/k3s-io/k3s/releases/latest[GitHub-Release-Seite] herunterladen, sie in Ihren Pfad legen und sie ausführen. Dies ist für permanente Installationen nicht besonders nützlich, kann jedoch nützlich sein, wenn Sie schnelle Tests durchführen, die es nicht wert sind, K3s als Systemdienst zu verwalten.
+
+[,bash]
+----
+curl -Lo /usr/local/bin/k3s <PRIME-ARTIFACTS-URL>/k3s/v1.35.1%2Bk3s1/k3s; chmod a+x /usr/local/bin/k3s
+----
+
+Sie können Konfiguration über das Setzen von `K3S_` Umgebungsvariablen übergeben:
+
+[,bash]
+----
+K3S_KUBECONFIG_MODE="644" k3s server
+----
+
+Oder Befehlsflags:
+
+[,bash]
+----
+k3s server --write-kubeconfig-mode=644
+----
+
+Der k3s-Agent kann auch auf diese Weise konfiguriert werden:
+
+[,bash]
+----
+k3s agent --server https://k3s.example.com --token mypassword
+----
+
+Für Details zur Konfiguration des K3s-Servers siehe die xref:cli/server.adoc[`k3s server` Dokumentation]. +
+Für Details zur Konfiguration des K3s-Agenten siehe die xref:cli/agent.adoc[`k3s agent` Dokumentation]. +
+Sie können auch das `--help` Flag verwenden, um eine Liste aller verfügbaren Optionen und deren entsprechenden Umgebungsvariablen anzuzeigen.
+
+[IMPORTANT]
+.Übereinstimmende Flags
+====
+Es ist wichtig, kritische Flags auf Ihren Serverknoten abzugleichen. Wenn Sie beispielsweise das Flag `--disable servicelb` oder `--cluster-cidr=10.200.0.0/16` auf Ihrem Master-Knoten verwenden, es jedoch auf anderen Serverknoten nicht setzen, werden die Knoten nicht beitreten können. Sie werden Fehler ausgeben wie:
+`failed to validate server configuration: critical configuration value mismatch.` Siehe die Serverkonfigurationsdokumentation (oben verlinkt) für weitere Informationen darüber, welche Flags identisch auf den Serverknoten gesetzt werden müssen.
+====
+
+== Konfiguration mit Container-Image
+
+Das K3s-Container-Image (https://hub.docker.com/r/rancher/k3s[\`docker.io/rancher/k3s`]) unterstützt die gleichen Konfigurationsmethoden wie die auf der GitHub-Release-Seite verfügbare Binärdatei.
+
+[#_configuration_file]
+== Konfigurationsdatei
+
+Neben der Konfiguration von K3s mit Umgebungsvariablen und CLI-Argumenten kann K3s auch eine Konfigurationsdatei verwenden. Die Konfigurationsdatei wird unabhängig davon geladen, wie K3s installiert oder ausgeführt wird.
+
+Standardmäßig wird die Konfiguration von `/etc/rancher/k3s/config.yaml` geladen, und Drop-in-Dateien werden in alphabetischer Reihenfolge von `/etc/rancher/k3s/config.yaml.d/*.yaml` geladen.
+Dieser Pfad ist über das `--config` CLI-Flag oder die `K3S_CONFIG_FILE` Umgebungsvariable konfigurierbar.
+Wenn der Standardname der Konfigurationsdatei überschrieben wird, wird auch der Pfad des Drop-in-Verzeichnisses geändert.
+
+Ein Beispiel für eine grundlegende `server` Konfigurationsdatei ist unten:
+
+[,yaml]
+./etc/rancher/k3s/config.yaml
+----
+write-kubeconfig-mode: "0644"
+tls-san:
+  - "foo.local"
+node-label:
+  - "foo=bar"
+  - "something=amazing"
+cluster-init: true
+----
+
+Dies entspricht den folgenden CLI-Argumenten:
+
+[,bash]
+----
+k3s server \
+  --write-kubeconfig-mode "0644"    \
+  --tls-san "foo.local"             \
+  --node-label "foo=bar"            \
+  --node-label "something=amazing"  \
+  --cluster-init
+----
+
+Im Allgemeinen entsprechen die CLI-Argumente ihren jeweiligen YAML-Schlüsseln, wobei wiederholbare CLI-Argumente als YAML-Listen dargestellt werden. Boolean-Flags werden im YAML-Dokument als `true` oder `false` dargestellt.
+
+Es ist auch möglich, sowohl eine Konfigurationsdatei als auch CLI-Argumente zu verwenden. In diesen Situationen werden Werte aus beiden Quellen geladen, aber CLI-Argumente haben Vorrang. Für wiederholbare Argumente wie `--node-label` überschreiben die CLI-Argumente alle Werte in der Liste.
+
+=== Verhalten beim Zusammenführen von Werten
+
+Wenn in mehreren Dateien vorhanden, wird der zuletzt gefundene Wert für einen bestimmten Schlüssel verwendet. Ein `+` kann an den Schlüssel angehängt werden, um den Wert an die vorhandene Zeichenkette oder den Abschnitt anzuhängen, anstatt ihn zu ersetzen. Alle Vorkommen dieses Schlüssels in nachfolgenden Dateien erfordern ebenfalls ein `+`, um das Überschreiben des angesammelten Wertes zu verhindern.
+
+Ein Beispiel für Werte, die aus mehreren Konfigurationsdateien zusammengeführt wurden, ist unten aufgeführt:
+
+[,yaml]
+./etc/rancher/k3s/config.yaml
+----
+token: boop
+node-label:
+  - foo=bar
+  - bar=baz
+----
+
+[,yaml]
+./etc/rancher/k3s/config.yaml.d/test1.yaml
+----
+write-kubeconfig-mode: 600
+node-taint:
+  - alice=bob:NoExecute
+----
+
+[,yaml]
+./etc/rancher/k3s/config.yaml.d/test2.yaml
+----
+write-kubeconfig-mode: 777
+node-label:
+  - other=what
+  - foo=three
+node-taint+:
+  - charlie=delta:NoSchedule
+----
+
+Dies führt zu einer endgültigen Konfiguration von:
+
+[,yaml]
+----
+write-kubeconfig-mode: 777
+token: boop
+node-label:
+  - other=what
+  - foo=three
+node-taint:
+  - alice=bob:NoExecute
+  - charlie=delta:NoSchedule
+----
+
+== Alles zusammenbringen
+
+Alle oben genannten Optionen können in einem einzigen Beispiel kombiniert werden.
+
+Eine `config.yaml` Datei wird unter `/etc/rancher/k3s/config.yaml` erstellt:
+
+[,yaml]
+----
+token: "secret"
+debug: true
+----
+
+Dann wird das Installationsskript mit einer Kombination aus Umgebungsvariablen und Flags ausgeführt:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="server" sh -s - --flannel-backend none
+----
+
+Oder wenn Sie die K3s-Binärdatei bereits installiert haben:
+
+[,bash]
+----
+K3S_KUBECONFIG_MODE="644" k3s server --flannel-backend none
+----
+
+Dies führt zu einem Server mit:
+
+* Eine Kubeconfig-Datei mit Berechtigungen `644`
+* Flannel-Backend auf `none` gesetzt
+* Das Token auf `secret` gesetzt
+* Debug-Protokollierung aktiviert
+
+== Kubelet-Konfigurationsdateien
+
+Kubernetes unterstützt die Konfiguration des Kubelets sowohl über CLI-Flags als auch über Konfigurationsdateien. Die Konfiguration des Kubelets über CLI-Flags läuft seit langem aus, wird jedoch weiterhin unterstützt und ist der einfachste Weg, um grundlegende Optionen festzulegen. Einige erweiterte Kubelet-Konfigurationen können nur über eine Konfigurationsdatei festgelegt werden. Für weitere Informationen siehe die Kubernetes-Dokumentation für das https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/[kubelet] und https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/[Festlegen von Kubelet-Parametern über eine Konfigurationsdatei].
+
+Die Unterstützung für Kubelet-Drop-in-Konfigurationsdateien oder die Konfigurationsdatei (Optionen 1 und 2 unten) ist nur in v1.32 und höher verfügbar. Für ältere Versionen sollten Sie die Kubelet-Argumente direkt verwenden (Option Nummer 3 unten).
+
+K3s verwendet eine Standard-Kubelet-Konfiguration, die unter `/var/lib/rancher/k3s/agent/etc/kubelet.conf.d/00-k3s-defaults.conf` gespeichert ist. Wenn Sie die Standardkonfigurationsparameter ändern möchten, gibt es drei Möglichkeiten, dies zu tun:
+
+. Platzieren Sie eine Drop-in-Konfigurationsdatei in `/var/lib/rancher/k3s/agent/etc/kubelet.conf.d/` *(empfohlen)*.
+. Durch die Verwendung des Flags `--kubelet-arg=config=$PATHTOFILE`, wobei `$PATHTOFILE` der Pfad zu einer Datei ist, die Kubelet-Konfigurationsparameter enthält (z. B. `/etc/rancher/k3s/kubelet.conf`), oder des Flags `--kubelet-arg=config-dir=$PATHTODIR`, wobei `$PATHTODIR` der Pfad zu einem Verzeichnis ist, das Dateien enthalten kann, die Kubelet-Konfigurationsparameter enthalten (z. B. `/etc/rancher/k3s/kubelet.conf.d`).
+. Durch die Verwendung des Flags `--kubelet-arg=$FLAG`, wobei `$FLAG` ein Kubelet-Konfigurationsparameter ist (z. B. `image-gc-high-threshold=100`). 
+
+Beim Mischen von Kubelet-CLI-Flags und Drop-in-Konfigurationsdateien achten Sie auf die https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/#kubelet-configuration-merging-order[Reihenfolge der Priorität].

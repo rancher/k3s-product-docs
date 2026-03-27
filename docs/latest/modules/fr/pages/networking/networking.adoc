@@ -1,0 +1,14 @@
+= Réseautique
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-11
+:page-revdate: {revdate}
+
+Cette section contient des instructions pour configurer le réseau dans K3s.
+
+xref:networking/basic-network-options.adoc[Options de réseau de base] couvre la configuration de réseau de base du cluster, comme flannel et les configurations à pile simple/double.
+
+xref:networking/distributed-multicloud.adoc[Cluster hybride/multicloud] fournit des conseils sur les options disponibles pour étendre le cluster k3s sur des nœuds distants ou hybrides.
+
+xref:networking/multus-ipams.adoc[Plugins Multus et IPAM] fournit des conseils pour tirer parti de Multus dans K3s afin d'avoir plusieurs interfaces par pod.
+
+xref:networking/networking-services.adoc[Services réseau : DNS, ingress, etc.] explique comment CoreDNS, Traefik, le contrôleur de stratégie réseau et le contrôleur ServiceLB fonctionnent au sein de k3s.

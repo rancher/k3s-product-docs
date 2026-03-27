@@ -1,0 +1,118 @@
+= Base de données externe à haute disponibilité
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-03-03
+:page-revdate: {revdate}
+
+Cette section décrit comment installer un cluster {k3s-product-name} à haute disponibilité avec une base de données externe.
+
+[NOTE]
+====
+Pour déployer rapidement de grands clusters HA, voir xref:related-projects.adoc[Projets connexes]
+====
+
+
+Les clusters à serveur unique peuvent répondre à une variété de cas d'utilisation, mais pour les environnements où la disponibilité du plan de contrôle Kubernetes est critique, vous pouvez exécuter K3s dans une configuration HA. Un cluster K3s HA est composé de :
+
+* Deux ou plusieurs *nœuds serveurs* qui serviront l'API Kubernetes et exécuteront d'autres services du plan de contrôle
+* Un *magasin de données externe* (par opposition au stockage SQLite intégré utilisé dans les configurations à serveur unique)
+* Facultatives : Zéro ou plusieurs *nœuds agents* désignés pour exécuter vos applications et services
+* Facultatives : Une *adresse d'enregistrement fixe* pour que les nœuds agents s'enregistrent auprès du cluster
+
+Pour plus de détails sur le fonctionnement de ces composants ensemble, reportez-vous à la xref:architecture.adoc#_high_availability_k3s[section architecture.]
+
+== Aperçu de l'installation
+
+La configuration d'un cluster HA nécessite les étapes suivantes :
+
+=== 1. Créer un magasin de données externe
+
+Vous devrez d'abord créer un magasin de données externe pour le cluster. Voir la documentation sur les xref:datastore/datastore.adoc[options de magasin de données du cluster] pour plus de détails.
+
+=== 2. Lancer les nœuds serveurs
+
+{k3s-product-name} nécessite deux ou plusieurs nœuds serveurs pour cette configuration HA. Voir le guide des xref:installation/requirements.adoc[exigences] pour les exigences minimales des machines.
+
+Lors de l'exécution de la commande `k3s server` sur ces nœuds, vous devez définir le paramètre `datastore-endpoint` afin que K3s sache comment se connecter au stockage externe. Le paramètre `token` peut également être utilisé pour définir un token déterministe lors de l'ajout de nœuds. Lorsqu'il est vide, ce token sera généré automatiquement pour une utilisation ultérieure.
+
+Par exemple, une commande comme celle-ci pourrait être utilisée pour installer le serveur K3s avec une base de données MySQL comme magasin de données externe et xref:cli/server.adoc#_cluster_options[définir un token] :
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server \
+  --token=SECRET \
+  --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name" \
+  --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
+----
+
+Où `INSTALL_K3S_ARTIFACT_URL` est l'https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[URL des artefacts principaux]
+
+Le format du point de terminaison du magasin de données diffère en fonction du type de base de données. Pour plus de détails, reportez-vous à la section sur xref:datastore/datastore.adoc#_datastore_endpoint_format_and_functionality[les formats de point de terminaison du magasin de données.]
+
+Pour configurer les certificats TLS lors du lancement des nœuds de serveur, reportez-vous au xref:datastore/datastore.adoc#_external_datastore_configuration_parameters[guide de configuration du magasin de données.]
+
+[NOTE]
+====
+Les mêmes options d'installation disponibles pour les installations à serveur unique sont également disponibles pour les installations à haute disponibilité. Pour plus de détails, consultez la documentation sur xref:installation/configuration.adoc[les options de configuration].
+====
+
+
+Par défaut, les nœuds de serveur seront programmables et donc vos charges de travail pourront être lancées sur eux. Si vous souhaitez avoir un plan de contrôle dédié où aucune charge de travail utilisateur ne s'exécutera, vous pouvez utiliser des taints. Le paramètre `node-taint` vous permettra de configurer des nœuds avec des taints, par exemple `--node-taint CriticalAddonsOnly=true:NoExecute`.
+
+Une fois que vous avez lancé le processus `k3s server` sur tous les nœuds de serveur, assurez-vous que le cluster a démarré correctement avec `k3s kubectl get nodes`. Vous devriez voir vos nœuds de serveur dans l'état Prêt.
+
+=== 3. Facultatives : Rejoindre des nœuds de serveur supplémentaires
+
+La même commande d'exemple de l'étape 2 peut être utilisée pour rejoindre des nœuds de serveur supplémentaires, où le jeton du premier nœud doit être utilisé :
+
+Si le premier nœud de serveur a été démarré sans le drapeau CLI `--token` ou la variable `K3S_TOKEN`, la valeur du jeton peut être récupérée à partir de tout serveur déjà rejoint au cluster :
+
+[,bash]
+----
+cat /var/lib/rancher/k3s/server/token
+----
+
+Des nœuds de serveur supplémentaires peuvent ensuite être ajoutés xref:cli/server.adoc#_cluster_options[en utilisant le jeton]:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server \
+  --token=SECRET \
+  --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name"
+----
+
+Il y a quelques drapeaux de configuration qui doivent être les mêmes dans tous les nœuds de serveur:
+
+* Drapeaux liés au réseau: `--cluster-dns`, `--cluster-domain`, `--cluster-cidr`, `--service-cidr`
+* Drapeaux contrôlant le déploiement de certains composants: `--disable-helm-controller`, `--disable-kube-proxy`, `--disable-network-policy` et tout composant passé à `--disable`
+* Drapeaux liés aux fonctionnalités: `--secrets-encryption`
+
+[NOTE]
+====
+Assurez-vous de conserver une copie de ce jeton, car il est requis lors de la restauration à partir d'une sauvegarde et de l'ajout de nœuds. Auparavant, K3s n'imposait pas l'utilisation d'un jeton lors de l'utilisation de bases de données SQL externes.
+====
+
+
+=== 4. Facultatives : Configurer une adresse d'enregistrement fixe
+
+Les nœuds agents ont besoin d'une URL pour s'enregistrer. Cela peut être l'adresse IP ou le nom d'hôte de n'importe quel nœud serveur, mais dans de nombreux cas, ceux-ci peuvent changer au fil du temps. Par exemple, si vous exécutez votre cluster dans un cloud qui prend en charge les groupes de mise à l'échelle, des nœuds peuvent être créés et détruits au fil du temps, changeant d'adresses IP par rapport à l'ensemble initial de nœuds serveur. Il serait préférable d'avoir un point de terminaison stable devant les nœuds serveur qui ne changera pas au fil du temps. Ce point de terminaison peut être configuré en utilisant un certain nombre d'approches, telles que  :
+
+* Un équilibreur de charge de couche 4 (TCP)
+* DNS en round-robin
+* Adresses IP virtuelles ou élastiques
+
+Voir xref:datastore/cluster-loadbalancer.adoc[Cluster Loadbalancer] pour des configurations d'exemple.
+
+Ce point de terminaison peut également être utilisé pour accéder à l'API Kubernetes. Vous pouvez donc, par exemple, modifier votre fichier https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/[kubeconfig] pour pointer vers celui-ci au lieu d'un nœud spécifique.
+
+Pour éviter les erreurs de certificat dans une telle configuration, vous devez configurer le serveur avec l'option `--tls-san=YOUR_IP_OR_HOSTNAME_HERE`. Cette option ajoute un nom d'hôte ou une IP supplémentaire en tant que nom alternatif du sujet dans le certificat TLS, et elle peut être spécifiée plusieurs fois si vous souhaitez accéder à la fois via l'IP et le nom d'hôte.
+
+=== 5. Facultatives : Rejoindre les nœuds agents
+
+Parce que les nœuds serveur K3s sont programmables par défaut, les nœuds agents ne sont pas requis pour un cluster K3s HA. Cependant, vous souhaiterez peut-être avoir des nœuds agents dédiés pour exécuter vos applications et services.
+
+Rejoindre des nœuds agents dans un cluster HA est identique à rejoindre des nœuds agents dans un cluster à serveur unique. Vous devez simplement spécifier l'URL à laquelle l'agent doit s'enregistrer (soit l'une des adresses IP du serveur, soit une adresse d'enregistrement fixe) et le token qu'il doit utiliser.
+
+[,bash]
+----
+K3S_TOKEN=SECRET k3s agent --server https://server-or-fixed-registration-address:6443
+----

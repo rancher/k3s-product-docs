@@ -1,0 +1,119 @@
+= Armazenamento de Cluster
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-06-16
+:page-revdate: {revdate}
+
+A capacidade de executar Kubernetes usando um armazenamento diferente de etcd diferencia o K3s de outras distribuições do Kubernetes. Esse recurso oferece flexibilidade para os operadores de Kubernetes. As opções de armazenamento disponíveis permitem que você selecione o armazenamento que melhor se adapte ao seu caso de uso. Por exemplo:
+
+* Se sua equipe não tem experiência em operar etcd, você pode escolher um banco de dados SQL de nível empresarial como MySQL ou PostgreSQL.
+* Se você precisa executar um cluster simples e de curta duração em seu ambiente de CI/CD, pode usar o banco de dados SQLite embutido.
+* Se você deseja implantar o Kubernetes na borda e requer uma solução de alta disponibilidade, mas não pode arcar com a sobrecarga operacional de gerenciar um banco de dados na borda, pode usar o armazenamento de alta disponibilidade embutido do K3s, construído sobre o etcd embutido.
+
+O K3s suporta as seguintes opções de armazenamento:
+
+* *Embutido https://www.sqlite.org/index.html[SQLite]* +
+O SQLite não pode ser usado em clusters com múltiplos servidores. +
+O SQLite é o armazenamento padrão e será usado se nenhuma outra configuração de armazenamento estiver presente e se não houver arquivos de banco de dados etcd embutidos no disco.
+* *etcd Embutido* +
+Consulte a documentação xref:datastore/ha-embedded.adoc[etcd Embutido de Alta Disponibilidade] para mais informações sobre o uso de etcd embutido com múltiplos servidores.
+O etcd embutido será selecionado automaticamente se o K3s estiver configurado para inicializar um novo cluster etcd, juntar-se a um cluster etcd existente ou se arquivos de banco de dados etcd estiverem presentes no disco durante a inicialização.
+* *Armazenamento Externo* +
+Consulte a documentação xref:datastore/ha.adoc[Armazenamento Externo de Alta Disponibilidade] para mais informações sobre o uso de armazenamentos externos com múltiplos servidores. +
+Os seguintes armazenamentos externos são suportados:
+ ** https://etcd.io/[etcd] (certificado contra a versão 3.5.21)
+ ** https://www.mysql.com/[MySQL] (certificado contra as versões 5.7 e 8.0)
+ ** https://mariadb.org/[MariaDB] (certificado contra as versões 10.11 e 11.4)
+ ** https://www.postgresql.org/[PostgreSQL] (certificado contra as versões 15.12, 16.7 e 17.3)
+
+[CAUTION]
+.Suporte a Declarações Preparadas
+====
+O K3s requer suporte a declarações preparadas do banco de dados. Isso significa que gerenciadores de conexão como https://www.pgbouncer.org/faq.html#how-to-use-prepared-statements-with-transaction-pooling[PgBouncer] podem exigir configuração adicional para funcionar com o K3s.
+====
+
+[WARNING]
+.Configurações Multimaster
+====
+Bancos de dados multi-master que definem `auto_increment_increment` ou `auto_increment_offset` maior que 1 não são suportados. O Kine espera que a revisão comece em 0 e sempre avance exatamente 1 quando uma chave for inserida com sucesso. Isso afeta produtos como Galera para MySQL/MariaDB. 
+====
+
+[#_external_datastore_configuration_parameters]
+== Parâmetros de Configuração de Armazenamento Externo
+
+Se você deseja usar um armazenamento externo, como PostgreSQL, MySQL ou etcd, deve definir o parâmetro `datastore-endpoint` para que o K3s saiba como se conectar a ele. Você também pode especificar parâmetros para configurar a autenticação e a criptografia da conexão. A tabela abaixo resume esses parâmetros, que podem ser passados como flags de CLI ou variáveis de ambiente.
+
+|===
+| CLI Flag | Variável de ambiente | Descrição
+
+| `--datastore-endpoint`
+| `K3S_DATASTORE_ENDPOINT`
+| Especifique uma string de conexão para PostgreSQL, MySQL ou etcd. Esta é uma string usada para descrever a conexão com o armazenamento. A estrutura desta string é específica para cada backend e está detalhada abaixo.
+
+| `--datastore-cafile`
+| `K3S_DATASTORE_CAFILE`
+| Arquivo de Autoridade Certificadora (CA) TLS usado para ajudar a proteger a comunicação com o armazenamento. Se o seu armazenamento atende a solicitações via TLS usando um certificado assinado por uma autoridade certificadora personalizada, você pode especificar essa CA usando este parâmetro para que o cliente K3s possa verificar corretamente o certificado.
+
+| `--datastore-certfile`
+| `K3S_DATASTORE_CERTFILE`
+| Arquivo de certificado TLS usado para autenticação baseada em certificado de cliente no seu armazenamento. Para usar este recurso, seu armazenamento deve estar configurado para suportar autenticação baseada em certificado de cliente. Se você especificar este parâmetro, também deve especificar o parâmetro `datastore-keyfile`.
+
+| `--datastore-keyfile`
+| `K3S_DATASTORE_KEYFILE`
+| Arquivo de chave TLS usado para autenticação baseada em certificado de cliente no seu armazenamento. Consulte o parâmetro `datastore-certfile` anterior para mais detalhes.
+|===
+
+Como uma boa prática, recomendamos definir esses parâmetros como variáveis de ambiente em vez de argumentos de linha de comando, para que suas credenciais de banco de dados ou outras informações sensíveis não sejam expostas como parte das informações do processo.
+
+[#_datastore_endpoint_format_and_functionality]
+== Formato e Funcionalidade do Endpoint do Armazenamento
+
+Como mencionado, o formato do valor passado para o parâmetro `datastore-endpoint` depende do backend do armazenamento. Os seguintes detalhes descrevem este formato e funcionalidade para cada armazenamento externo suportado.
+
+[tabs,sync-group-id=ext-db]
+======
+PostgreSQL::
++
+--
+Em sua forma mais comum, o parâmetro endpoint do armazenamento para PostgreSQL tem o seguinte formato:
+
+`postgres://username:password@hostname:port/database-name`
+
+Parâmetros de configuração mais avançados estão disponíveis. Para mais informações sobre estes, consulte https://godoc.org/github.com/lib/pq..
+
+Se você especificar um nome de banco de dados e ele não existir, o servidor tentará criá-lo.
+
+Se você fornecer apenas `postgres://` como o endpoint, o K3s tentará fazer o seguinte:
+
+* Conectar ao host local usando `postgres` como nome de usuário e senha.
+* Criar um banco de dados chamado `kubernetes`.
+--
+
+MySQL / MariaDB::
++
+--
+Em sua forma mais comum, o parâmetro `datastore-endpoint` para MySQL e MariaDB tem o seguinte formato:
+
+`mysql://username:password@tcp(hostname:3306)/database-name`
+
+Parâmetros de configuração mais avançados estão disponíveis. Para mais informações sobre estes, consulte https://github.com/go-sql-driver/mysql#dsn-data-source-name.
+
+Observe que, devido a um https://github.com/k3s-io/k3s/issues/1093[problema conhecido] no K3s, você não pode definir o parâmetro `tls`. A comunicação TLS é suportada, mas você não pode, por exemplo, definir este parâmetro como "skip-verify" para fazer com que o K3s ignore a verificação do certificado.
+
+Se você especificar um nome de banco de dados e ele não existir, o servidor tentará criá-lo.
+
+Se você fornecer apenas `mysql://` como o endpoint, o K3s tentará fazer o seguinte:
+
+* Conectar ao socket MySQL em `/var/run/mysqld/mysqld.sock` usando o usuário `root` e sem senha
+* Criar um banco de dados com o nome `kubernetes`
+--
+
+etcd::
++
+--
+Na sua forma mais comum, o parâmetro `datastore-endpoint` para etcd tem o seguinte formato:
+
+`\https://etcd-host-1:2379,https://etcd-host-2:2379,https://etcd-host-3:2379\`
+
+O acima assume um cluster etcd típico de três nós. O parâmetro pode aceitar uma ou mais URLs do etcd separadas por vírgula.
+--
+======

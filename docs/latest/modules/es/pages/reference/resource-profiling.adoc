@@ -1,0 +1,264 @@
+= Perfilado de recursos
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-01-06
+:page-revdate: {revdate}
+
+Esta sección captura los resultados de las pruebas para determinar los requisitos mínimos de recursos para K3s.
+
+== Requisitos mínimos de recursos para K3s
+
+Los resultados se resumen de la siguiente manera:
+
+|===
+| Componentes | Procesador | Min CPU | Mín. RAM con Kine/SQLite | Mín. RAM con etcd embebido
+
+| Servidor K3s con una carga de trabajo
+| CPU Intel 8375C, 2.90 GHz
+| 6% de un núcleo
+| 1596 M
+| 1606 M
+
+| Clúster K3s con un único agente
+| CPU Intel 8375C, 2.90 GHz
+| 5% de un núcleo
+| 1428 M
+| 1450 M
+
+| Agente K3s
+| CPU Intel 8375C, 2.90 GHz
+| 3% de un núcleo
+| 275 M
+| 275 M
+
+| Servidor K3s con una carga de trabajo
+| Pi4B BCM2711, 1.50 GHz
+| 30% de un núcleo
+| 1588 M
+| 1613 M
+
+| Clúster K3s con un único agente
+| Pi4B BCM2711, 1.50 GHz
+| 25% de un núcleo
+| 1215 M
+| 1413 M
+
+| Agente K3s
+| Pi4B BCM2711, 1.50 GHz
+| 10% de un núcleo
+| 268 M
+| 268 M
+|===
+
+=== Alcance de las pruebas de recursos
+
+Las pruebas de recursos estaban destinadas a abordar las siguientes declaraciones de problema:
+
+* En un clúster de un solo nodo, determina la cantidad mínima legítima de CPU, memoria e IOPs que deberían reservarse para ejecutar todo el conjunto de servidores K3s, asumiendo que se desplegará una carga de trabajo real en el clúster.
+* En un nodo agente (trabajador), determina la cantidad mínima legítima de CPU, memoria e IOPs que deberían reservarse para los componentes del plano de control de Kubernetes y K3s (el kubelet y el agente k3s).
+
+=== Componentes incluidos para mediciones de referencia
+
+Los componentes probados son:
+
+* K3s v1.26.5 con todos los componentes empaquetados habilitados
+* Stack de monitoreo Prometheus + Grafana
+* https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[Ejemplo de despliegue de Nginx de Kubernetes]
+
+Estas son cifras de referencia para un sistema estable que utiliza solo componentes empaquetados de K3s (Traefik Ingress, Klipper lb, almacenamiento local-path) ejecutando un conjunto de monitorización estándar (Prometheus y Grafana) y la aplicación de ejemplo Guestbook.
+
+Las cifras de recursos, incluidos los IOPS, son solo para la base de datos de Kubernetes y el plano de control, y no incluyen la sobrecarga para agentes de gestión a nivel de sistema o registro, gestión de imágenes de contenedor, o cualquier requisito específico de carga de trabajo.
+
+=== Metodología
+
+Se utilizó una instancia independiente de Prometheus v2.43.0 para recopilar estadísticas de CPU, memoria y IO de disco del host utilizando `prometheus-node-exporter` instalado a través de apt.
+
+`systemd-cgtop` se utilizó para comprobar el uso de CPU y memoria a nivel de cgroup de systemd. `system.slice/k3s.service` rastrea la utilización de recursos tanto para K3s como para containerd, mientras que los pods individuales están bajo la jerarquía `kubepods`.
+
+Se recopilaron datos adicionales detallados sobre la utilización de memoria de K3s desde `kubectl top node` utilizando el metrics-server integrado para los procesos del servidor y del agente.
+
+Las cifras de utilización se basaron en lecturas del percentil 95 de la operación en estado estable en nodos que ejecutan las cargas de trabajo descritas.
+
+=== Entorno
+
+|===
+| Arquitectura | SO | Sistema | CPU | RAM | Disco
+
+| x86_64
+| Ubuntu 22.04
+| AWS c6id.xlarge
+| CPU Intel Xeon Platinum 8375C, 4 núcleos a 2.90 GHz
+| 8 GB
+| NVME SSD
+
+| aarch64
+| Raspberry Pi OS 11
+| Raspberry Pi 4 Model B
+| BCM2711, 4 núcleos a 1.50 GHz
+| 8 GB
+| UHS-III SDXC
+|===
+
+=== Requisitos de Recursos Básicos
+
+Esta sección captura los resultados de las pruebas para determinar los requisitos mínimos de recursos para la operación básica de K3s.
+
+==== Servidor K3s con una Carga de Trabajo
+
+Estos son los requisitos para un clúster de un solo nodo en el que el servidor K3s comparte recursos con una https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[carga de trabajo simple].
+
+Los requisitos de CPU son:
+
+|===
+| Sistema | Uso de núcleos de CPU
+
+| Intel 8375C
+| 6% de un núcleo
+
+| Pi4B
+| 30% de un núcleo
+|===
+
+Los requisitos de memoria son:
+
+|===
+| Almacenamiento probado | Sistema | Memoria
+
+| Kine/SQLite
+| Intel 8375C
+| 1596 M
+
+|
+| Pi4B
+| 1588 M
+
+| etcd embebido
+| Intel 8375C
+| 1606 M
+
+|
+| Pi4B
+| 1613 M
+|===
+
+Los requisitos de disco son:
+
+|===
+| Almacenamiento probado | IOPS | KiB/segundo | Latencia
+
+| Kine/SQLite
+| 10
+| 500
+| < 10 ms
+
+| etcd embebido
+| 50
+| 250
+| < 5 ms
+|===
+
+==== Clúster K3s con un único agente
+
+Estos son los requisitos básicos para un clúster K3s con un nodo servidor K3s y un agente K3s, pero sin carga de trabajo.
+
+===== Servidor K3s
+
+Los requisitos de CPU son:
+
+|===
+| Sistema | Uso de núcleos de CPU
+
+| Intel 8375C
+| 5% de un núcleo
+
+| Pi4B
+| 25% de un núcleo
+|===
+
+Los requisitos de memoria son:
+
+|===
+| Almacenamiento probado | Sistema | Memoria
+
+| Kine/SQLite
+| Intel 8375C
+| 1428 M
+
+|
+| Pi4B
+| 1215 M
+
+| etcd embebido
+| Intel 8375C
+| 1450 M
+
+|
+| Pi4B
+| 1413 M
+|===
+
+===== Agente K3s
+
+Los requisitos son:
+
+|===
+| Sistema | Uso de núcleos de CPU | RAM
+
+| Intel 8375C
+| 3% de un núcleo
+| 275 M
+
+| Pi4B
+| 5% de un núcleo
+| 268 M
+|===
+
+=== Análisis de los impulsores de utilización de recursos primarios
+
+Las cifras de utilización del servidor K3s están impulsadas principalmente por el soporte del almacenamiento de datos de Kubernetes (kine o etcd), el servidor API, el controlador y los bucles de control del programador, así como por cualquier tarea de gestión necesaria para realizar cambios en el estado del sistema. Las operaciones que generan una carga adicional en el plano de control de Kubernetes, como crear/modificar/eliminar recursos, causarán picos temporales en la utilización. Utilizar operadores o aplicaciones que hagan un uso extensivo del almacenamiento de datos de Kubernetes (como Rancher u otras aplicaciones tipo operador) aumentará los requisitos de recursos del servidor. Aumentar el clúster añadiendo nodos adicionales o creando muchos recursos de clúster aumentará los requisitos de recursos del servidor.
+
+Las cifras de utilización del agente K3s están impulsadas principalmente por el soporte de los bucles de control de gestión del ciclo de vida de los contenedores. Las operaciones que implican la gestión de imágenes, la provisión de almacenamiento o la creación/destrucción de contenedores causarán picos temporales en la utilización. Las descargas de imágenes, en particular, suelen estar altamente limitadas por la CPU y la entrada/salida, ya que implican descomprimir el contenido de la imagen en el disco. Si es posible, el almacenamiento de cargas de trabajo (almacenamiento efímero de pods y volúmenes) debe estar aislado de los componentes del agente (/var/lib/rancher/k3s/agent) para garantizar que no haya conflictos de recursos.
+
+=== Prevención de la interferencia entre Agentes y Cargas de Trabajo con el Almacén de Datos del Clúster.
+
+Cuando se ejecuta en un entorno donde el servidor también está alojando pods de carga de trabajo, se debe tener cuidado para asegurar que las IOPS del agente y de la carga de trabajo no interfieran con el almacén de datos.
+
+Esto se puede lograr mejor colocando los componentes del servidor (/var/lib/rancher/k3s/server) en un medio de almacenamiento diferente al de los componentes del agente (/var/lib/rancher/k3s/agent), que incluyen el almacén de imágenes de containerd.
+
+El almacenamiento de cargas de trabajo (almacenamiento efímero de pods y volúmenes) también debe estar aislado del almacén de datos.
+
+El incumplimiento de los requisitos de rendimiento y latencia del almacén de datos puede resultar en una respuesta retrasada del plano de control y/o en la incapacidad del plano de control para mantener el estado del sistema.
+
+[#_server_sizing_requirements_for_k3s]
+== Requisitos de dimensionamiento del servidor para K3s
+
+=== Entorno
+
+* Todos los agentes eran instancias t3.medium de AWS EC2.
+** Un solo agente era una instancia c5.4xlarge. Esto alojaba la pila de monitoreo de Grafana y evitaba que interfiriera con los recursos del plano de control.
+* El servidor era una instancia c5 de AWS EC2. A medida que aumentaba el número de agentes, el servidor se actualizaba a instancias c5 más grandes.
+
+=== Metodología
+
+Estos datos se recuperaron bajo condiciones de prueba específicas. Variará dependiendo del entorno y las cargas de trabajo. Los pasos a continuación ofrecen una visión general de la prueba que se realizó para recuperar esto. Se realizó por última vez en v1.31.0+k3s1. Todas las máquinas fueron aprovisionadas en AWS con volúmenes gp3 estándar de 20 GiB. La prueba se realizó con los siguientes pasos:
+
+. Monitorea los recursos en Grafana utilizando la fuente de datos de Prometheus. 
+. Despliega cargas de trabajo de tal manera que simulen una actividad continua del clúster:
+** Una carga de trabajo básica que escala hacia arriba y hacia abajo continuamente
+** Una carga de trabajo que se elimina y se recrea en un bucle
+** Una carga de trabajo constante que contiene múltiples otros recursos, incluidos CRD.
+. Une nodos agentes en lotes de 50-100 a la vez.
+. Deja de añadir agentes cuando la CPU del servidor supere el 90% de utilización al unirse el agente, o si la RAM supera el 80% de utilización. 
+
+=== Observaciones
+
+* Al unirse los agentes, la CPU del servidor experimentó picos de ~20% sobre la línea base.
+* Normalmente, el factor limitante era la CPU, no la RAM. Para la mayoría de las pruebas, cuando la CPU alcanzó el 90% de utilización, la utilización de la RAM estaba alrededor del 60%.
+
+==== Una nota sobre Alta Disponibilidad (HA)
+
+Al final de cada prueba, se unieron dos servidores adicionales (formando un clúster HA básico de 3 nodos) para observar qué efecto tenía esto en los recursos del servidor original. El efecto fue:
+
+* Una caída notable en la utilización de la CPU, generalmente del 30 - 50 %.
+* La utilización de la RAM se mantuvo igual.
+
+Aunque no se probó, con la utilización de la CPU como factor limitante en un solo servidor, se espera que el número de agentes que se pueden unir aumente aproximadamente un 50 % con un clúster HA de 3 nodos.

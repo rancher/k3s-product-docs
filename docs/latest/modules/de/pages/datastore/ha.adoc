@@ -1,0 +1,118 @@
+= Hochverfügbare externe Datenbank
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-03-03
+:page-revdate: {revdate}
+
+In diesem Abschnitt wird beschrieben, wie man einen HA-{k3s-product-name}-Cluster mit einer externen Datenbank installiert.
+
+[NOTE]
+====
+Um große HA-Cluster schnell bereitzustellen, siehe xref:related-projects.adoc[Verwandte Projekte]
+====
+
+
+Einzelserver-Cluster können eine Vielzahl von Anwendungsfällen abdecken, aber für Umgebungen, in denen die Betriebszeit des Kubernetes-Kontrollplans entscheidend ist, können Sie K3s in einer HA-Konfiguration ausführen. Ein HA K3s-Cluster besteht aus:
+
+* Zwei oder mehr *Serverknoten*, die die Kubernetes-API bereitstellen und andere Kontrollplan-Dienste ausführen
+* Ein *externer Datenspeicher* (im Gegensatz zum eingebetteten SQLite-Datenspeicher, der in Einzelserver-Setups verwendet wird)
+* Optional: Null oder mehr *Agentenknoten*, die zum Ausführen Ihrer Apps und Dienste vorgesehen sind
+* Optional: Eine *feste Registrierungsadresse* für Agentenknoten, um sich beim Cluster zu registrieren
+
+Für weitere Details, wie diese Komponenten zusammenarbeiten, siehe den xref:architecture.adoc#_high_availability_k3s[Architekturabschnitt.]
+
+== Installationsübersicht
+
+Die Einrichtung eines HA-Clusters erfordert die folgenden Schritte:
+
+=== 1. Erstellen eines externen Datenspeichers
+
+Zuerst müssen Sie einen externen Datenspeicher für den Cluster erstellen. Siehe die xref:datastore/datastore.adoc[Dokumentation zu Cluster-Datenspeicheroptionen] für weitere Details.
+
+=== 2. Serverknoten starten
+
+{k3s-product-name} erfordert zwei oder mehr Serverknoten für diese HA-Konfiguration. Siehe den xref:installation/requirements.adoc[Anforderungen] Leitfaden für die minimalen Maschinenanforderungen.
+
+Beim Ausführen des `k3s server`-Befehls auf diesen Knoten müssen Sie den `datastore-endpoint`-Parameter festlegen, damit K3s weiß, wie es sich mit dem externen Datenspeicher verbinden kann. Der `token`-Parameter kann auch verwendet werden, um ein deterministisches Token beim Hinzufügen von Knoten festzulegen. Wenn es leer ist, wird dieses Token automatisch für die weitere Verwendung generiert.
+
+Zum Beispiel könnte ein Befehl wie der folgende verwendet werden, um den K3s-Server mit einer MySQL-Datenbank als externem Datenspeicher zu installieren und xref:cli/server.adoc#_cluster_options[ein Token] festzulegen:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server \
+  --token=SECRET \
+  --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name" \
+  --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
+----
+
+Dabei ist `INSTALL_K3S_ARTIFACT_URL` die https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[URL der Prime Artifacts]
+
+Das Format des Datenspeicher-Endpunkts variiert je nach Datenbanktyp. Für Details siehe den Abschnitt über xref:datastore/datastore.adoc#_datastore_endpoint_format_and_functionality[Formate der Datenspeicher-Endpunkte.]
+
+Um TLS-Zertifikate beim Starten von Serverknoten zu konfigurieren, siehe den xref:datastore/datastore.adoc#_external_datastore_configuration_parameters[Leitfaden zur Datenspeicher-Konfiguration.]
+
+[NOTE]
+====
+Die gleichen Installationsoptionen, die für Einzelserver-Installationen verfügbar sind, stehen auch für HA-Installationen zur Verfügung. Für weitere Details siehe die Dokumentation zu xref:installation/configuration.adoc[Konfigurationsoptionen].
+====
+
+
+Standardmäßig sind Serverknoten planbar, sodass Ihre Arbeitslasten auf ihnen gestartet werden können. Wenn Sie eine dedizierte Kontrollplane wünschen, auf der keine Benutzerarbeitslasten ausgeführt werden, können Sie Taints verwenden. Der `node-taint`-Parameter ermöglicht es Ihnen, Knoten mit Taints zu konfigurieren, zum Beispiel `--node-taint CriticalAddonsOnly=true:NoExecute`.
+
+Sobald Sie den `k3s server`-Prozess auf allen Serverknoten gestartet haben, stellen Sie sicher, dass der Cluster ordnungsgemäß mit `k3s kubectl get nodes` hochgefahren ist. Sie sollten Ihre Serverknoten im Zustand "Bereit" sehen.
+
+=== 3. Optional: Zusätzliche Serverknoten hinzufügen
+
+Der gleiche Beispielbefehl aus Schritt 2 kann verwendet werden, um zusätzliche Serverknoten hinzuzufügen, wobei das Token vom ersten Knoten verwendet werden muss.
+
+Wenn der erste Serverknoten ohne das `--token` CLI-Flag oder die `K3S_TOKEN` Variable gestartet wurde, kann der Tokenwert von jedem bereits dem Cluster beigetretenen Server abgerufen werden:
+
+[,bash]
+----
+cat /var/lib/rancher/k3s/server/token
+----
+
+Zusätzliche Serverknoten können dann xref:cli/server.adoc#_cluster_options[mit dem Token] hinzugefügt werden:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server \
+  --token=SECRET \
+  --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name"
+----
+
+Es gibt einige Konfigurationsflags, die in allen Serverknoten gleich sein müssen:
+
+* Netzwerkbezogene Flags: `--cluster-dns`, `--cluster-domain`, `--cluster-cidr`, `--service-cidr`
+* Flags, die den Einsatz bestimmter Komponenten steuern: `--disable-helm-controller`, `--disable-kube-proxy`, `--disable-network-policy` und jede Komponente, die an `--disable` übergeben wird.
+* Funktionsbezogene Flags: `--secrets-encryption`
+
+[NOTE]
+====
+Stellen Sie sicher, dass Sie eine Kopie dieses Tokens aufbewahren, da es beim Wiederherstellen aus der Sicherung und beim Hinzufügen von Knoten erforderlich ist. Früher hat K3s die Verwendung eines Tokens bei externen SQL-Datenspeichern nicht durchgesetzt.
+====
+
+
+=== 4. Optional: Konfigurieren Sie eine feste Registrierungsadresse
+
+Agentenknoten benötigen eine URL zur Registrierung. Dies kann die IP oder den Hostnamen eines beliebigen Serverknotens sein, aber in vielen Fällen können sich diese im Laufe der Zeit ändern. Wenn Sie beispielsweise Ihren Cluster in einer Cloud betreiben, die Skalierungsgruppen unterstützt, können Knoten im Laufe der Zeit erstellt und zerstört werden, wobei sie sich von den ursprünglichen Serverknoten zu anderen IP-Adressen ändern. Es wäre am besten, einen stabilen Endpunkt vor den Serverknoten zu haben, der sich im Laufe der Zeit nicht ändert. Dieser Endpunkt kann mit verschiedenen Ansätzen eingerichtet werden, wie zum Beispiel:
+
+* Ein Layer-4 (TCP) Lastenausgleichsgerät
+* Round-robin DNS
+* Virtuelle oder elastische IP-Adressen
+
+Siehe xref:datastore/cluster-loadbalancer.adoc[Cluster Loadbalancer] für Beispielkonfigurationen.
+
+Dieser Endpunkt kann auch zum Zugriff auf die Kubernetes API verwendet werden. Sie können beispielsweise Ihre https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/[kubeconfig] Datei so ändern, dass sie auf diesen Endpunkt anstelle eines bestimmten Knotens verweist.
+
+Um Zertifikatfehler in einer solchen Konfiguration zu vermeiden, sollten Sie den Server mit der `--tls-san=YOUR_IP_OR_HOSTNAME_HERE`-Option konfigurieren. Diese Option fügt einen zusätzlichen Hostnamen oder eine IP als Subject Alternative Name im TLS-Zertifikat hinzu, und sie kann mehrfach angegeben werden, wenn Sie sowohl über die IP als auch über den Hostnamen zugreifen möchten.
+
+=== 5. Optional: Agentenknoten beitreten
+
+Da K3s-Serverknoten standardmäßig planbar sind, sind Agentenknoten für einen HA K3s-Cluster nicht erforderlich. Sie möchten möglicherweise dedizierte Agentenknoten haben, um Ihre Apps und Dienste auszuführen.
+
+Das Hinzufügen von Agentenknoten zu einem HA-Cluster ist dasselbe wie das Hinzufügen von Agentenknoten zu einem Cluster mit einem einzelnen Server. Sie müssen lediglich die URL angeben, bei der sich der Agent registrieren soll (entweder eine der Server-IP-Adressen oder eine feste Registrierungsadresse) und das Token, das er verwenden soll.
+
+[,bash]
+----
+K3S_TOKEN=SECRET k3s agent --server https://server-or-fixed-registration-address:6443
+----

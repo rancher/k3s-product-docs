@@ -1,0 +1,65 @@
+= Architektur
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-01-06
+:page-revdate: {revdate}
+
+== Server und Agenten
+
+* Ein Serverknoten wird als ein Host definiert, der den `k3s server` Befehl ausführt, mit Steuerungsebene und Datenspeicherkomponenten, die von K3s verwaltet werden.
+* Ein Agentknoten wird als ein Host definiert, der den `k3s agent` Befehl ausführt, ohne Datenspeicher- oder Steuerungsebene-Komponenten.
+* Sowohl Server als auch Agenten führen kubelet, die Container-Laufzeit und die CNI aus. Siehe die xref:advanced.adoc#_running_agentless_servers_experimental[Dokumentation zu den erweiterten Optionen] für weitere Informationen zum Betrieb agentenloser Server.
+
+image:how-it-works-k3s-revised.svg[]
+
+== Einzelserver-Setup mit einer integrierten Datenbank
+
+Das folgende Diagramm zeigt ein Beispiel für einen Cluster, der einen K3s-Server mit einer integrierten SQLite-Datenbank hat.
+
+In dieser Konfiguration ist jeder Agentknoten beim selben Serverknoten registriert. Ein K3s-Benutzer kann Kubernetes-Ressourcen manipulieren, indem er die K3s-API auf dem Serverknoten aufruft.
+
+image:k3s-architecture-single-server.svg[K3s-Architektur mit einem einzelnen Server]
+
+[#_high_availability_k3s]
+== K3s mit hoher Verfügbarkeit
+
+Einzelserver-Cluster können eine Vielzahl von Anwendungsfällen erfüllen, aber für Umgebungen, in denen die Betriebszeit der Kubernetes-Steuerungsebene entscheidend ist, können Sie K3s in einer Konfiguration mit hoher Verfügbarkeit ausführen. Ein HA K3s-Cluster besteht aus:
+
+[tabs]
+======
+Embedded DB::
++
+--
+* Drei oder mehr *Serverknoten*, die die Kubernetes-API bereitstellen und andere Steuerungsebene-Dienste ausführen
+* Ein *integrierter etcd-Datenspeicher* (im Gegensatz zum integrierten SQLite-Datenspeicher, der in Einzelserver-Setups verwendet wird)
+
+image:k3s-architecture-ha-embedded.svg[K3s-Architektur mit hochverfügbaren Servern]
+--
+
+Externe DB::
++
+--
+* Zwei oder mehr *Serverknoten*, die die Kubernetes-API bereitstellen und andere Steuerungsebene-Dienste ausführen
+* Ein *externer Datenspeicher* (wie MySQL, PostgreSQL oder etcd)
+
+image:k3s-architecture-ha-external.svg[K3s-Architektur mit hochverfügbaren Servern und einer externen DB]
+--
+======
+
+== Feste Registrierungsadresse für Agentenknoten
+
+In der Konfiguration mit hochverfügbaren Servern kann sich jeder Knoten auch über eine feste Registrierungsadresse beim Kubernetes-API registrieren, wie im folgenden Diagramm dargestellt.
+
+Nach der Registrierung stellen die Agentenknoten eine Verbindung direkt zu einem der Serverknoten her.
+
+image:k3s-production-setup.svg[Agentenregistrierung HA]
+
+[#_how_agent_node_registration_works]
+== Wie die Registrierung von Agentenknoten funktioniert
+
+Agentenknoten werden über eine Websocket-Verbindung registriert, die vom `k3s agent`-Prozess initiiert wird, und die Verbindung wird von einem clientseitigen Lastenausgleichsmechanismus aufrechterhalten, der als Teil des Agentenprozesses läuft. Zunächst verbindet sich der Agent über den lokalen Lastenausgleichsmechanismus auf Port 6443 mit dem Supervisor (und kube-apiserver). Der Lastenausgleichsmechanismus führt eine Liste verfügbarer Endpunkte, zu denen eine Verbindung hergestellt werden kann. Der Standard- (und zunächst einzige) Endpunkt wird durch den Hostnamen von der `--server`-Adresse bereitgestellt. Sobald er sich mit dem Cluster verbindet, ruft der Agent eine Liste von kube-apiserver-Adressen aus der Liste der Kubernetes-Dienstendpunkte im Standard-Namespace ab. Diese Endpunkte werden dem Lastenausgleichsmechanismus hinzugefügt, der dann stabile Verbindungen zu allen Servern im Cluster aufrechterhält und eine Verbindung zum kube-apiserver bereitstellt, die Ausfälle einzelner Server toleriert.
+
+Agenten registrieren sich beim Server mit dem Clustergeheimnis des Knotens zusammen mit einem zufällig generierten Passwort für den Knoten, das unter `/etc/rancher/node/password` gespeichert ist. Der Server speichert die Passwörter für einzelne Knoten als Kubernetes-Geheimnisse, und alle nachfolgenden Versuche müssen dasselbe Passwort verwenden. Die Knotenpasswortgeheimnisse werden im `kube-system`-Namespace mit Namen gespeichert, die das Template `<host>.node-password.k3s` verwenden. Dies geschieht, um die Integrität der Knoten-IDs zu schützen.
+
+Wenn das `/etc/rancher/node`-Verzeichnis eines Agenten entfernt wird oder Sie einen Knoten mit einem bestehenden Namen erneut beitreten möchten, sollte der Knoten aus dem Cluster gelöscht werden. Dies bereinigt sowohl den alten Knoten-Eintrag als auch das Knotenpasswortgeheimnis und ermöglicht es dem Knoten, dem Cluster (wieder) beizutreten.
+
+Wenn Sie häufig Hostnamen wiederverwenden, aber die Knotenpasswortgeheimnisse nicht entfernen können, kann eine eindeutige Knoten-ID automatisch an den Hostnamen angehängt werden, indem K3s-Server oder -Agenten mit dem `--with-node-id`-Flag gestartet werden. Wenn aktiviert, wird die Knoten-ID ebenfalls in `/etc/rancher/node/` gespeichert.

@@ -1,0 +1,22 @@
+= Upgrades
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-11
+:page-revdate: {revdate}
+
+== Fazendo upgrade do seu cluster K3s
+
+xref:upgrades/manual.adoc[Upgrades Manuais] descreve várias técnicas para fazer upgrade do seu cluster manualmente. Ele também pode ser usado como base para fazer upgrade através de ferramentas de infraestrutura como código de terceiros, como https://www.terraform.io/[Terraform].
+
+xref:upgrades/automated.adoc[Upgrades Automatizados] descreve como realizar upgrades automatizados nativos do Kubernetes usando o https://github.com/rancher/system-upgrade-controller[Upgrade Controller] da Rancher.
+
+== Advertências específicas da versão
+
+* *Traefik:* Se o Traefik não estiver desativado, as versões do K3s 1.20 e anteriores instalarão o Traefik v1, enquanto as versões do K3s 1.21 e posteriores instalarão o Traefik v2, se o v1 não estiver presente. Para fazer upgrade do Traefik v1 mais antigo para o Traefik v2, consulte a https://doc.traefik.io/traefik/migrate/v1-to-v2/[documentação do Traefik] e use a https://github.com/traefik/traefik-migration-tool[ferramenta de migração].
+* *Dados de inicialização do K3s:* Se você estiver usando o K3s em uma configuração HA com um banco de dados SQL externo, e seus nós de servidor (plano de controle) não foram iniciados com a flag `--token` CLI, você não poderá mais adicionar servidores K3s adicionais ao cluster sem especificar o token. Certifique-se de manter uma cópia deste token, pois ele é necessário ao restaurar a partir de um backup. Anteriormente, o K3s não exigia o uso de um token ao usar bancos de dados SQL externos.
+ ** As versões afetadas são <= v1.19.12+k3s1, v1.20.8+k3s1, v1.21.2+k3s1; as versões corrigidas são v1.19.13+k3s1, v1.20.9+k3s1, v1.21.3+k3s1.
+ ** Você pode recuperar o valor do token de qualquer servidor já conectado ao cluster da seguinte forma:
++
+[,bash]
+----
+cat /var/lib/rancher/k3s/server/token
+----

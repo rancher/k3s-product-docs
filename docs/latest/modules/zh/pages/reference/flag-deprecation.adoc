@@ -1,37 +1,37 @@
-= Flag Deprecation
+= 标记弃用
 :page-languages: [en, ja, ko, zh]
 :revdate: 2024-09-09
 :page-revdate: {revdate}
 
-K3s is a fast-moving project, and as such, we need a way to deprecate flags and configuration options. This page outlines the process for deprecating flags and configuration options. In order to ensure that users are not surprised by the removal of flags, the process is similar to the https://kubernetes.io/docs/reference/using-api/deprecation-policy/[Kubernetes Deprecation Policy].
+K3s 是一个快速发展的项目，因此我们需要一种方法来弃用标记和配置选项。本页面概述了弃用标记和配置选项的过程。为了确保用户不会对标记的移除感到惊讶，该过程类似于 https://kubernetes.io/docs/reference/using-api/deprecation-policy/[Kubernetes 弃用策略]。
 
-== Process
+== 过程
 
-. Flags can be declared as "To Be Deprecated" at any time.
-. Flags that are "To Be Deprecated" must be labeled as such on the next patch of all currently supported releases. Additionally, the flag will begin to warn users that it is going to be deprecated in the next minor release.
-. On the next minor release, a flag will be marked as deprecated in the documentation and converted to a hidden flag in code. The flag will continue to operate and give warnings to users.
-. In the following minor release branch, deprecated flags will become "nonoperational", causing a fatal error if used. This error must explain to the user any new flags or configuration that replace this flag.
-. In the next minor release, the nonoperational flags will be removed from documentation and code.
+. 标记可以在任何时候声明为 "待弃用"。
+. 凡被声明为“待弃用”的标记，必须在所有当前支持版本的下一个补丁中予以标注。此外，该标记将开始警告用户它将在下一个小版本中被弃用。
+. 在下一个小版本中，标记将在文档中标记为弃用，并在代码中转换为隐藏标记。该标记将继续运行并向用户发出警告。
+. 在随后的小版本分支中，弃用的标记将变为 "非操作性"，如果使用将导致致命错误。此错误必须向用户解释任何替代此标记的新标记或配置。
+. 在下一个小版本中，非操作性标记将从文档和代码中去除。
 
-== Example
+== 示例
 
-An example of the process:
+过程示例：
 
-* `--foo` exists in v1.22.14, v1.23.10, and v1.24.2.
-* After the v1.24.2 release, it is decided to deprecate `--foo` in favor of `--new-foo`.
-* In v1.22.15, v1.23.11, and v1.24.3, `--foo` continues to exist, but will warn users:
+* `--foo` 存在于 v1.22.14、v1.23.10 和 v1.24.2 中。
+* 在 v1.24.2 发布后，决定弃用 `--foo`，改用 `--new-foo`。
+* 在 v1.22.15、v1.23.11 和 v1.24.3 中，`--foo` 继续存在，但会警告用户：
 +
 ----
 [Warning] --foo will be deprecated in v1.25.0, use `--new-foo` instead
 ----
 +
-`--foo` will continue to exist as an operational flag for the life of v1.22, v1.23 and v1.24.
+`--foo` 将继续作为操作标记存在于 v1.22、v1.23 和 v1.24 的生命周期内。
 
-* In v1.25.0, `--foo` is marked as deprecated in documentation and will be hidden in code. It will continue to work and warn users to move to `--new-foo`.
-* In v1.26.0, `--foo` will cause a fatal error if used. The error message will say:
+* 在 v1.25.0 中，`--foo` 在文档中标记为弃用，并将在代码中隐藏。它将继续工作并警告用户迁移到 `--new-foo`。
+* 在 v1.26.0 中，`--foo` 如果被使用将导致致命错误。错误讯息将会显示：
 +
 ----
 [Fatal] exit 1: --foo is no longer supported, use --new-foo instead
 ----
 
-* In v1.27.0, `--foo` will be removed completely from all code and documentation.
+* 在 v1.27.0 中，`--foo` 将会从所有代码和文档中完全去除。

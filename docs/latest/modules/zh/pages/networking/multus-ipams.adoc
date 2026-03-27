@@ -1,41 +1,41 @@
-= Multus and IPAM plugins
+= Multus 和 IPAM 插件
 :page-languages: [en, ja, ko, zh]
 :revdate: 2025-09-16
 :page-revdate: {revdate}
 
-https://github.com/k8snetworkplumbingwg/multus-cni[Multus CNI] is a CNI plugin that enables attaching multiple network interfaces to pods. Multus does not replace CNI plugins, instead it acts as a CNI plugin multiplexer. Multus is useful in certain use cases, especially when pods are network intensive and require extra network interfaces that support dataplane acceleration techniques such as SR-IOV.
+https://github.com/k8snetworkplumbingwg/multus-cni[Multus CNI] 是一个 CNI 插件，能够将多个网络接口附加到 Pod 上。Multus 并不替代 CNI 插件，而是作为 CNI 插件的多路复用器。在某些使用场景中，Multus 非常有用，特别是当 Pod 网络密集并需要额外的网络接口以支持数据平面加速技术（如 SR-IOV）时。
 
-For more information about Multus, refer to the https://github.com/k8snetworkplumbingwg/multus-cni/tree/master/docs[multus-cni] documentation.
+有关 Multus 的更多信息，请参阅 https://github.com/k8snetworkplumbingwg/multus-cni/tree/master/docs[multus-cni] 文档。
 
-Multus can not be deployed standalone. It always requires at least one conventional CNI plugin that fulfills the Kubernetes cluster network requirements. That CNI plugin becomes the default for Multus, and will be used to provide the primary interface for all pods. When deploying K3s with default options, that CNI plugin is Flannel.
+Multus 不能单独部署。它始终需要至少一个满足 Kubernetes 集群网络要求的传统 CNI 插件。该 CNI 插件成为 Multus 的默认插件，并将用于为所有 Pod 提供主要接口。在使用默认选项部署 K3s 时，该 CNI 插件是 Flannel。
 
 [NOTE]
-.Version Gate
+.版本门控
 ====
-K3s uses a fixed CNI binary path as of the October 2024 releases: v1.28.15+k3s1, v1.29.10+k3s1, v1.30.6+k3s1, v1.31.2+k3s1.
+K3s 从 2024 年 10 月的版本开始使用固定的 CNI 二进制路径：v1.28.15+k3s1，v1.29.10+k3s1，v1.30.6+k3s1，v1.31.2+k3s1。
 ====
 
-K3s looks at `$DATA_DIR/data/cni` for CNI plugin binaries. By default this is `/var/lib/rancher/k3s/data/cni`. Additional CNI plugins should be installed to this location.
+K3s 在 `$DATA_DIR/data/cni` 中查找 CNI 插件二进制文件。默认情况下，这是 `/var/lib/rancher/k3s/data/cni`。额外的 CNI 插件应安装到此位置。
 
-Prior to the October 2024 releases, CNI binaries were part of the K3s userspace bundle at `$DATA_DIR/data/$HASH/bin`, where the hash is unique to each release of K3s.
-This made it difficult to deploy additional CNI plugins, as the path would change every time K3s was upgraded.
+在 2024 年 10 月的版本之前，CNI 二进制文件是 K3s 用户空间包的一部分，位于 `$DATA_DIR/data/$HASH/bin`，其中哈希值对每个 K3s 版本都是唯一的。
+这使得部署额外的 CNI 插件变得困难，因为每次升级 K3s 时路径都会改变。
 
-If deploying Multus to an older release of K3s, you should use `/var/lib/rancher/k3s/data/current/bin/` as the CNI bin dir, but expect that the plugins will need to be re-deployed whenever K3s is upgraded.
+如果要在较旧版本的 K3s 上部署 Multus，您应使用 `/var/lib/rancher/k3s/data/current/bin/` 作为 CNI 路径，但要预期每次 K3s 升级时都需要重新部署插件。
 
-== Deploy with an IPAM plugin
+== 使用 IPAM 插件进行部署
 
-An IP Address Manager (IPAM) plugin is required to assign IP addresses on the extra interfaces created by Multus. One or more IPAMs can be installed; the examples below each show use of a single IPAM plugin but they may be combined as needed.
+需要一个 IP 地址管理器（IPAM）插件来为 Multus 创建的额外接口分配 IP 地址。可以安装一个或多个IPAM；下面的示例每个都展示了单个IPAM插件的使用，但可以根据需要组合。
 
-The helm deployment examples below will deploy a DaemonSet to create Multus pods to install the required CNI binaries in `/var/lib/rancher/k3s/data/cni/` and Multus CNI config in `/var/lib/rancher/k3s/agent/etc/cni/net.d`.
+下面的helm部署示例将部署一个DaemonSet，以创建Multus pods，在`/var/lib/rancher/k3s/data/cni/`中安装所需的CNI二进制文件，并在`/var/lib/rancher/k3s/agent/etc/cni/net.d`中安装Multus CNI配置。
 
 [tabs,sync-group-id=MultusIPAMplugins]
 ======
 host-local::
 +
 --
-The host-local IPAM plugin allocates ip addresses out of a set of address ranges. It stores the state locally on the host filesystem, hence ensuring uniqueness of IP addresses on a single host. Therefore, we don't recommend it for multi-node clusters. This IPAM plugin does not require any extra deployment. For more information: https://www.cni.dev/plugins/current/ipam/host-local/.
+host-local IPAM插件从一组地址范围中分配IP地址。它将状态存储在主机文件系统上，从而确保单个主机上的IP地址唯一性。因此，我们不建议在多节点集群中使用它。此IPAM插件不需要额外的部署。有关更多信息：https://www.cni.dev/plugins/current/ipam/host-local/.
 
-To use the host-local plugin, deploy Multus with the following configuration:
+要使用 host-local 插件，请使用以下配置部署 Multus：
 
 [,yaml]
 ----
@@ -55,17 +55,17 @@ spec:
         confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
         binDir: /var/lib/rancher/k3s/data/cni/
         kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
-	      # Comment the following line when using rke2-multus < v4.2.202
-	      multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+          # Comment the following line when using rke2-multus < v4.2.202
+          multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
 ----
 --
 
 Whereabouts::
 +
 --
-https://github.com/k8snetworkplumbingwg/whereabouts[Whereabouts] is an IP Address Management (IPAM) CNI plugin that assigns IP addresses cluster-wide.
+https://github.com/k8snetworkplumbingwg/whereabouts[Whereabouts]是一个IP地址管理（IPAM）CNI插件，负责在整个集群中分配IP地址。
 
-To use the Whereabouts IPAM plugin, deploy Multus with the following configuration:
+要使用Whereabouts IPAM插件，请使用以下配置部署Multus：
 
 [,yaml]
 ----
@@ -85,8 +85,8 @@ spec:
         confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
         binDir: /var/lib/rancher/k3s/data/cni/
         kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
-	      # Comment the following line when using rke2-multus < v4.2.202
-	      multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+          # Comment the following line when using rke2-multus < v4.2.202
+          multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
     rke2-whereabouts:
       fullnameOverride: whereabouts
       enabled: true
@@ -95,9 +95,9 @@ spec:
         binDir: /var/lib/rancher/k3s/data/cni/
 ----
 
-When using whereabouts on K3s, `configuration_path` must be set to `/var/lib/rancher/k3s/agent/etc/cni/net.d/whereabouts.d/whereabouts.conf` in the NetworkAttachmentDefinition's `ipam` configuration.
+在K3s上使用whereabouts时，`configuration_path`必须在NetworkAttachmentDefinition的`ipam`配置中设置为`/var/lib/rancher/k3s/agent/etc/cni/net.d/whereabouts.d/whereabouts.conf`。
 
-For example, when using whereabouts as the IPAM with the macvlan plugin:
+例如，当使用whereabouts作为IPAM与macvlan插件时：
 
 [,yaml]
 ----
@@ -122,12 +122,12 @@ spec:
 ----
 --
 
-Multus DHCP daemon::
+Multus DHCP守护程序::
 +
 --
-The dhcp IPAM plugin can be deployed when there is already a DHCP server running on the network. This daemonset takes care of periodically renewing the DHCP lease. For more information please check the official docs of https://www.cni.dev/plugins/current/ipam/dhcp/[DHCP IPAM plugin].
+当网络上已经有一个DHCP服务器运行时，可以部署DHCP IPAM插件。此 DaemonSet 负责定期续订 DHCP 租约。有关更多信息，请查看https://www.cni.dev/plugins/current/ipam/dhcp/[DHCP IPAM插件]的官方文档。
 
-To use the DHCP plugin, deploy Multus with the following configuration:
+要使用DHCP插件，请使用以下配置部署Multus：
 
 [,yaml]
 ----
@@ -147,18 +147,18 @@ spec:
         confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
         binDir: /var/lib/rancher/k3s/data/cni/
         kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
-	      # Comment the following line when using rke2-multus < v4.2.202
-	      multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+          # Comment the following line when using rke2-multus < v4.2.202
+          multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
     manifests:
       dhcpDaemonSet: true
 ----
 --
 ======
 
-=== Using Multus
+=== 使用Multus
 
-Once Multus has been deployed, you can create NetworkAttachmentDefinition resources, and reference these in Pod specs to attach additional interfaces.
-For example, using the whereabouts example above, you can create an `eth1` interface on a Pod using the `k8s.v1.cni.cncf.io/networks` annotation:
+一旦部署了 Multus，您可以创建 NetworkAttachmentDefinition 资源，并在 Pod 规格中引用这些资源以附加额外的接口。
+例如，使用上面的 Whereabouts 示例，您可以在 Pod 上使用 `k8s.v1.cni.cncf.io/networks` 注释创建一个 `eth1` 接口：
 
 [,yaml]
 ----
@@ -189,4 +189,4 @@ spec:
           - "3600"
 ----
 
-See the upstream documentation for additional information and examples.
+有关更多信息和示例，请参阅上游文档。

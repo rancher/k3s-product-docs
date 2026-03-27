@@ -1,0 +1,37 @@
+= Copia de seguridad y restauración
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-11
+:page-revdate: {revdate}
+
+La forma en que se realiza la copia de seguridad y la restauración de K3s depende del tipo de almacén de datos que se utilice.
+
+[CAUTION]
+====
+Además de hacer una copia de seguridad del almacén de datos en sí, también debes hacer una copia de seguridad del archivo de token del servidor en `/var/lib/rancher/k3s/server/token`.
+Debes restaurar este archivo o pasar su valor a la opción `--token` al restaurar desde la copia de seguridad.
+Si no utilizas el mismo valor de token al restaurar, la instantánea será inutilizable, ya que el token se utiliza para cifrar datos confidenciales dentro del almacén de datos.
+====
+
+
+== Copia de seguridad y restauración con SQLite
+
+No se requieren comandos especiales para hacer una copia de seguridad o restaurar el almacén de datos de SQLite.
+
+* Para hacer una copia de seguridad del almacén de datos de SQLite, haz una copia de `/var/lib/rancher/k3s/server/db/`.
+* Para restaurar el almacén de datos de SQLite, restaura el contenido de `/var/lib/rancher/k3s/server/db` (y el token, como se discutió anteriormente).
+
+== Copia de seguridad y restauración con almacén de datos externo
+
+Cuando se utiliza un almacén de datos externo, las operaciones de copia de seguridad y restauración se gestionan fuera de K3s. El administrador de la base de datos necesitará hacer una copia de seguridad de la base de datos externa o restaurarla desde una instantánea o volcado.
+
+Recomendamos configurar la base de datos para que realice instantáneas recurrentes.
+
+Para obtener detalles sobre cómo tomar instantáneas de la base de datos y restaurar tu base de datos a partir de ellas, consulta la documentación oficial de la base de datos:
+
+* https://dev.mysql.com/doc/refman/8.0/en/replication-snapshot-method.html[Documentación oficial de MySQL]
+* https://www.postgresql.org/docs/8.3/backup-dump.html[Documentación oficial de PostgreSQL]
+* https://etcd.io/docs/latest/op-guide/recovery/[Documentación oficial de etcd]
+
+== Copia de seguridad y restauración con almacén de datos etcd embebido
+
+Consulta la documentación del comando xref:cli/etcd-snapshot.adoc[`k3s etcd-snapshot`] para obtener información sobre cómo realizar operaciones de copia de seguridad y restauración en el almacén de datos etcd embebido.

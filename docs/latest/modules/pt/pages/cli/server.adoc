@@ -1,0 +1,582 @@
+= servidor k3s
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-05-26
+:page-revdate: {revdate}
+
+Nesta seção, você aprenderá como configurar o servidor K3s.
+
+Observe que os servidores também executam um agente, portanto, todas as opções de configuração listadas na xref:cli/agent.adoc[`k3s agent` documentação] também são suportadas nos servidores.
+
+As opções estão documentadas nesta página como flags de CLI, mas também podem ser passadas como opções de arquivo de configuração. Consulte a xref:installation/configuration.adoc#_configuration_file[documentação do Arquivo de Configuração] para mais informações sobre o uso de arquivos de configuração YAML.
+
+== Valores Críticos de Configuração
+
+As seguintes opções devem ser definidas com o mesmo valor em todos os servidores do cluster. A falha em fazê-lo fará com que novos servidores não consigam ingressar no cluster ao usar etcd embutido, ou operação incorreta do cluster ao usar um datastore externo.
+
+* `--agent-token`
+* `--cluster-cidr`
+* `--cluster-dns`
+* `--cluster-domain`
+* `--disable-cloud-controller`
+* `--disable-helm-controller`
+* `--disable-network-policy`
+* `--disable=servicelb` _nota: outros componentes empacotados podem ser desativados por servidor_
+* `--egress-selector-mode`
+* `--embedded-registry`
+* `--flannel-backend`
+* `--flannel-external-ip`
+* `--flannel-ipv6-masq`
+* `--secrets-encryption`
+* `--secrets-encryption-provider`
+* `--service-cidr`
+
+== Opções Comumente Usadas
+
+=== Banco de dados
+
+|===
+| Flag | Variável de ambiente | Default | Descrição
+
+| `--datastore-endpoint` valor
+| `K3S_DATASTORE_ENDPOINT`
+|
+| Especifique o nome da fonte de dados etcd, NATS, MySQL, Postgres ou SQLite
+
+| `--datastore-cafile` valor
+| `K3S_DATASTORE_CAFILE`
+|
+| Arquivo da Autoridade Certificadora TLS usado para proteger a comunicação do backend do datastore
+
+| `--datastore-certfile` valor
+| `K3S_DATASTORE_CERTFILE`
+|
+| Arquivo de certificação TLS usado para proteger a comunicação do backend do datastore
+
+| `--datastore-keyfile` valor
+| `K3S_DATASTORE_KEYFILE`
+|
+| Arquivo de chave TLS usado para proteger a comunicação do backend do datastore
+
+| `--etcd-expose-metrics`
+|
+| falso
+| Expor métricas etcd para a interface do cliente
+
+| `--etcd-disable-snapshots`
+|
+| falso
+| Desativar instantâneos automáticos do etcd
+
+| `--etcd-snapshot-name` valor
+|
+| "etcd-snapshot-<unix-timestamp>"
+| Defina o nome base dos instantâneos do etcd.
+
+| `--etcd-snapshot-schedule-cron` valor
+|
+| "0 */12 * * *"
+| Tempo de intervalo do instantâneo na especificação cron. Ex: a cada 5 horas '0 */5 _ * _'
+
+| `--etcd-snapshot-retention` valor
+|
+| 5
+| Número de instantâneos a serem mantidos
+
+| `--etcd-snapshot-dir` valor
+|
+| ${data-dir}/db/snapshots
+| Diretório para salvar os instantâneos do banco de dados
+
+| `--etcd-s3`
+|
+|
+| Ativar backup para S3
+
+| `--etcd-s3-endpoint` valor
+|
+| "s3.amazonaws.com"
+| URL do endpoint S3
+
+| `--etcd-s3-endpoint-ca` valor
+|
+|
+| Certificado CA personalizado do S3 para conectar ao endpoint S3
+
+| `--etcd-s3-skip-ssl-verify`
+|
+|
+| Desabilita a validação do certificado SSL do S3
+
+| `--etcd-s3-access-key` valor
+| `AWS_ACCESS_KEY_ID`
+|
+| Chave de acesso S3
+
+| `--etcd-s3-secret-key` valor
+| `AWS_SECRET_ACCESS_KEY`
+|
+| Chave secreta S3
+
+| `--etcd-s3-bucket` valor
+|
+|
+| Nome do bucket S3
+
+| `--etcd-s3-region` valor
+|
+| "us-east-1"
+| Região S3 / localização do bucket (opcional)
+
+| `--etcd-s3-folder` valor
+|
+|
+| Pasta S3
+
+| `--etcd-s3-proxy`
+| 
+| 
+| Servidor proxy a ser usado ao conectar ao S3, substituindo quaisquer variáveis de ambiente relacionadas a proxy
+
+| `--etcd-s3-config-secret`
+| 
+| 
+| Nome do segredo no namespace kube-system usado para configurar o S3, se o etcd-s3 estiver habilitado e nenhuma outra opção do etcd-s3 estiver definida
+
+
+| `--etcd-s3-insecure`
+|
+|
+| Desabilita S3 sobre HTTPS
+
+| `--etcd-s3-timeout` valor
+|
+| 5m0s
+| Tempo limite do S3 (padrão: 5m0s)
+|===
+
+[#_cluster_options]
+=== Opções do Cluster
+
+|===
+| Flag | Variável de ambiente | Descrição
+
+| `--token` valor, `-t` valor
+| `K3S_TOKEN`
+| Segredo compartilhado usado para juntar um servidor ou agente a um cluster
+
+| `--token-file` valor
+| `K3S_TOKEN_FILE`
+| Arquivo contendo o segredo/token do cluster
+
+| `--agent-token` valor
+| `K3S_AGENT_TOKEN`
+| Segredo compartilhado usado para juntar agentes ao cluster, mas não servidores
+
+| `--agent-token-file` valor
+| `K3S_AGENT_TOKEN_FILE`
+| Arquivo contendo o segredo do agente
+
+| `--server` valor
+| `K3S_URL`
+| Servidor para se conectar, usado para ingressar em um cluster
+
+| `--cluster-init`
+| `K3S_CLUSTER_INIT`
+| Inicializar um novo cluster usando Etcd embutido
+
+| `--cluster-reset`
+| `K3S_CLUSTER_RESET`
+| Esquecer todos os pares e se tornar o único membro de um novo cluster
+|===
+
+=== Opções de Kubeconfig do Admin
+
+|===
+| Flag | Variável de ambiente | Descrição
+
+| `--write-kubeconfig value, -o` valor
+| `K3S_KUBECONFIG_OUTPUT`
+| Escrever kubeconfig para o cliente admin neste arquivo
+
+| `--write-kubeconfig-mode` valor
+| `K3S_KUBECONFIG_MODE`
+| Escrever kubeconfig com este https://en.wikipedia.org/wiki/Chmod[modo.] O arquivo kubeconfig é de propriedade do root e é escrito com um modo padrão de 600. Alterar o modo para 644 permitirá que ele seja lido por outros usuários não privilegiados no host.
+
+| `--write-kubeconfig-group` valor
+| `K3S_KUBECONFIG_GROUP`
+| Escrever grupo kubeconfig. Combinando com `--write-kubeconfig-mode`, permitirá que seus administradores k3s acessem o arquivo kubeconfig, mas mantendo o arquivo de propriedade do root.
+|===
+
+== Opções Avançadas
+
+=== Registro
+
+|===
+| Flag | Default | Descrição
+
+| `--debug`
+| N/A
+| Ativar logs de depuração
+
+| `-v` valor
+| 0
+| Número para o nível de verbosidade do log
+
+| `--vmodule` valor
+| N/A
+| Lista separada por vírgulas de FILE_PATTERN=LOG_LEVEL para configuração de logging filtrado por arquivo
+
+| `--log value, -l` valor
+| N/A
+| Registrar em arquivo
+
+| `--alsologtostderr`
+| N/A
+| Registrar no erro padrão, assim como em arquivo (se definido)
+|===
+
+=== Receptores
+
+|===
+| Flag | Default | Descrição
+
+| `--bind-address` valor
+| 0.0.0.0
+| endereço de escuta do k3s
+
+| `--https-listen-port` valor
+| 6443
+| porta de escuta HTTPS
+
+| `--advertise-address` valor
+| node-external-ip/node-ip
+| Endereço IPv4/IPv6 que o apiserver anuncia para seu ponto de extremidade de serviço +
+Observe que o intervalo de IP primário `service-cidr` deve ser da mesma família de endereços que o endereço anunciado
+
+| `--advertise-port` valor
+| listen-port/0
+| Porta que o apiserver usa para anunciar aos membros do cluster
+
+| `--tls-san` valor
+| N/A
+| Adicione nomes de host adicionais ou endereços IPv4/IPv6 como SAN no certificado TLS
+
+| `--tls-san-security`
+| true
+| Proteja o certificado TLS do servidor recusando-se a adicionar SAN não associados ao serviço apiserver do Kubernetes, aos nós do servidor ou aos valores da opção tls-san 
+|===
+
+=== Dados
+
+|===
+| Flag | Default | Descrição
+
+| `--data-dir value, -d` valor
+| `/var/lib/rancher/k3s` ou `${HOME}/.rancher/k3s` se não for root
+| Pasta para manter o estado
+|===
+
+=== Criptografia de Segredos
+
+|===
+| Flag | Default | Descrição
+
+| `--secrets-encryption`
+| falso
+| Ativar criptografia de Segredos em repouso
+
+| `--secrets-encryption-provider`
+| aescbc
+| Provedor de criptografia a ser usado
+|===
+
+=== Projeto de Rede
+
+|===
+| Flag | Default | Descrição
+
+| `--cluster-cidr` valor
+| "10.42.0.0/16"
+| CIDRs de rede IPv4/IPv6 a serem usados para IPs de pod
+
+| `--service-cidr` valor
+| "10.43.0.0/16"
+| CIDRs de rede IPv4/IPv6 a serem usados para IPs de serviço
+
+| `--service-node-port-range` valor
+| "30000-32767"
+| Faixa de portas a reservar para serviços com visibilidade NodePort
+
+| `--cluster-dns` valor
+| "10.43.0.10"
+| IP de cluster IPv4 para o serviço coredns. Deve estar na sua faixa de service-cidr
+
+| `--cluster-domain` valor
+| "cluster.local"
+| Domínio do Cluster
+
+| `--flannel-backend` valor
+| "vxlan"
+| Um dos seguintes: 'none', 'vxlan', 'ipsec' (obsoleto), 'host-gw', 'wireguard-native' ou 'wireguard' (obsoleto)
+
+| `--flannel-ipv6-masq`
+| "N/A"
+| Ativar mascaramento IPv6 para pod
+
+| `--flannel-external-ip`
+| "N/A"
+| Usar endereços IP externos do nó para tráfego Flannel
+
+| `--servicelb-namespace` valor
+| "kube-system"
+| Namespace dos pods para o componente servicelb
+
+| `--egress-selector-mode` valor
+| "agente"
+a| Deve ser um dos seguintes: 
+
+* desabilitado: O apiserver não usa túneis de agente para se comunicar com os nós. Requer que os servidores executem agentes e tenham conectividade direta com o kubelet nos agentes, ou o apiserver não conseguirá acessar os pontos finais do serviço ou realizar kubectl exec e kubectl logs.
+* agente: O apiserver usa túneis de agente para se comunicar com os nós. Os nós permitem a conexão do túnel a partir de endereços de loopback. Requer que os servidores também executem agentes, ou o apiserver não conseguirá acessar os pontos finais do serviço. O padrão histórico para k3s.
+* pod: O apiserver usa túneis de agente para se comunicar com nós e pontos finais, roteando conexões de ponto final para o agente correto ao observar os nós. Os nós permitem a conexão do túnel a partir de endereços de loopback ou um CIDR atribuído ao seu nó.
+* cluster: O apiserver usa túneis de agente para se comunicar com nós e pontos finais, roteando conexões de ponto final para o agente correto ao observar os pontos finais. Os nós permitem a conexão do túnel a partir de endereços de loopback ou o intervalo CIDR do cluster configurado.
+|===
+
+=== Classe de Armazenamento
+
+|===
+| Flag | Descrição
+
+| `--default-local-storage-path` valor
+| Caminho de armazenamento local padrão para a classe de armazenamento do provisionador local
+|===
+
+=== Componentes do Kubernetes
+
+|===
+| Flag | Descrição
+
+| `--disable` valor
+| Veja "xref:installation/packaged-components.adoc#_using_the_disable_flag[Usando a flag `--disable`]"
+
+| `--disable-scheduler`
+| Desativar o agendador padrão do Kubernetes
+
+| `--disable-cloud-controller`
+| Desativar o gerenciador de controladores de nuvem padrão do k3s
+
+| `--disable-kube-proxy`
+| Desativar a execução do kube-proxy
+
+| `--disable-network-policy`
+| Desativar o controlador de política de rede padrão do k3s
+
+| `--disable-helm-controller`
+| Desativar o controlador Helm
+|===
+
+=== Flags personalizadas para processos do Kubernetes
+
+|===
+| Flag | Descrição
+
+| `--etcd-arg` valor
+| Flag personalizada para o processo etcd
+
+| `--kube-apiserver-arg` valor
+| Flag personalizada para o processo kube-apiserver
+
+| `--kube-scheduler-arg` valor
+| Flag personalizada para o processo kube-scheduler
+
+| `--kube-controller-manager-arg` valor
+| Flag personalizada para o processo kube-controller-manager
+
+| `--kube-cloud-controller-manager-arg` valor
+| Flag personalizada para o processo kube-cloud-controller-manager
+
+| `--kubelet-arg` valor
+| Flag personalizada para o processo kubelet
+
+| `--kube-proxy-arg` valor
+| Flag personalizada para o processo kube-proxy
+|===
+
+=== Opções Experimentais
+
+|===
+| Flag | Descrição
+
+| `--rootless`
+| Executar sem root
+
+| `--enable-pprof`
+| Habilitar endpoint pprof na porta do supervisor
+
+| `--docker`
+| Usar cri-dockerd em vez de containerd
+
+| `--prefer-bundled-bin`
+| Preferir binários de espaço de usuário empacotados em vez de binários do host
+
+| `--disable-agent`
+| Veja "xref:advanced.adoc#_running_agentless_servers_experimental[Executando Servidores Sem Agente]"
+
+| `--embedded-registry`
+| Veja "xref:installation/registry-mirror.adoc[Espelho de Registro Embutido]"
+
+| `--vpn-auth`
+| Veja "xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[Integração com o provedor de VPN Tailscale]" 
+
+| `--vpn-auth-file`
+| Veja "xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[Integração com o provedor de VPN Tailscale]" 
+|===
+
+=== Opções Obsoletas
+
+|===
+| Flag | Variável de ambiente | Descrição
+
+| `--no-flannel`
+| N/A
+| Use `--flannel-backend=none`
+
+| `--no-deploy` valor
+| N/A
+| Use `--disable`
+
+| `--cluster-secret` valor
+| `K3S_CLUSTER_SECRET`
+| Use `--token`
+
+| `--flannel-backend` wireguard
+| N/A
+| Use `--flannel-backend=wireguard-native`
+
+| `--flannel-backend` value=option1=value
+| N/A
+| Use `--flannel-conf` para especificar o arquivo de configuração do flannel com a configuração de backend
+|===
+
+== Ajuda do CLI do Servidor K3s
+
+____
+Se uma opção aparecer entre colchetes abaixo, por exemplo `[$K3S_TOKEN]`, isso significa que a opção pode ser passada como uma variável de ambiente com esse nome.
+____
+
+[,bash]
+----
+NAME:
+   k3s server - Run management server
+
+USAGE:
+   k3s server [OPTIONS]
+
+OPTIONS:
+   --config FILE, -c FILE                     (config) Load configuration from FILE (default: "/etc/rancher/k3s/config.yaml") [$K3S_CONFIG_FILE]
+   --debug                                    (logging) Turn on debug logs [$K3S_DEBUG]
+   -v value                                   (logging) Number for the log level verbosity (default: 0)
+   --vmodule value                            (logging) Comma-separated list of FILE_PATTERN=LOG_LEVEL settings for file-filtered logging
+   --log value, -l value                      (logging) Log to file
+   --alsologtostderr                          (logging) Log to standard error as well as file (if set)
+   --bind-address value                       (listener) k3s bind address (default: 0.0.0.0)
+   --https-listen-port value                  (listener) HTTPS listen port (default: 6443)
+   --advertise-address value                  (listener) IPv4/IPv6 address that apiserver uses to advertise to members of the cluster (default: node-external-ip/node-ip)
+   --advertise-port value                     (listener) Port that apiserver uses to advertise to members of the cluster (default: listen-port) (default: 0)
+   --tls-san value                            (listener) Add additional hostnames or IPv4/IPv6 addresses as Subject Alternative Names on the server TLS cert
+   --tls-san-security                         (listener) Protect the server TLS cert by refusing to add Subject Alternative Names not associated with the kubernetes apiserver service, server nodes, or values of the tls-san option (default: true)
+   --data-dir value, -d value                 (data) Folder to hold state default /var/lib/rancher/k3s or ${HOME}/.rancher/k3s if not root [$K3S_DATA_DIR]
+   --cluster-cidr value                       (networking) IPv4/IPv6 network CIDRs to use for pod IPs (default: 10.42.0.0/16)
+   --service-cidr value                       (networking) IPv4/IPv6 network CIDRs to use for service IPs (default: 10.43.0.0/16)
+   --service-node-port-range value            (networking) Port range to reserve for services with NodePort visibility (default: "30000-32767")
+   --cluster-dns value                        (networking) IPv4 Cluster IP for coredns service. Should be in your service-cidr range (default: 10.43.0.10)
+   --cluster-domain value                     (networking) Cluster Domain (default: "cluster.local")
+   --flannel-backend value                    (networking) Backend (valid values: 'none', 'vxlan', 'host-gw', 'wireguard-native' (default: "vxlan")   --flannel-ipv6-masq                        (networking) Enable IPv6 masquerading for pod
+   --flannel-external-ip                      (networking) Use node external IP addresses for Flannel traffic
+   --egress-selector-mode value               (networking) One of 'agent', 'cluster', 'pod', 'disabled' (default: "agent")
+   --servicelb-namespace value                (networking) Namespace of the pods for the servicelb component (default: "kube-system")
+   --write-kubeconfig value, -o value         (client) Write kubeconfig for admin client to this file [$K3S_KUBECONFIG_OUTPUT]
+   --write-kubeconfig-mode value              (client) Write kubeconfig with this mode [$K3S_KUBECONFIG_MODE]
+   --write-kubeconfig-group value             (client) Write kubeconfig with this group [$K3S_KUBECONFIG_GROUP]
+   --helm-job-image value                     (helm) Default image to use for helm jobs
+   --token value, -t value                    (cluster) Shared secret used to join a server or agent to a cluster [$K3S_TOKEN]
+   --token-file value                         (cluster) File containing the token [$K3S_TOKEN_FILE]
+   --agent-token value                        (cluster) Shared secret used to join agents to the cluster, but not servers [$K3S_AGENT_TOKEN]
+   --agent-token-file value                   (cluster) File containing the agent secret [$K3S_AGENT_TOKEN_FILE]
+   --server value, -s value                   (cluster) Server to connect to, used to join a cluster [$K3S_URL]
+   --cluster-init                             (cluster) Initialize a new cluster using embedded Etcd [$K3S_CLUSTER_INIT]
+   --cluster-reset                            (cluster) Forget all peers and become sole member of a new cluster [$K3S_CLUSTER_RESET]
+   --cluster-reset-restore-path value         (db) Path to snapshot file to be restored
+   --kube-apiserver-arg value                 (flags) Customized flag for kube-apiserver process
+   --etcd-arg value                           (flags) Customized flag for etcd process
+   --kube-controller-manager-arg value        (flags) Customized flag for kube-controller-manager process
+   --kube-scheduler-arg value                 (flags) Customized flag for kube-scheduler process
+   --kube-cloud-controller-manager-arg value  (flags) Customized flag for kube-cloud-controller-manager process
+   --datastore-endpoint value                 (db) Specify etcd, NATS, MySQL, Postgres, or SQLite (default) data source name [$K3S_DATASTORE_ENDPOINT]
+   --datastore-cafile value                   (db) TLS Certificate Authority file used to secure datastore backend communication [$K3S_DATASTORE_CAFILE]
+   --datastore-certfile value                 (db) TLS certification file used to secure datastore backend communication [$K3S_DATASTORE_CERTFILE]
+   --datastore-keyfile value                  (db) TLS key file used to secure datastore backend communication [$K3S_DATASTORE_KEYFILE]
+   --etcd-expose-metrics                      (db) Expose etcd metrics to client interface. (default: false)
+   --etcd-disable-snapshots                   (db) Disable automatic etcd snapshots
+   --etcd-snapshot-name value                 (db) Set the base name of etcd snapshots (default: etcd-snapshot-<unix-timestamp>) (default: "etcd-snapshot")
+   --etcd-snapshot-schedule-cron value        (db) Snapshot interval time in cron spec. eg. every 5 hours '0 */5 * * *' (default: "0 */12 * * *")
+   --etcd-snapshot-retention value            (db) Number of snapshots to retain (default: 5)
+   --etcd-snapshot-dir value                  (db) Directory to save db snapshots. (default: $\{data-dir}/db/snapshots)
+   --etcd-snapshot-compress                   (db) Compress etcd snapshot
+   --etcd-s3                                  (db) Enable backup to S3
+   --etcd-s3-endpoint value                   (db) S3 endpoint url (default: "s3.amazonaws.com")
+   --etcd-s3-endpoint-ca value                (db) S3 custom CA cert to connect to S3 endpoint
+   --etcd-s3-skip-ssl-verify                  (db) Disables S3 SSL certificate validation
+   --etcd-s3-access-key value                 (db) S3 access key [$AWS_ACCESS_KEY_ID]
+   --etcd-s3-secret-key value                 (db) S3 secret key [$AWS_SECRET_ACCESS_KEY]
+   --etcd-s3-bucket value                     (db) S3 bucket name
+   --etcd-s3-region value                     (db) S3 region / bucket location (optional) (default: "us-east-1")
+   --etcd-s3-folder value                     (db) S3 folder
+   --etcd-s3-proxy value                      (db) Proxy server to use when connecting to S3, overriding any proxy-releated environment variables
+   --etcd-s3-config-secret value              (db) Name of secret in the kube-system namespace used to configure S3, if etcd-s3 is enabled and no other etcd-s3 options are set
+   --etcd-s3-insecure                         (db) Disables S3 over HTTPS
+   --etcd-s3-timeout value                    (db) S3 timeout (default: 5m0s)
+   --default-local-storage-path value         (storage) Default local storage path for local provisioner storage class
+   --disable value                            (components) Do not deploy packaged components and delete any deployed components (valid items: coredns, servicelb, traefik, local-storage, metrics-server, runtimes)
+   --disable-scheduler                        (components) Disable Kubernetes default scheduler
+   --disable-cloud-controller                 (components) Disable k3s default cloud controller manager
+   --disable-kube-proxy                       (components) Disable running kube-proxy
+   --disable-network-policy                   (components) Disable k3s default network policy controller
+   --disable-helm-controller                  (components) Disable Helm controller
+   --embedded-registry                        (experimental/components) Enable embedded distributed container registry; requires use of embedded containerd; when enabled agents will also listen on the supervisor port
+   --supervisor-metrics                       (experimental/components) Enable serving k3s internal metrics on the supervisor port; when enabled agents will also listen on the supervisor port
+   --node-name value                          (agent/node) Node name [$K3S_NODE_NAME]
+   --with-node-id                             (agent/node) Append id to node name
+   --node-label value                         (agent/node) Registering and starting kubelet with set of labels
+   --node-taint value                         (agent/node) Registering kubelet with set of taints
+   --image-credential-provider-bin-dir value  (agent/node) The path to the directory where credential provider plugin binaries are located (default: "/var/lib/rancher/credentialprovider/bin")
+   --image-credential-provider-config value   (agent/node) The path to the credential provider plugin config file (default: "/var/lib/rancher/credentialprovider/config.yaml")
+   --docker                                   (agent/runtime) (experimental) Use cri-dockerd instead of containerd
+   --container-runtime-endpoint value         (agent/runtime) Disable embedded containerd and use the CRI socket at the given path; when used with --docker this sets the docker socket path
+   --default-runtime value                    (agent/runtime) Set the default runtime in containerd
+   --image-service-endpoint value             (agent/runtime) Disable embedded containerd image service and use remote image service socket at the given path. If not specified, defaults to --container-runtime-endpoint.
+   --disable-default-registry-endpoint        (agent/containerd) Disables containerd fallback default registry endpoint when a mirror is configured for that registry
+   --nonroot-devices                          (agent/containerd) Allows non-root pods to access devices by setting device_ownership_from_security_context=true in the containerd CRI config
+   --pause-image value                        (agent/runtime) Customized pause image for containerd or docker sandbox (default: "rancher/mirrored-pause:3.6")
+   --snapshotter value                        (agent/runtime) Override default containerd snapshotter (default: "overlayfs")
+   --private-registry value                   (agent/runtime) Private registry configuration file (default: "/etc/rancher/k3s/registries.yaml")
+   --system-default-registry value            (agent/runtime) Private registry to be used for all system images [$K3S_SYSTEM_DEFAULT_REGISTRY]
+   --node-ip value, -i value                  (agent/networking) IPv4/IPv6 addresses to advertise for node
+   --node-external-ip value                   (agent/networking) IPv4/IPv6 external IP addresses to advertise for node
+   --node-internal-dns value                  (agent/networking) internal DNS addresses to advertise for node
+   --node-external-dns value                  (agent/networking) external DNS addresses to advertise for node
+   --resolv-conf value                        (agent/networking) Kubelet resolv.conf file [$K3S_RESOLV_CONF]
+   --flannel-iface value                      (agent/networking) Override default flannel interface
+   --flannel-conf value                       (agent/networking) Override default flannel config file
+   --flannel-cni-conf value                   (agent/networking) Override default flannel cni config file
+   --vpn-auth value                           (agent/networking) (experimental) Credentials for the VPN provider. It must include the provider name and join key in the format name=<vpn-provider>,joinKey=<key>[,controlServerURL=<url>][,extraArgs=<args>] [$K3S_VPN_AUTH]
+   --vpn-auth-file value                      (agent/networking) (experimental) File containing credentials for the VPN provider. It must include the provider name and join key in the format name=<vpn-provider>,joinKey=<key>[,controlServerURL=<url>][,extraArgs=<args>] [$K3S_VPN_AUTH_FILE]
+   --kubelet-arg value                        (agent/flags) Customized flag for kubelet process
+   --kube-proxy-arg value                     (agent/flags) Customized flag for kube-proxy process
+   --protect-kernel-defaults                  (agent/node) Kernel tuning behavior. If set, error if kernel tunables are different than kubelet defaults.
+   --secrets-encryption                       Enable secret encryption at rest
+   --enable-pprof                             (experimental) Enable pprof endpoint on supervisor port
+   --rootless                                 (experimental) Run rootless
+   --prefer-bundled-bin                       (experimental) Prefer bundled userspace binaries over host binaries
+   --selinux                                  (agent/node) Enable SELinux in containerd [$K3S_SELINUX]
+   --lb-server-port value                     (agent/node) Local port for supervisor client load-balancer. If the supervisor and apiserver are not colocated an additional port 1 less than this port will also be used for the apiserver client load-balancer. (default: 6444) [$K3S_LB_SERVER_PORT]
+----

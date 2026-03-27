@@ -1,0 +1,112 @@
+= Metriken
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-09-16
+:page-revdate: {revdate}
+
+K3s bietet Metriken zur Überwachung der Gesundheit und Leistung des Clusters.
+
+Die meisten Metriken werden von einzelnen Komponenten bereitgestellt. Siehe die folgende komponentenspezifische Dokumentation für weitere Informationen:
+
+* https://coredns.io/plugins/metrics/[coredns Metriken]
+* https://etcd.io/docs/v3.5/metrics/[etcd Metriken]
+
+Zusätzliche Metriken können von anderen Komponenten bereitgestellt werden. Konsultieren Sie die Upstream-Projektdokumentation für alle oben nicht aufgeführten Komponenten.
+
+== Supervisor-Metriken
+
+Wenn K3s mit `supervisor-metrics: true` gestartet wird, werden die Metriken vom K3s-Prozess bereitgestellt und können über den `/metrics` Endpunkt auf jedem Knoten am Port `6443` abgerufen werden:
+
+[,sh]
+----
+kubectl get --server https://NODENAME:6443 --raw /metrics
+----
+
+Der K3s-Supervisor-Prozess stellt die folgenden Metriken bereit:
+
+* K3s Clusterverwaltungsmetriken
+* https://github.com/rancher/lasso/blob/main/README.md#lasso-controller[Lasso-Controller-Metriken]
+* https://github.com/kubernetes/client-go/blob/master/README.md[Kubernetes-Client- und Workqueue-Metriken]
+* https://kubernetes.io/docs/reference/instrumentation/node-metrics/[Kubernetes-Knotenmetriken]
+* https://kubernetes.io/docs/reference/instrumentation/metrics/[Kubernetes-Komponentenmetriken]
+* https://pkg.go.dev/runtime/metrics#hdr-Supported_metrics[Go-Laufzeitmetriken]
+
+Wenn das integrierte Registry von K3s aktiviert ist, stellt der K3s-Supervisor-Prozess auch die folgenden Metriken bereit:
+
+* https://spegel.dev/docs/metrics/[Spegel-Metriken]
+* https://github.com/libp2p/go-libp2p/blob/master/README.md[libp2p-Metriken]
+
+K3s führt alle Kubernetes-Komponenten im Hauptprozess von K3s aus. Da Kubernetes ein einzelnes Prometheus-Metrik-Register pro Prozess verwendet, sind Metriken für alle Komponenten über alle exponierten Metrik-Endpunkte verfügbar. Wenn Sie alle einzelnen Metrik-Endpunkte abfragen, stellen Sie möglicherweise fest, dass Sie doppelte Metriken sammeln. Es ist nur notwendig, einen einzigen K3s-Metrik-Endpunkt abzufragen, um Metriken für alle eingebetteten Kubernetes-Komponenten zu erhalten.
+
+== K3s Clusterverwaltungsmetriken
+
+=== k3s_certificate_expiration_seconds
+
+Verbleibende Lebensdauer in Sekunden des Zertifikats, gekennzeichnet nach Zertifikatssubjekt und Verwendungen.
+
+* Typ: Messwert
+* Etiketten: `*subject*`, `*usage*`
+
+=== k3s_loadbalancer_server_connections
+
+Anzahl der aktuellen Verbindungen zum Lastenausgleichsserver, gekennzeichnet nach Lastenausgleichsname und Serveradresse.
+
+* Typ: Messwert
+* Etiketten: `*name*`, `*server*`
+
+=== k3s_loadbalancer_server_health
+
+Aktueller Gesundheitszustand der Backend-Server des Lastenausgleichs, gekennzeichnet nach Lastenausgleichsname und Serveradresse.
+
+Der Status ist ein Enum von 0=UNGÜLTIG, 1=FEHLGESCHLAGEN, 2=STANDBY, 3=UNGEPRÜFT, 4=WIEDERHERSTELLUNG, 5=GESUND, 6=BEVORZUGT, 7=AKTIV.
+
+* Typ: Messwert
+* Etiketten: `*name*`, `*server*`
+
+=== k3s_loadbalancer_dial_duration_seconds
+
+Zeit in Sekunden, die benötigt wird, um eine Verbindung zu einem Backend-Server herzustellen, gekennzeichnet nach Lastenausgleichsname und Erfolgs-/Fehlerstatus.
+
+* Typ: Histogramm
+* Etiketten: `*name*`, `*status*`
+
+=== k3s_etcd_snapshot_save_duration_seconds
+
+Gesamte Zeit in Sekunden, die benötigt wird, um den etcd-Snapshot-Prozess abzuschließen, gekennzeichnet nach Erfolgs-/Fehlerstatus.
+
+* Typ: Histogramm
+* Etiketten: `*status*`
+
+=== k3s_etcd_snapshot_save_local_duration_seconds
+
+Gesamte Zeit in Sekunden, die benötigt wird, um eine lokale Snapshot-Datei zu speichern, gekennzeichnet nach Erfolgs-/Fehlerstatus.
+
+* Typ: Histogramm
+* Etiketten: `*status*`
+
+=== k3s_etcd_snapshot_save_s3_duration_seconds
+
+Gesamte Zeit in Sekunden, die benötigt wird, um eine Snapshot-Datei in S3 hochzuladen, gekennzeichnet nach Erfolgs-/Fehlerstatus.
+
+* Typ: Histogramm
+* Etiketten: `*status*`
+
+=== k3s_etcd_snapshot_reconcile_duration_seconds
+
+Gesamte Zeit in Sekunden, die benötigt wird, um die Liste der etcd-Snapshots zu synchronisieren, gekennzeichnet nach Erfolgs-/Fehlerstatus.
+
+* Typ: Histogramm
+* Etiketten: `*status*`
+
+=== k3s_etcd_snapshot_reconcile_local_duration_seconds
+
+Gesamte Zeit in Sekunden, die benötigt wird, um lokale Snapshot-Dateien aufzulisten, gekennzeichnet nach Erfolgs-/Fehler.
+
+* Typ: Histogramm
+* Etiketten: `*status*`
+
+=== k3s_etcd_snapshot_reconcile_s3_duration_seconds
+
+Gesamte Zeit in Sekunden, die benötigt wird, um S3-Snapshot-Dateien aufzulisten, gekennzeichnet nach Erfolgs-/Fehlerstatus.
+
+* Typ: Histogramm
+* Etiketten: `*status*`

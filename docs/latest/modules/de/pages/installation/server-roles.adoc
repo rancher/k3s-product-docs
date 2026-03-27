@@ -1,0 +1,64 @@
+= Verwalten von Serverrollen
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-03-03
+:page-revdate: {revdate}
+
+Das Starten des K3s-Servers mit `--cluster-init` führt alle Steuerungskomponenten aus, einschließlich des Apiservers, des Controller-Managers, des Schedulers und etcd. Es ist möglich, bestimmte Komponenten zu deaktivieren, um die Steuerungs- und etcd-Rollen auf separate Knoten zu verteilen.
+
+[IMPORTANT]
+====
+Dieses Dokument ist nur relevant, wenn embedded etcd verwendet wird. Wenn kein embedded etcd verwendet wird, haben alle Server die Steuerungsrolle und führen Steuerungskomponenten aus.
+====
+
+
+== Dedizierte `etcd` Knoten
+
+Um einen Server mit nur der `etcd` Rolle zu erstellen, starten Sie K3s mit allen deaktivierten Steuerungskomponenten:
+
+----
+curl -fL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server --cluster-init --disable-apiserver --disable-controller-manager --disable-scheduler
+----
+Dabei ist `INSTALL_K3S_ARTIFACT_URL` die https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL]
+
+Dieser erste Knoten startet etcd und wartet darauf, dass sich zusätzliche `etcd` und/oder `control-plane` Knoten anschließen. Der Cluster ist nicht nutzbar, bis ein zusätzlicher Server mit den aktivierten `control-plane` Komponenten dem Cluster beigetreten ist.
+
+== Dedizierte `control-plane` Knoten
+
+[NOTE]
+====
+Ein dedizierter `control-plane` Knoten kann nicht der erste Server im Cluster sein; es muss bereits ein Knoten mit der `etcd` Rolle vorhanden sein, bevor dedizierte `control-plane` Knoten beitreten.
+====
+
+
+Um einen Server mit nur der `control-plane` Rolle zu erstellen, starten Sie k3s mit deaktiviertem etcd:
+
+[,bash]
+----
+curl -fL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server --token <token> --disable-etcd --server https://<etcd-only-node>:6443
+----
+
+Nach der Erstellung dedizierter Serverknoten werden die ausgewählten Rollen in `kubectl get node` sichtbar sein:
+
+[,bash]
+----
+$ kubectl get nodes
+NAME           STATUS   ROLES                       AGE     VERSION
+k3s-server-1   Ready    etcd                        5h39m   v1.20.4+k3s1
+k3s-server-2   Ready    control-plane,master        5h39m   v1.20.4+k3s1
+----
+
+== Rollen zu bestehenden Servern hinzufügen
+
+Rollen können bestehenden dedizierten Knoten hinzugefügt werden, indem K3s mit entfernten Deaktivierungsflags neu gestartet wird. Wenn Sie beispielsweise die `control-plane` Rolle zu einem dedizierten `etcd` Knoten hinzufügen möchten, können Sie die `--disable-apiserver --disable-controller-manager --disable-scheduler` Flags aus der systemd-Unit oder der Konfigurationsdatei entfernen und den Dienst neu starten.
+
+== Syntax der Konfigurationsdatei
+
+Wie bei allen anderen Kommandozeilenoptionen können Sie die xref:installation/configuration.adoc#_configuration_file[Konfigurationsdatei] verwenden, um Komponenten zu deaktivieren, anstatt die Optionen als Kommandozeilenoptionen zu übergeben. Um beispielsweise einen dedizierten `etcd` Knoten zu erstellen, können Sie die folgenden Werte in `/etc/rancher/k3s/config.yaml` einfügen:
+
+[,yaml]
+----
+cluster-init: true
+disable-apiserver: true
+disable-controller-manager: true
+disable-scheduler: true
+----

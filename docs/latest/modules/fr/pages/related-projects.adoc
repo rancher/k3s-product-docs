@@ -1,0 +1,26 @@
+= Projets connexes
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-03-31
+:page-revdate: {revdate}
+
+Les projets mettant en œuvre la distribution K3s sont des ajouts bienvenus pour aider à élargir la communauté. Ces projets aident à :
+
+* Explorer les capacités et les applications potentielles de K3s.
+* Étendre la fonctionnalité de K3s sur différentes plateformes et environnements.
+* Simplifier le processus de création de grands clusters K3s à haute disponibilité (HA).
+
+== k3s-ansible
+
+Pour les utilisateurs cherchant à démarrer un cluster K3s multi-nœuds et familiers avec Ansible, jetez un œil au dépôt https://github.com/k3s-io/k3s-ansible[k3s-io/k3s-ansible]. Cet ensemble de playbooks Ansible fournit un moyen pratique d'installer K3s sur vos nœuds, vous permettant de vous concentrer sur la configuration de votre cluster plutôt que sur le processus d'installation.
+
+== k3sup
+
+Un autre projet qui simplifie le processus de création d'un cluster K3s est https://github.com/alexellis/k3sup[k3sup]. Ce projet, écrit en golang, nécessite uniquement un accès ssh à vos nœuds. Il fournit également un moyen pratique de déployer K3s avec des magasins de données externes, pas seulement l'etcd intégré.
+
+== autok3s
+
+Un autre outil de provisionnement, https://github.com/cnrancher/autok3s[autok3s], fournit une GUI pour le provisionnement de clusters K3s sur une gamme de fournisseurs de cloud, de machines virtuelles et de machines locales. Cet outil est utile pour les utilisateurs qui préfèrent une GUI pour le provisionnement de clusters K3s.
+
+== hetzner-k3s
+
+Pour les utilisateurs qui déploient sur Hetzner Cloud, jetez un œil à link:https://github.com/vitobotta/hetzner-k3s[hetzner-k3s]. Cet outil CLI, écrit en Crystal, gère les étapes supplémentaires nécessaires à la création d'un cluster K3s sur Hetzner Cloud.

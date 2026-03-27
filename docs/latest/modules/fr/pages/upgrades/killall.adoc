@@ -1,0 +1,90 @@
+= Arrêt de K3s
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-26
+:page-revdate: {revdate}
+
+Pour permettre une haute disponibilité lors des mises à niveau, les conteneurs K3s continuent de fonctionner lorsque le service K3s est arrêté.
+
+== K3s Service
+
+L'arrêt et le redémarrage de K3s sont pris en charge par le script d'installation pour systemd et OpenRC.
+
+[tabs]
+======
+systemd::
++
+--
+Pour interrompre les serveurs :
+
+[,sh]
+----
+sudo systemctl stop k3s
+----
+
+Pour redémarrer les serveurs :
+
+[,sh]
+----
+sudo systemctl start k3s
+----
+
+Pour interrompre les agents :
+
+[,sh]
+----
+sudo systemctl stop k3s-agent
+----
+
+Pour redémarrer les agents :
+
+[,sh]
+----
+sudo systemctl start k3s-agent
+----
+--
+
+OpenRC::
++
+--
+Pour interrompre les serveurs :
+
+[,sh]
+----
+sudo rc-service k3s stop
+----
+
+Pour redémarrer les serveurs :
+
+[,sh]
+----
+sudo rc-service k3s restart
+----
+
+Pour interrompre les agents :
+
+[,sh]
+----
+sudo rc-service k3s-agent stop
+----
+
+Pour redémarrer les agents :
+
+[,sh]
+----
+sudo rc-service k3s-agent restart
+----
+--
+======
+
+== Script killall
+
+Pour interrompre tous les conteneurs K3s et réinitialiser l'état de containerd, le `k3s-killall.sh` script peut être utilisé.
+
+Le script killall nettoie les conteneurs, les répertoires K3s et les composants réseau tout en supprimant également la chaîne iptables avec toutes les règles associées. Les données du cluster ne seront pas supprimées.
+
+Pour exécuter le script killall depuis un nœud serveur, exécutez :
+
+[,bash]
+----
+/usr/local/bin/k3s-killall.sh
+----

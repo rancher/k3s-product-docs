@@ -1,0 +1,118 @@
+= Base de datos externa de alta disponibilidad
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-03-03
+:page-revdate: {revdate}
+
+Esta sección describe cómo instalar un clúster de alta disponibilidad {k3s-product-name} con una base de datos externa.
+
+[NOTE]
+====
+Para desplegar rápidamente grandes clústeres de HA, consulta xref:related-projects.adoc[Proyectos Relacionados]
+====
+
+
+Los clústeres de un solo servidor pueden satisfacer una variedad de casos de uso, pero para entornos donde el tiempo de funcionamiento del plano de control de Kubernetes es crítico, puedes ejecutar K3s en una configuración de HA. Un clúster de K3s en HA se compone de:
+
+* Dos o más *nodos de servidor* que servirán la API de Kubernetes y ejecutarán otros servicios del plano de control
+* Un *almacenamiento externo* (en oposición al almacenamiento SQLite embebido utilizado en configuraciones de un solo servidor)
+* Opcional: Cero o más *nodos agentes* que están designados para ejecutar tus aplicaciones y servicios
+* Opcional: Una *dirección de registro fija* para que los nodos agentes se registren en el clúster
+
+Para más detalles sobre cómo estos componentes trabajan juntos, consulta la xref:architecture.adoc#_high_availability_k3s[sección de arquitectura.]
+
+== Esquema de Instalación
+
+Configurar un clúster de HA requiere los siguientes pasos:
+
+=== 1. Crear un Almacenamiento Externo
+
+Primero necesitarás crear un almacenamiento externo para el clúster. Consulta la documentación de xref:datastore/datastore.adoc[Opciones de Almacenamiento del Clúster] para más detalles.
+
+=== 2. Lanzar Nodos de Servidor
+
+{k3s-product-name} requiere dos o más nodos de servidor para esta configuración de HA. Consulta la guía de xref:installation/requirements.adoc[Requisitos] para los requisitos mínimos de la máquina.
+
+Al ejecutar el comando `k3s server` en estos nodos, debes establecer el parámetro `datastore-endpoint` para que K3s sepa cómo conectarse al almacenamiento externo. El parámetro `token` también se puede utilizar para establecer un token determinista al añadir nodos. Cuando está vacío, este token se generará automáticamente para su uso posterior.
+
+Por ejemplo, se podría utilizar un comando como el siguiente para instalar el servidor K3s con una base de datos MySQL como el almacenamiento externo y xref:cli/server.adoc#_cluster_options[establecer un token]:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server \
+  --token=SECRET \
+  --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name" \
+  --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
+----
+
+Donde `INSTALL_K3S_ARTIFACT_URL` es la https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[URL de Prime Artifacts]
+
+El formato del punto final del almacenamiento varía según el tipo de base de datos. Para más detalles, consulta la sección sobre xref:datastore/datastore.adoc#_datastore_endpoint_format_and_functionality[formatos de puntos finales del almacenamiento.]
+
+Para configurar certificados TLS al lanzar nodos de servidor, consulta la xref:datastore/datastore.adoc#_external_datastore_configuration_parameters[guía de configuración del almacenamiento.]
+
+[NOTE]
+====
+Las mismas opciones de instalación disponibles para instalaciones de un solo servidor también están disponibles para instalaciones de alta disponibilidad. Para más detalles, consulta la documentación de xref:installation/configuration.adoc[Opciones de Configuración].
+====
+
+
+Por defecto, los nodos de servidor serán programables y, por lo tanto, tus cargas de trabajo pueden lanzarse en ellos. Si deseas tener un plano de control dedicado donde no se ejecuten cargas de trabajo de usuarios, puedes utilizar taints. El parámetro `node-taint` te permitirá configurar nodos con taints, por ejemplo `--node-taint CriticalAddonsOnly=true:NoExecute`.
+
+Una vez que hayas lanzado el proceso `k3s server` en todos los nodos de servidor, asegúrate de que el clúster se haya iniciado correctamente con `k3s kubectl get nodes`. Deberías ver tus nodos de servidor en estado Listos.
+
+=== 3. Opcional: Unir Nodos de Servidor Adicionales
+
+El mismo comando de ejemplo en el Paso 2 se puede utilizar para unir nodos de servidor adicionales, donde se necesita utilizar el token del primer nodo.
+
+Si el primer nodo de servidor se inició sin la bandera CLI `--token` o la variable `K3S_TOKEN`, el valor del token se puede recuperar de cualquier servidor que ya esté unido al clúster:
+
+[,bash]
+----
+cat /var/lib/rancher/k3s/server/token
+----
+
+Los nodos de servidor adicionales se pueden añadir xref:cli/server.adoc#_cluster_options[utilizando el token]:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server \
+  --token=SECRET \
+  --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name"
+----
+
+Hay algunas banderas de configuración que deben ser las mismas en todos los nodos de servidor:
+
+* Banderas relacionadas con la red: `--cluster-dns`, `--cluster-domain`, `--cluster-cidr`, `--service-cidr`
+* Banderas que controlan el despliegue de ciertos componentes: `--disable-helm-controller`, `--disable-kube-proxy`, `--disable-network-policy` y cualquier componente pasado a `--disable`
+* Banderas relacionadas con características: `--secrets-encryption`
+
+[NOTE]
+====
+Asegúrate de conservar una copia de este token, ya que es necesario al restaurar desde una copia de seguridad y al añadir nodos. Anteriormente, K3s no exigía el uso de un token al utilizar almacenamiento SQL externo.
+====
+
+
+=== 4. Opcional: Configura una Dirección de Registro Fija
+
+Los nodos agentes necesitan una URL para registrarse. Esto puede ser la IP o el nombre de host de cualquier nodo servidor, pero en muchos casos estos pueden cambiar con el tiempo. Por ejemplo, si ejecutas tu clúster en una nube que soporta grupos de escalado, los nodos pueden ser creados y destruidos con el tiempo, cambiando a diferentes IPs del conjunto inicial de nodos servidores. Lo mejor sería tener un punto final estable frente a los nodos servidores que no cambie con el tiempo. Este punto final puede configurarse utilizando cualquier número de enfoques, tales como:
+
+* Un balanceador de carga de capa 4 (TCP)
+* DNS round-robin
+* Direcciones IP virtuales o elásticas
+
+Consulta xref:datastore/cluster-loadbalancer.adoc[Cluster Loadbalancer] para configuraciones de ejemplo.
+
+Este punto final también puede utilizarse para acceder a la API de Kubernetes. Así que puedes, por ejemplo, modificar tu archivo https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/[kubeconfig] para que apunte a él en lugar de a un nodo específico.
+
+Para evitar errores de certificado en tal configuración, deberías configurar el servidor con la opción `--tls-san=YOUR_IP_OR_HOSTNAME_HERE`. Esta opción añade un nombre de host o IP adicional como un Nombre Alternativo del Sujeto en el certificado TLS, y puede especificarse múltiples veces si deseas acceder tanto a través de la IP como del nombre de host.
+
+=== 5. Opcional: Unir Nodos Agentes
+
+Debido a que los nodos servidores de K3s son programables por defecto, no se requieren nodos agentes para un clúster HA de K3s. Sin embargo, puede que desees tener nodos agentes dedicados para ejecutar tus aplicaciones y servicios.
+
+Unir nodos agentes en un clúster de alta disponibilidad es lo mismo que unir nodos agentes en un clúster de un solo servidor. Solo necesitas especificar la URL a la que el agente debe registrarse (ya sea una de las IPs del servidor o una dirección de registro fija) y el token que debe utilizar.
+
+[,bash]
+----
+K3S_TOKEN=SECRET k3s agent --server https://server-or-fixed-registration-address:6443
+----

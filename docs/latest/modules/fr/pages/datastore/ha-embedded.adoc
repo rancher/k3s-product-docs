@@ -1,0 +1,77 @@
+= Haute disponibilité d’etcd embarqué
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-03-03
+:page-revdate: {revdate}
+
+[CAUTION]
+====
+L'etcd embarqué (HA) peut rencontrer des problèmes de performance sur des disques plus lents tels que les Raspberry Pis fonctionnant avec des cartes SD.
+====
+
+.Pourquoi un nombre impair de nœuds serveurs ?
+[%collapsible]
+======
+Un cluster etcd embarqué HA doit être composé d'un nombre impair de nœuds serveurs pour que etcd maintienne le quorum. Pour un cluster avec n serveurs, le quorum est (n/2)+1. Pour tout cluster de taille impaire, l'ajout d'un nœud augmentera toujours le nombre de nœuds nécessaires pour le quorum. Bien que l'ajout d'un nœud à un cluster de taille impaire semble meilleur car il y a plus de machines, la tolérance aux pannes est moins bonne car exactement le même nombre de nœuds peut échouer sans perdre le quorum, mais il y a plus de nœuds qui peuvent échouer.
+======
+
+Un cluster K3s HA avec etcd embarqué est composé de :
+
+* Trois ou plus de *nœuds serveurs* qui serviront l'API Kubernetes et exécuteront d'autres services de plan de contrôle, ainsi qu'héberger la base de données etcd embarquée.
+* Facultatives : Zéro ou plus de *nœuds agents* qui sont désignés pour exécuter vos applications et services
+* Facultatives : Une *adresse d'enregistrement fixe* pour que les nœuds agents s'enregistrent auprès du cluster
+
+[NOTE]
+====
+Pour déployer rapidement de grands clusters HA, voir xref:related-projects.adoc[Projets Connexes]
+====
+
+
+Pour commencer, lancez d'abord un nœud serveur avec le drapeau `cluster-init` pour activer le clustering et un token qui sera utilisé comme secret partagé pour rejoindre des serveurs supplémentaires au cluster.
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - server \
+    --cluster-init \
+    --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
+----
+
+Après avoir lancé le premier serveur, rejoignez les deuxième et troisième serveurs au cluster en utilisant le secret partagé :
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - server \
+    --server https://<ip or hostname of server1>:6443 \
+    --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
+----
+
+Où `INSTALL_K3S_ARTIFACT_URL` est l'https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[URL des Artéfacts Principaux]
+
+Vérifiez que les deuxième et troisième serveurs font maintenant partie du cluster :
+
+[,bash]
+----
+$ kubectl get nodes
+NAME        STATUS   ROLES                       AGE   VERSION
+server1     Ready    control-plane,etcd,master   28m   vX.Y.Z
+server2     Ready    control-plane,etcd,master   13m   vX.Y.Z
+server3     Ready    control-plane,etcd,master   10m   vX.Y.Z
+----
+
+Vous avez maintenant un plan de contrôle hautement disponible. Tous les serveurs correctement intégrés au cluster peuvent être utilisés dans l'argument `--server` pour rejoindre des nœuds serveurs et agents supplémentaires. Rejoindre des nœuds agents supplémentaires au cluster suit la même procédure que pour les serveurs :
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - agent --server https://<ip or hostname of server>:6443
+----
+
+Il existe quelques indicateurs de configuration qui doivent être identiques sur tous les nœuds serveurs :
+
+* Indicateurs liés au réseau : `--cluster-dns`, `--cluster-domain`, `--cluster-cidr`, `--service-cidr`
+* Indicateurs contrôlant le déploiement de certains composants : `--disable-helm-controller`, `--disable-kube-proxy`, `--disable-network-policy` et tout composant passé à `--disable`
+* Indicateurs liés aux fonctionnalités : `--secrets-encryption`
+
+== Clusters à nœud unique existants
+
+Si vous avez un cluster existant utilisant la base de données SQLite intégrée par défaut, vous pouvez le convertir en etcd en redémarrant simplement votre serveur K3s avec l'indicateur `--cluster-init`. Une fois cela fait, vous pourrez ajouter des instances supplémentaires comme décrit ci-dessus.
+
+Si un magasin de données etcd est trouvé sur le disque, soit parce que ce nœud a déjà été initialisé, soit parce qu'il a rejoint un cluster, les arguments du magasin de données (`--cluster-init`, `--server`, `--datastore-endpoint`, etc.) sont ignorés.

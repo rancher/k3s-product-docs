@@ -1,0 +1,303 @@
+= Configuration du registre privé
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-12-30
+:page-revdate: {revdate}
+
+Containerd peut être configuré pour se connecter à des registres privés et les utiliser pour extraire des images au besoin du kubelet.
+
+Au démarrage, K3s vérifiera si `/etc/rancher/k3s/registries.yaml` existe. Si c'est le cas, la configuration du registre contenue dans ce fichier est utilisée lors de la génération de la configuration de containerd.
+
+* Si vous souhaitez utiliser un registre privé comme miroir d'un registre public tel que docker.io, vous devrez configurer `registries.yaml` sur chaque nœud que vous souhaitez utiliser comme miroir.
+* Si votre registre privé nécessite une authentification, utilise des certificats TLS personnalisés, ou n'utilise pas TLS, vous devrez configurer `registries.yaml` sur chaque nœud qui extraira des images de votre registre.
+
+Notez que les nœuds serveurs sont planifiables par défaut. Si vous n'avez pas tainté les nœuds serveurs et que vous y exécutez des charges de travail, veuillez également vous assurer de créer le fichier `registries.yaml` sur chaque serveur.
+
+[#_default_endpoint_fallback]
+== Repli par défaut du point de terminaison :
+
+Containerd a un « point de terminaison par défaut » implicite pour tous les registres.
+Le point de terminaison par défaut est toujours essayé en dernier recours, même s'il existe d'autres points de terminaison listés pour ce registre dans `registries.yaml`.
+Les réécritures ne sont pas appliquées lors de l'extraction depuis le point de terminaison par défaut.
+Par exemple, lors de l'extraction de `registry.example.com:5000/rancher/mirrored-pause:3.6`, containerd utilisera le point de terminaison par défaut `https://registry.example.com:5000/v2`.
+
+* Le point de terminaison par défaut pour `docker.io` est `\https://index.docker.io/v2`.
+* Le point de terminaison par défaut pour tous les autres registres est `\https://<REGISTRY>/v2`, où `<REGISTRY>` désigne le nom d'hôte du registre et le port optionnel.
+
+Pour être reconnu comme un registre, le premier composant du nom de l'image doit contenir au moins un point ou deux-points.
+Pour des raisons historiques, les images sans registre spécifié dans leur nom sont implicitement identifiées comme provenant de `docker.io`.
+
+[IMPORTANT]
+.Portail de version
+====
+L'option `--disable-default-registry-endpoint` est disponible à partir des versions de janvier 2024 : v1.26.13+k3s1, v1.27.10+k3s1, v1.28.6+k3s1, v1.29.1+k3s1
+====
+
+
+Les nœuds peuvent être démarrés avec l'option `--disable-default-registry-endpoint`.
+Lorsque cela est activé, containerd ne reviendra pas au point de terminaison du registre par défaut et n'extraira que des endpoints de miroir configurés, ainsi que du registre distribué s'il est activé.
+
+Cela peut être souhaitable si votre cluster se trouve dans un véritable environnement isolé où le registre en amont n'est pas disponible, ou si vous souhaitez que seuls certains nœuds tirent du registre en amont.
+
+Désactiver le point de terminaison du registre par défaut s'applique uniquement aux registres configurés via `registries.yaml`.
+Si le registre n'est pas explicitement configuré via une entrée de miroir dans `registries.yaml`, le comportement de repli par défaut sera toujours utilisé.
+
+== Fichier de configuration des registres
+
+Le fichier se compose de deux clés de premier niveau, avec des sous-clés pour chaque registre :
+
+[,yaml]
+----
+mirrors:
+  <REGISTRY>:
+    endpoint:
+      - https://<REGISTRY>/v2
+configs:
+  <REGISTRY>:
+    auth:
+      username: <BASIC AUTH USERNAME>
+      password: <BASIC AUTH PASSWORD>
+      token: <BEARER TOKEN>
+    tls:
+      ca_file: <PATH TO SERVER CA>
+      cert_file: <PATH TO CLIENT CERT>
+      key_file: <PATH TO CLIENT KEY>
+      insecure_skip_verify: <SKIP TLS CERT VERIFICATION BOOLEAN>
+----
+
+=== Miroirs
+
+La section des miroirs définit les noms et les points de terminaison des registres, par exemple :
+
+----
+mirrors:
+  registry.example.com:
+    endpoint:
+      - "https://registry.example.com:5000"
+----
+
+Chaque miroir doit avoir un nom et un ensemble de points de terminaison. Lors du tirage d'une image depuis un registre, containerd essaiera ces URL de points de terminaison, plus le point de terminaison par défaut, et utilisera le premier qui fonctionne.
+
+==== Redirections
+
+Si le registre privé est utilisé comme miroir pour un autre registre, par exemple lors de la configuration d'un https://docs.docker.com/registry/recipes/mirror/[cache d'extraction], les extractions d'images sont redirigées de manière transparente vers les points de terminaison listés. Le nom du registre d'origine est transmis au point de terminaison du miroir via le paramètre de requête `ns`.
+
+Par exemple, si vous avez un miroir configuré pour `docker.io` :
+
+[,yaml]
+----
+mirrors:
+  docker.io:
+    endpoint:
+      - "https://registry.example.com:5000"
+----
+
+Alors, extraire `docker.io/rancher/mirrored-pause:3.6` extraira de manière transparente l'image en tant que `registry.example.com:5000/rancher/mirrored-pause:3.6`.
+
+==== Réécritures
+
+Chaque miroir peut avoir un ensemble de réécritures, qui utilisent des expressions régulières pour correspondre et transformer le nom d'une image lorsqu'elle est tirée d'un miroir.
+Ceci est utile si la structure de l'organisation/projet dans le registre privé est différente de celle du registre qu'il reflète.
+Les réécritures correspondent et transforment uniquement le nom de l'image, PAS la balise.
+
+Par exemple, la configuration suivante extrairait de manière transparente l'image `docker.io/rancher/mirrored-pause:3.6` sous le nom `registry.example.com:5000/mirrorproject/rancher-images/mirrored-pause:3.6` :
+
+[,yaml]
+----
+mirrors:
+  docker.io:
+    endpoint:
+      - "https://registry.example.com:5000"
+    rewrite:
+      "^rancher/(.*)": "mirrorproject/rancher-images/$1"
+----
+
+[NOTE]
+.Portail de version
+====
+Les réécritures ne sont plus appliquées à l'xref:#_default_endpoint_fallback[Point de terminaison par défaut] depuis les versions de janvier 2024 : v1.26.13+k3s1, v1.27.10+k3s1, v1.28.6+k3s1, v1.29.1+k3s1.
+Avant ces versions, les réécritures étaient également appliquées au point de terminaison par défaut, ce qui empêchait K3s d'extraire depuis le registre en amont si l'image ne pouvait pas être extraite d'un point de terminaison miroir, et que l'image n'était pas disponible sous le nom modifié dans le registre en amont.
+====
+
+Si vous souhaitez appliquer des réécritures lors de l'extraction directement depuis un registre - lorsqu'il n'est pas utilisé comme miroir pour un autre registre en amont - vous devez fournir un point de terminaison miroir qui ne correspond pas au point de terminaison par défaut.
+Les points de terminaison miroir dans `registries.yaml` qui correspondent au point de terminaison par défaut sont ignorés ; le point de terminaison par défaut est toujours essayé en dernier sans réécritures, si le repli n'a pas été désactivé.
+
+Par exemple, si vous avez un registre à `https://registry.example.com/`, et que vous souhaitez appliquer des réécritures lors de l'extraction explicite de `registry.example.com/rancher/mirrored-pause:3.6`, vous pouvez ajouter un point de terminaison miroir avec le port indiqué.
+Parce que le point de terminaison miroir ne correspond pas au point de terminaison par défaut - **`"https://registry.example.com:443/v2" != "https://registry.example.com/v2"`** - le point de terminaison est accepté comme un miroir et les réécritures sont appliquées, bien qu'il soit effectivement le même que le point de terminaison par défaut.
+
+[,yaml]
+----
+mirrors:
+ registry.example.com
+   endpoint:
+     - "https://registry.example.com:443"
+   rewrite:
+     "^rancher/(.*)": "mirrorproject/rancher-images/$1"
+----
+
+Notez que lors de l'utilisation de miroirs et de réécritures, les images seront toujours stockées sous le nom d'origine.
+Par exemple, `crictl image ls` affichera `docker.io/rancher/mirrored-pause:3.6` comme disponible sur le nœud, même si l'image a été extraite d'un miroir avec un nom différent.
+
+=== Configurations
+
+La section `configs` définit la configuration TLS et des identifiants pour chaque miroir. Pour chaque miroir, vous pouvez définir `auth` et/ou `tls`.
+
+La partie `tls` se compose de :
+
+|===
+| Directive | Description
+
+| `cert_file`
+| Le chemin du certificat client qui sera utilisé pour s'authentifier auprès du registre
+
+| `key_file`
+| Le chemin de la clé client qui sera utilisé pour s'authentifier auprès du registre
+
+| `ca_file`
+| Définit le chemin du certificat CA à utiliser pour vérifier le fichier de certificat du serveur du registre
+
+| `insecure_skip_verify`
+| Booléen qui définit si la vérification TLS doit être ignorée pour le registre
+|===
+
+La partie `auth` se compose soit d'un nom d'utilisateur/mot de passe, soit d'un jeton d'authentification :
+
+|===
+| Directive | Description
+
+| `username`
+| nom d'utilisateur de l'authentification de base du registre privé
+
+| `password`
+| mot de passe utilisateur du registre privé d'authentification de base
+
+| `auth`
+| jeton d'authentification du registre privé d'authentification de base
+|===
+
+Voici des exemples de base d'utilisation des registres privés dans différents modes :
+
+=== Prise en charge des caractères génériques
+
+[IMPORTANT]
+.Portail de version
+====
+La prise en charge des caractères génériques est disponible à partir des versions de mars 2024 : v1.26.15+k3s1, v1.27.12+k3s1, v1.28.8+k3s1, v1.29.3+k3s1
+====
+
+
+L'entrée de caractère générique `"*"` peut être utilisée dans les sections `mirrors` et `configs` pour fournir une configuration par défaut pour tous les registres.
+La configuration par défaut ne sera utilisée que s'il n'y a pas d'entrée spécifique pour ce registre. Notez que l'astérisque DOIT être entre guillemets.
+
+Dans l'exemple suivant, un miroir de registre local sera utilisé pour tous les registres. La vérification TLS sera désactivée pour tous les registres, sauf `docker.io`.
+
+[,yaml]
+----
+mirrors:
+  "*":
+    endpoint:
+      - "https://registry.example.com:5000"
+configs:
+  "docker.io":
+  "*":
+    tls:
+      insecure_skip_verify: true
+----
+
+=== Avec TLS
+
+Voici des exemples montrant comment vous pouvez configurer `/etc/rancher/k3s/registries.yaml` sur chaque nœud lors de l'utilisation de TLS.
+
+[tabs]
+======
+Avec authentification::
++
+[,yaml]
+----
+mirrors:
+  docker.io:
+    endpoint:
+      - "https://registry.example.com:5000"
+configs:
+  "registry.example.com:5000":
+    auth:
+      username: xxxxxx # this is the registry username
+      password: xxxxxx # this is the registry password
+    tls:
+      cert_file: # path to the cert file used in the registry
+      key_file:  # path to the key file used in the registry
+      ca_file:   # path to the ca file used in the registry
+----
+
+Sans authentification::
++
+[,yaml]
+----
+mirrors:
+  docker.io:
+    endpoint:
+      - "https://registry.example.com:5000"
+configs:
+  "registry.example.com:5000":
+    tls:
+      cert_file: # path to the cert file used in the registry
+      key_file:  # path to the key file used in the registry
+      ca_file:   # path to the ca file used in the registry
+----
+======
+
+=== Sans TLS
+
+Voici des exemples montrant comment configurer `/etc/rancher/k3s/registries.yaml` sur chaque nœud lorsque TLS n'est pas utilisé (_not_).
+
+[tabs]
+======
+Avec authentification::
++
+[,yaml]
+----
+mirrors:
+  docker.io:
+    endpoint:
+      - "http://registry.example.com:5000"
+configs:
+  "registry.example.com:5000":
+    auth:
+      username: xxxxxx # this is the registry username
+      password: xxxxxx # this is the registry password
+----
+
+Sans authentification::
++
+[,yaml]
+----
+mirrors:
+  docker.io:
+    endpoint:
+      - "http://registry.example.com:5000"
+----
+======
+
+____
+En cas d'absence de communication TLS, vous devez spécifier `http://` pour les points de terminaison, sinon la valeur par défaut sera https.
+____
+
+Pour que les modifications du registre prennent effet, vous devez redémarrer K3s sur chaque nœud.
+
+== Dépannage des tirages d'images
+
+Lorsque Kubernetes rencontre des problèmes pour tirer une image, l'erreur affichée par le kubelet peut ne refléter que l'erreur terminale renvoyée par la tentative de tirage effectuée contre le point de terminaison par défaut, donnant l'impression que les points de terminaison configurés ne sont pas utilisés.
+
+Vérifiez le journal containerd sur le nœud à `/var/lib/rancher/k3s/agent/containerd/containerd.log` pour des informations détaillées sur la cause profonde de l'échec. Notez que vous devez consulter les journaux sur le nœud où le pod est programmé. Vous pouvez vérifier sur quel nœud votre pod est programmé en exécutant `kubectl get pod -o wide -n NAMESPACE POD` et en consultant la colonne NODE.
+
+== Ajout d'images au registre privé
+
+La réplication des images vers un registre privé nécessite un hôte avec Docker ou d'autres outils tiers capables de transférer des images. +
+Les étapes ci-dessous supposent que vous disposez d'un hôte avec dockerd et les outils CLI de docker, ainsi que d'un accès à docker.io et à votre registre privé.
+
+. Obtenez le fichier `k3s-images.txt` depuis GitHub pour la version avec laquelle vous travaillez.
+. Tirez chacune des images K3s répertoriées dans le fichier k3s-images.txt depuis docker.io. +
+Exemple : `docker pull docker.io/rancher/mirrored-pause:3.6`
+. Retaguez les images vers le registre privé. +
+Exemple : `docker tag docker.io/rancher/mirrored-pause:3.6 registry.example.com:5000/rancher/mirrored-pause:3.6`
+. Poussez les images vers le registre privé. +
+Exemple : `docker push registry.example.com:5000/rancher/mirrored-pause:3.6`

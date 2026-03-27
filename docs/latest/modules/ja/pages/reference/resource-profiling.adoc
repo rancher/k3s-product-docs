@@ -3,47 +3,47 @@
 :revdate: 2025-01-06
 :page-revdate: {revdate}
 
-このセクションでは、K3sの最小リソース要件を決定するためのテスト結果を記録します。
+このセクションでは、K3sの最小リソース要件を決定するためのテスト結果を示します。
 
-== Minimum Resource Requirements for K3s
+== K3sの最小リソース要件
 
-結果は以下の通りです：
+結果は以下のように要約されます：
 
 |===
-| コンポーネント | プロセッサ | 最小CPU | Kine/SQLite使用時の最小RAM | 組み込みetcd使用時の最小RAM
+| コンポーネント | プロセッサ | 最小CPU | Kine/SQLiteを使用した最小RAM | 組み込みetcdを使用した最小RAM
 
 | ワークロードを持つK3sサーバー
-| Intel 8375C CPU, 2.90 GHz
+| Intel 8375C CPU、2.90 GHz
 | コアの6%
 | 1596 M
 | 1606 M
 
 | 単一エージェントを持つK3sクラスター
-| Intel 8375C CPU, 2.90 GHz
+| Intel 8375C CPU、2.90 GHz
 | コアの5%
 | 1428 M
 | 1450 M
 
 | K3sエージェント
-| Intel 8375C CPU, 2.90 GHz
+| Intel 8375C CPU、2.90 GHz
 | コアの3%
 | 275 M
 | 275 M
 
 | ワークロードを持つK3sサーバー
-| Pi4B BCM2711, 1.50 GHz
+| Pi4B BCM2711、1.50 GHz
 | コアの30%
 | 1588 M
 | 1613 M
 
 | 単一エージェントを持つK3sクラスター
-| Pi4B BCM2711, 1.50 GHz
+| Pi4B BCM2711、1.50 GHz
 | コアの25%
 | 1215 M
 | 1413 M
 
 | K3sエージェント
-| Pi4B BCM2711, 1.50 GHz
+| Pi4B BCM2711、1.50 GHz
 | コアの10%
 | 268 M
 | 268 M
@@ -51,62 +51,62 @@
 
 === リソーステストの範囲
 
-リソーステストは以下の問題文に対処することを目的としています：
+リソーステストは以下の問題点に対処することを目的としていました：
 
-* 単一ノードクラスターで、実際のワークロードがクラスターにデプロイされることを前提に、K3sスタックサーバースタック全体を実行するために確保すべき正当な最小CPU、メモリ、およびIOPsを決定します。
-* エージェント（ワーカー）ノードで、KubernetesおよびK3sコントロールプレーンコンポーネント（kubeletおよびk3sエージェント）のために確保すべき正当な最小CPU、メモリ、およびIOPsを決定します。
+* 単一ノードクラスターで、実際のワークロードがクラスターにデプロイされることを前提に、K3sスタックサーバー全体を実行するために確保すべきCPU、メモリ、IOPSの正当な最小量を決定します。
+* エージェント（ワーカー）ノードで、KubernetesおよびK3sコントロールプレーンコンポーネント（kubeletおよびk3sエージェント）に確保すべきCPU、メモリ、IOPSの正当な最小量を決定します。
 
 === ベースライン測定に含まれるコンポーネント
 
-テストされたコンポーネントは以下の通りです：
+テストされたコンポーネントは次のとおりです：
 
-* すべてのパッケージコンポーネントが有効なK3s v1.26.5
-* Prometheus + Grafanaモニタリングスタック
-* https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[KubernetesのNginxデプロイメント例]
+* すべてのパッケージ済みコンポーネントが有効なK3s v1.26.5
+* Prometheus + Grafana監視スタック
+* https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[Kubernetesの例 Nginxデプロイメント]
 
-これらは、K3sパッケージコンポーネント（Traefik Ingress、Klipper lb、local-path storage）のみを使用し、標準のモニタリングスタック（PrometheusとGrafana）およびGuestbook例アプリを実行する安定したシステムのベースライン数値です。
+これらは、標準の監視スタック（PrometheusおよびGrafana）とGuestbookのサンプルアプリを実行するK3sパッケージ済みコンポーネント（Traefik Ingress、Klipper lb、local-pathストレージ）のみを使用した安定したシステムのベースライン数値です。
 
-IOPSを含むリソース数値はKubernetesデータストアおよびコントロールプレーンのみのものであり、システムレベルの管理エージェントやログ、コンテナイメージ管理、またはワークロード固有の要件のオーバーヘッドは含まれていません。
+リソース数値（IOPSを含む）はKubernetesデータストアおよびコントロールプレーンのみに関するものであり、システムレベルの管理エージェントやログ記録、コンテナイメージ管理、または特定のワークロード要件のオーバーヘッドは含まれていません。
 
-=== 方法論
+=== 手法
 
-Prometheus v2.43.0のスタンドアロンインスタンスを使用して、``prometheus-node-exporter``をapt経由でインストールし、ホストのCPU、メモリ、およびディスクIO統計を収集しました。
+Prometheus v2.43.0のスタンドアロンインスタンスを使用して、apt経由でインストールされた`prometheus-node-exporter`を使用してホストのCPU、メモリ、およびディスクIO統計を収集しました。
 
-``systemd-cgtop``を使用して、systemd cgroupレベルのCPUおよびメモリ使用量をスポットチェックしました。``system.slice/k3s.service``はK3sおよびcontainerdのリソース使用量を追跡し、個々のポッドは``kubepods``階層下にあります。
+`systemd-cgtop`を使用して、systemd cgroupレベルのCPUおよびメモリ使用率をスポットチェックしました。`system.slice/k3s.service`は、K3sとcontainerdの両方のリソース使用状況を追跡し、個々のポッドは`kubepods`階層に属しています。
 
-追加の詳細なK3sメモリ使用量データは、サーバーおよびエージェントプロセスのために統合されたメトリクスサーバーを使用して``kubectl top node``から収集しました。
+追加の詳細なK3sメモリ使用状況データは、サーバーおよびエージェントプロセス用の統合メトリクスサーバーを使用して`kubectl top node`から収集されました。
 
-使用量数値は、記述されたワークロードを実行しているノードの定常状態操作からの95パーセンタイルの読み取り値に基づいています。
+使用状況の数値は、記載されたワークロードを実行しているノードの定常状態運転における95パーセンタイルの読み取り値に基づいています。
 
-=== 環境
+=== 使用環境
 
 |===
-| アーキテクチャ | OS | システム | CPU | RAM | ディスク
+| アーチ | OS | システム | CPU | RAM | ディスク
 
 | x86_64
 | Ubuntu 22.04
 | AWS c6id.xlarge
-| Intel Xeon Platinum 8375C CPU, 4 Core 2.90 GHz
-| 8 GB
+| Intel Xeon Platinum 8375C CPU、4コア 2.90 GHz
+| 8GB
 | NVME SSD
 
 | aarch64
 | Raspberry Pi OS 11
 | Raspberry Pi 4 Model B
-| BCM2711, 4 Core 1.50 GHz
-| 8 GB
+| BCM2711、4コア 1.50 GHz
+| 8GB
 | UHS-III SDXC
 |===
 
 === ベースラインリソース要件
 
-このセクションでは、基本的なK3s操作のための最小リソース要件を決定するためのテスト結果を記録します。
+このセクションでは、基本的なK3s運用のための最小リソース要件を決定するためのテスト結果を記録します。
 
 ==== ワークロードを持つK3sサーバー
 
-これは、K3sサーバーがlink:https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[シンプルなワークロード]とリソースを共有する単一ノードクラスターの要件です。
+これは、K3sサーバーがhttps://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[シンプルなワークロード]とリソースを共有する単一ノードクラスターの要件です。
 
-CPU要件は以下の通りです：
+CPU要件は次のとおりです：
 
 |===
 | システム | CPUコア使用率
@@ -118,10 +118,10 @@ CPU要件は以下の通りです：
 | コアの30%
 |===
 
-メモリ要件は以下の通りです：
+メモリ要件は次のとおりです：
 
 |===
-| テストされたデータストア | システム | メモリ
+| テスト済みデータストア | システム | メモリ
 
 | Kine/SQLite
 | Intel 8375C
@@ -140,10 +140,10 @@ CPU要件は以下の通りです：
 | 1613 M
 |===
 
-ディスク要件は以下の通りです：
+ディスク要件は次のとおりです：
 
 |===
-| テストされたデータストア | IOPS | KiB/秒 | レイテンシ
+| テスト済みデータストア | IOPS | KiB/秒 | 遅延
 
 | Kine/SQLite
 | 10
@@ -158,11 +158,11 @@ CPU要件は以下の通りです：
 
 ==== 単一エージェントを持つK3sクラスター
 
-これは、K3sサーバーノードとK3sエージェントを持つK3sクラスターのベースライン要件ですが、ワークロードはありません。
+これは、K3sサーバーノードとK3sエージェントを持つK3sクラスターの基本要件ですが、ワークロードはありません。
 
 ===== K3sサーバー
 
-CPU要件は以下の通りです：
+CPU要件は次のとおりです：
 
 |===
 | システム | CPUコア使用率
@@ -174,10 +174,10 @@ CPU要件は以下の通りです：
 | コアの25%
 |===
 
-メモリ要件は以下の通りです：
+メモリ要件は次のとおりです：
 
 |===
-| テストされたデータストア | システム | メモリ
+| テスト済みデータストア | システム | メモリ
 
 | Kine/SQLite
 | Intel 8375C
@@ -198,7 +198,7 @@ CPU要件は以下の通りです：
 
 ===== K3sエージェント
 
-要件は以下の通りです：
+要件は次のとおりです：
 
 |===
 | システム | CPUコア使用率 | RAM
@@ -212,53 +212,53 @@ CPU要件は以下の通りです：
 | 268 M
 |===
 
-=== 分析主要なリソース利用ドライバー
+=== 主要リソース利用ドライバーの分析
 
-K3sサーバーの利用数値は主に、Kubernetesデータストア（kineまたはetcd）、APIサーバー、コントローラーマネージャー、およびスケジューラーのコントロールループのサポートによって駆動されます。また、システムの状態を変更するために必要な管理タスクも含まれます。Kubernetesコントロールプレーンに追加の負荷をかける操作（リソースの作成/変更/削除など）は、一時的な利用のスパイクを引き起こします。Rancherや他のオペレータータイプのアプリケーションなど、Kubernetesデータストアを広範に使用するオペレーターやアプリを使用すると、サーバーのリソース要件が増加します。追加のノードを追加したり、多くのクラスターリソースを作成したりすることで、サーバーのリソース要件が増加します。
+K3sサーバの利用状況は、主にKubernetesデータストア（kineまたはetcd）、APIサーバ、コントローラーマネージャ、スケジューラ制御ループのサポート、およびシステムの状態に変更を加えるために必要な管理タスクによって推進されます。リソースの作成/変更/削除など、Kubernetes制御プレーンに追加の負荷をかける操作は、一時的な利用状況のスパイクを引き起こします。Kubernetesデータストア（Rancherや他のオペレータータイプのアプリケーションなど）を広範に使用するオペレーターやアプリを使用すると、サーバーのリソース要件が増加します。追加のノードを追加したり、多くのクラスターリソースを作成したりすることでクラスターをスケールアップすると、サーバーのリソース要件が増加します。
 
-K3sエージェントの利用数値は主に、コンテナライフサイクル管理コントロールループのサポートによって駆動されます。イメージの管理、ストレージのプロビジョニング、コンテナの作成/破棄を含む操作は、一時的な利用のスパイクを引き起こします。特にイメージのプルは、イメージコンテンツをディスクに解凍するため、通常は高いCPUおよびIO負荷がかかります。可能であれば、ワークロードストレージ（ポッドの一時ストレージおよびボリューム）は、エージェントコンポーネント（/var/lib/rancher/k3s/agent）から分離して、リソースの競合が発生しないようにするべきです。
+K3sエージェントの利用状況は、主にコンテナライフサイクル管理制御ループのサポートによって推進されています。イメージの管理、ストレージのプロビジョニング、またはコンテナの作成/削除を含む操作は、一時的な利用状況の急増を引き起こします。特にイメージのプルは、イメージコンテンツをディスクに解凍するため、通常はCPUとIOに強く依存します。可能であれば、ワークロードストレージ（ポッドの一時ストレージとボリューム）は、エージェントコンポーネント（/var/lib/rancher/k3s/agent）から隔離され、リソースの競合がないことを確認する必要があります。
 
-=== エージェントとワークロードがクラスターのデータストアに干渉しないようにする方法
+=== エージェントとワークロードがクラスターのデータストアに干渉しないようにする。
 
-サーバーがワークロードポッドもホストしている環境で実行する場合、エージェントおよびワークロードのIOPSがデータストアに干渉しないように注意する必要があります。
+サーバーがワークロードポッドもホストしている環境で実行する場合、エージェントとワークロードのIOPSがデータストアに干渉しないように注意する必要があります。
 
-これを最も効果的に達成する方法は、サーバーコンポーネント（/var/lib/rancher/k3s/server）をエージェントコンポーネント（/var/lib/rancher/k3s/agent）とは異なるストレージメディアに配置することです。エージェントコンポーネントにはcontainerdイメージストアが含まれます。
+これは、サーバーコンポーネント（/var/lib/rancher/k3s/server）をエージェントコンポーネント（/var/lib/rancher/k3s/agent、containerdイメージストアを含む）とは異なるストレージメディアに配置することで最も効果的に達成できます。
 
-ワークロードストレージ（ポッドの一時ストレージおよびボリューム）もデータストアから分離するべきです。
+ワークロードストレージ（ポッドの一時ストレージとボリューム）もデータストアから隔離されるべきです。
 
-データストアのスループットおよびレイテンシ要件を満たさない場合、コントロールプレーンの応答が遅延したり、コントロールプレーンがシステム状態を維持できなくなったりする可能性があります。
+データストアのスループットとレイテンシ要件を満たさない場合、制御プレーンからの応答が遅れる可能性があり、または制御プレーンがシステム状態を維持できなくなるエラーが発生する可能性があります。
 
 [#_server_sizing_requirements_for_k3s]
-== Server Sizing Requirements for K3s
+== K3sのためのサーバーサイズ要件。
 
-=== Environment
+=== 使用環境
 
-* All agents were t3.medium AWS ec2 instances.
-** A single agent was a c5.4xlarge instance. This hosted the grafana monitoring stack and prevented it from interfering with the control-plane resources.
-* The Server was a c5 AWS ec2 instance. As the number of agents increased, the server was upgraded to larger c5 instances.
+* すべてのエージェントはt3.mediumのAWS EC2インスタンスでした。
+** 単一のエージェントはc5.4xlargeインスタンスでした。これにより、Grafanaモニタリングスタックがホストされ、制御プレーンリソースに干渉するのを防ぎました。
+* サーバーはc5のAWS EC2インスタンスでした。エージェントの数が増えるにつれて、サーバーはより大きなc5インスタンスにアップグレードされました。
 
-=== Methodology
+=== 手法
 
-This data was retrieved under specific test conditions. It will vary depending upon environment and workloads. The steps below give an overview of the test that was run to retrieve this. It was last performed on v1.31.0+k3s1. All the machines were provisioned in AWS with standard 20 GiB gp3 volumes. The test was run with the following steps:
+このデータは特定のテスト条件下で取得されました。環境やワークロードによって異なる場合があります。以下の手順は、これを取得するために実行されたテストの概要を示しています。これはv1.31.0+k3s1で最後に実行されました。すべてのマシンは、標準の20 GiB gp3ボリュームでAWSにプロビジョニングされました。テストは以下の手順で実施されました：
 
-. Monitor resources on grafana using prometheus data source. 
-. Deploy workloads in such a way to simulate continuous cluster activity:
-** A basic workload that scales up and down continuously
-** A workload that is deleted and recreated in a loop
-** A constant workload that contains multiple other resources including CRDs.
-. Join agent nodes in batches of 50-100 at a time.
-. Stop adding agents when server CPU spikes above 90% utilization on agent joining, or if RAM was above 80% utilization. 
+. Prometheusデータソースを使用してGrafanaでリソースを監視します。
+. 継続的なクラスター活動をシミュレートするようにワークロードをデプロイします：
+** 継続的にスケールアップおよびスケールダウンする基本的なワークロード
+** ループ内で削除され再作成されるワークロード
+** CRDを含む複数のリソースを持つ一定のワークロード。
+. エージェントノードを一度に50～100台ずつ参加させます。
+. サーバーのCPU使用率がエージェント参加時に90％を超えた場合、またはRAM使用率が80％を超えた場合は、エージェントの追加を停止します。
 
-=== Observations
+=== 観察結果
 
-* When joining agents, server CPU saw spikes of ~20% over baseline.
-* Typically, the limiting factor was CPU, not RAM. For most of the tests, when the CPU hit 90% utilization, RAM utilization was around 60%.
+* エージェントを参加させる際、サーバーのCPUはベースラインを約20％上回るスパイクを示しました。
+* 通常、制限要因はCPUであり、RAMではありませんでした。ほとんどのテストでは、CPUが90％の使用率に達したとき、RAMの使用率は約60％でした。
 
-==== A note on High Availability (HA)
+==== 高可用性（HA）に関する注意事項
 
-At the end of each test, two additional servers were joined (forming a basic 3 node HA cluster) to observe what effect this had on the original server resources. The effect was:
+各テストの終了時に、2台の追加サーバーが参加し（基本的な3ノード HA クラスターを形成）、これが元のサーバーリソースに与える影響を観察しました。その影響は：
 
-* A noticeable drop in CPU utilization, usually 30-50%.
-* RAM utilization remained the same.
+* CPU使用率が顕著に低下し、通常は30〜50％でした。
+* RAMの使用率は変わりませんでした。
 
-While not tested, with CPU utilization as the limiting factor on a single server, it is expected that the number of agents that can be joined would increase by ~50% with a 3 node HA cluster.
+テストは行われていませんが、単一のサーバーでCPU使用率が制限要因である場合、3ノードHAクラスターで参加できるエージェントの数は約50％増加すると予想されます。

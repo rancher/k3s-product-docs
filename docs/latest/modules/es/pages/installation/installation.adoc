@@ -1,0 +1,20 @@
+= Instalación
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-09-11
+:page-revdate: {revdate}
+
+Esta sección contiene instrucciones para instalar K3s en varios entornos. Por favor, asegúrate de haber cumplido con los xref:installation/requirements.adoc[Requisitos] antes de comenzar a instalar K3s.
+
+xref:installation/configuration.adoc[Opciones de Configuración] proporciona orientación sobre las opciones disponibles para ti al instalar K3s.
+
+xref:installation/private-registry.adoc[Configuración de Registro Privado] abarca el uso de `registries.yaml` para configurar la autenticación y el espejado del registro de imágenes de contenedor.
+
+xref:installation/registry-mirror.adoc[Espejo de Registro Integrado] muestra cómo habilitar el espejo integrado del registro de imágenes distribuido, permitiendo compartir imágenes entre nodos de forma peer-to-peer.
+
+xref:installation/airgap.adoc[Instalación en Entorno Aislado] detalla cómo configurar K3s en entornos que no tienen acceso directo a Internet.
+
+xref:installation/server-roles.adoc[Gestión de Roles de Servidor] detalla cómo configurar K3s con servidores dedicados `control-plane` o `etcd`.
+
+xref:installation/packaged-components.adoc[Gestión de Componentes Empaquetados] detalla cómo deshabilitar los componentes empaquetados, o instalar los tuyos propios utilizando manifiestos de auto-despliegue.
+
+xref:installation/uninstall.adoc[Desinstalación de K3s] detalla cómo eliminar K3s de un host.

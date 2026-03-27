@@ -1,0 +1,164 @@
+= Volumes et stockage
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-01-05
+:page-revdate: {revdate}
+:page-aliases: storage.adoc
+
+Lors du déploiement d'une application qui doit conserver des données, vous devrez créer un stockage persistant. Le stockage persistant vous permet de stocker des données d'application en dehors du pod exécutant votre application. Cette pratique de stockage vous permet de maintenir les données de l'application, même si le pod de l'application échoue.
+
+Un volume persistant (PV) est une unité de stockage dans le cluster Kubernetes, tandis qu'une demande de volume persistant (PVC) est une requête de stockage. Pour des détails sur le fonctionnement des PV et des PVC, consultez la documentation officielle de Kubernetes sur https://kubernetes.io/docs/concepts/storage/volumes/[storage.]
+
+K3s, en tant que distribution Kubernetes conforme, utilise le https://github.com/container-storage-interface/spec/blob/master/spec.md[Container Storage Interface (CSI)] et le https://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/[Cloud Provider Interface (CPI)] pour gérer le stockage persistant.
+
+Cette page décrit comment configurer un stockage persistant avec un fournisseur de stockage local, ou avec <<_setting_up_longhorn,Longhorn.>>
+
+[#_setting_up_the_local_storage_provider]
+== Configuration du fournisseur de stockage local
+
+K3s est livré avec le Local Path Provisioner de Rancher, ce qui permet de créer des demandes de volume persistant dès le départ en utilisant le stockage local sur le nœud respectif. Ci-dessous, nous couvrons un exemple simple. Pour plus d'informations, veuillez consulter la documentation officielle https://github.com/rancher/local-path-provisioner/blob/master/README.md#usage[ici].
+
+Créez une demande de volume persistant basée sur hostPath et un pod pour l'utiliser :
+
+=== pvc.yaml
+
+[,yaml]
+----
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-path-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
+----
+
+=== pod.yaml
+
+[,yaml]
+----
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-test
+  namespace: default
+spec:
+  containers:
+  - name: volume-test
+    image: nginx:stable-alpine
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - name: volv
+      mountPath: /data
+    ports:
+    - containerPort: 80
+  volumes:
+  - name: volv
+    persistentVolumeClaim:
+      claimName: local-path-pvc
+----
+
+Appliquez le yaml :
+
+[,bash]
+----
+kubectl create -f pvc.yaml
+kubectl create -f pod.yaml
+----
+
+Confirmez que le PV et le PVC sont créés :
+
+[,bash]
+----
+kubectl get pv
+kubectl get pvc
+----
+
+Le statut doit être Lié pour chacun.
+
+== Configuration de Longhorn
+
+[CAUTION]
+====
+Longhorn ne prend pas en charge ARM32.
+====
+
+
+K3s prend en charge https://github.com/longhorn/longhorn[Longhorn], un système de stockage de blocs distribué Open Source pour Kubernetes.
+
+Ci-dessous, nous couvrons un exemple simple. Pour plus d'informations, reportez-vous à la https://documentation.suse.com/cloudnative/storage/{longhorn_docs_version}/en/longhorn-documentation.html[documentation officielle].
+
+Appliquez le longhorn.yaml pour installer Longhorn :
+
+[,bash]
+----
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.8.1/deploy/longhorn.yaml
+----
+
+Longhorn sera installé dans l'espace de noms `longhorn-system`.
+
+Créez une demande de volume persistant et un pod pour l'utiliser :
+
+=== pvc.yaml
+
+[,yaml]
+----
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: longhorn-volv-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 2Gi
+----
+
+=== pod.yaml
+
+[,yaml]
+----
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-test
+  namespace: default
+spec:
+  containers:
+  - name: volume-test
+    image: nginx:stable-alpine
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - name: volv
+      mountPath: /data
+    ports:
+    - containerPort: 80
+  volumes:
+  - name: volv
+    persistentVolumeClaim:
+      claimName: longhorn-volv-pvc
+----
+
+Appliquez le yaml pour créer le PVC et le pod :
+
+[,bash]
+----
+kubectl create -f pvc.yaml
+kubectl create -f pod.yaml
+----
+
+Confirmez que le PV et le PVC sont créés :
+
+[,bash]
+----
+kubectl get pv
+kubectl get pvc
+----
+
+Le statut doit être Lié pour chacun.

@@ -1,0 +1,37 @@
+= Backup e restauração
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-11
+:page-revdate: {revdate}
+
+A forma como o K3s é feito o backup e restaurado depende do tipo de datastore que está sendo utilizado.
+
+[CAUTION]
+====
+Além de fazer o backup do próprio datastore, você também deve fazer o backup do arquivo de token do servidor em `/var/lib/rancher/k3s/server/token`.
+Você deve restaurar este arquivo ou passar seu valor na opção `--token` ao restaurar a partir do backup.
+Se você não usar o mesmo valor de token ao restaurar, o instantâneo será inutilizável, pois o token é usado para criptografar dados confidenciais dentro do próprio datastore.
+====
+
+
+== Backup e Restauração com SQLite
+
+Nenhum comando especial é necessário para fazer backup ou restaurar o datastore SQLite.
+
+* Para fazer backup do datastore SQLite, faça uma cópia de `/var/lib/rancher/k3s/server/db/`.
+* Para restaurar o datastore SQLite, restaure o conteúdo de `/var/lib/rancher/k3s/server/db` (e o token, conforme discutido acima).
+
+== Backup e Restauração com Datastore Externo
+
+Quando um datastore externo é utilizado, as operações de backup e restauração são tratadas fora do K3s. O administrador do banco de dados precisará fazer o backup do banco de dados externo ou restaurá-lo a partir de um instantâneo ou dump.
+
+Recomendamos configurar o banco de dados para tirar instantâneos recorrentes.
+
+Para detalhes sobre como tirar instantâneos do banco de dados e restaurar seu banco de dados a partir deles, consulte a documentação oficial do banco de dados:
+
+* https://dev.mysql.com/doc/refman/8.0/en/replication-snapshot-method.html[Documentação oficial do MySQL]
+* https://www.postgresql.org/docs/8.3/backup-dump.html[Documentação oficial do PostgreSQL]
+* https://etcd.io/docs/latest/op-guide/recovery/[Documentação oficial do etcd]
+
+== Backup e Restauração com Datastore etcd Embutido
+
+Consulte a xref:cli/etcd-snapshot.adoc[`k3s etcd-snapshot`documentação do comando] para informações sobre como realizar operações de backup e restauração no datastore etcd embutido.

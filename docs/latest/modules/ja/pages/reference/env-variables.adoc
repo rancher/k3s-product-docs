@@ -1,9 +1,9 @@
 = 環境変数
 :page-languages: [en, ja, ko, zh]
-:revdate: 2026-03-03
+:revdate: 2024-12-05
 :page-revdate: {revdate}
 
-xref:quick-start.adoc[クイックスタートガイド]で述べたように、https://get.k3s.io で利用可能なインストールスクリプトを使用して、systemdおよびopenrcベースのシステムにK3sをサービスとしてインストールできます。
+xref:quick-start.adoc[クイックスタートガイド]に記載されているように、https://get.k3s.ioで利用可能なインストールスクリプトを使用して、systemdおよびopenrcベースのシステムにK3sをサービスとしてインストールできます。
 
 このコマンドの最も簡単な形式は次のとおりです：
 
@@ -12,84 +12,84 @@ xref:quick-start.adoc[クイックスタートガイド]で述べたように、
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -
 ----
 
-この方法を使用してK3sをインストールする場合、次の環境変数を使用してインストールを構成できます：
+この方法でK3sをインストールする場合、インストールを構成するために次の環境変数を使用できます：
 
 |===
 | 環境変数 | 説明
 
 | `INSTALL_K3S_SKIP_DOWNLOAD`
-| trueに設定すると、K3sのハッシュまたはバイナリをダウンロードしません。
+| trueに設定すると、K3sのハッシュやバイナリをダウンロードしません。
 
 | `INSTALL_K3S_SYMLINK`
-| デフォルトでは、パスにコマンドが存在しない場合、kubectl、crictl、およびctrバイナリのシンボリックリンクを作成します。'skip'に設定するとシンボリックリンクを作成せず、'force'に設定すると上書きします。
+| デフォルトでは、コマンドがすでにパスに存在しない場合、kubectl、crictl、およびctrバイナリのシンボリックリンクを作成します。'skip'に設定するとシンボリックリンクを作成せず、'force'に設定すると上書きします。
 
 | `INSTALL_K3S_SKIP_ENABLE`
-| trueに設定すると、K3sサービスを有効化または開始しません。
+| trueに設定すると、K3sサービスを有効にしたり開始したりしません。
 
 | `INSTALL_K3S_SKIP_START`
 | trueに設定すると、K3sサービスを開始しません。
 
 | `INSTALL_K3S_VERSION`
-| GithubからダウンロードするK3sのバージョン。指定しない場合は安定版チャネルからダウンロードを試みます。
+| GithubからダウンロードするK3sのバージョン。指定されていない場合は、安定したチャネルからダウンロードを試みます。
 
 | `INSTALL_K3S_BIN_DIR`
-| K3sバイナリ、リンク、およびアンインストールスクリプトをインストールするディレクトリ。デフォルトは``/usr/local/bin``です。
+| K3sバイナリ、リンク、およびアンインストールスクリプトをインストールするディレクトリ、またはデフォルトとして`/usr/local/bin`を使用します。
 
 | `INSTALL_K3S_BIN_DIR_READ_ONLY`
-| trueに設定すると、``INSTALL_K3S_BIN_DIR``にファイルを書き込みません。``INSTALL_K3S_SKIP_DOWNLOAD=true``を強制設定します。
+| trueに設定すると、`INSTALL_K3S_BIN_DIR`にファイルを書き込まず、`INSTALL_K3S_SKIP_DOWNLOAD=true`の設定を強制します。
 
 | `INSTALL_K3S_SYSTEMD_DIR`
-| systemdサービスおよび環境ファイルをインストールするディレクトリ。デフォルトは``/etc/systemd/system``です。
+| systemdサービスおよび環境ファイルをインストールするディレクトリ、またはデフォルトとして`/etc/systemd/system`を使用します。
 
 | `INSTALL_K3S_EXEC`
-| サービスでK3sを起動するためのフラグ付きコマンド。コマンドが指定されておらず、``K3S_URL``が設定されている場合、デフォルトは「agent」です。``K3S_URL``が設定されていない場合、デフォルトは「server」です。詳細はxref:installation/configuration.adoc#_configuration_with_install_script[この例]を参照してください。
+| K3sをサービスとして起動するために使用するフラグ付きコマンド。コマンドが指定されておらず、`K3S_URL`が設定されている場合、デフォルトは「agent」となります。`K3S_URL`が設定されていない場合、デフォルトは「server」となります。ヘルプについては、xref:installation/configuration.adoc#_configuration_with_install_script[この例を参照してください。]
 
 | `INSTALL_K3S_NAME`
-| 作成するsystemdサービスの名前。k3sをサーバーとして実行する場合はデフォルトで「k3s」、エージェントとして実行する場合は「k3s-agent」になります。指定された場合、名前の前に「k3s-」が付加されます。
+| 作成するsystemdサービスの名前。K3sをサーバーとして実行している場合はデフォルトで'k3s'、エージェントとして実行している場合は'k3s-agent'になります。指定した場合、名前は「k3s-」で接頭辞が付けられます。
 
 | `INSTALL_K3S_TYPE`
-| 作成するsystemdサービスのタイプ。指定されていない場合、K3sの実行コマンドからデフォルトが設定されます。
+| 作成するsystemdサービスのタイプは、指定されていない場合はK3s execコマンドからデフォルトされます。
 
 | `INSTALL_K3S_SELINUX_WARN`
-| trueに設定すると、k3s-selinuxポリシーが見つからない場合でも続行します。
+| trueに設定されている場合、k3s-selinuxポリシーが見つからなくても続行します。
 
 | `INSTALL_K3S_SKIP_SELINUX_RPM`
-| trueに設定すると、k3s RPMの自動インストールをスキップします。
+| trueに設定されている場合、k3s RPMの自動インストールをスキップします。
 
 | `INSTALL_K3S_CHANNEL_URL`
-| K3sダウンロードURLを取得するためのチャネルURL。デフォルトはlink:https://update.k3s.io/v1-release/channelsです。
+| K3sのダウンロードURLを取得するためのチャネルURL。デフォルトはhttps://update.k3s.io/v1-release/channels.です。
 
 | `INSTALL_K3S_CHANNEL`
-| K3sダウンロードURLを取得するためのチャネル。デフォルトは「stable」です。オプションには``stable``、`latest`、``testing``があります。
+| K3sのダウンロードURLを取得するために使用するチャネル。デフォルトは「stable」です。指定できる値は、`stable`、`latest`、`testing`です。
 |===
 
-次の例は、前述の環境変数をオプションとして（パイプの後に）配置する方法を示しています：
+この例では、前述の環境変数をオプションとして配置する場所を示しています（パイプの後）：
 
 [,bash]
 ----
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_CHANNEL=latest sh -
 ----
 
-``K3S_``で始まる環境変数は、systemdおよびopenrcサービスで使用するために保持されます。
+`K3S_`で始まる環境変数は、systemdおよびopenrcサービスで使用するために保持されます。
 
-``K3S_URL``を設定し、明示的に実行コマンドを設定しない場合、コマンドはデフォルトで「agent」になります。
+execコマンドを明示的に設定せずに`K3S_URL`を設定すると、コマンドは「agent」にデフォルトされます。
 
-エージェントを実行する場合、``K3S_TOKEN``も設定する必要があります。
+エージェントを実行する際には、`K3S_TOKEN`も設定する必要があります。
 
 [NOTE]
-.Version Gate
+.バージョンゲート
 ====
-Available as of October 2024 releases: v1.28.15+k3s1, v1.29.10+k3s1, v1.30.6+k3s1, v1.31.2+k3s1.
+2024年10月のリリースから利用可能：v1.28.15+k3s1、v1.29.10+k3s1、v1.30.6+k3s1、v1.31.2+k3s1。
 ====
 
-K3s will now use `PATH` to find alternative container runtimes, in addition to checking the default paths used by the container runtime packages. In order to use this feature, you must modify the K3s service's PATH environment variable to add the directories containing the container runtime binaries.
+K3sは、コンテナランタイムパッケージによって使用されるデフォルトのパスを確認することに加えて、代替のコンテナランタイムを見つけるために`PATH`を使用します。この機能を使用するには、K3sサービスのPATH環境変数を変更して、コンテナランタイムバイナリを含むディレクトリを追加する必要があります。
 
-It's recommended that you modify one of this two environment files:
+この2つの環境ファイルのいずれかを変更することをお勧めします：
 
-* /etc/default/k3s # or k3s-agent
-* /etc/sysconfig/k3s # or k3s-agent
+* /etc/default/k3s # または k3s-agent
+* /etc/sysconfig/k3s # または k3s-agent
 
-This example will add the `PATH` in `/etc/default/k3s`:
+この例では、`PATH`を`/etc/default/k3s`に追加します。
 
 [,bash]
 ----
@@ -98,5 +98,5 @@ echo PATH=$PATH >> /etc/default/k3s
 
 [WARNING]
 ====
-`PATH` changes should be done with care to avoid placing untrusted binaries in the path of services that run as root.
+`PATH`の変更は、rootユーザーとして実行されるサービスのパスに信頼できないバイナリを配置しないように注意して行う必要があります。
 ====

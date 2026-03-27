@@ -1,0 +1,43 @@
+= Outils en ligne de commande (CLI)
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-11
+:page-revdate: {revdate}
+
+Le binaire K3s contient un certain nombre d'outils supplémentaires qui vous aident à gérer votre cluster.
+
+|===
+| Commande | Description
+
+| `k3s server`
+| Exécutez un nœud serveur K3s, qui lance les composants Kubernetes `apiserver`, `scheduler`, `controller-manager` et `cloud-controller-manager`, en plus d'un magasin de données et des composants agents. Consultez la xref:cli/server.adoc[`k3s server` documentation de la commande] pour plus d'informations.
+
+| `k3s agent`
+| Exécutez le nœud agent K3s, qui lance `containerd`, `flannel`, le contrôleur de stratégie réseau `kube-router`, ainsi que les composants Kubernetes `kubelet` et `kube-proxy`. Consultez la documentation de la commande xref:cli/agent.adoc[`k3s agent`] pour plus d'informations.
+
+| `k3s kubectl`
+| Exécutez la commande intégrée https://kubernetes.io/docs/reference/kubectl[`kubectl`]. Ceci est une CLI pour interagir avec l'apiserver Kubernetes.  Si la variable d'environnement `KUBECONFIG` n'est pas définie, cela tentera automatiquement d'utiliser le kubeconfig à `/etc/rancher/k3s/k3s.yaml`.
+
+| `k3s crictl`
+| Exécutez la commande intégrée https://github.com/kubernetes-sigs/cri-tools/blob/master/docs/crictl.md[`crictl`]. Ceci est une CLI pour interagir avec l'interface de l'environnement d'exécution de conteneur (CRI) de Kubernetes. Utile pour le débogage.
+
+| `k3s ctr`
+| Exécutez la commande intégrée https://github.com/projectatomic/containerd/blob/master/docs/cli.md[`ctr`]. Ceci est une CLI pour containerd, le daemon de conteneur utilisé par K3s. Utile pour le débogage.
+
+| `k3s token`
+| Gérer les jetons de démarrage. Consultez la xref:cli/token.adoc[`k3s token` documentation de la commande] pour plus d'informations.
+
+| `k3s etcd-snapshot`
+| Effectuez des sauvegardes à la demande des données du cluster K3s et téléversez-les sur S3. Consultez la xref:cli/etcd-snapshot.adoc[`k3s etcd-snapshot` documentation de la commande] pour plus d'informations.
+
+| `k3s secrets-encrypt`
+| Configurez K3s pour chiffrer les secrets lors de leur stockage dans le cluster. Consultez la xref:cli/secrets-encrypt.adoc[`k3s secrets-encrypt` documentation de la commande] pour plus d'informations.
+
+| `k3s certificate`
+| Gérer les certificats K3s. Consultez la xref:cli/certificate.adoc[`k3s certificate` documentation de la commande] pour plus d'informations.
+
+| `k3s completion`
+| Générez des scripts de complétion de shell pour k3s
+
+| `k3s help`
+| Affiche une liste de commandes ou d'aide pour une commande.
+|===

@@ -1,0 +1,407 @@
+= Requisitos
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-12-31
+:page-revdate: {revdate}
+
+K3s é muito leve, mas possui alguns requisitos mínimos conforme descrito abaixo.
+
+Se você estiver configurando o K3s para rodar em um contêiner ou como um serviço nativo do Linux, cada nó que executa o K3s deve atender aos seguintes requisitos mínimos. Esses requisitos são a base para o K3s e seus componentes empacotados, e não incluem os recursos consumidos pela carga de trabalho em si.
+
+== Pré-requisitos
+
+Dois nós não podem ter o mesmo nome de host.
+
+Se vários nós tiverem o mesmo nome de host, ou se os nomes de host puderem ser reutilizados por um sistema de provisionamento automatizado, use a opção `--with-node-id` para adicionar um sufixo aleatório para cada nó, ou crie um nome único para passar com `--node-name` ou `$K3S_NODE_NAME` para cada nó que você adicionar ao cluster.
+
+== Arquitetura
+
+K3s está disponível para as seguintes arquiteturas:
+
+* x86_64
+* armhf
+* arm64/aarch64
+
+[CAUTION]
+.Tamanho da Página ARM64
+====
+
+Antes das versões de maio de 2023 (v1.24.14+k3s1, v1.25.10+k3s1, v1.26.5+k3s1, v1.27.2+k3s1), em sistemas `aarch64/arm64`, o kernel deve usar páginas de 4k. *RHEL9*, *Ubuntu*, *Raspberry PI OS* e *SLES* atendem a esse requisito.
+====
+
+[#_operating_systems]
+== Sistemas operacionais
+
+Espera-se que o K3s funcione na maioria dos sistemas Linux modernos.
+
+Alguns sistemas operacionais têm requisitos adicionais de configuração:
+
+[tabs,sync-group-id=os,id=os]
+======
+SUSE Linux Enterprise / openSUSE::
++
+--
+[#_sle_opensuse_firewalld]
+[pass]
+<h3><a class="anchor" id="_sle_opensuse_firewalld" href="#_sle_opensuse_firewalld"></a>Firewalld</h3>
+
+Recomenda-se desativar o firewalld:
+
+[,bash]
+----
+systemctl disable firewalld --now
+----
+
+Se você deseja manter o firewalld ativado, por padrão, as seguintes regras são necessárias:
+
+[,bash]
+----
+firewall-cmd --permanent --add-port=6443/tcp #apiserver
+firewall-cmd --permanent --zone=trusted --add-source=10.42.0.0/16 #pods
+firewall-cmd --permanent --zone=trusted --add-source=10.43.0.0/16 #services
+firewall-cmd --reload
+----
+
+Portas adicionais podem precisar ser abertas dependendo da sua configuração. Veja <<_inbound_rules_for_k3s_nodes,Regras de Entrada>> para mais informações. Se você alterar o CIDR padrão para pods ou serviços, precisará atualizar as regras do firewall de acordo.
+--
+
+Red Hat Enterprise Linux / CentOS / Fedora::
++
+--
+[#_rhel10]
+[pass]
+<h3><a class="anchor" id="_rhel10" href="#_rhel10"></a>RHEL 10</h3>
+
+No RHEL 10, um pacote adicional é necessário:
+
+[,bash]
+----
+sudo dnf install -y kernel-modules-extra
+----
+
+[#_rhel_centos_fedora_firewalld]
+[pass]
+<h3><a class="anchor" id="_rhel_centos_fedora_firewalld" href="#_rhel_centos_fedora_firewalld"></a>Firewalld</h3>
+
+Recomenda-se desativar o firewalld:
+
+[,bash]
+----
+systemctl disable firewalld --now
+----
+
+Se você deseja manter o firewalld ativado, por padrão, as seguintes regras são necessárias:
+
+[,bash]
+----
+firewall-cmd --permanent --add-port=6443/tcp #apiserver
+firewall-cmd --permanent --zone=trusted --add-source=10.42.0.0/16 #pods
+firewall-cmd --permanent --zone=trusted --add-source=10.43.0.0/16 #services
+firewall-cmd --reload
+----
+
+Portas adicionais podem precisar ser abertas dependendo da sua configuração. Veja <<_inbound_rules_for_k3s_nodes,Regras de Entrada>> para mais informações. Se você alterar o CIDR padrão para pods ou serviços, precisará atualizar as regras do firewall de acordo.
+
+[WARNING]
+.Versões mais antigas do RHEL/CentOS
+====
+Versões do sistema operacional anteriores ao RHEL 8.4 possuem o NetworkManager com um bug conhecido que interfere na rede do K3s. Se estiver usando uma versão mais antiga, é necessário desativar o nm-cloud-setup e reiniciar o nó:
+
+[,bash]
+----
+systemctl disable nm-cloud-setup.service nm-cloud-setup.timer
+reboot
+----
+====
+--
+
+Ubuntu / Debian::
++
+--
+[#_ubuntu_debian_ufw]
+[pass]
+<h3><a class="anchor" id="_ubuntu_debian_ufw" href="#_ubuntu_debian_ufw"></a>UFW</h3>
+
+Versões mais antigas do Debian podem sofrer de um bug conhecido do iptables. Veja xref:known-issues.adoc#_iptables[Problemas Conhecidos].
+
+É recomendado desativar o ufw (firewall descomplicado):
+
+[,bash]
+----
+ufw disable
+----
+
+Se você deseja manter o ufw ativado, por padrão, as seguintes regras são necessárias:
+
+[,bash]
+----
+ufw allow 6443/tcp #apiserver
+ufw allow from 10.42.0.0/16 to any #pods
+ufw allow from 10.43.0.0/16 to any #services
+----
+
+Portas adicionais podem precisar ser abertas dependendo da sua configuração. Veja <<_inbound_rules_for_k3s_nodes,Regras de Entrada>> para mais informações. Se você alterar o CIDR padrão para pods ou serviços, precisará atualizar as regras do firewall de acordo.
+--
+
+[#os_tab_raspberry_pi]
+Raspberry Pi::
++
+--
+O Raspberry Pi OS é baseado no Debian e pode sofrer de um bug conhecido do iptables. Veja xref:known-issues.adoc#_iptables[Problemas Conhecidos].
+
+[#_cgroups]
+[pass]
+<h3><a class="anchor" id="_cgroups" href="#_cgroups"></a>Cgroups</h3>
+
+Instalações padrão do Raspberry Pi OS não iniciam com `cgroups` ativado. **K3S** precisa de `cgroups` para iniciar o serviço systemd. `cgroups`pode ser ativado adicionando `cgroup_memory=1 cgroup_enable=memory` a `/boot/firmware/cmdline.txt`.
+
+[NOTE]
+====
+No Debian 11 e versões mais antigas do Pi OS, o cmdline.txt está localizado em `/boot/cmdline.txt`.
+====
+
+Exemplo cmdline.txt:
+
+----
+console=serial0,115200 console=tty1 root=PARTUUID=58b06195-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait cgroup_memory=1 cgroup_enable=memory
+----
+
+[#_ubuntu_vxlan_module]
+[pass]
+<h3><a class="anchor" id="_ubuntu_vxlan_module" href="#_ubuntu_vxlan_module"></a>Módulo Vxlan do Ubuntu</h3>
+
+Com o Ubuntu 21.10 até o Ubuntu 23.10, o suporte a vxlan no Raspberry Pi foi movido para um módulo do kernel separado. Esta etapa não é necessária para o Ubuntu 24.04 e versões posteriores.
+
+[,bash]
+----
+sudo apt install linux-modules-extra-raspi
+----
+--
+======
+
+Para mais informações sobre quais sistemas operacionais foram testados com clusters K3s gerenciados pelo Rancher, consulte os https://rancher.com/support-maintenance-terms/[termos de suporte e manutenção do Rancher.]
+
+== Hardware
+
+Os requisitos de hardware variam com base no tamanho das suas implantações. Os requisitos mínimos são:
+
+|===
+| Nó | CPU | RAM
+
+| auditoria
+| 2 núcleos
+| 2 GB
+
+| Agente
+| 1 núcleo
+| 512 MB
+|===
+
+xref:reference/resource-profiling.adoc[Arquivo de Controle de Recursos] captura os resultados de testes e análises para determinar os requisitos mínimos de recursos para o agente K3s, o servidor K3s com carga de trabalho e o servidor K3s com um agente.
+
+=== Discos
+
+O desempenho do K3s depende do desempenho do banco de dados. Para garantir velocidade ideal, recomendamos o uso de um SSD sempre que possível. 
+
+Se estiver implantando o K3s em um Raspberry Pi ou outros dispositivos ARM, é recomendado que você use um SSD externo. O etcd é intensivo em gravações; cartões SD e eMMC não conseguem lidar com a carga de IO.
+
+=== Guia de Dimensionamento de Servidores
+
+Quando há limitações de CPU e RAM no servidor (nó de controle + etcd), existem limitações na quantidade de nós agentes que podem ser adicionados sob condições de carga de trabalho padrão.
+
+|===
+| CPU do Servidor | RAM do Servidor | Número de Agentes
+
+| 2
+| 4 GB
+| 0-350
+
+| 4
+| 8 GB
+| 351-900
+
+| 8
+| 16 GB
+| 901-1800
+
+| 16+
+| 32 GB
+| 1800+
+|===
+
+[TIP]
+.Dimensionamento de Alta Disponibilidade
+====
+Ao usar uma configuração de alta disponibilidade com 3 nós de servidor, o número de agentes pode escalar aproximadamente ~50% a mais do que a tabela acima. Por exemplo, 3 servidores com 4 vCPU/8 GB podem escalar para ~1200 agentes.
+====
+
+Recomenda-se juntar nós de agentes em lotes de 50 ou menos para permitir que a CPU libere espaço, pois há um pico na junção de nós. Lembre-se de modificar o padrão `cluster-cidr` se desejar mais de 255 nós!
+
+xref:reference/resource-profiling.adoc#_server_sizing_requirements_for_k3s[Arquivo de Controle de Recursos] contém mais informações sobre como essas recomendações foram encontradas.
+
+[#_networking]
+== Projeto de Rede
+
+O servidor K3s precisa que a porta 6443 esteja acessível por todos os nós.
+
+Os nós precisam ser capazes de alcançar outros nós pela porta UDP 8472 ao usar o backend Flannel VXLAN, ou pela porta UDP 51820 (e 51821 se o IPv6 for usado) ao usar o backend Flannel WireGuard. O nó não deve escutar em nenhuma outra porta. K3s utiliza tunelamento reverso de forma que os nós fazem conexões de saída para o servidor e todo o tráfego do kubelet passa por esse túnel. No entanto, se você não usar o Flannel e fornecer seu próprio CNI personalizado, então as portas necessárias pelo Flannel não são necessárias pelo K3s.
+
+Se você deseja utilizar o servidor de métricas, todos os nós devem ser acessíveis entre si na porta 10250.
+
+Se você planeja alcançar alta disponibilidade com etcd embutido, os nós do servidor devem ser acessíveis entre si nas portas 2379 e 2380.
+
+[TIP]
+.Importante
+====
+A porta VXLAN nos nós não deve ser exposta ao mundo, pois isso abre sua rede de cluster para ser acessada por qualquer um. Execute seus nós atrás de um firewall/grupo de segurança que desative o acesso à porta 8472.
+====
+
+
+[WARNING]
+====
+O Flannel depende do https://www.cni.dev/plugins/current/main/bridge/[plugin CNI Bridge] para criar uma rede L2 que troca tráfego. Pods maliciosos com `NET_RAW` capacidades podem abusar dessa rede L2 para lançar ataques como spoofing ARP. Portanto, conforme documentado na https://kubernetes.io/docs/concepts/security/pod-security-standards/[documentação do Kubernetes], por favor, defina um perfil restrito que desative `NET_RAW` em pods não confiáveis.
+====
+
+[#_inbound_rules_for_k3s_nodes]
+=== Regras de Entrada para Nós K3s
+
+|===
+| Protocolo | Portar | Origem | Destino | Descrição
+
+| TCP
+| 2379-2380
+| Servidores
+| Servidores
+| Necessário apenas para HA com etcd embutido
+
+| TCP
+| 6443
+| Agentes
+| Servidores
+| Supervisor K3s e Servidor API Kubernetes
+
+| UDP
+| 8472
+| Todos os nós
+| Todos os nós
+| Necessário apenas para Flannel VXLAN
+
+| TCP
+| 10250
+| Todos os nós
+| Todos os nós
+| Métricas do Kubelet
+
+| UDP
+| 51820
+| Todos os nós
+| Todos os nós
+| Necessário apenas para Flannel Wireguard com IPv4
+
+| UDP
+| 51821
+| Todos os nós
+| Todos os nós
+| Necessário apenas para Flannel Wireguard com IPv6
+
+| TCP
+| 5001
+| Todos os nós
+| Todos os nós
+| Necessário apenas para registro distribuído embutido (Spegel)
+
+| TCP
+| 6443
+| Todos os nós
+| Todos os nós
+| Necessário apenas para registro distribuído embutido (Spegel)
+|===
+
+Normalmente, todo o tráfego de saída é permitido.
+
+Mudanças adicionais no firewall podem ser necessárias dependendo do sistema operacional utilizado.
+
+== Grandes Clusters
+
+Os requisitos de hardware são baseados no tamanho do seu cluster K3s. Para produção e grandes clusters, recomendamos usar uma configuração de alta disponibilidade com um banco de dados externo. As seguintes opções são recomendadas para o banco de dados externo em produção:
+
+* MySQL
+* PostgreSQL
+* etcd
+
+=== CPU e Memória
+
+Os seguintes são os requisitos mínimos de CPU e memória para nós em um servidor K3s de alta disponibilidade:
+
+[cols="^,^,^,^"]
+|===
+| Tamanho da Implantação | Nós | vCPUs | RAM
+
+| Small
+| Até 10
+| 2
+| 4 GB
+
+| Média
+| Até 100
+| 4
+| 8 GB
+
+| Grande
+| Até 250
+| 8
+| 16 GB
+
+| X-Gigante
+| Até 500
+| 16
+| 32 GB
+
+| XX-Large
+| 500+
+| 32
+| 64 GB
+|===
+
+=== Discos
+
+O desempenho do cluster depende do desempenho do banco de dados. Para garantir velocidade ideal, recomendamos sempre usar discos SSD para suportar seu cluster K3s. Em provedores de nuvem, você também vai querer usar o tamanho mínimo que permite o máximo de IOPS.
+
+=== Rede
+
+Você deve considerar aumentar o tamanho da sub-rede para o CIDR do cluster para que não fique sem IPs para os pods. Você pode fazer isso passando a opção `--cluster-cidr` para o servidor K3s ao iniciar.
+
+=== Banco de dados
+
+K3s suporta diferentes bancos de dados, incluindo MySQL, PostgreSQL, MariaDB e etcd.  Veja xref:datastore/datastore.adoc[Armazenamento do Cluster] para mais informações.
+
+A seguir, um guia de dimensionamento para os recursos de banco de dados que você precisa para executar grandes clusters:
+
+[cols="^,^,^,^"]
+|===
+| Tamanho da Implantação | Nós | vCPUs | RAM
+
+| Small
+| Até 10
+| 1
+| 2 GB
+
+| Média
+| Até 100
+| 2
+| 8 GB
+
+| Grande
+| Até 250
+| 4
+| 16 GB
+
+| X-Large
+| Até 500
+| 8
+| 32 GB
+
+| XX-Large
+| 500+
+| 16
+| 64 GB
+|===

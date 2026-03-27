@@ -1,0 +1,68 @@
+= FAQ
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-11
+:page-revdate: {revdate}
+
+La FAQ est mise à jour périodiquement et conçue pour répondre aux questions que nos utilisateurs posent le plus souvent sur K3s.
+
+== K3s est-il un remplacement approprié pour Kubernetes ?
+
+K3s est une distribution Kubernetes certifiée par la CNCF, et peut faire tout ce qu'un cluster Kubernetes standard exige. C'est simplement une version plus légère. Consultez la page xref:introduction.adoc[principale] de la documentation pour plus de détails.
+
+== Comment puis-je utiliser mon propre Ingress au lieu de Traefik ?
+
+Il suffit de démarrer le serveur K3s avec `--disable=traefik` et de déployer votre ingress.
+
+== K3s prend-il en charge Windows ?
+
+Pour l'instant, K3s ne prend pas en charge Windows nativement, cependant nous sommes ouverts à cette idée à l'avenir.
+
+== Que sont exactement les serveurs et les agents ?
+
+Pour une explication des composants qui composent un serveur et un agent, consultez la xref:architecture.adoc[page d'architecture].
+
+== Comment puis-je compiler à partir du code source ?
+
+Veuillez consulter le https://github.com/k3s-io/k3s/blob/main/BUILDING.md[BUILDING.md]  de K3s avec les instructions.
+
+== Où se trouvent les journaux de K3s ?
+
+L'emplacement des journaux de K3s variera en fonction de la manière dont vous exécutez K3s et du système d'exploitation du nœud.
+
+* Lorsqu'il est exécuté depuis la ligne de commande, les journaux sont envoyés à stdout et stderr.
+* Lorsqu'il est exécuté sous openrc, les journaux seront créés à `/var/log/k3s.log`.
+* Lorsqu'il est exécuté sous Systemd, les journaux seront envoyés à Journald et peuvent être consultés en utilisant `journalctl -u k3s`.
+* Les journaux de pod peuvent être trouvés à `/var/log/pods`.
+* Les journaux de Containerd peuvent être trouvés à `/var/lib/rancher/k3s/agent/containerd/containerd.log`.
+
+Vous pouvez générer des journaux plus détaillés en utilisant le drapeau `--debug` lors du démarrage de K3s (ou `debug: true` dans le fichier de configuration).
+
+Kubernetes utilise un cadre de journalisation connu sous le nom de `klog`, qui utilise une seule configuration de journalisation pour tous les composants au sein d'un processus.
+Étant donné que K3s exécute tous les composants Kubernetes au sein d'un seul processus, il n'est pas possible de configurer différents niveaux de journalisation ou destinations pour les composants Kubernetes individuels.
+L'utilisation des arguments de composant `-v=<level>` ou `--vmodule=<module>=<level>` n'aura probablement pas l'effet désiré.
+
+Voir xref:advanced.adoc#_additional_logging_sources[Sources de journalisation supplémentaires] pour encore plus d'options de journalisation.
+
+== Puis-je exécuter K3s dans Docker ?
+
+Oui, il existe plusieurs façons d'exécuter K3s dans Docker. Voir xref:advanced.adoc#_running_k3s_in_docker[Options avancées] pour plus de détails.
+
+== Quelle est la différence entre les tokens du serveur et de l'agent K3s ?
+
+Pour plus d'informations sur la gestion des tokens de jointure K3s, consultez la xref:cli/token.adoc[`k3s token`documentation de la commande].
+
+== Quelle est la compatibilité entre les différentes versions de K3s ?
+
+En général, la stratégie de décalage de version de https://kubernetes.io/docs/setup/release/version-skew-policy/[Kubernetes] s'applique.
+
+En résumé, les serveurs peuvent être plus récents que les agents, mais les agents ne peuvent pas être plus récents que les serveurs.
+
+== J'ai un problème, où puis-je obtenir de l'aide ?
+
+Si vous rencontrez un problème lors du déploiement de K3s, vous devriez :
+
+. Vérifiez la page xref:known-issues.adoc[Problèmes connus].
+. Vérifiez que vous avez résolu toute xref:installation/requirements.adoc#_operating_systems[Préparation OS supplémentaire]. Exécutez `k3s check-config` et assurez-vous qu'il réussit.
+. Recherchez dans les https://github.com/k3s-io/k3s/issues[Problèmes] et https://github.com/k3s-io/k3s/discussions[Discussions] de K3s un qui correspond à votre problème.
+. Rejoignez le canal K3s sur https://slack.rancher.io/[Rancher Slack] pour obtenir de l'aide.
+. Soumettez un https://github.com/k3s-io/k3s/issues/new/choose[Nouveau Problème] sur le Github K3s décrivant votre configuration et le problème que vous rencontrez.

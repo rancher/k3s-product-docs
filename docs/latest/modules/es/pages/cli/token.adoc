@@ -1,0 +1,235 @@
+= token de k3s
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-05-26
+:page-revdate: {revdate}
+
+K3s utiliza tokens para asegurar el proceso de unión de nodos y para cifrar información confidencial que se persiste en el almacén de datos. Los tokens autentican el clúster al nodo que se une, y el nodo al clúster.
+
+== Formato del token
+
+Los tokens de K3s pueden especificarse en formato seguro o corto. Se prefiere el formato seguro, ya que permite al cliente autenticar la identidad del clúster al que se une, antes de enviar credenciales.
+
+=== Seguro
+
+El formato de token seguro (a veces denominado "token completo") contiene las siguientes partes:
+
+`<prefix><cluster CA hash>::<credentials>`
+
+* `prefix`: un prefijo fijo `K10` que identifica el formato del token
+* `cluster CA hash`: El hash del certificado CA del servidor del clúster, utilizado para autenticar el servidor al nodo que se une.
+ ** Para certificados CA autofirmados, este es el sumatorio SHA256 del certificado en formato PEM, tal como se almacena en disco.
+ ** Para certificados CA personalizados, este es el sumatorio SHA256 de la codificación DER del certificado raíz; comúnmente conocido como la huella digital del certificado.
+* `credentials`: El nombre de usuario y la contraseña, o token de portador, utilizados para autenticar el nodo que se une al clúster.
+
+==== Inicio TLS
+
+Cuando se especifica un token seguro, el nodo que se une realiza los siguientes pasos para validar la identidad del servidor al que se ha conectado, antes de transmitir credenciales:
+
+. Con la verificación de TLS desactivada, descarga el paquete CA desde `/cacerts` en el servidor al que se une.
+. Calcula el hash SHA256 del certificado CA, como se describió anteriormente.
+. Compara el hash SHA256 calculado con el hash del token.
+. Si el hash coincide, valida que el certificado presentado por el servidor puede ser validado por el paquete CA del servidor.
+. Si el certificado del servidor es válido, presenta credenciales para unirse al clúster utilizando autenticación básica o de token portador, dependiendo del tipo de token.
+
+=== Corto
+
+El formato de token corto incluye solo la contraseña o el token portador utilizado para autenticar el nodo que se une al clúster.
+
+Si se utiliza un token corto, el nodo que se une confía implícitamente en el paquete CA presentado por el servidor; se omiten los pasos 2-4 en el proceso de arranque TLS. La conexión inicial puede ser vulnerable a un ataque de https://en.wikipedia.org/wiki/Man-in-the-middle_attack[hombre-en-el-medio].
+
+== Tipos de testigo
+
+K3s admite tres tipos de tokens. Solo el token del servidor está disponible por defecto; los tipos de token adicionales deben ser configurados o creados por el administrador.
+
+|===
+| Tipo | Opción de CLI | Variable de entorno
+
+| Servidor
+| `--token`
+| `K3S_TOKEN`
+
+| oficina postal
+| `--agent-token`
+| `K3S_AGENT_TOKEN`
+
+| Bootstrap
+| `n/a`
+| `n/a`
+|===
+
+[#_server]
+=== Servidor
+
+Si no se proporciona un token al iniciar el primer servidor en el clúster, se crea uno con una contraseña aleatoria. El token del servidor siempre se escribe en `/var/lib/rancher/k3s/server/token`, en formato seguro.
+
+El token del servidor puede ser utilizado para unir tanto nodos de servidor como de agente al clúster. Cualquiera que tenga acceso al token del servidor tiene esencialmente acceso completo de administrador al clúster. Este token debe ser protegido cuidadosamente.
+
+El token del servidor también se utiliza como la https://en.wikipedia.org/wiki/PBKDF2[frase de paso PBKDF2] para cifrar información confidencial que se persiste en el almacén de datos conocido como datos de inicio. Los datos de inicio son esenciales para configurar nuevos nodos de servidor o restaurar desde una instantánea. Por esta razón, el token debe incluirse en la copia de seguridad junto con el almacén de datos del clúster.
+
+[CAUTION]
+====
+A menos que se utilicen certificados CA personalizados, solo se puede utilizar el formato de token corto (solo contraseña) al iniciar el primer servidor en el clúster. Esto se debe a que el hash CA del clúster no puede conocerse hasta que el servidor haya generado los certificados CA autofirmados del clúster.
+====
+
+
+Para más información sobre el uso de certificados CA personalizados, consulta la xref:cli/certificate.adoc[`k3s certificate` documentación]. +
+Para más información sobre cómo hacer una copia de seguridad de tu clúster, consulta la xref:datastore/backup-restore.adoc[documentación de Copia de Seguridad y Restauración].
+
+=== oficina postal
+
+Por defecto, el token del agente es el mismo que el token del servidor. El token del agente se puede establecer antes o después de que se haya iniciado el clúster, cambiando la opción de CLI o la variable de entorno en todos los servidores del clúster. El token del agente es similar al token del servidor en que está configurado de forma estática y no expira.
+
+El token del agente se escribe en `/var/lib/rancher/k3s/server/agent-token`, en formato seguro. Si no se especifica un token de agente, este archivo es un enlace al token del servidor.
+
+=== Bootstrap
+
+[IMPORTANT]
+.Puerta de versión
+====
+El soporte para el comando `k3s token` y la capacidad de unir nodos con tokens de arranque está disponible a partir de las versiones de 2023-02 (v1.26.2+k3s1, v1.25.7+k3s1, v1.24.11+k3s1, v1.23.17+k3s1).
+====
+
+K3s soporta tokens de arranque de agente https://kubernetes.io/docs/reference/access-authn-authz/bootstrap-tokens/[bootstrap tokens] generados dinámicamente y que expiran automáticamente.
+
+[#_k3s_token_1]
+== token de k3s
+
+La herramienta CLI del token k3s maneja:
+
+* El ciclo de vida de los tokens de arranque, utilizando el mismo código de generación y validación que los tokens de arranque `kubeadm token`. Tenga en cuenta que ambas CLIs son similares.
+* La rotación del token del servidor
+
+----
+NAME:
+   k3s token - Manage tokens
+
+USAGE:
+   k3s token command [command options] [arguments...]
+
+COMMANDS:
+   create    Create bootstrap tokens on the server
+   delete    Delete bootstrap tokens on the server
+   generate  Generate and print a bootstrap token, but do not create it on the server
+   list      List bootstrap tokens on the server
+   rotate    Rotate original server token with a new token
+
+OPTIONS:
+   --help, -h  show help
+----
+
+[discrete]
+=== `k3s token create [token]`
+
+Cree un nuevo token. El `[token]` es el token real a escribir, tal como lo genera `k3s token generate`. Si no se proporciona un token, se generará uno aleatorio.
+
+Un token en formato seguro, incluyendo el hash CA del clúster, se escribirá en stdout. La salida de este comando debe ser guardada, ya que la parte secreta del token no puede mostrarse de nuevo.
+
+|===
+| Indicadores | Descripción
+
+| `--data-dir` valor
+| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o ${HOME}/.rancher/k3s si no es root)
+
+| `--kubeconfig` valor
+| Servidor al que conectarse [$KUBECONFIG]
+
+| `--description` valor
+| Una descripción fácil de entender de cómo se utiliza este token
+
+| `--groups` valor
+| Grupos adicionales con los que se autenticará este token cuando se use para la autenticación. (por defecto: Por defecto: "system:bootstrappers:k3s:default-node-token")
+
+| `--ttl` valor
+| La duración antes de que el token se elimine automáticamente (por ejemplo, 1s, 2m, 3h). Si se establece en '0', el token nunca expirará (por defecto: 24h0m0s)
+
+| `--usages` valor
+| Describe las formas en que se puede utilizar este token. (por defecto: "firma, autenticación")
+|===
+
+[discrete]
+=== `k3s token delete`
+
+Eliminar uno o más tokens. Se puede proporcionar el token completo, o solo el ID del token.
+
+|===
+| Indicadores | Descripción
+
+| `--data-dir` valor
+| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o ${HOME}/.rancher/k3s si no es root)
+
+| `--kubeconfig` valor
+| Servidor al que conectarse [$KUBECONFIG]
+|===
+
+[discrete]
+=== `k3s token generate`
+
+Generar un token de arranque aleatorio.
+
+No es necesario utilizar este comando para generar un token. Puedes hacerlo tú mismo siempre que esté en el formato `[a-z0-9]\{6}.[a-z0-9]\{16}`, donde la primera parte es el ID del token y la segunda parte es el secreto.
+
+|===
+| Indicadores | Descripción
+
+| `--data-dir` valor
+| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o ${HOME}/.rancher/k3s si no es root)
+
+| `--kubeconfig` valor
+| Servidor al que conectarse [$KUBECONFIG]
+|===
+
+[discrete]
+=== `k3s token list`
+
+Listar tokens de arranque, mostrando su ID, descripción y el tiempo de vida restante.
+
+|===
+| Indicadores | Descripción
+
+| `--data-dir` valor
+| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o ${HOME}/.rancher/k3s si no es root)
+
+| `--kubeconfig` valor
+| Servidor al que conectarse [$KUBECONFIG]
+
+| `--output` valor
+| Formato de salida. Opciones válidas: texto, json (por defecto: "texto")
+|===
+
+[discrete]
+=== `k3s token rotate`
+
+[IMPORTANT]
+.Puerta de versión
+====
+Disponible a partir de las versiones de octubre de 2023 (v1.28.2+k3s1, v1.27.7+k3s1, v1.26.10+k3s1, v1.25.15+k3s1).
+====
+
+
+Rotar el token del servidor original con un nuevo token del servidor. Después de ejecutar este comando, todos los servidores y cualquier agente que se unió originalmente con el token antiguo deben reiniciarse con el nuevo token.
+
+Si no especificas un nuevo token, se generará uno para ti.
+
+|===
+| Indicadores | Descripción
+
+| `--data-dir` valor
+| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o ${HOME}/.rancher/k3s si no es root)
+
+| `--kubeconfig` valor
+| Servidor al que conectarse [$KUBECONFIG]
+
+| `--server` valor
+| Servidor al que conectarse (por defecto: "https://127.0.0.1:6443") [$K3S_URL]
+
+| `--token` valor
+| Token existente utilizado para unir un servidor o agente a un clúster [$K3S_TOKEN]
+
+| `--new-token` valor
+| Nuevo token que reemplaza al token existente
+|===
+
+[WARNING]
+====
+Las instantáneas tomadas antes de la rotación requerirán el antiguo token del servidor al restaurar el clúster.
+====

@@ -3,117 +3,117 @@
 :revdate: 2025-06-16
 :page-revdate: {revdate}
 
-K3s 与其他 Kubernetes 发行版的不同之处，在于 K3s 支持使用 etcd 以外的数据库来运行 Kubernetes。该功能让 Kubernetes 运维更加灵活。你可以根据实际情况选择合适的数据存储选项。例如：
+使用除etcd以外的数据存储来运行Kubernetes的能力使K3s与其他Kubernetes发行版不同。此功能为Kubernetes操作员提供了灵活性。可用的数据存储选项允许您选择最适合您用例的数据存储。例如：
 
-* 如果你的团队没有操作 etcd 的专业知识，你可以选择 MySQL 或 PostgreSQL 等企业级 SQL 数据库。
-* 如果你需要在 CI/CD 环境中运行一个简单、短期的集群，你可以使用嵌入式 SQLite 数据库。
-* 如果你希望在边缘部署 Kubernetes 并需要高可用解决方案，但又无法承担在边缘管理数据库的运营开销，你可以使用 K3s 的嵌入式 HA 数据存储，该数据存储构建在嵌入式 etcd 之上。
+* 如果您的团队没有操作etcd的专业知识，您可以选择像MySQL或PostgreSQL这样的企业级SQL数据库。
+* 如果您需要在CI/CD环境中运行一个简单的短期集群，可以使用嵌入式SQLite数据库。
+* 如果您希望在边缘部署Kubernetes并需要一个高可用的解决方案，但又无法承担在边缘管理数据库的运营开销，您可以使用K3s基于嵌入式etcd构建的嵌入式HA数据存储。
 
-K3s 支持以下数据存储选项：
+K3s支持以下数据存储选项：
 
 * *嵌入式 https://www.sqlite.org/index.html[SQLite]* +
- SQLite 不能用于具有多个 Server 的集群。 +
- SQLite 是默认的数据存储，如果没有其他数据存储配置，并且磁盘上没有嵌入式 etcd 数据库文件，将使用 SQLite。
-* *嵌入式 etcd* +
- 有关在具有多个 Server 的情况下使用嵌入式 etcd，请参阅xref:datastore/ha-embedded.adoc[高可用嵌入式 etcd] 文档。
- 如果 K3s 配置为初始化一个新的 etcd 集群，加入一个现有的 etcd 集群，或者 etcd 数据库文件在启动时在磁盘上，那么会自动选择嵌入式 etcd。
+SQLite不能在多个服务器的集群上使用。 +
+SQLite是默认的数据存储，如果没有其他数据存储配置，并且磁盘上没有嵌入式etcd数据库文件，将使用SQLite。
+* *嵌入式etcd* +
+有关在多个服务器上使用嵌入式etcd的更多信息，请参见xref:datastore/ha-embedded.adoc[高可用性嵌入式etcd]文档。
+如果K3s被配置为初始化一个新的etcd集群、加入一个现有的etcd集群，或者在启动时磁盘上存在etcd数据库文件，将自动选择嵌入式etcd。
 * *外部数据库* +
- 有关在具有多个 Server 的情况下使用外部数据存储，请参阅xref:datastore/ha.adoc[高可用外部数据库]文档。 +
- 支持以下外部数据存储：
- ** https://etcd.io/[etcd]（针对版本 3.5.21 进行了认证）
- ** https://www.mysql.com/[MySQL]（针对版本 8.0 和 8.4 进行了认证）
- ** https://mariadb.org/[MariaDB]（针对版本 10.11 和 11.4 进行了认证）
- ** https://www.postgresql.org/[PostgreSQL]（针对版本 15.12, 16.7 和 17.3 进行了认证）
+有关在多个服务器上使用外部数据存储的更多信息，请参见xref:datastore/ha.adoc[高可用性外部DB]文档。 +
+支持以下外部数据存储：
+ ** https://etcd.io/[etcd]（针对版本3.5.21进行认证）
+ ** https://www.mysql.com/[MySQL]（针对版本5.7和8.0进行认证）
+ ** https://mariadb.org/[MariaDB]（针对版本10.11和11.4进行认证）
+ ** https://www.postgresql.org/[PostgreSQL]（针对版本15.12、16.7和17.3进行认证）
 
 [CAUTION]
-.准备语句支持
+.预处理语句支持
 ====
-K3s 需要 DB 的准备语句支持。换言之，https://www.pgbouncer.org/faq.html#how-to-use-prepared-statements-with-transaction-pooling[PgBouncer] 之类的连接池将无法与 K3s 一起使用。
+K3s需要数据库对预处理语句的支持。这意味着像https://www.pgbouncer.org/faq.html#how-to-use-prepared-statements-with-transaction-pooling[PgBouncer]这样的连接池可能需要额外配置才能与K3s一起使用。
 ====
 
 [WARNING]
-.Multimaster Setups
+.多主设置
 ====
-Multi-master databases that set `auto_increment_increment` or `auto_increment_offset` greater than 1 are not supported. Kine expects the revision to start at 0 at 0 and always move forward by exactly 1 when a key is successfully inserted. This affects products such as Galera for MySQL/MariaDB. 
+设置`auto_increment_increment`或`auto_increment_offset`大于1的多主数据库不受支持。Kine期望修订号从0开始，并且在每次成功插入键时，恰好递增1。这影响到像Galera for MySQL/MariaDB这样的产品。
 ====
 
 [#_external_datastore_configuration_parameters]
 == 外部数据存储配置参数
 
-如果你希望使用外部数据存储（例如 PostgreSQL、MySQL 或 etcd），你必须设置 `datastore-endpoint` 参数，以便 K3s 知道如何连接到外部数据存储。你也可以指定参数来配置连接的认证和加密。下表总结了这些参数，它们可以作为 CLI 标志或环境变量传递：
+如果您希望使用外部数据存储，如PostgreSQL、MySQL或etcd，您必须设置`datastore-endpoint`参数，以便K3s知道如何连接到它。您还可以指定参数以配置连接的身份验证和加密。下表总结了这些参数，可以作为CLI标志或环境变量传递。
 
 |===
-| CLI 标志 | 环境变量 | 描述
+| CLI标志 | 环境变量 | 说明
 
 | `--datastore-endpoint`
 | `K3S_DATASTORE_ENDPOINT`
-| 指定 PostgreSQL、MySQL 或 etcd 连接字符串。该字符串用于描述与数据存储的连接。不同的后端对应不同的字符串结构，下文有详细说明。
+| 指定PostgreSQL、MySQL或etcd连接字符串。这是用于描述与数据存储连接的字符串。该字符串的结构特定于每个后端，详细信息如下。
 
 | `--datastore-cafile`
 | `K3S_DATASTORE_CAFILE`
-| TLS 证书颁发机构（CA）文件，用于确保数据存储的通信安全。如果你的数据存储使用自定义证书颁发机构签署的证书通过 TLS 处理请求，则可以使用此参数指定 CA，以便 K3s 客户端可以正确验证证书。
+| 用于帮助保护与数据存储通信的TLS证书颁发机构（CA）文件。如果您的数据存储通过TLS使用由自定义证书颁发机构签署的证书提供请求，您可以使用此参数指定该CA，以便K3s客户端可以正确验证证书。
 
 | `--datastore-certfile`
 | `K3S_DATASTORE_CERTFILE`
-| TLS 证书文件，用于对数据存储进行基于客户端证书的验证。要使用这个功能，你必须将数据存储配置为支持基于客户端证书的认证。要指定此参数，你还必须指定 `datastore-keyfile` 参数。
+| 用于基于客户端证书进行身份验证以访问您的数据存储的TLS证书文件。要使用此功能，您的数据存储必须配置为支持基于客户端证书的身份验证。如果您指定此参数，则必须同时指定 `datastore-keyfile` 参数。
 
 | `--datastore-keyfile`
 | `K3S_DATASTORE_KEYFILE`
-| TLS 密钥文件，用于对数据存储进行基于客户端证书的验证。有关详细信息，请参阅前面的 `datastore-certfile` 参数。
+| 用于基于客户端证书进行身份验证以访问您的数据存储的TLS密钥文件。有关更多详细信息，请参见之前的 `datastore-certfile` 参数。
 |===
 
-作为最佳实践，我们建议将这些参数设置为环境变量，而不是命令行参数，这样你的数据库证书或其他敏感信息就不会作为进程信息的一部分暴露出来。
+作为最佳实践，我们建议将这些参数设置为环境变量，而不是命令行参数，以便您的数据库凭据或其他敏感信息不会作为进程信息的一部分暴露。
 
 [#_datastore_endpoint_format_and_functionality]
 == 数据存储端点格式和功能
 
-如前所述，传递给 `datastore-endpoint` 参数的值的格式取决于数据存储后端。下文详细介绍了每个支持的外部数据存储的格式和功能。
+如前所述，传递给 `datastore-endpoint` 参数的值的格式取决于数据存储后端。以下详细说明了每个支持的外部数据存储的格式和功能。
 
 [tabs,sync-group-id=ext-db]
 ======
 PostgreSQL::
 +
 --
-最常见的 PostgreSQL 的 `datastore-endpoint` 参数格式如下：
+在其最常见的形式中，PostgreSQL 的数据存储端点参数具有以下格式：
 
 `postgres://username:password@hostname:port/database-name`
 
-支持使用更高级的配置参数。有关更多信息，请参阅 https://godoc.org/github.com/lib/pq。
+提供了更高级的配置参数。有关这些的更多信息，请参见 https://godoc.org/github.com/lib/pq.。
 
-如果指定数据库名称不存在，server 将尝试创建它。
+如果您指定了数据库名称且该数据库不存在，服务器将尝试创建它。
 
-如果你只提供了 `postgres://` 作为端点，K3s 将尝试执行以下操作：
+如果您仅将 `postgres://` 作为端点提供，K3s 将尝试执行以下操作：
 
-* 使用 `postgres` 作为用户名和密码连接到 localhost
+* 使用`postgres`作为用户名和密码连接到 localhost
 * 创建一个名为 `kubernetes` 的数据库
 --
 
 MySQL / MariaDB::
 +
 --
-最常见的 MySQL 和 MariaDB 的 `datastore-endpoint` 参数格式如下：
+在其最常见的形式中，MySQL 和 MariaDB 的 `datastore-endpoint` 参数具有以下格式：
 
 `mysql://username:password@tcp(hostname:3306)/database-name`
 
-支持使用更高级的配置参数。有关更多信息，请参阅 https://github.com/go-sql-driver/mysql#dsn-data-source-name
+提供了更高级的配置参数。有关这些的更多信息，请参见 https://github.com/go-sql-driver/mysql#dsn-data-source-name。
 
-请注意，由于 K3s 的一个[已知问题](https://github.com/k3s-io/k3s/issues/1093)，你无法设置 `tls` 参数。TLS 通信是支持的，但你不能将此参数设置为 “skip-verify” 以使 K3s 跳过证书验证。
+请注意，由于 K3s 中的 https://github.com/k3s-io/k3s/issues/1093[已知问题]，您无法设置 `tls` 参数。支持 TLS 通信，但例如，您不能将此参数设置为 "skip-verify" 以使 K3s 跳过证书验证。
 
-如果指定数据库名称不存在，server 将尝试创建它。
+如果您指定了数据库名称且该数据库不存在，服务器将尝试创建它。
 
-如果你只提供了 `mysql://` 作为端点，K3s 将尝试执行以下操作：
+如果您仅将 `mysql://` 作为端点提供，K3s 将尝试执行以下操作：
 
-- 通过 `root` 用户，不使用密码连接到 `/var/run/mysqld/mysqld.sock` 的 MySQL socket
-- 创建一个名为 `kubernetes` 的数据库
+* 使用 `/var/run/mysqld/mysqld.sock` 用户和无密码连接到 `root` 的 MySQL 套接字
+* 创建一个名为 `kubernetes` 的数据库
 --
 
 etcd::
 +
 --
-最常见的 etcd 的 `datastore-endpoint` 参数格式如下：
+在最常见的形式中，`datastore-endpoint`参数的格式如下：
 
-`https://etcd-host-1:2379,https://etcd-host-2:2379,https://etcd-host-3:2379`
+`\https://etcd-host-1:2379,https://etcd-host-2:2379,https://etcd-host-3:2379\`
 
-以上假设使用的是典型的三节点 etcd 集群。该参数可以再接受一个逗号分隔的 etcd URL。
+以上假设了一个典型的三节点etcd集群。该参数可以接受一个或多个以逗号分隔的etcd URL。
 --
 ======

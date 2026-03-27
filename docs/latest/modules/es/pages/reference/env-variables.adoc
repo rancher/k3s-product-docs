@@ -1,0 +1,102 @@
+= Variables de entorno
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-12-05
+:page-revdate: {revdate}
+
+Como se menciona en la xref:quick-start.adoc[Guía de Inicio Rápido], puedes utilizar el script de instalación disponible en https://get.k3s.io para instalar K3s como un servicio en sistemas basados en systemd y openrc.
+
+La forma más sencilla de este comando es la siguiente:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -
+----
+
+Al utilizar este método para instalar K3s, se pueden usar las siguientes variables de entorno para configurar la instalación:
+
+|===
+| Variable de entorno | Descripción
+
+| `INSTALL_K3S_SKIP_DOWNLOAD`
+| Si se establece en verdadero, no descargará el hash o binario de K3s.
+
+| `INSTALL_K3S_SYMLINK`
+| Por defecto, creará enlaces simbólicos para los binarios kubectl, crictl y ctr si los comandos aún no existen en el PATH. Si se establece en 'skip', no creará enlaces simbólicos y 'force' sobrescribirá.
+
+| `INSTALL_K3S_SKIP_ENABLE`
+| Si se establece en verdadero, no habilitará ni iniciará el servicio K3s.
+
+| `INSTALL_K3S_SKIP_START`
+| Si se establece en verdadero, no iniciará el servicio K3s.
+
+| `INSTALL_K3S_VERSION`
+| Versión de K3s para descargar de Github. Intentará descargar del canal estable si no se especifica.
+
+| `INSTALL_K3S_BIN_DIR`
+| Directorio para instalar el binario de K3s, enlaces y script de desinstalación, o usar `/usr/local/bin` como predeterminado.
+
+| `INSTALL_K3S_BIN_DIR_READ_ONLY`
+| Si se establece en verdadero, no escribirá archivos en `INSTALL_K3S_BIN_DIR` y obligará a usar `INSTALL_K3S_SKIP_DOWNLOAD=true`.
+
+| `INSTALL_K3S_SYSTEMD_DIR`
+| Directorio para instalar el servicio systemd y archivos de entorno, o usar `/etc/systemd/system` como predeterminado.
+
+| `INSTALL_K3S_EXEC`
+| Comando con flags para usar al lanzar K3s en el servicio. Si no se especifica el comando y se establece `K3S_URL`, se predeterminará a "agente". Si no se establece `K3S_URL`, se predeterminará a "servidor". Para ayuda, consulta xref:installation/configuration.adoc#_configuration_with_install_script[este ejemplo.]
+
+| `INSTALL_K3S_NAME`
+| Nombre del servicio systemd a crear, se predeterminará a 'k3s' si se ejecuta k3s como servidor y 'k3s-agent' si se ejecuta k3s como agente. Si se especifica, el nombre se prefijará con 'k3s-'.
+
+| `INSTALL_K3S_TYPE`
+| Tipo de servicio systemd a crear, se predeterminará desde el comando exec de K3s si no se especifica.
+
+| `INSTALL_K3S_SELINUX_WARN`
+| Si se establece en verdadero, continuará si no se encuentra la política k3s-selinux.
+
+| `INSTALL_K3S_SKIP_SELINUX_RPM`
+| Si se establece en verdadero, se omitirá la instalación automática del RPM de k3s.
+
+| `INSTALL_K3S_CHANNEL_URL`
+| URL del canal para obtener la URL de descarga de K3s. Predeterminado a https://update.k3s.io/v1-release/channels..
+
+| `INSTALL_K3S_CHANNEL`
+| Canal a utilizar para obtener la URL de descarga de K3s. Predeterminado a "estable". Las opciones incluyen: `stable`, `latest`, `testing`.
+|===
+
+Este ejemplo muestra dónde colocar las variables de entorno mencionadas anteriormente como opciones (después de la barra vertical):
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_CHANNEL=latest sh -
+----
+
+Las variables de entorno que comienzan con `K3S_` se conservarán para que las utilicen los servicios systemd y openrc.
+
+Establecer `K3S_URL` sin establecer explícitamente un comando exec predeterminará el comando a "agente".
+
+Al ejecutar el agente, también debe establecerse `K3S_TOKEN`.
+
+[NOTE]
+.Puerta de versión.
+====
+Disponible a partir de las versiones de octubre de 2024: v1.28.15+k3s1, v1.29.10+k3s1, v1.30.6+k3s1, v1.31.2+k3s1.
+====
+
+K3s ahora utilizará `PATH` para encontrar entornos de ejecución de contenedor alternativos, además de verificar las rutas predeterminadas utilizadas por los paquetes del entorno de ejecución de contenedor. Para utilizar esta función, debe modificar la variable de entorno PATH del servicio K3s para agregar los directorios que contienen los binarios del entorno de ejecución de contenedor.
+
+Se recomienda que modifique uno de estos dos archivos de variables de entorno:
+
+* /etc/default/k3s # o k3s-agent
+* /etc/sysconfig/k3s # o k3s-agent
+
+Este ejemplo añadirá el `PATH` en `/etc/default/k3s`:
+
+[,bash]
+----
+echo PATH=$PATH >> /etc/default/k3s
+----
+
+[WARNING]
+====
+Los cambios en `PATH` deben hacerse con cuidado para evitar colocar binarios no confiables en el PATH de los servicios que se ejecutan como root.
+====

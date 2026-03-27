@@ -1,0 +1,407 @@
+= Anforderungen
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-12-31
+:page-revdate: {revdate}
+
+K3s ist sehr leichtgewichtig, hat jedoch einige Mindestanforderungen, die im Folgenden aufgeführt sind.
+
+Egal, ob Sie K3s in einem Container oder als nativen Linux-Dienst konfigurieren, jeder Knoten, der K3s ausführt, sollte die folgenden Mindestanforderungen erfüllen. Diese Anforderungen sind die Basis für K3s und seine verpackten Komponenten und beinhalten nicht die Ressourcen, die von der Arbeitslast selbst verbraucht werden.
+
+== Voraussetzungen
+
+Zwei Knoten dürfen nicht denselben Hostnamen haben.
+
+Wenn mehrere Knoten denselben Hostnamen haben sollen oder wenn Hostnamen von einem automatisierten Bereitstellungssystem wiederverwendet werden können, verwenden Sie die `--with-node-id` Option, um jedem Knoten ein zufälliges Suffix anzuhängen, oder entwickeln Sie einen einzigartigen Namen, den Sie mit `--node-name` oder `$K3S_NODE_NAME` für jeden Knoten, den Sie zum Cluster hinzufügen, übergeben.
+
+== Architektur
+
+K3s ist für die folgenden Architekturen verfügbar:
+
+* x86-64
+* armhf
+* arm64/aarch64
+
+[CAUTION]
+.ARM64-Seitengröße
+====
+
+Vor den Veröffentlichungen im Mai 2023 (v1.24.14+k3s1, v1.25.10+k3s1, v1.26.5+k3s1, v1.27.2+k3s1) muss auf `aarch64/arm64` Systemen der Kernel 4k Seiten verwenden. *RHEL9*, *Ubuntu*, *Raspberry PI OS* und *SLES* erfüllen alle diese Anforderungen.
+====
+
+[#_operating_systems]
+== Betriebssysteme
+
+Es wird erwartet, dass K3s auf den meisten modernen Linux-Systemen funktioniert.
+
+Einige Betriebssysteme haben zusätzliche Einrichtungsvoraussetzungen:
+
+[tabs,sync-group-id=os,id=os]
+======
+SUSE Linux Enterprise / openSUSE::
++
+--
+[#_sle_opensuse_firewalld]
+[pass]
+<h3><a class="anchor" id="_sle_opensuse_firewalld" href="#_sle_opensuse_firewalld"></a>Firewalld</h3>
+
+Es wird empfohlen, firewalld auszuschalten:
+
+[,bash]
+----
+systemctl disable firewalld --now
+----
+
+Wenn Sie firewalld aktiviert lassen möchten, sind standardmäßig die folgenden Regeln erforderlich:
+
+[,bash]
+----
+firewall-cmd --permanent --add-port=6443/tcp #apiserver
+firewall-cmd --permanent --zone=trusted --add-source=10.42.0.0/16 #pods
+firewall-cmd --permanent --zone=trusted --add-source=10.43.0.0/16 #services
+firewall-cmd --reload
+----
+
+Zusätzliche Ports müssen je nach Ihrer Konfiguration möglicherweise geöffnet werden. Siehe <<_inbound_rules_for_k3s_nodes,Inbound Rules>> für weitere Informationen. Wenn Sie die Standard-CIDR für Pods oder Dienste ändern, müssen Sie die Firewall-Regeln entsprechend aktualisieren.
+--
+
+Red Hat Enterprise Linux / CentOS / Fedora::
++
+--
+[#_rhel10]
+[pass]
+<h3><a class="anchor" id="_rhel10" href="#_rhel10"></a>RHEL 10</h3>
+
+Auf RHEL 10 ist ein zusätzliches Paket erforderlich:
+
+[,bash]
+----
+sudo dnf install -y kernel-modules-extra
+----
+
+[#_rhel_centos_fedora_firewalld]
+[pass]
+<h3><a class="anchor" id="_rhel_centos_fedora_firewalld" href="#_rhel_centos_fedora_firewalld"></a>Firewalld</h3>
+
+Es wird empfohlen, firewalld auszuschalten:
+
+[,bash]
+----
+systemctl disable firewalld --now
+----
+
+Wenn Sie firewalld aktiviert lassen möchten, sind standardmäßig die folgenden Regeln erforderlich:
+
+[,bash]
+----
+firewall-cmd --permanent --add-port=6443/tcp #apiserver
+firewall-cmd --permanent --zone=trusted --add-source=10.42.0.0/16 #pods
+firewall-cmd --permanent --zone=trusted --add-source=10.43.0.0/16 #services
+firewall-cmd --reload
+----
+
+Zusätzliche Ports müssen je nach Ihrer Konfiguration möglicherweise geöffnet werden. Siehe <<_inbound_rules_for_k3s_nodes,Inbound Rules>> für weitere Informationen. Wenn Sie die Standard-CIDR für Pods oder Dienste ändern, müssen Sie die Firewall-Regeln entsprechend aktualisieren.
+
+[WARNING]
+.Ältere RHEL/CentOS-Versionen
+====
+Betriebssystemversionen vor RHEL 8.4 verwenden NetworkManager mit einem bekannten Fehler, der die K3s-Netzwerkverbindung beeinträchtigt. Wenn Sie eine ältere Version verwenden, ist es erforderlich, nm-cloud-setup zu deaktivieren und den Knoten neu zu starten:
+
+[,bash]
+----
+systemctl disable nm-cloud-setup.service nm-cloud-setup.timer
+reboot
+----
+====
+--
+
+Ubuntu / Debian::
++
+--
+[#_ubuntu_debian_ufw]
+[pass]
+<h3><a class="anchor" id="_ubuntu_debian_ufw" href="#_ubuntu_debian_ufw"></a>UFW</h3>
+
+Ältere Debian-Versionen können unter einem bekannten iptables-Fehler leiden. Siehe xref:known-issues.adoc#_iptables[Bekannte Probleme].
+
+Es wird empfohlen, ufw (unkomplizierte Firewall) auszuschalten:
+
+[,bash]
+----
+ufw disable
+----
+
+Wenn Sie ufw aktiviert lassen möchten, sind standardmäßig die folgenden Regeln erforderlich:
+
+[,bash]
+----
+ufw allow 6443/tcp #apiserver
+ufw allow from 10.42.0.0/16 to any #pods
+ufw allow from 10.43.0.0/16 to any #services
+----
+
+Zusätzliche Ports müssen je nach Ihrer Konfiguration möglicherweise geöffnet werden. Siehe <<_inbound_rules_for_k3s_nodes,Inbound Rules>> für weitere Informationen. Wenn Sie die Standard-CIDR für Pods oder Dienste ändern, müssen Sie die Firewall-Regeln entsprechend aktualisieren.
+--
+
+[#os_tab_raspberry_pi]
+Raspberry Pi::
++
+--
+Raspberry Pi OS basiert auf Debian und kann unter einem bekannten iptables-Fehler leiden. Siehe xref:known-issues.adoc#_iptables[Bekannte Probleme].
+
+[#_cgroups]
+[pass]
+<h3><a class="anchor" id="_cgroups" href="#_cgroups"></a>Cgroups</h3>
+
+Standardinstallationen von Raspberry Pi OS starten nicht mit `cgroups` aktiviert. **K3S** benötigt `cgroups`, um den systemd-Dienst zu starten. `cgroups` kann aktiviert werden, indem `cgroup_memory=1 cgroup_enable=memory` an `/boot/firmware/cmdline.txt` angehängt wird.
+
+[NOTE]
+====
+Auf Debian 11 und älteren Pi OS-Versionen befindet sich die cmdline.txt unter `/boot/cmdline.txt`.
+====
+
+Beispiel cmdline.txt:
+
+----
+console=serial0,115200 console=tty1 root=PARTUUID=58b06195-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait cgroup_memory=1 cgroup_enable=memory
+----
+
+[#_ubuntu_vxlan_module]
+[pass]
+<h3><a class="anchor" id="_ubuntu_vxlan_module" href="#_ubuntu_vxlan_module"></a>Ubuntu Vxlan-Modul</h3>
+
+Mit Ubuntu 21.10 bis Ubuntu 23.10 wurde die vxlan-Unterstützung auf dem Raspberry Pi in ein separates Kernel-Modul verschoben. Dieser Schritt ist für Ubuntu 24.04 und spätere Versionen nicht erforderlich.
+
+[,bash]
+----
+sudo apt install linux-modules-extra-raspi
+----
+--
+======
+
+Für weitere Informationen zu den getesteten Betriebssystemen mit Rancher verwalteten K3s-Clustern, siehe die https://rancher.com/support-maintenance-terms/[Rancher-Support- und Wartungsbedingungen.]
+
+== Hardware
+
+Die Hardwareanforderungen skalieren basierend auf der Größe Ihrer Bereitstellungen. Die Mindestanforderungen sind:
+
+|===
+| Knoten | PROZESSOR | RAM
+
+| Server
+| 2 Kerne
+| 2 GB
+
+| Agent
+| 1 Kern
+| 512 MB
+|===
+
+xref:reference/resource-profiling.adoc[Ressourcenprofilierung] erfasst die Ergebnisse von Tests und Analysen, um die minimalen Ressourcenanforderungen für den K3s-Agenten, den K3s-Server mit einer Arbeitslast und den K3s-Server mit einem Agenten zu bestimmen.
+
+=== Festplatten
+
+Die K3s-Leistung hängt von der Leistung der Datenbank ab. Um optimale Geschwindigkeit zu gewährleisten, empfehlen wir, wenn möglich, eine SSD zu verwenden. 
+
+Wenn K3s auf einem Raspberry Pi oder anderen ARM-Geräten bereitgestellt wird, wird empfohlen, eine externe SSD zu verwenden. etcd ist schreibintensiv; SD-Karten und eMMC können die IO-Belastung nicht bewältigen.
+
+=== Server-Größenleitfaden
+
+Wenn die CPU und der RAM auf dem Server (Control-Plane + etcd) Knoten begrenzt sind, gibt es Einschränkungen hinsichtlich der Anzahl der Agentenknoten, die unter Standardarbeitslastbedingungen hinzugefügt werden können.
+
+|===
+| Server-CPU | Server-RAM | Anzahl der Agenten
+
+| 2
+| 4 GB
+| 0-350
+
+| 4
+| 8 GB
+| 351-900
+
+| 8
+| 16 GB
+| 901-1800
+
+| 16+
+| 32 GB
+| 1800+
+|===
+
+[TIP]
+.Hochverfügbarkeitsdimensionierung
+====
+Bei Verwendung einer Hochverfügbarkeitskonfiguration mit 3 Serverknoten kann die Anzahl der Agenten ungefähr ~ 50 % mehr als in der obigen Tabelle skalieren. Z. B. können 3 Server mit 4 vCPU/8 GB auf ~ 1200 Agenten skalieren.
+====
+
+Es wird empfohlen, Agentenknoten in Gruppen von 50 oder weniger hinzuzufügen, um der CPU zu ermöglichen, Platz freizugeben, da es beim Hinzufügen von Knoten zu einem Anstieg kommt. Denken Sie daran, die Standard-`cluster-cidr` zu ändern, wenn Sie mehr als 255 Knoten wünschen!
+
+xref:reference/resource-profiling.adoc#_server_sizing_requirements_for_k3s[Ressourcenprofilierung] enthält weitere Informationen, wie diese Empfehlungen gefunden wurden.
+
+[#_networking]
+== Netzwerke
+
+Der K3s-Server benötigt, dass Port 6443 von allen Knoten erreichbar ist.
+
+Die Knoten müssen in der Lage sein, andere Knoten über UDP-Port 8472 zu erreichen, wenn das Flannel VXLAN-Backend verwendet wird, oder über UDP-Port 51820 (und 51821, wenn IPv6 verwendet wird), wenn das Flannel WireGuard-Backend verwendet wird. Der Knoten sollte auf keinem anderen Port lauschen. K3s verwendet Reverse-Tunneling, sodass die Knoten ausgehende Verbindungen zum Server herstellen und der gesamte Kubelet-Verkehr durch diesen Tunnel läuft. Wenn Sie jedoch Flannel nicht verwenden und Ihre eigene benutzerdefinierte CNI bereitstellen, sind die von Flannel benötigten Ports für K3s nicht erforderlich.
+
+Wenn Sie den Metrikserver nutzen möchten, müssen alle Knoten über Port 10250 miteinander erreichbar sein.
+
+Wenn Sie eine hohe Verfügbarkeit mit eingebettetem etcd erreichen möchten, müssen die Serverknoten über die Ports 2379 und 2380 miteinander erreichbar sein.
+
+[TIP]
+.Wichtig
+====
+Der VXLAN-Port auf den Knoten sollte nicht der Öffentlichkeit zugänglich gemacht werden, da dies Ihr Cluster-Netzwerk für jeden zugänglich macht. Führen Sie Ihre Knoten hinter einer Firewall/Sicherheitsgruppe aus, die den Zugriff auf Port 8472 deaktiviert.
+====
+
+
+[WARNING]
+====
+Flannel ist auf das https://www.cni.dev/plugins/current/main/bridge/[Bridge CNI-Plugin] angewiesen, um ein L2-Netzwerk zu erstellen, das den Verkehr weiterleitet. Rogue Pods mit `NET_RAW` Rechten können dieses L2-Netzwerk missbrauchen, um Angriffe wie ARP-Spoofing zu starten. Daher, wie in den https://kubernetes.io/docs/concepts/security/pod-security-standards/[Kubernetes-Dokumenten] dokumentiert, setzen Sie bitte ein eingeschränktes Profil, das `NET_RAW` auf nicht vertrauenswürdigen Pods deaktiviert.
+====
+
+[#_inbound_rules_for_k3s_nodes]
+=== Eingehende Regeln für K3s-Knoten
+
+|===
+| Protokoll | Port | Quelle | Ziel | Beschreibung
+
+| TCP
+| 2379-2380
+| Server
+| Server
+| Erforderlich nur für HA mit eingebettetem etcd
+
+| TCP
+| 6443
+| Agenten
+| Server
+| K3s-Überwachungsdienst und Kubernetes API-Server
+
+| UDP
+| 8472
+| Alle Knoten
+| Alle Knoten
+| Erforderlich nur für Flannel VXLAN
+
+| TCP
+| 10250
+| Alle Knoten
+| Alle Knoten
+| Kubelet-Metriken
+
+| UDP
+| 51820
+| Alle Knoten
+| Alle Knoten
+| Erforderlich nur für Flannel WireGuard mit IPv4
+
+| UDP
+| 51821
+| Alle Knoten
+| Alle Knoten
+| Erforderlich nur für Flannel WireGuard mit IPv6
+
+| TCP
+| 5001
+| Alle Knoten
+| Alle Knoten
+| Erforderlich nur für eingebettete verteilte Registry (Spegel)
+
+| TCP
+| 6443
+| Alle Knoten
+| Alle Knoten
+| Erforderlich nur für eingebettete verteilte Registry (Spegel)
+|===
+
+Typischerweise ist sämtlicher ausgehender Verkehr erlaubt.
+
+Zusätzliche Änderungen an der Firewall können je nach verwendetem Betriebssystem erforderlich sein.
+
+== Große Cluster
+
+Die Hardwareanforderungen basieren auf der Größe Ihres K3s-Clusters. Für Produktions- und große Cluster empfehlen wir die Verwendung eines Setups mit hoher Verfügbarkeit und einer externen Datenbank. Die folgenden Optionen werden für die externe Datenbank in der Produktion empfohlen:
+
+* MySQL
+* PostgreSQL
+* etcd
+
+=== CPU und Arbeitsspeicher
+
+Die folgenden sind die minimalen CPU- und Arbeitsspeicheranforderungen für Knoten in einem Hochverfügbarkeits-K3s-Server:
+
+[cols="^,^,^,^"]
+|===
+| Bereitstellungsgröße | Knoten | vCPUs | RAM
+
+| Small
+| Bis 10
+| 2
+| 4 GB
+
+| Mittel
+| Bis 100
+| 4
+| 8 GB
+
+| Groß
+| Bis 250
+| 8
+| 16 GB
+
+| X-Groß
+| Bis zu 500
+| 16
+| 32 GB
+
+| XX-Groß
+| 500+
+| 32
+| 64 GB
+|===
+
+=== Festplatten
+
+Die Clusterleistung hängt von der Datenbankleistung ab. Um optimale Geschwindigkeit zu gewährleisten, empfehlen wir, immer SSD-Festplatten für Ihr K3s-Cluster zu verwenden. Bei Cloud-Anbietern sollten Sie auch die minimale Größe verwenden, die die maximale IOPS ermöglicht.
+
+=== Netzwerk
+
+Sie sollten in Betracht ziehen, die Größe des Subnetzes für den Cluster-CIDR zu erhöhen, damit Ihnen nicht die IP-Adressen für die Pods ausgehen. Sie können dies tun, indem Sie die `--cluster-cidr` Option beim Starten des K3s-Servers übergeben.
+
+=== Datenbank
+
+K3s unterstützt verschiedene Datenbanken, einschließlich MySQL, PostgreSQL, MariaDB und etcd.  Siehe xref:datastore/datastore.adoc[Cluster-Datenspeicher] für weitere Informationen.
+
+Der folgende Größenleitfaden zeigt die Datenbankressourcen, die Sie benötigen, um große Cluster zu betreiben:
+
+[cols="^,^,^,^"]
+|===
+| Implementierungsgröße | Knoten | vCPUs | RAM
+
+| Small
+| Bis 10
+| 1
+| 2 GB
+
+| Mittel
+| Bis 100
+| 2
+| 8 GB
+
+| Groß
+| Bis 250
+| 4
+| 16 GB
+
+| X-Groß
+| Bis zu 500
+| 8
+| 32 GB
+
+| XX-Groß
+| 500+
+| 16
+| 64 GB
+|===

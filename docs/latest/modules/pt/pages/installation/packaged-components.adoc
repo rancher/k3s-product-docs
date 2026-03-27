@@ -1,0 +1,75 @@
+= Gerenciando Componentes Empacotados
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-01-05
+:page-revdate: {revdate}
+
+== Manifestos de Implantação Automática (AddOns)
+
+Nos nós do servidor, qualquer arquivo encontrado em `/var/lib/rancher/k3s/server/manifests` será automaticamente implantado no Kubernetes de maneira semelhante a `kubectl apply`, tanto na inicialização quanto quando o arquivo for alterado no disco. Excluir arquivos deste diretório não excluirá os recursos correspondentes do cluster.
+
+Os manifestos são rastreados como recursos personalizados `AddOn` no namespace `kube-system`. Quaisquer erros ou avisos encontrados ao aplicar o arquivo de manifesto podem ser vistos usando `kubectl describe` no `AddOn` correspondente, ou usando `kubectl get event -n kube-system` para visualizar todos os eventos para esse namespace, incluindo aqueles do controlador de implantação.
+
+=== Componentes Empacotados
+
+O K3s vem com vários componentes empacotados que são implantados como AddOns através do diretório de manifestos: `coredns`, `traefik`, `local-storage` e `metrics-server`. O controlador LoadBalancer `servicelb` embutido não possui um arquivo de manifesto, mas pode ser desativado como se fosse um `AddOn` por razões históricas.
+
+Os manifestos para componentes empacotados são gerenciados pelo K3s e não devem ser alterados. Os arquivos são reescritos no disco sempre que o K3s é iniciado, a fim de garantir sua integridade.
+
+=== AddOns do Usuário
+
+Você pode colocar arquivos adicionais no diretório de manifestos para implantação como um `AddOn`. Cada arquivo pode conter múltiplos recursos do Kubernetes, delimitados pelo separador de documentos YAML `---`. Para mais informações sobre como organizar recursos em manifestos, consulte a seção https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/[Gerenciando Recursos] da documentação do Kubernetes.
+
+==== Requisitos de Nomeação de Arquivos
+
+O nome de arquivo `AddOn` para cada arquivo no diretório de manifestos é derivado do nome base do arquivo.
+Certifique-se de que todos os arquivos dentro do diretório de manifestos (ou dentro de quaisquer subdiretórios) tenham nomes que sejam únicos e que atendam às https://kubernetes.io/docs/concepts/overview/working-with-objects/names/[restrições de nomenclatura de objetos] do Kubernetes.
+Deve-se também ter cuidado para não entrar em conflito com nomes utilizados pelos componentes padrão empacotados do K3s, mesmo que esses componentes estejam desativados.
+
+Aqui está um exemplo de um erro que seria relatado se o nome de arquivo contiver sublinhados:
+
+____
+`Falha ao processar a configuração: falha ao processar /var/lib/rancher/k3s/server/manifests/example_manifest.yaml:
+   Addon.k3s.cattle.io "example_manifest" é inválido: metadata.name: Valor inválido: "example_manifest": um subdomínio RFC 1123 em letras minúsculas deve consistir em caracteres alfanuméricos em letras minúsculas, '-', ou '.', e deve começar e terminar com um caractere alfanumérico (por exemplo, 'example.com', a expressão regular usada para validação é '[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*')`
+____
+
+[WARNING]
+====
+Se você tiver vários nós de servidor e colocar manifestos adicionais de AddOn em mais de um servidor, é sua responsabilidade garantir que os arquivos permaneçam sincronizados entre esses nós. O K3s não sincroniza o conteúdo do AddOn entre os nós e não pode garantir o comportamento correto se servidores diferentes tentarem implantar manifestos conflitantes.
+====
+
+
+== Desabilitando Manifestos
+
+Existem duas maneiras de desabilitar a implantação de conteúdo específico do diretório de manifestos.
+
+[#_using_the_disable_flag]
+=== Usando a flag `--disable`
+
+Os AddOns para os componentes empacotados listados acima, além dos AddOns para quaisquer manifestos adicionais colocados no diretório `manifests`, podem ser desabilitados com a flag `--disable`. AddOns desabilitados são desinstalados ativamente do cluster, e os arquivos de origem são excluídos do diretório `manifests`.
+
+Por exemplo, para desabilitar o traefik de ser instalado em um novo cluster, ou para desinstalá-lo e remover o manifesto de um cluster existente, você pode iniciar o K3s com `--disable=traefik`. Vários itens podem ser desabilitados separando seus nomes com vírgulas, ou repetindo a flag.
+
+=== Usando arquivos .skip
+
+Para qualquer arquivo sob `/var/lib/rancher/k3s/server/manifests`, você pode criar um arquivo `.skip` que fará com que o K3s ignore o manifesto correspondente. O conteúdo do arquivo `.skip` não importa, apenas sua existência é verificada. Observe que criar um arquivo `.skip` após um AddOn já ter sido criado não removerá ou modificará de outra forma, nem os recursos que ele criou; o arquivo é simplesmente tratado como se não existisse.
+
+Por exemplo, criar um arquivo `traefik.yaml.skip` vazio no diretório de manifestos antes que o K3s seja iniciado pela primeira vez fará com que o K3s ignore a implantação de `traefik.yaml`:
+
+[,bash]
+----
+$ ls /var/lib/rancher/k3s/server/manifests
+ccm.yaml      local-storage.yaml  rolebindings.yaml  traefik.yaml.skip
+coredns.yaml  traefik.yaml
+
+$ kubectl get pods -A
+NAMESPACE     NAME                                     READY   STATUS    RESTARTS   AGE
+kube-system   local-path-provisioner-64ffb68fd-xx98j   1/1     Running   0          74s
+kube-system   metrics-server-5489f84d5d-7zwkt          1/1     Running   0          74s
+kube-system   coredns-85cb69466-vcq7j                  1/1     Running   0          74s
+----
+
+Se o Traefik já tivesse sido implantado antes de criar o arquivo `traefik.skip`, o Traefik permaneceria como está e não seria afetado por futuras atualizações quando o K3s fizer upgrade.
+
+== AddOns do Helm
+
+Para informações sobre como gerenciar os charts do Helm por meio da implantação automática de manifestos, consulte a seção sobre xref:add-ons/helm.adoc[Helm.]

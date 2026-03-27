@@ -1,0 +1,33 @@
+= Acceso al clúster
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-09-15
+:page-revdate: {revdate}
+
+El archivo kubeconfig del administrador almacenado en `/etc/rancher/k3s/k3s.yaml` se puede utilizar para proporcionar acceso al clúster de Kubernetes. Este archivo otorga acceso como el usuario `system:admin` y el grupo `system:masters`, que están codificados por Kubernetes para tener acceso sin restricciones a todos los recursos dentro del clúster.
+
+El comando `kubectl` que viene con K3s está configurado para cargar las configuraciones desde esta vía por defecto. Si has instalado herramientas shell de Kubernetes en sentido ascendente como kubectl o Helm, necesitas configurarlas con la vía kubeconfig correcta. Esto se puede hacer exportando la variable de entorno `KUBECONFIG` o invocando la bandera de línea de comandos `--kubeconfig`. Consulta los ejemplos a continuación para más detalles.
+
+* Exporta la variable de entorno KUBECONFIG:
++
+[,bash]
+----
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+kubectl get pods --all-namespaces
+helm ls --all-namespaces
+----
+
+* Especifica la ubicación del archivo kubeconfig en el comando:
+[,bash]
+----
+kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get pods --all-namespaces
+helm --kubeconfig /etc/rancher/k3s/k3s.yaml ls --all-namespaces
+----
+
+== Accediendo al clúster desde fuera con kubectl
+
+Copia `/etc/rancher/k3s/k3s.yaml` en tu máquina ubicada fuera del clúster como `~/.kube/config`. Luego reemplaza el valor del campo `server` con la IP o el nombre de tu servidor K3s. `kubectl` ahora puede gestionar tu clúster K3s.
+
+[NOTE]
+====
+K3s actualiza automáticamente los certificados dentro del kubeconfig del administrador cada vez que se inicia. Si haces una copia de este archivo, necesitas actualizar manualmente esas copias para asegurarte de que los certificados en línea no expiren.
+====

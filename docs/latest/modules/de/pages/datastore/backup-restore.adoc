@@ -1,0 +1,37 @@
+= Sichern und Wiederherstellen
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-11
+:page-revdate: {revdate}
+
+Die Art und Weise, wie K3s gesichert und wiederhergestellt wird, hängt davon ab, welcher Typ von Datenspeicher verwendet wird.
+
+[CAUTION]
+====
+Neben der Sicherung des Datenspeichers selbst müssen Sie auch die Server-Token-Datei unter `/var/lib/rancher/k3s/server/token` sichern.
+Sie müssen diese Datei wiederherstellen oder ihren Wert in die Option `--token` übergeben, wenn Sie aus einer Sicherung wiederherstellen.
+Wenn Sie beim Wiederherstellen nicht denselben Tokenwert verwenden, wird der Snapshot unbrauchbar, da der Token verwendet wird, um vertrauliche Daten innerhalb des Datenspeichers selbst zu verschlüsseln.
+====
+
+
+== Sicherung und Wiederherstellung mit SQLite
+
+Es sind keine speziellen Befehle erforderlich, um den SQLite-Datenspeicher zu sichern oder wiederherzustellen.
+
+* Um den SQLite-Datenspeicher zu sichern, erstellen Sie eine Kopie von `/var/lib/rancher/k3s/server/db/`.
+* Um den SQLite-Datenspeicher wiederherzustellen, stellen Sie den Inhalt von `/var/lib/rancher/k3s/server/db` (und den Token, wie oben besprochen) wieder her.
+
+== Sicherung und Wiederherstellung mit externem Datenspeicher
+
+Wenn ein externer Datenspeicher verwendet wird, werden Sicherungs- und Wiederherstellungsoperationen außerhalb von K3s durchgeführt. Der Datenbankadministrator muss die externe Datenbank sichern oder sie aus einem Snapshot oder Dump wiederherstellen.
+
+Wir empfehlen, die Datenbank so zu konfigurieren, dass sie wiederkehrende Snapshots erstellt.
+
+Für Details zur Erstellung von Datenbank-Snapshots und zur Wiederherstellung Ihrer Datenbank daraus, siehe die offizielle Datenbankdokumentation:
+
+* https://dev.mysql.com/doc/refman/8.0/en/replication-snapshot-method.html[Offizielle MySQL-Dokumentation]
+* https://www.postgresql.org/docs/8.3/backup-dump.html[Offizielle PostgreSQL-Dokumentation]
+* https://etcd.io/docs/latest/op-guide/recovery/[Offizielle etcd-Dokumentation]
+
+== Sicherung und Wiederherstellung mit eingebettetem etcd-Datenspeicher
+
+Siehe die xref:cli/etcd-snapshot.adoc[`k3s etcd-snapshot` Befehlsdokumentation] für Informationen zur Durchführung von Sicherungs- und Wiederherstellungsoperationen im eingebetteten etcd-Datenspeicher.

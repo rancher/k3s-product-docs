@@ -1,0 +1,16 @@
+= Segurança
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-12-31
+:page-revdate: {revdate}
+
+Esta seção descreve a metodologia e os meios de proteger um cluster K3s. Está dividida em 2 seções. Esses guias assumem que o k3s está rodando com etcd embutido.
+
+Primeiro, o guia de proteção fornece uma lista de melhores práticas de segurança para proteger um cluster K3s.
+
+* xref:security/hardening-guide.adoc[Guia de Proteção]
+
+Em segundo lugar, está a autoavaliação para validar um cluster protegido. Atualmente, temos duas avaliações diferentes disponíveis:
+
+* xref:security/self-assessment-1.9.adoc[Guia de Autoavaliação do Benchmark CIS 1.9], para a versão K3s v1.27-v1.29
+* xref:security/self-assessment-1.10.adoc[Guia de Autoavaliação do Benchmark CIS 1.10], para a versão K3s v1.28-v1.31
+* xref:security/self-assessment-1.11.adoc[Guia de Autoavaliação do Benchmark CIS 1.11], para a versão K3s v1.29-v1.34

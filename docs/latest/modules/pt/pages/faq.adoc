@@ -1,0 +1,68 @@
+= FAQs
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-11
+:page-revdate: {revdate}
+
+O FAQ é atualizado periodicamente e foi projetado para responder às perguntas que nossos usuários mais frequentemente fazem sobre o K3s.
+
+== O K3s é um substituto adequado para o Kubernetes?
+
+O K3s é uma distribuição Kubernetes certificada pela CNCF e pode fazer tudo o que é necessário em um cluster Kubernetes padrão. É apenas uma versão mais leve. Veja a página de docs xref:introduction.adoc[principal] para mais detalhes.
+
+== Como posso usar meu próprio Ingress em vez do Traefik?
+
+Basta iniciar o servidor K3s com `--disable=traefik` e implantar seu ingress.
+
+== O K3s suporta Windows?
+
+Neste momento, o K3s não suporta nativamente o Windows, no entanto, estamos abertos à ideia no futuro.
+
+== O que exatamente são Servidores e Agentes?
+
+Para uma explicação sobre os componentes que compõem um servidor e um agente, veja a xref:architecture.adoc[página de Arquitetura].
+
+== Como posso compilar a partir do código-fonte?
+
+Por favor, consulte o https://github.com/k3s-io/k3s/blob/main/BUILDING.md[BUILDING.md] do K3s para obter instruções.
+
+== Onde estão os logs do K3s?
+
+A localização dos logs do K3s varia dependendo de como você executa o K3s e do sistema operacional do nó.
+
+* Quando executado a partir da linha de comando, os logs são enviados para stdout e stderr.
+* Ao executar sob openrc, os logs serão criados em `/var/log/k3s.log`.
+* Ao executar sob Systemd, os logs serão enviados para o Journald e podem ser visualizados usando `journalctl -u k3s`.
+* Os logs do pod podem ser encontrados em `/var/log/pods`.
+* Os logs do Containerd podem ser encontrados em `/var/lib/rancher/k3s/agent/containerd/containerd.log`.
+
+Você pode gerar logs mais detalhados usando a flag `--debug` ao iniciar o K3s (ou `debug: true` no arquivo de configuração).
+
+O Kubernetes utiliza um framework de registro conhecido como `klog`, que usa uma única configuração de registro para todos os componentes dentro de um processo.
+Como o K3s executa todos os componentes do Kubernetes dentro de um único processo, não é possível configurar diferentes níveis de log ou destinos para componentes individuais do Kubernetes.
+O uso dos argumentos de componente `-v=<level>` ou `--vmodule=<module>=<level>` provavelmente não terá o efeito desejado.
+
+Veja xref:advanced.adoc#_additional_logging_sources[Fontes Adicionais de Log] para ainda mais opções de log.
+
+== Posso executar o K3s no Docker?
+
+Sim, existem várias maneiras de executar o K3s no Docker. Veja xref:advanced.adoc#_running_k3s_in_docker[Opções Avançadas] para mais detalhes.
+
+== Qual é a diferença entre os Tokens do Servidor e do Agente do K3s?
+
+Para mais informações sobre como gerenciar tokens de junção do K3s, consulte a documentação do comando xref:cli/token.adoc[`k3s token`].
+
+== Quão compatíveis são as diferentes versões do K3s?
+
+Em geral, a https://kubernetes.io/docs/setup/release/version-skew-policy/[política de desvio de versão do Kubernetes] se aplica.
+
+Em resumo, os servidores podem ser mais novos que os agentes, mas os agentes não podem ser mais novos que os servidores.
+
+== Estou tendo um problema, onde posso obter ajuda?
+
+Se você estiver tendo um problema ao implantar o K3s, você deve:
+
+. Verifique a página xref:known-issues.adoc[Problemas Conhecidos].
+. Verifique se você resolveu qualquer xref:installation/requirements.adoc#_operating_systems[Preparação Adicional do SO]. Execute `k3s check-config` e certifique-se de que ele passe.
+. Pesquise nos https://github.com/k3s-io/k3s/issues[Problemas] e https://github.com/k3s-io/k3s/discussions[Discussões] do K3s por um que corresponda ao seu problema.
+. Junte-se ao canal K3s no https://slack.rancher.io/[Rancher Slack] para obter ajuda.
+. Envie um https://github.com/k3s-io/k3s/issues/new/choose[Novo Problema] no Github do K3s descrevendo sua configuração e o problema que você está enfrentando.

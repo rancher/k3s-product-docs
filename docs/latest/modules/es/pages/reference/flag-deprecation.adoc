@@ -1,0 +1,37 @@
+= Deprecación de banderas
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-09
+:page-revdate: {revdate}
+
+K3s es un proyecto en rápida evolución, y como tal, necesitamos una forma de dejar obsoletas las banderas y las opciones de configuración. Esta página describe el proceso para dejar obsoletas las banderas y las opciones de configuración. Para asegurar que los usuarios no se sorprendan por la eliminación de banderas, el proceso es similar a la https://kubernetes.io/docs/reference/using-api/deprecation-policy/[Directiva de deprecación de Kubernetes].
+
+== Proceso
+
+. Las banderas pueden declararse como "Próximas a quedar obsoletas" en cualquier momento.
+. Las banderas que están "Próximas a quedar obsoletas" deben etiquetarse como tales en el siguiente parche de todas las versiones actualmente soportadas. Además, la bandera comenzará a advertir a los usuarios que va a quedar obsoleta en la siguiente versión menor.
+. En la siguiente versión menor, una bandera será marcada como obsoleta en la documentación y convertida en una bandera oculta en el código. La bandera seguirá funcionando y dará advertencias a los usuarios.
+. En la siguiente rama de versión menor, las banderas obsoletas se volverán "no operativas", causando un error fatal si se utilizan. Este error debe explicar al usuario cualquier nueva bandera o configuración que reemplace a esta bandera.
+. En la siguiente versión menor, las banderas no operativas serán eliminadas de la documentación y del código.
+
+== Ejemplo
+
+Un ejemplo del proceso:
+
+* `--foo` existe en v1.22.14, v1.23.10 y v1.24.2.
+* Después del lanzamiento de v1.24.2, se decide dejar obsoleta `--foo` en favor de `--new-foo`.
+* En v1.22.15, v1.23.11 y v1.24.3, `--foo` sigue existiendo, pero mostrará una advertencia a los usuarios:
++
+----
+[Warning] --foo will be deprecated in v1.25.0, use `--new-foo` instead
+----
++
+`--foo` seguirá existiendo como una bandera operativa durante la vida de v1.22, v1.23 y v1.24.
+
+* En v1.25.0, `--foo` se marca como obsoleta en la documentación y será oculta en el código. Seguirá funcionando y advertirá a los usuarios que cambien a `--new-foo`.
+* En v1.26.0, `--foo` causará un error fatal si se utiliza. El mensaje de error dirá:
++
+----
+[Fatal] exit 1: --foo is no longer supported, use --new-foo instead
+----
+
+* En v1.27.0, `--foo` será eliminado completamente de todo el código y la documentación.

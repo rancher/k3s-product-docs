@@ -1,0 +1,35 @@
+= K3s deinstallieren
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-01-05
+:page-revdate: {revdate}
+
+[CAUTION]
+====
+Die Deinstallation von K3s kann zu Datenverlust führen!
+====
+
+Wenn Sie K3s mit dem Installationsskript installiert haben, wurde während der Installation ein Skript zur Deinstallation von K3s generiert.
+
+Das Ausführen des Deinstallationsskripts beendet K3s und alle laufenden Pods und löscht den lokalen Cluster-Datenspeicher, xref:add-ons/storage.adoc#_setting_up_the_local_storage_provider[Local Storage] Persistent Volume-Daten, die Knotenkonfiguration und alle Skripte sowie Kommandozeilenschnittstellen-Tools.
+
+Es entfernt keine Daten aus externen Datenspeichern oder Daten, die von Pods unter Verwendung externer Kubernetes Persistent Volumes erstellt wurden.
+
+Wenn Sie planen, einen Knoten nach der Deinstallation und Neuinstallation wieder einem bestehenden Cluster hinzuzufügen, stellen Sie sicher, dass Sie den Knoten aus dem Cluster löschen, um sicherzustellen, dass das Knotenpasswort-Geheimnis entfernt wird. Siehe die xref:architecture.adoc#_how_agent_node_registration_works[Node Registration] Dokumentation für weitere Informationen.
+
+== Server deinstallieren
+
+Um K3s von einem Serverknoten zu deinstallieren, führen Sie aus:
+
+[,bash]
+----
+/usr/local/bin/k3s-uninstall.sh
+----
+
+== Agenten deinstallieren
+
+Um K3s von einem Agentenknoten zu deinstallieren, führen Sie aus:
+
+[,bash]
+----
+/usr/local/bin/k3s-agent-uninstall.sh
+----

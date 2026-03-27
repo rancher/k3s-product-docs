@@ -1,0 +1,77 @@
+= Alta disponibilidad de etcd embebido
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-03-03
+:page-revdate: {revdate}
+
+[CAUTION]
+====
+El etcd embebido (HA) puede tener problemas de rendimiento en discos más lentos, como Raspberry Pis que funcionan con tarjetas SD.
+====
+
+.¿Por qué un número impar de nodos de servidor?
+[%collapsible]
+======
+Un clúster HA de etcd embebido debe estar compuesto por un número impar de nodos de servidor para que etcd mantenga el quórum. Para un clúster con n servidores, el quórum es (n/2)+1. Para cualquier clúster de tamaño impar, añadir un nodo siempre aumentará el número de nodos necesarios para el quórum. Aunque añadir un nodo a un clúster de tamaño impar parece mejor ya que hay más máquinas, la tolerancia a fallos es peor, ya que exactamente el mismo número de nodos puede fallar sin perder el quórum, pero hay más nodos que pueden fallar.
+======
+
+Un clúster HA K3s con etcd embebido está compuesto por:
+
+* Tres o más *nodos de servidor* que servirán la API de Kubernetes y ejecutarán otros servicios del plano de control, así como alojar la base de datos etcd embebida.
+* Opcional: Cero o más *nodos agentes* que están designados para ejecutar tus aplicaciones y servicios
+* Opcional: Una *dirección de registro fija* para que los nodos agentes se registren en el clúster
+
+[NOTE]
+====
+Para desplegar rápidamente grandes clústeres HA, consulta xref:related-projects.adoc[Proyectos Relacionados]
+====
+
+
+Para empezar, lanza primero un nodo de servidor con la bandera `cluster-init` para habilitar el clustering y un token que servirá como secreto compartido para unir servidores adicionales al clúster.
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - server \
+    --cluster-init \
+    --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
+----
+
+Después de lanzar el primer servidor, une el segundo y el tercer servidor al clúster utilizando el secreto compartido:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - server \
+    --server https://<ip or hostname of server1>:6443 \
+    --tls-san=<FIXED_IP> # Optional, needed if using a fixed registration address
+----
+
+Donde `INSTALL_K3S_ARTIFACT_URL` es la https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[URL de Artefactos Primarios]
+
+Verifica que el segundo y el tercer servidor ahora son parte del clúster:
+
+[,bash]
+----
+$ kubectl get nodes
+NAME        STATUS   ROLES                       AGE   VERSION
+server1     Ready    control-plane,etcd,master   28m   vX.Y.Z
+server2     Ready    control-plane,etcd,master   13m   vX.Y.Z
+server3     Ready    control-plane,etcd,master   10m   vX.Y.Z
+----
+
+Ahora tienes un plano de control altamente disponible. Cualquier servidor agrupado con éxito puede ser utilizado en el argumento `--server` para unir nodos de servidor y agentes adicionales. Unir nodos agentes adicionales al clúster sigue el mismo procedimiento que los servidores:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=SECRET sh -s - agent --server https://<ip or hostname of server>:6443
+----
+
+Hay algunas banderas de configuración que deben ser las mismas en todos los nodos del servidor:
+
+* Banderas relacionadas con la red: `--cluster-dns`, `--cluster-domain`, `--cluster-cidr`, `--service-cidr`
+* Banderas que controlan el despliegue de ciertos componentes: `--disable-helm-controller`, `--disable-kube-proxy`, `--disable-network-policy` y cualquier componente pasado a `--disable`
+* Banderas relacionadas con características: `--secrets-encryption`
+
+== Clústeres existentes de un solo nodo
+
+Si tienes un clúster existente que utiliza la base de datos SQLite embebida por defecto, puedes convertirlo a etcd simplemente reiniciando tu servidor K3s con la bandera `--cluster-init`. Una vez que hayas hecho eso, podrás añadir instancias adicionales como se ha descrito anteriormente.
+
+Si se encuentra un almacén de datos etcd en el disco, ya sea porque ese nodo se ha inicializado o se ha unido a un clúster, se ignoran los argumentos del almacén de datos (`--cluster-init`, `--server`, `--datastore-endpoint`, etc).

@@ -1,0 +1,75 @@
+= Gestión de Componentes Paquetizados
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-01-05
+:page-revdate: {revdate}
+
+== Manifiestos de Despliegue Automático (AddOns)
+
+En los nodos del servidor, cualquier archivo encontrado en `/var/lib/rancher/k3s/server/manifests` se desplegará automáticamente en Kubernetes de manera similar a `kubectl apply`, tanto al iniciar como cuando el archivo cambie en el disco. Eliminar archivos de este directorio no eliminará los recursos correspondientes del clúster.
+
+Los manifiestos se rastrean como recursos personalizados `AddOn` en el espacio de nombres `kube-system`. Cualquier error o advertencia encontrado al aplicar el archivo de manifiesto puede verse utilizando `kubectl describe` en el correspondiente `AddOn`, o utilizando `kubectl get event -n kube-system` para ver todos los eventos de ese espacio de nombres, incluidos los del controlador de despliegue.
+
+=== Componentes Paquetizados
+
+K3s viene con varios componentes paquetizados que se despliegan como AddOns a través del directorio de manifiestos: `coredns`, `traefik`, `local-storage` y `metrics-server`. El controlador LoadBalancer `servicelb` integrado no tiene un archivo de manifiesto, pero puede deshabilitarse como si fuera un `AddOn` por razones históricas.
+
+Los manifiestos para componentes paquetizados son gestionados por K3s y no deben ser alterados. Los archivos se reescriben en el disco cada vez que se inicia K3s, para garantizar su integridad.
+
+=== AddOns de Usuario
+
+Puede colocar archivos adicionales en el directorio de manifiestos para su despliegue como un `AddOn`. Cada archivo puede contener múltiples recursos de Kubernetes, delimitados por el separador de documentos YAML `---`. Para más información sobre cómo organizar recursos en manifiestos, consulte la sección https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/[Gestión de Recursos] de la documentación de Kubernetes.
+
+==== Requisitos de Nomenclatura de Archivos
+
+El nombre `AddOn` para cada archivo en el directorio de manifiestos se deriva del nombre base del archivo.
+Asegúrese de que todos los archivos dentro del directorio de manifiestos (o dentro de cualquier subdirectorio) tengan nombres que sean únicos y cumplan con las https://kubernetes.io/docs/concepts/overview/working-with-objects/names/[restricciones de nomenclatura de objetos] de Kubernetes.
+También se debe tener cuidado de no entrar en conflicto con los nombres utilizados por los componentes paquetizados predeterminados de K3s, incluso si esos componentes están deshabilitados.
+
+Aquí hay un ejemplo de un error que se informaría si el nombre del archivo contiene guiones bajos:
+
+____
+`Error al procesar la configuración: error al procesar /var/lib/rancher/k3s/server/manifests/example_manifest.yaml:
+   Addon.k3s.cattle.io "example_manifest" no es válido: metadata.name: Valor no válido: "example_manifest": un subdominio RFC 1123 en minúsculas debe consistir en caracteres alfanuméricos en minúsculas, '-' o '.', y debe comenzar y terminar con un carácter alfanumérico (por ejemplo, 'example.com', la expresión regular utilizada para la validación es '[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*')`
+____
+
+[WARNING]
+====
+Si tienes múltiples nodos de servidor y colocas manifiestos de AddOn adicionales en más de un servidor, es tu responsabilidad asegurarte de que los archivos se mantengan sincronizados entre esos nodos. K3s no sincroniza el contenido de AddOn entre nodos y no puede garantizar un comportamiento correcto si diferentes servidores intentan desplegar manifiestos en conflicto.
+====
+
+
+== Deshabilitando Manifiestos
+
+Hay dos formas de deshabilitar el despliegue de contenido específico del directorio de manifiestos.
+
+[#_using_the_disable_flag]
+=== Usando la bandera `--disable`
+
+Los AddOns para los componentes paquetizados mencionados anteriormente, además de los AddOns para cualquier manifiesto adicional colocado en el directorio `manifests`, se pueden deshabilitar con la bandera `--disable`. Los AddOns deshabilitados se desinstalan activamente del clúster y los archivos fuente se eliminan del directorio `manifests`.
+
+Por ejemplo, para deshabilitar Traefik de ser instalado en un nuevo clúster, o para desinstalarlo y eliminar el manifiesto de un clúster existente, puedes iniciar K3s con `--disable=traefik`. Se pueden deshabilitar múltiples elementos separando sus nombres con comas, o repitiendo la bandera.
+
+=== Usando archivos .skip
+
+Para cualquier archivo bajo `/var/lib/rancher/k3s/server/manifests`, puedes crear un archivo `.skip` que hará que K3s ignore el manifiesto correspondiente. El contenido del archivo `.skip` no importa, solo se verifica su existencia. Ten en cuenta que crear un archivo `.skip` después de que un AddOn ya ha sido creado no eliminará ni modificará de ninguna otra manera este o los recursos que creó; el archivo simplemente se trata como si no existiera.
+
+Por ejemplo, crear un archivo `traefik.yaml.skip` vacío en el directorio de manifiestos antes de que K3s se inicie por primera vez, hará que K3s omita desplegar `traefik.yaml`:
+
+[,bash]
+----
+$ ls /var/lib/rancher/k3s/server/manifests
+ccm.yaml      local-storage.yaml  rolebindings.yaml  traefik.yaml.skip
+coredns.yaml  traefik.yaml
+
+$ kubectl get pods -A
+NAMESPACE     NAME                                     READY   STATUS    RESTARTS   AGE
+kube-system   local-path-provisioner-64ffb68fd-xx98j   1/1     Running   0          74s
+kube-system   metrics-server-5489f84d5d-7zwkt          1/1     Running   0          74s
+kube-system   coredns-85cb69466-vcq7j                  1/1     Running   0          74s
+----
+
+Si Traefik ya se había desplegado antes de crear el archivo `traefik.skip`, Traefik permanecería tal como está y no se vería afectado por futuras actualizaciones cuando K3s se actualice.
+
+== Helm AddOns
+
+Para obtener información sobre la gestión de gráficos de Helm a través de la implementación automática de manifiestos, consulta la sección sobre xref:add-ons/helm.adoc[Helm.]

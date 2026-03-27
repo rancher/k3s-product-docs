@@ -1,0 +1,37 @@
+= Sauvegarde et restauration
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-11
+:page-revdate: {revdate}
+
+La manière dont K3s est sauvegardé et restauré dépend du type de magasin de données utilisé.
+
+[CAUTION]
+====
+En plus de sauvegarder le magasin de données lui-même, vous devez également sauvegarder le fichier de token du serveur à `/var/lib/rancher/k3s/server/token`.
+Vous devez restaurer ce fichier ou passer sa valeur dans l'option `--token` lors de la restauration à partir de la sauvegarde.
+Si vous n'utilisez pas la même valeur de token lors de la restauration, l'instantané sera inutilisable, car le token est utilisé pour chiffrer des données confidentielles au sein du magasin de données lui-même.
+====
+
+
+== Sauvegarde et restauration avec SQLite
+
+Aucune commande spéciale n'est requise pour sauvegarder ou restaurer le magasin de données SQLite.
+
+* Pour sauvegarder le magasin de données SQLite, prenez une copie de `/var/lib/rancher/k3s/server/db/`.
+* Pour restaurer le magasin de données SQLite, restaurez le contenu de `/var/lib/rancher/k3s/server/db` (et le token, comme discuté ci-dessus).
+
+== Sauvegarde et restauration avec un magasin de données externe
+
+Lorsqu'un magasin de données externe est utilisé, les opérations de sauvegarde et de restauration sont gérées en dehors de K3s. L'administrateur de la base de données devra sauvegarder la base de données externe ou la restaurer à partir d'un instantané ou d'un dump.
+
+Nous recommandons de configurer la base de données pour prendre des instantanés récurrents.
+
+Pour des détails sur la prise d'instantanés de base de données et la restauration de votre base de données à partir de ceux-ci, référez-vous à la documentation officielle de la base de données :
+
+* https://dev.mysql.com/doc/refman/8.0/en/replication-snapshot-method.html[Documentation officielle de MySQL]
+* https://www.postgresql.org/docs/8.3/backup-dump.html[Documentation officielle de PostgreSQL]
+* https://etcd.io/docs/latest/op-guide/recovery/[Documentation officielle d'etcd]
+
+== Sauvegarde et restauration avec un magasin de données etcd intégré
+
+Consultez la documentation de la commande xref:cli/etcd-snapshot.adoc[`k3s etcd-snapshot`] pour obtenir des informations sur l'exécution des opérations de sauvegarde et de restauration sur le magasin de données etcd intégré.

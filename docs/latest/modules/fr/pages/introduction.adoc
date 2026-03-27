@@ -1,0 +1,38 @@
+= {k3s-product-name}
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-10-23
+:page-revdate: {revdate}
+:page-role: -toc
+
+K3s est un projet sandbox officiel https://www.cncf.io[CNCF] qui fournit une distribution Kubernetes certifiée, légère mais puissante, conçue pour les charges de travail de production sur des sites distants à ressources limitées ou sur des appareils IoT. Utilisé avec SUSE® Rancher Prime, K3s est une distribution Kubernetes simple à installer, légère et offrant une haute disponibilité, qui peut être facilement gérée au sein de la plateforme d'orchestration Rancher.
+
+== Principales caractéristiques
+
+* Distribué sous la forme d'un binaire unique ou d'une image de conteneur minimale.
+* Base de données légère basée sur sqlite3 comme backend de stockage par défaut. etcd3, MySQL et Postgres sont également disponibles.
+* Enveloppé dans un lanceur simple qui gère une grande partie de la complexité de TLS et des options.
+* Sécurisé par défaut avec des paramètres raisonnables pour des environnements légers.
+* Le fonctionnement de tous les composants du plan de contrôle Kubernetes est encapsulé dans un seul binaire et un seul processus, permettant à K3s d'automatiser et de gérer des opérations de cluster complexes comme la distribution de certificats.
+* Les dépendances externes ont été minimisées ; les seules exigences sont un noyau moderne et des montages cgroup.
+* Emballage des dépendances requises pour une création de cluster "batteries incluses" facile :
+ ** Environnement d'exécution de conteneur containerd / cri-dockerd (CRI)
+ ** Interface réseau Flannel (CNI)
+ ** DNS de cluster CoreDNS
+ ** Contrôleur d'Ingress Traefik
+ ** Contrôleur de Load-Balancer ServiceLB
+ ** Contrôleur de stratégie réseau Kube-router
+ ** Contrôleur de volume persistant Local-chemin-provisioner
+ ** Miroir de registre d'images de conteneurs distribués Spegel
+ ** Utilitaires d'hôte (iptables, socat, etc)
+
+== Idéal pour :
+
+* Edge
+* Homelab
+* Internet des objets (IoT)
+* Intégration continue (CI)
+* Développement
+* Ordinateurs monocarte (ARM)
+* Environnements isolés physiquement
+* K8s embarqué
+* Situations où un doctorat en clusterologie K8s est irréaliste

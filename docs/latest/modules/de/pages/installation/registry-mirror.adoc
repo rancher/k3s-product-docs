@@ -1,0 +1,150 @@
+= Eingebetteter Registry-Spiegel
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-01-05
+:page-revdate: {revdate}
+
+[IMPORTANT]
+.Versionsschranke
+====
+Der eingebettete Registry-Spiegel ist ab den Veröffentlichungen von Januar 2024 als experimentelles Feature verfügbar: v1.26.13+k3s1, v1.27.10+k3s1, v1.28.6+k3s1, v1.29.1+k3s1 und als GA ab den Veröffentlichungen von Dezember 2024: v1.29.12+k3s1, v1.30.8+k3s1, v1.31.4+k3s1.
+====
+
+K3s bettet https://github.com/XenitAB/spegel[Spiegel] ein, einen zustandslosen verteilten OCI-Registry-Spiegel, der Peer-to-Peer-Sharing von Container-Images zwischen Knoten in einem Kubernetes-Cluster ermöglicht. Der verteilte Registry-Spiegel ist standardmäßig deaktiviert. Damit K3s ihn nutzen kann, müssen sowohl der xref:#_enabling_the_distributed_oci_registry_mirror[Verteilte OCI-Registry-Spiegel] als auch das xref:#_enabling_registry_mirroring[Registry-Mirroring] aktiviert werden, wie in den folgenden Unterabschnitten erklärt.
+
+[#_enabling_the_distributed_oci_registry_mirror]
+== Aktivierung des Verteilten OCI-Registry-Spiegels
+
+Um den eingebetteten Registry-Spiegel zu aktivieren, müssen die Serverknoten mit dem `--embedded-registry` Flag oder mit `embedded-registry: true` in der Konfigurationsdatei gestartet werden.
+Diese Option aktiviert den eingebetteten Spiegel zur Nutzung auf allen Knoten im Cluster.
+
+Wenn auf Cluster-Ebene aktiviert, hosten alle Knoten ein lokales OCI-Registry auf Port 6443 und veröffentlichen eine Liste verfügbarer Images über ein Peer-to-Peer-Netzwerk auf Port 5001.
+Jedes Image, das im Containerd-Image-Speicher auf einem Knoten verfügbar ist, kann von anderen Cluster-Mitgliedern ohne Zugriff auf ein externes Registry abgerufen werden.
+Bilder, die über xref:installation/airgap.adoc#_tabs_1_manually_deploy_images_method[Air-Gap-Image-Tar-Dateien] importiert werden, werden in containerd fixiert, um sicherzustellen, dass sie verfügbar bleiben und nicht durch die Kubelet-Garbage-Collection entfernt werden.
+
+Der Peer-to-Peer-Port kann von 5001 geändert werden, indem die `K3S_P2P_PORT` Umgebungsvariable für den K3s-Dienst gesetzt wird. Der Port muss auf allen Knoten auf denselben Wert gesetzt werden.
+Die Änderung des Ports wird nicht unterstützt und ist nicht empfohlen.
+
+=== Anforderungen
+
+Wenn der eingebettete Registry-Spiegel aktiviert ist, müssen alle Knoten in der Lage sein, sich über ihre internen IP-Adressen auf den TCP-Ports 5001 und 6443 zu erreichen.
+Wenn Knoten sich nicht erreichen können, kann es länger dauern, bis Images abgerufen werden, da das verteilte Registry zuerst von Containerd versucht wird, bevor auf andere Endpunkte zurückgegriffen wird.
+
+[#_enabling_registry_mirroring]
+== Aktivierung des Registry-Mirroring
+
+Die Aktivierung des Registry-Mirroring für ein Registry ermöglicht es einem Knoten, sowohl Bilder aus diesem Registry von anderen Knoten abzurufen als auch die Bilder dieses Registry mit anderen Knoten zu teilen.
+Wenn ein Registry auf einigen Knoten für das Mirroring aktiviert ist, jedoch nicht auf anderen, werden nur die Knoten, auf denen die Registry aktiviert ist, Bilder von dieser Registry austauschen.
+
+Um das Mirroring von Bildern aus einer Upstream-Container-Registry zu aktivieren, müssen die Knoten einen Eintrag im `mirrors` Abschnitt von `registries.yaml` für diese Registry haben.
+Die Registry muss keine Endpunkte auflisten, sie muss nur vorhanden sein.
+Um beispielsweise das verteilte Mirroring von Bildern aus `docker.io` und `registry.k8s.io` zu aktivieren, konfigurieren Sie `registries.yaml` mit folgendem Inhalt auf allen Cluster-Knoten:
+
+[,yaml]
+----
+mirrors:
+  docker.io:
+  registry.k8s.io:
+----
+
+Endpunkte für Registry-Spiegel können auch wie gewohnt hinzugefügt werden.
+In der folgenden Konfiguration werden die Versuche, Bilder zu ziehen, zuerst den eingebetteten Spiegel, dann `mirror.example.com` und schließlich `docker.io` versuchen:
+
+[,yaml]
+----
+mirrors:
+  docker.io:
+    endpoint:
+      - https://mirror.example.com
+----
+
+Wenn Sie eine private Registry direkt verwenden, anstatt als Spiegel für eine Upstream-Registry, können Sie das verteilte Mirroring auf die gleiche Weise aktivieren, wie öffentliche Registries aktiviert werden – indem Sie sie im Abschnitt Spiegel auflisten:
+
+[,yaml]
+----
+mirrors:
+  mirror.example.com:
+----
+
+[IMPORTANT]
+.Versionsschranke
+====
+Wildcard-Unterstützung ist ab den Veröffentlichungen im März 2024 verfügbar: v1.26.15+k3s1, v1.27.12+k3s1, v1.28.8+k3s1, v1.29.3+k3s1
+====
+
+
+Der `"*"` Wildcard-Spiegel-Eintrag kann verwendet werden, um das verteilte Mirroring aller Registries zu aktivieren. Beachten Sie, dass der Stern in Anführungszeichen gesetzt werden MUSS:
+
+[,yaml]
+----
+mirrors:
+  "*":
+----
+
+Wenn keine Registries auf einem Knoten für das Mirroring aktiviert sind, nimmt dieser Knoten in keiner Funktion am verteilten Registry teil.
+
+Für weitere Informationen zur Struktur der `registries.yaml` Datei siehe xref:installation/private-registry.adoc[Private Registry-Konfiguration].
+
+=== Standard-Endpunkt-Fallback
+
+Standardmäßig wird containerd auf den Standard-Endpunkt zurückgreifen, wenn Bilder von Registries mit konfigurierten Spiegel-Endpunkten gezogen werden. Wenn Sie dies deaktivieren möchten und nur Bilder von den konfigurierten Spiegeln und/oder dem eingebetteten Spiegel ziehen möchten, siehe den Abschnitt xref:installation/private-registry.adoc#_default_endpoint_fallback[Standard-Endpunkt-Fallback] der Dokumentation zur privaten Registry-Konfiguration.
+
+Beachten Sie, dass, wenn Sie die `--disable-default-registry-endpoint` Option verwenden und das Ziehen direkt von einer bestimmten Registry erlauben möchten, während Sie den Rest nicht erlauben, Sie explizit einen Endpunkt angeben können, um das Bildziehen auf die Registry selbst zurückfallen zu lassen:
+
+[,yaml]
+----
+mirrors:
+  docker.io:           # no default endpoint, pulls will fail if not available on a node
+  registry.k8s.io:     # no default endpoint, pulls will fail if not available on a node
+  mirror.example.com:  # explicit default endpoint, can pull from upstream if not available on a node
+    endpoint:
+      - https://mirror.example.com
+----
+
+=== Neuester Tag
+
+Wenn kein Tag für ein Containerbild angegeben ist, ist der implizite Standardtag `latest`. Dieser Tag wird häufig aktualisiert, um auf die neueste Version des Bildes zu verweisen. Da dieser Tag auf verschiedene Revisionen eines Bildes zeigt, abhängig davon, wann es gezogen wird, wird das verteilte Registry *nicht* den `latest` Tag von anderen Knoten ziehen. Dies zwingt containerd dazu, zu einer Upstream-Registry oder einem Registry-Spiegel zu gehen, um eine konsistente Sicht darauf zu gewährleisten, auf was sich das `latest` Tag bezieht.
+
+Dies stimmt mit dem https://kubernetes.io/docs/concepts/containers/images/#imagepullpolicy-defaulting[besonderen `imagePullPolicy` Standard] überein, das von Kubernetes beobachtet wird, wenn das `latest` Tag für ein Container-Image verwendet wird.
+
+Das Spiegeln des `latest` Tags kann aktiviert werden, indem die `K3S_P2P_ENABLE_LATEST=true` Umgebungsvariable für den K3s-Dienst gesetzt wird.
+Dies wird nicht unterstützt und ist nicht empfohlen, aus den oben diskutierten Gründen.
+
+== Sicherheit
+
+=== Authentifizierung
+
+Der Zugriff auf die API des eingebetteten Spiegels erfordert ein gültiges Client-Zertifikat, das von der Client-Zertifizierungsstelle des Clusters signiert wurde.
+
+Der Zugriff auf das Peer-to-Peer-Netzwerk der verteilten Hash-Tabelle erfordert einen vorab geteilten Schlüssel, der von den Serverknoten kontrolliert wird.
+Knoten authentifizieren sich gegenseitig sowohl mit dem vorab geteilten Schlüssel als auch mit einem Zertifikat, das von der Zertifizierungsstelle des Clusters signiert wurde.
+
+=== Potenzielle Bedenken
+
+[CAUTION]
+====
+Das verteilte Registry basiert auf Peer-to-Peer-Prinzipien und geht von einem gleichen Maß an Privilegien und Vertrauen zwischen allen Cluster-Mitgliedern aus.
+Wenn dies nicht mit der Sicherheitslage Ihres Clusters übereinstimmt, sollten Sie das eingebettete verteilte Registry nicht aktivieren.
+====
+
+
+Das eingebettete Registry kann Images bereitstellen, auf die ein Knoten sonst möglicherweise keinen Zugriff hätte.
+Wenn einige Ihrer Images aus einem Registry, Projekt oder Repository gezogen werden, das eine Authentifizierung über Kubernetes Image Pull Secrets oder Anmeldeinformationen in `registries.yaml` erfordert, wird das verteilte Registry anderen Knoten erlauben, diese Images zu teilen, ohne Anmeldeinformationen an die Upstream-Registry bereitzustellen.
+
+Benutzer, die Zugriff haben, um Images in den containerd-Image-Speicher auf einem Knoten zu pushen, könnten dies nutzen, um das Image für andere Cluster-Knoten zu 'vergiften', da andere Knoten dem vom Knoten beworbenen Tag vertrauen und ihn verwenden, ohne mit der Upstream-Registry zu überprüfen.
+Wenn die Integrität des Images wichtig ist, sollten Sie Image-Digests anstelle von Tags verwenden, da der Digest auf diese Weise nicht vergiftet werden kann.
+
+== Teilen von Air Gap oder manuell geladenen Images
+
+Das Teilen von Images wird basierend auf dem Quell-Registry kontrolliert.
+Images, die direkt in containerd über xref:installation/airgap.adoc#_tabs_1_manually_deploy_images_method[Air-Gap-Tarballs], xref:add-ons/import-images.adoc#_pre_import_images[vorab importiert] oder direkt in den Image-Speicher von containerd mit dem `ctr` Kommandozeilenwerkzeug geladen werden, werden zwischen Knoten geteilt, wenn sie als von einem Registry, das für das Spiegeln aktiviert ist, stammend gekennzeichnet sind.
+
+Beachten Sie, dass das Upstream-Registry, von dem die Images zu stammen scheinen, tatsächlich nicht existieren oder erreichbar sein muss.
+Zum Beispiel könnten Sie Images als von einem fiktiven Upstream-Registry stammend kennzeichnen und diese Images in den Image-Speicher von containerd importieren.
+Sie könnten dann diese Images von allen Cluster-Mitgliedern abrufen, solange dieses Registry in `registries.yaml` aufgeführt ist.
+
+== Bilder pushen
+
+Das eingebettete Registry ist schreibgeschützt und kann nicht direkt mit `docker push` oder anderen gängigen Tools, die mit OCI-Registries interagieren, beschrieben werden.
+
+Bilder können manuell über das eingebettete Registry verfügbar gemacht werden, indem `ctr -n k8s.io image pull` ausgeführt wird, um ein Bild zu ziehen, oder indem Bildarchive, die mit `docker save` erstellt wurden, über den `ctr -n k8s.io image import` Befehl oder die xref:add-ons/import-images.adoc#_pre_import_images[Pre-Import-Funktion] geladen werden.
+Beachten Sie, dass der `k8s.io` Namespace angegeben werden muss, wenn Bilder über `ctr` verwaltet werden, damit sie für den Kubelet sichtbar sind.

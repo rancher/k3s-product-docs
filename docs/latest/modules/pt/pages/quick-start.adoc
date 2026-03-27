@@ -1,0 +1,58 @@
+= Guia de Início Rápido
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-03-03
+:page-revdate: {revdate}
+
+Este guia ajudará você a iniciar rapidamente um cluster com opções padrão. Certifique-se de que seus nós atendam aos xref:installation/requirements.adoc[requisitos] antes de prosseguir.
+
+* Consulte a página de xref:installation/installation.adoc[Instalação] para mais detalhes sobre a instalação e configuração do K3s.
+* Para informações sobre como os componentes do K3s funcionam juntos, consulte a página de xref:architecture.adoc[Arquitetura].
+* Se você é novo no Kubernetes, a https://kubernetes.io/docs/tutorials/kubernetes-basics/[documentação oficial do Kubernetes] possui ótimos tutoriais cobrindo os conceitos básicos que todos os administradores de cluster devem conhecer.
+
+[IMPORTANT]
+====
+Você pode usar qualquer versão do K3s Prime listada na URL de Artefatos Prime para os ativos mencionados nestes passos. Para saber mais sobre a URL de Artefatos Prime, consulte nossa https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[documentação exclusiva do Prime]. A autenticação é necessária. Use suas credenciais do https://scc.suse.com/home[Centro de Clientes SUSE (SCC)] para fazer login.
+====
+
+
+== Script de Instalação
+
+{k3s-product-name} fornece um script de instalação que é uma maneira conveniente de instalá-lo como um serviço em sistemas baseados em systemd ou openrc. Este script está disponível em https://get.k3s.io.. Para instalar {k3s-product-name} usando este método, faça o seguinte:
+
+Execute o instalador, onde `INSTALL_K3S_ARTIFACT_URL` é a https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[URL de Artefatos Prime] e `INSTALL_K3S_CHANNEL` é um canal de lançamento ao qual você pode se inscrever e que por padrão é `stable`. Neste exemplo, `INSTALL_K3S_CHANNEL="latest"` fornece a versão mais recente de {k3s-product-name}.
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_CHANNEL="latest" sh -
+----
+Se você quiser especificar uma versão, defina a variável de ambiente `INSTALL_RKE2_VERSION`:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io/ | sudo INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_VERSION="<VERSION>" sh -
+----
+
+Após executar esta instalação:
+
+* O serviço K3s será configurado para reiniciar automaticamente após reinicializações de nó ou se o processo falhar ou for encerrado.
+* Utilitários adicionais serão instalados, incluindo `kubectl`, `crictl`, `ctr`, `k3s-killall.sh` e `k3s-uninstall.sh`.
+* Um arquivo https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/[kubeconfig] será escrito em `/etc/rancher/k3s/k3s.yaml` e o kubectl instalado por {k3s-product-name} o usará automaticamente.
+
+Uma instalação de servidor de nó único é um cluster Kubernetes totalmente funcional, incluindo todos os componentes de datastore, plano de controle, kubelet e tempo de execução do contêiner necessários para hospedar pods de carga de trabalho. Não é necessário adicionar nós de servidor ou agentes adicionais, mas você pode querer fazê-lo para adicionar capacidade ou redundância ao seu cluster.
+
+Para instalar nós de agentes adicionais e adicioná-los ao cluster, execute o script de instalação com as variáveis de ambiente `K3S_URL` e `K3S_TOKEN`. Aqui está um exemplo mostrando como adicionar um agente:
+
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_URL=https://myserver:6443 K3S_TOKEN=mynodetoken sh -
+----
+
+Definir o parâmetro `K3S_URL` faz com que o instalador configure o K3s como um agente, em vez de um servidor. O agente K3s se registrará no servidor K3s ouvindo na URL fornecida. O valor a ser usado para `K3S_TOKEN` está armazenado em `/var/lib/rancher/k3s/server/node-token` no seu nó de servidor.
+
+[NOTE]
+====
+Cada máquina deve ter um nome de host exclusivo. Se suas máquinas não tiverem nomes de host exclusivos, passe a variável de ambiente `K3S_NODE_NAME` e forneça um valor com um nome de host válido e exclusivo para cada nó.
+====
+
+
+Se você estiver interessado em ter mais nós de servidor, consulte as páginas xref:datastore/ha-embedded.adoc[Alta disponibilidade etcd incorporado] e xref:datastore/ha.adoc[Alta disponibilidade banco de dados externo] para mais informações.

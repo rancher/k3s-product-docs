@@ -1,0 +1,247 @@
+= Opciones básicas de red
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-12-31
+:page-revdate: {revdate}
+
+Esta página describe las opciones de configuración de red de K3s, incluyendo la configuración o el reemplazo de Flannel, y la configuración de IPv6 o dual-stack.
+
+== Opciones de Flannel
+
+https://github.com/flannel-io/flannel/blob/master/README.md[Flannel] es un proveedor ligero de tejido de red de capa 3 que implementa la Interfaz de Red de Contenedores de Kubernetes (CNI). Es lo que comúnmente se denomina un Plugin CNI.
+
+* Las opciones de Flannel solo se pueden establecer en nodos de servidor, y deben ser idénticas en todos los servidores del clúster.
+* El backend predeterminado para Flannel es `vxlan`. Para habilitar el cifrado, utiliza el backend `wireguard-native`.
+* Usar `vxlan` en Raspberry Pi con versiones recientes de Ubuntu requiere xref:installation/requirements.adoc#os_tab_raspberry_pi[preparación adicional].
+* Usar `wireguard-native` como backend de Flannel puede requerir módulos adicionales en algunas distribuciones de Linux. Por favor, consulta la https://www.wireguard.com/install/[Guía de instalación de WireGuard] para más detalles.
+Los pasos de instalación de WireGuard asegurarán que los módulos del kernel apropiados estén instalados para tu sistema operativo.
+Debes asegurarte de que los módulos del kernel de WireGuard estén disponibles en cada nodo, tanto en servidores como en agentes, antes de intentar usar el backend de Flannel de WireGuard.
+
+|===
+| Bandera y valor de CLI | Descripción
+
+| `--flannel-ipv6-masq`
+| Aplica reglas de enmascaramiento al tráfico IPv6 (predeterminado para IPv4). Solo se aplica en clústeres de doble pila o solo IPv6. Compatible con cualquier backend de Flannel que no sea `none`.
+
+| `--flannel-external-ip`
+| Usa direcciones IP externas de nodo como destino para el tráfico de Flannel, en lugar de IPs internas. Solo se aplica cuando --node-external-ip está configurado en un nodo.
+
+| `--flannel-backend=vxlan`
+| Utiliza VXLAN para encapsular los paquetes. Puede requerir módulos adicionales del kernel en Raspberry Pi.
+
+| `--flannel-backend=host-gw`
+| Utiliza rutas IP a subredes de pods a través de las IPs de los nodos. Requiere conectividad directa de capa 2 entre todos los nodos en el clúster.
+
+| `--flannel-backend=wireguard-native`
+| Utiliza WireGuard para encapsular y cifrar el tráfico de red. Puede requerir módulos adicionales del kernel.
+
+| `--flannel-backend=ipsec`
+| Utiliza strongSwan IPSec a través del binario `swanctl` para cifrar el tráfico de red. (Obsoleto; se eliminará en v1.27.0)
+
+| `--flannel-backend=none`
+| Desactiva Flannel por completo.
+|===
+
+[IMPORTANT]
+.Puerta de versión
+====
+
+K3s ya no incluye los binarios strongSwan `swanctl` y `charon` a partir de las versiones de 2022-12 (v1.26.0+k3s1, v1.25.5+k3s1, v1.24.9+k3s1, v1.23.15+k3s1). Por favor, instala los paquetes correctos en tu nodo antes de actualizar o instalar estas versiones si deseas utilizar el backend `ipsec`.
+====
+
+[#_migrating_from_wireguard_or_ipsec_to_wireguard_native]
+=== Migrando de `wireguard` o `ipsec` a `wireguard-native`
+
+El backend legado `wireguard` requiere la instalación de la herramienta `wg` en el host. Este backend no está disponible en K3s v1.26 y superiores, a favor del backend `wireguard-native`, que se comunica directamente con el núcleo de Linux.
+
+El backend legado `ipsec` requiere la instalación de los binarios `swanctl` y `charon` en el host. Este backend no está disponible en K3s v1.27 y superiores, a favor del backend `wireguard-native`.
+
+Recomendamos que los usuarios migren al nuevo backend lo antes posible. La migración requiere un breve período de inactividad mientras los nodos se inician con la nueva configuración. Debes seguir estos dos pasos:
+
+. Actualiza la configuración de K3s en todos los nodos del servidor. Si utilizas archivos de configuración, el `/etc/rancher/k3s/config.yaml` debe incluir `flannel-backend: wireguard-native` en lugar de `flannel-backend: wireguard` o `flannel-backend: ipsec`. Si estás configurando K3s a través de banderas de CLI en la unidad systemd, las banderas equivalentes deben ser cambiadas.
+. Reinicia todos los nodos, comenzando por los servidores.
+
+=== Opciones del Agente Flannel
+
+Estas opciones están disponibles para cada agente y son específicas de la instancia de Flannel que se ejecuta en ese nodo.
+
+|===
+| CLI Flag | Descripción
+
+| `--flannel-iface` valor de
+| Sobrescribir la interfaz de flannel por defecto
+
+| `--flannel-conf` valor de
+| Sobrescribir el archivo de configuración de flannel por defecto
+
+| `--flannel-cni-conf` valor de
+| Sobrescribir el archivo de configuración cni de flannel por defecto
+|===
+
+== CNI personalizado
+
+Inicia K3s con `--flannel-backend=none` e instala tu CNI de elección. La mayoría de los plugins de CNI vienen con su propio motor de políticas de red, por lo que se recomienda establecer `--disable-network-policy` también para evitar conflictos. Alguna información importante a tener en cuenta:
+
+[tabs,,sync-group-id=cni]
+======
+Canal::
++
+--
+Visita el sitio web de https://docs.tigera.io/calico/latest/getting-started/kubernetes/flannel/install-for-flannel#installing-calico-for-policy-and-flannel-aka-canal-for-networking[Documentación del Canal]. Sigue los pasos para instalar Canal. Modifica el YAML del Canal para que se permita el reenvío de IP en la sección `container_settings`, por ejemplo:
+
+[,yaml]
+----
+"container_settings": {
+  "allow_ip_forwarding": true
+}
+----
+
+Aplica el YAML de Canal.
+
+Asegúrate de que se aplicaron los ajustes ejecutando el siguiente comando en el host:
+
+[,bash]
+----
+cat /etc/cni/net.d/10-canal.conflist
+----
+
+Deberías ver que el reenvío de IP está configurado como verdadero.
+--
+
+Calico::
++
+--
+Sigue la https://docs.tigera.io/calico/latest/reference/configure-cni-plugins[Guía de Plugins CNI de Calico]. Modifica el YAML de Calico para que se permita el reenvío de IP en la sección `container_settings`, por ejemplo:
+
+[,yaml]
+----
+"container_settings": {
+  "allow_ip_forwarding": true
+}
+----
+
+Aplica el YAML de Calico.
+
+Asegúrate de que se aplicaron los ajustes ejecutando el siguiente comando en el host:
+
+[,bash]
+----
+cat /etc/cni/net.d/10-calico.conflist
+----
+
+Deberías ver que el reenvío de IP está configurado como verdadero.
+--
+
+Cilium::
++
+--
+Antes de ejecutar `k3s-killall.sh` o `k3s-uninstall.sh`, debes eliminar manualmente las interfaces `cilium_host`, `cilium_net` y `cilium_vxlan`. Si no haces esto, puedes perder la conectividad de red con el host cuando K3s se detenga.
+
+[,bash]
+----
+ip link delete cilium_host
+ip link delete cilium_net
+ip link delete cilium_vxlan
+----
+
+Además, se deben eliminar las reglas de iptables para cilium:
+
+[,bash]
+----
+iptables-save | grep -iv cilium | iptables-restore
+ip6tables-save | grep -iv cilium | ip6tables-restore
+----
+--
+======
+
+== Configuración del Selector de Egresos del Plano de Control
+
+Los agentes y servidores de K3s mantienen túneles websocket entre nodos que se utilizan para encapsular la comunicación bidireccional entre el plano de control (apiserver) y los componentes del agente (kubelet y containerd).
+Esto permite que los agentes operen sin exponer los puertos de transmisión del kubelet y del entorno de ejecución de contenedor a conexiones entrantes, y que el plano de control se conecte a los servicios del clúster cuando opera con el agente deshabilitado.
+Esta funcionalidad es equivalente al servicio https://kubernetes.io/docs/tasks/extend-kubernetes/setup-konnectivity/[Konnectivity] comúnmente utilizado en otras distribuciones de Kubernetes, y se gestiona a través de la configuración del selector de salida del apiserver.
+
+El modo por defecto es `agent`. Se recomiendan los modos `pod` o `cluster` cuando se ejecutan xref:advanced.adoc#_running_agentless_servers_experimental[servidores sin agente], para proporcionar al apiserver acceso a los puntos finales de servicio del clúster en ausencia de flannel y kube-proxy.
+
+El modo del selector de salida puede configurarse en los servidores mediante la opción `--egress-selector-mode`, y ofrece cuatro modos:
+
+* `disabled`: El apiserver no utiliza túneles de agentes para comunicarse con kubelets o puntos finales del clúster.
+Este modo requiere que los servidores ejecuten kubelet, CNI y kube-proxy, y tengan conectividad directa con los agentes, o el apiserver no podrá acceder al punto final de servicio ni realizar `kubectl exec` y `kubectl logs`.
+* `agent` (predeterminado): El apiserver utiliza túneles de agente para comunicarse con kubelets.
+Este modo requiere que los servidores también ejecuten kubelet, CNI y kube-proxy, o el apiserver no podrá acceder a los puntos finales de servicio.
+* `pod`: El apiserver utiliza túneles de agente para comunicarse con kubelets y los puntos finales de servicio, enrutando las conexiones de los puntos finales al agente correcto al observar Nodos y Puntos finales. +
+*NOTA*: Este modo no funcionará al usar un CNI que utiliza su propio IPAM y no respeta la asignación de PodCIDR del nodo. En su lugar, se debe utilizar el modo `cluster` o `agent` con estos CNIs.
+* `cluster`: El apiserver utiliza túneles de agente para comunicarse con kubelets y los puntos finales de servicio, enrutando las conexiones de los puntos finales al agente correcto al observar Pods y Puntos finales. Este modo tiene la mayor portabilidad entre diferentes configuraciones de clúster, a costa de una mayor sobrecarga.
+
+== Red de doble pila (IPv4 + IPv6)
+
+[IMPORTANT]
+.Restricción de versión
+====
+
+El soporte experimental está disponible desde https://github.com/k3s-io/k3s/releases/tag/v1.21.0%2Bk3s1[v1.21.0+k3s1]. +
+El soporte estable está disponible desde https://github.com/k3s-io/k3s/releases/tag/v1.23.7%2Bk3s1[v1.23.7+k3s1].
+====
+
+
+[CAUTION]
+.Incidencia conocida
+====
+
+Antes de 1.27, Kubernetes https://github.com/kubernetes/kubernetes/issues/111695[Issue #111695] hace que el Kubelet ignore las direcciones IPv6 del nodo si tienes un entorno de doble pila y no estás utilizando la interfaz de red principal para el tráfico del clúster. Para evitar este error, utiliza 1.27 o una versión más reciente o añade la siguiente opción a ambos servidores y agentes de K3s:
+
+----
+--kubelet-arg="node-ip=0.0.0.0" # To proritize IPv4 traffic
+#OR
+--kubelet-arg="node-ip=::" # To proritize IPv6 traffic
+----
+====
+
+
+La configuración de doble pila de red debe configurarse cuando se crea el clúster por primera vez. No se puede habilitar en un clúster existente una vez que se ha iniciado como solo IPv4.
+
+Para habilitar la doble pila en K3s, debes proporcionar `cluster-cidr` y `service-cidr` válidos de doble pila en todos los nodos del servidor. Este es un ejemplo de configuración válida:
+
+----
+--cluster-cidr=10.42.0.0/16,2001:db8:42::/56 --service-cidr=10.43.0.0/16,2001:db8:43::/112
+----
+
+Ten en cuenta que puedes configurar cualquier valor válido para `cluster-cidr` y `service-cidr`, pero se recomiendan las máscaras anteriores. Si cambias la máscara `cluster-cidr`, también deberías cambiar los valores de `node-cidr-mask-size-ipv4` y `node-cidr-mask-size-ipv6` para que coincidan con los pods planificados por nodo y el recuento total de nodos. La máscara `service-cidr` más grande soportada es /12 para IPv4 y /112 para IPv6. Recuerda permitir el tráfico de IPv6 si estás desplegando en una nube pública.
+
+Al utilizar direcciones IPv6 que no están enrutadas públicamente, por ejemplo, en el rango ULA, es posible que desees añadir la opción `--flannel-ipv6-masq` para habilitar IPv6 NAT, ya que por defecto los pods utilizan su dirección IPv6 de pod para el tráfico saliente.
+Sin embargo, si se utilizan direcciones IPv6 enrutadas públicamente, debes asegurarte de que esas direcciones estén enrutadas hacia tu clúster. De lo contrario, los pods no podrán recibir respuestas para los paquetes que se originen desde su dirección IPv6. Si bien está fuera del alcance de K3s comunicar automáticamente qué direcciones se utilizan en qué nodo a la infraestructura de enrutamiento externa, los miembros del clúster pueden reenviar el tráfico de los pods correctamente para que puedas dirigir tus rutas a cualquier nodo que pertenezca al clúster.
+
+Si estás utilizando un plugin CNI personalizado, es decir, un plugin CNI diferente a Flannel, puede ser necesaria una configuración adicional. Por favor, consulta la documentación de doble pila de tu plugin y verifica si se pueden habilitar las políticas de red.
+
+[CAUTION]
+.Problema conocido
+====
+Al definir cluster-cidr y service-cidr con IPv6 como la familia principal, el node-ip de todos los miembros del clúster debe establecerse explícitamente, colocando la dirección IPv6 deseada del nodo como la primera dirección. Por defecto, el kubelet siempre utiliza IPv4 como la familia de direcciones principal.
+====
+
+== Redes IPv6 de pila única
+
+[IMPORTANT]
+.Puerta de versión
+====
+Disponible a partir de https://github.com/k3s-io/k3s/releases/tag/v1.22.9%2Bk3s1[v1.22.9+k3s1]
+====
+
+
+[CAUTION]
+.Problema conocido
+====
+Si tu ruta por defecto de IPv6 está establecida por un anuncio de router (RA), necesitarás establecer el sysctl `net.ipv6.conf.all.accept_ra=2`; de lo contrario, el nodo descartará la ruta por defecto una vez que expire. Ten en cuenta que aceptar RAs podría aumentar el riesgo de https://github.com/kubernetes/kubernetes/issues/91507[ataques de hombre en el medio].
+====
+
+
+Los clústeres de IPv6 de pila única (clústeres sin IPv4) son compatibles en K3s utilizando las banderas `--cluster-cidr` y `--service-cidr`. Este es un ejemplo de una configuración válida:
+
+[,bash]
+----
+--cluster-cidr=2001:db8:42::/56 --service-cidr=2001:db8:43::/112
+----
+
+Al utilizar direcciones IPv6 que no están enrutadas públicamente, por ejemplo, en el rango ULA, es posible que desees añadir la opción `--flannel-ipv6-masq` para habilitar IPv6 NAT, ya que por defecto los pods utilizan su dirección IPv6 de pod para el tráfico saliente.
+
+== Nodos sin un nombre de host
+
+Algunos proveedores de nube, como Linode, crearán máquinas con "localhost" como nombre de host y otros pueden no tener un nombre de host establecido en absoluto. Esto puede causar problemas con la resolución de nombres de dominio. Puedes ejecutar K3s con la bandera `--node-name` o la variable de entorno `K3S_NODE_NAME`, lo que hará que se pase el nombre del nodo para resolver este problema.

@@ -1,0 +1,216 @@
+= Équilibreur de charge de cluster
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-03-03
+:page-revdate: {revdate}
+
+Cette section décrit comment installer un équilibreur de charge externe devant les nœuds serveur d'un cluster K3s à haute disponibilité (HA). Deux exemples sont fournis : Nginx et HAProxy.
+
+[TIP]
+====
+Les équilibreurs de charge externes ne doivent pas être confondus avec le ServiceLB intégré, qui est un contrôleur intégré permettant d'utiliser les services Kubernetes LoadBalancer sans déployer un contrôleur d'équilibreur de charge tiers. Pour plus de détails, voir xref:networking/networking-services.adoc#_service_load_balancer[ServiceLB].
+
+Les équilibreurs de charge externes peuvent être utilisés pour fournir une adresse d'enregistrement fixe pour l'enregistrement des nœuds, ou pour l'accès externe au serveur API Kubernetes. Pour exposer les services LoadBalancer, les équilibreurs de charge externes peuvent être utilisés en complément ou à la place de ServiceLB, mais dans la plupart des cas, des contrôleurs d'équilibreur de charge de remplacement tels que MetalLB ou Kube-VIP sont un meilleur choix.
+====
+
+
+== Conditions préalables
+
+Tous les nœuds dans cet exemple fonctionnent sous Ubuntu 20.04.
+
+Pour les deux exemples, supposons qu'un xref:datastore/ha-embedded.adoc[cluster HA K3s avec etcd intégré] a été installé sur 3 nœuds.
+
+Chaque serveur k3s est configuré avec :
+
+[,yaml]
+----
+# /etc/rancher/k3s/config.yaml
+token: lb-cluster-gd
+tls-san: 10.10.10.100
+----
+
+Les nœuds ont des noms d'hôte et des adresses IP de :
+
+* serveur-1 : `10.10.10.50`
+* serveur-2 : `10.10.10.51`
+* serveur-3 : `10.10.10.52`
+
+Deux nœuds supplémentaires pour l'équilibrage de la charge sont configurés avec des noms d'hôte et des adresses IP de :
+
+* lb-1 : `10.10.10.98`
+* lb-2 : `10.10.10.99`
+
+Trois nœuds supplémentaires existent avec des noms d'hôte et des adresses IP de :
+
+* agent-1 : `10.10.10.101`
+* agent-2 : `10.10.10.102`
+* agent-3 : `10.10.10.103`
+
+== Configurer l'équilibreur de charge
+
+[tabs,sync-group-id=ext-load-balancer]
+======
+HAProxy::
++
+--
+http://www.haproxy.org/[HAProxy] est une option Open Source qui fournit un équilibreur de charge TCP. Il prend également en charge la haute disponibilité pour l'équilibreur de charge lui-même, garantissant la redondance à tous les niveaux. Voir http://docs.haproxy.org/2.8/intro.html[Documentation HAProxy] pour plus d'informations.
+
+De plus, nous utiliserons KeepAlived pour générer une adresse IP virtuelle (VIP) qui sera utilisée pour accéder au cluster. Voir https://www.keepalived.org/manpage.html[Documentation KeepAlived] pour plus d'informations.
+
+. Installer HAProxy et KeepAlived :
++
+[,bash]
+----
+sudo apt-get install haproxy keepalived
+----
+
+. Ajouter ce qui suit à `/etc/haproxy/haproxy.cfg` sur lb-1 et lb-2 :
++
+----
+frontend k3s-frontend
+    bind *:6443
+    mode tcp
+    option tcplog
+    default_backend k3s-backend
+
+backend k3s-backend
+    mode tcp
+    option tcp-check
+    balance roundrobin
+    default-server inter 10s downinter 5s
+    server server-1 10.10.10.50:6443 check
+    server server-2 10.10.10.51:6443 check
+    server server-3 10.10.10.52:6443 check
+----
+
+. Ajouter ce qui suit à `/etc/keepalived/keepalived.conf` sur lb-1 et lb-2 :
++
+----
+global_defs {
+  enable_script_security
+  script_user root
+}
+
+vrrp_script chk_haproxy {
+    script 'killall -0 haproxy' # faster than pidof
+    interval 2
+}
+
+vrrp_instance haproxy-vip {
+    interface eth1
+    state <STATE> # MASTER on lb-1, BACKUP on lb-2
+    priority <PRIORITY> # 200 on lb-1, 100 on lb-2
+
+    virtual_router_id 51
+
+    virtual_ipaddress {
+        10.10.10.100/24
+    }
+
+    track_script {
+        chk_haproxy
+    }
+}
+----
+
+. Redémarrer HAProxy et KeepAlived sur lb-1 et lb-2 :
++
+[,bash]
+----
+systemctl restart haproxy
+systemctl restart keepalived
+----
+
+. Sur agent-1, agent-2 et agent-3, exécutez la commande suivante pour installer k3s et rejoindre le cluster :
++
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=lb-cluster-gd sh -s - agent --server https://10.10.10.100:6443
+----
+Où `INSTALL_K3S_ARTIFACT_URL` est l'https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[URL des artefacts Prime]
++
+Vous pouvez maintenant utiliser `kubectl` depuis le nœud serveur pour interagir avec le cluster.
++
+[,bash]
+----
+root@server-1 $ k3s kubectl get nodes -A
+NAME       STATUS   ROLES                       AGE     VERSION
+agent-1    Ready    <none>                      32s     v1.27.3+k3s1
+agent-2    Ready    <none>                      20s     v1.27.3+k3s1
+agent-3    Ready    <none>                      9s      v1.27.3+k3s1
+server-1   Ready    control-plane,etcd,master   4m22s   v1.27.3+k3s1
+server-2   Ready    control-plane,etcd,master   3m58s   v1.27.3+k3s1
+server-3   Ready    control-plane,etcd,master   3m12s   v1.27.3+k3s1
+----
+--
+
+Nginx::
++
+--
+[WARNING]
+====
+Nginx ne prend pas en charge nativement une configuration de haute disponibilité (HA). Si vous configurez un cluster HA, avoir un seul équilibreur de charge devant K3s réintroduira un point de défaillance unique.
+====
+
+http://nginx.org/[Nginx Open Source] fournit un équilibreur de charge TCP. Voir https://nginx.org/en/docs/http/load_balancing.html[Utiliser nginx comme équilibreur de charge HTTP] pour plus d'informations.
+
+. Créez un fichier `nginx.conf` sur lb-1 avec le contenu suivant :
++
+----
+events {}
+
+stream {
+  upstream k3s_servers {
+    server 10.10.10.50:6443;
+    server 10.10.10.51:6443;
+    server 10.10.10.52:6443;
+  }
+
+  server {
+    listen 6443;
+    proxy_pass k3s_servers;
+  }
+}
+----
+
+. Exécutez l'équilibreur de charge Nginx sur lb-1:
++
+En utilisant Docker :
++
+[,bash]
+----
+docker run -d --restart unless-stopped \
+    -v ${PWD}/nginx.conf:/etc/nginx/nginx.conf \
+    -p 6443:6443 \
+    nginx:stable
+----
++
+Ou https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/[installez nginx] puis exécutez :
++
+[,bash]
+----
+cp nginx.conf /etc/nginx/nginx.conf
+systemctl start nginx
+----
+
+. Sur agent-1, agent-2 et agent-3, exécutez la commande suivante pour installer k3s et rejoindre le cluster :
++
+[,bash]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=lb-cluster-gd sh -s - agent --server https://10.10.10.98:6443
+----
++
+Vous pouvez maintenant utiliser `kubectl` depuis le nœud serveur pour interagir avec le cluster.
++
+[,bash]
+----
+root@server1 $ k3s kubectl get nodes -A
+NAME       STATUS   ROLES                       AGE     VERSION
+agent-1    Ready    <none>                      30s     v1.27.3+k3s1
+agent-2    Ready    <none>                      22s     v1.27.3+k3s1
+agent-3    Ready    <none>                      13s     v1.27.3+k3s1
+server-1   Ready    control-plane,etcd,master   4m49s   v1.27.3+k3s1
+server-2   Ready    control-plane,etcd,master   3m58s   v1.27.3+k3s1
+server-3   Ready    control-plane,etcd,master   3m16s   v1.27.3+k3s1
+----
+--
+======

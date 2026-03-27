@@ -1,0 +1,68 @@
+= Preguntas más frecuentes
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-11
+:page-revdate: {revdate}
+
+Las preguntas frecuentes se actualizan periódicamente y están diseñadas para responder a las preguntas que nuestros usuarios más frecuentemente hacen sobre K3s.
+
+== ¿Es K3s un reemplazo adecuado para Kubernetes?
+
+K3s es una distribución de Kubernetes certificada por CNCF y puede hacer todo lo que se requiere de un clúster de Kubernetes estándar. Es simplemente una versión más ligera. Consulta la página de documentación xref:introduction.adoc[principal] para más detalles.
+
+== ¿Cómo puedo usar mi propio Ingress en lugar de Traefik?
+
+Simplemente inicia el servidor K3s con `--disable=traefik` y despliega tu Ingress.
+
+== ¿K3s es compatible con Windows?
+
+En este momento, K3s no es compatible de forma nativa con Windows, sin embargo, estamos abiertos a la idea en el futuro.
+
+== ¿Qué son exactamente los Servidores y Agentes?
+
+Para un desglose de los componentes que conforman un servidor y un agente, consulta la xref:architecture.adoc[Página de Arquitectura].
+
+== ¿Cómo puedo compilar desde el código fuente?
+
+Por favor, consulta el https://github.com/k3s-io/k3s/blob/main/BUILDING.md[BUILDING.md] de K3s, que contiene instrucciones.
+
+== ¿Dónde están los registros de K3s?
+
+La ubicación de los registros de K3s variará dependiendo de cómo ejecutes K3s y del sistema operativo del nodo.
+
+* Cuando se ejecuta desde la línea de comandos, los registros se envían a stdout y stderr.
+* Cuando se ejecuta bajo openrc, los registros se crearán en `/var/log/k3s.log`.
+* Cuando se ejecuta bajo Systemd, los registros se enviarán a Journald y se pueden ver usando `journalctl -u k3s`.
+* Los registros de los pods se pueden encontrar en `/var/log/pods`.
+* Los registros de Containerd se pueden encontrar en `/var/lib/rancher/k3s/agent/containerd/containerd.log`.
+
+Puedes generar registros más detallados utilizando la opción `--debug` al iniciar K3s (o `debug: true` en el archivo de configuración).
+
+Kubernetes utiliza un marco de registro conocido como `klog`, que usa una única configuración de registro para todos los componentes dentro de un proceso.
+Dado que K3s ejecuta todos los componentes de Kubernetes dentro de un único proceso, no es posible configurar diferentes niveles de registro o destinos para componentes individuales de Kubernetes.
+El uso de los argumentos de componente `-v=<level>` o `--vmodule=<module>=<level>` probablemente no tendrá el efecto deseado.
+
+Consulta xref:advanced.adoc#_additional_logging_sources[Fuentes de Registro Adicionales] para aún más opciones de registro.
+
+== ¿Puedo ejecutar K3s en Docker?
+
+Sí, hay múltiples formas de ejecutar K3s en Docker. Consulta xref:advanced.adoc#_running_k3s_in_docker[Opciones Avanzadas] para más detalles.
+
+== ¿Cuál es la diferencia entre los Tokens de Servidor y Agente de K3s?
+
+Para más información sobre la gestión de tokens de unión de K3s, consulta la documentación del xref:cli/token.adoc[`k3s token` comando].
+
+== ¿Qué tan compatibles son las diferentes versiones de K3s?
+
+En general, se aplica la https://kubernetes.io/docs/setup/release/version-skew-policy/[política de desajuste de versiones de Kubernetes].
+
+En resumen, los servidores pueden ser más nuevos que los agentes, pero los agentes no pueden ser más nuevos que los servidores.
+
+== Tengo un problema, ¿dónde puedo obtener ayuda?
+
+Si tienes un problema al desplegar K3s, deberías:
+
+. Consulta la página de xref:known-issues.adoc[Problemas Conocidos].
+. Verifica que hayas resuelto cualquier xref:installation/requirements.adoc#_operating_systems[Preparación Adicional del SO]. Ejecuta `k3s check-config` y asegúrate de que pase.
+. Busca en K3s https://github.com/k3s-io/k3s/issues[Problemas] y https://github.com/k3s-io/k3s/discussions[Discusiones] uno que coincida con tu problema.
+. Únete al canal de K3s en https://slack.rancher.io/[Rancher Slack] para obtener ayuda.
+. Envía un https://github.com/k3s-io/k3s/issues/new/choose[Nuevo Problema] en el Github de K3s describiendo tu configuración y el problema que estás experimentando.

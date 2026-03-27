@@ -1,0 +1,121 @@
+= Servicios de red
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-01-05
+:page-revdate: {revdate}
+
+Esta página explica cómo funcionan CoreDNS, el controlador de ingreso Traefik, el controlador de directivas de red y el controlador de balanceo de carga ServiceLB dentro de K3s.
+
+Consulta la página de xref:networking/basic-network-options.adoc[Opciones de Red de Instalación] para obtener detalles sobre las opciones de configuración de Flannel y la selección de backend, o cómo configurar tu propio CNI.
+
+Para información sobre qué puertos deben abrirse para K3s, consulta los xref:installation/requirements.adoc#_networking[Requisitos de Red].
+
+== CoreDNS
+
+CoreDNS se despliega automáticamente al iniciar el servidor. Para desactivarlo, configura todos los servidores en el clúster con la opción `--disable=coredns`.
+
+Si no instalas CoreDNS, necesitarás instalar un proveedor de DNS de clúster tú mismo.
+
+== Controlador de Ingreso Traefik
+
+https://traefik.io/[Traefik] es un proxy inverso HTTP moderno y un balanceador de carga diseñado para desplegar microservicios con facilidad. Simplifica la complejidad de la red al diseñar, desplegar y ejecutar aplicaciones.
+
+El controlador de ingreso Traefik despliega un Servicio de Balanceo de Carga que utiliza los puertos 80 y 443, y publicita las IPs Externas del Servicio de Balanceo de Carga en el Estado de los recursos de Ingreso que gestiona.
+
+Por defecto, ServiceLB utilizará todos los nodos en el clúster para alojar el Servicio de Balanceo de Carga de Traefik, lo que significa que los puertos 80 y 443 no estarán disponibles para otros pods de HostPort o NodePort, y el Estado de los recursos de Ingreso mostrará las IPs de nodo de todos los miembros del clúster.
+
+Para restringir los nodos utilizados por Traefik, y por extensión las IPs de nodo publicitadas en el Estado de Ingreso, puedes seguir las instrucciones en la sección <<_controlling_servicelb_node_selection,Controlando la Selección de Nodos de ServiceLB>> a continuación para limitar en qué nodos se ejecuta ServiceLB, o añadiendo algunos nodos a un grupo de Balanceo de Carga y restringiendo el Servicio de Traefik a ese grupo configurando etiquetas coincidentes en el Traefik HelmChartConfig.
+
+Traefik se despliega por defecto al iniciar el servidor. Los valores predeterminados del chart se pueden encontrar en `/var/lib/rancher/k3s/server/manifests/traefik.yaml`, pero este archivo no debe ser editado manualmente, ya que K3s reemplaza el archivo con valores predeterminados al iniciar. En su lugar, deberías personalizar Traefik creando un manifiesto adicional `HelmChartConfig` en `/var/lib/rancher/k3s/server/manifests`. Para más detalles y un ejemplo, consulta xref:add-ons/helm.adoc#_customizing_packaged_components_with_helmchartconfig[Personalizando Componentes Empaquetados con HelmChartConfig]. Para más información sobre los posibles valores de configuración, consulta `values.yaml` del https://github.com/k3s-io/k3s-charts/tree/main/charts/traefik[Gráfico Helm de Traefik] incluido con tu versión de K3s.
+
+Para eliminar Traefik de tu clúster, inicia todos los servidores con la opción `--disable=traefik`. Para más información, consulta xref:installation/packaged-components.adoc[Gestionando Componentes Empaquetados].
+
+Para obtener detalles sobre la versión específica de Traefik incluida con K3s, consulta las Notas de la Versión para tu versión.
+
+* Las versiones de K3s a partir de **1.32** incluyen Traefik v3. Las instalaciones existentes de Traefik v2 se actualizan automáticamente a v3 cuando se actualiza K3s.
+  Traefik v3 debería ser compatible con la configuración de v2; consulta la documentación de migración https://doc.traefik.io/traefik/migrate/v2-to-v3/[de v2 a v3] para más información.
+* Las versiones de K3s **1.21** hasta **1.31** incluyen Traefik v2, a menos que se encuentre una instalación existente de Traefik v1, en cuyo caso Traefik no se ha actualizado a v2.
+* Las versiones de K3s **1.20** y **anteriores** incluyen Traefik v1.
+
+== Controlador de Directiva de Red
+
+K3s incluye un controlador de directiva de red embebido. La implementación subyacente es la biblioteca del controlador netpol de https://github.com/cloudnativelabs/kube-router[kube-router] (no hay otra funcionalidad de kube-router presente) y se puede encontrar https://github.com/k3s-io/k3s/tree/main/pkg/agent/netpol[aquí].
+
+Para desactivarlo, inicia cada servidor con la opción `--disable-network-policy`.
+
+[NOTE]
+====
+Las reglas del paquete de tablas IP de directiva de red no se eliminan si la configuración de K3s se cambia para desactivar el controlador de directiva de red. Para limpiar las reglas de directiva de red de kube-router configuradas después de desactivar el controlador de directiva de red, utiliza el guion `k3s-killall.sh`, o límpialas usando `iptables-save` y `iptables-restore`. Estos pasos deben ejecutarse manualmente en todos los nodos del clúster.
+
+----
+iptables-save | grep -v KUBE-ROUTER | iptables-restore
+ip6tables-save | grep -v KUBE-ROUTER | ip6tables-restore
+----
+====
+
+[#_service_load_balancer]
+== Balanceador de Carga de Servicio
+
+Cualquier controlador de LoadBalancer puede ser desplegado en tu clúster de K3s. Por defecto, K3s proporciona un balanceador de carga conocido como https://github.com/k3s-io/klipper-lb[ServiceLB] (anteriormente Klipper LoadBalancer) que utiliza los puertos de host disponibles.
+
+Kubernetes upstream permite crear Servicios de tipo LoadBalancer, pero no incluye una implementación de balanceador de carga por defecto, por lo que estos servicios permanecerán `pending` hasta que se instale uno. Muchos servicios alojados requieren un proveedor de nube como Amazon EC2 o Microsoft Azure para ofrecer una implementación de balanceador de carga externo. Por el contrario, el ServiceLB de K3s hace posible utilizar Servicios de LoadBalancer sin un proveedor de nube o ninguna configuración adicional.
+
+=== Cómo Funciona ServiceLB
+
+El controlador ServiceLB observa los https://kubernetes.io/docs/concepts/services-networking/service/[Servicios] de Kubernetes con el campo `spec.type` configurado en `LoadBalancer`.
+
+Para cada Servicio de LoadBalancer, se crea un link:https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/[DaemonSet] en el espacio de nombres `kube-system`. Este DaemonSet, a su vez, crea Pods de ServiceLB con un prefijo `svc-`, en cada nodo. Estos pods utilizan hostPort usando el puerto del servicio, por lo que solo se desplegarán en nodos que tengan ese puerto disponible. Si no hay nodos con ese puerto disponible, el LB permanecerá en estado Pendiente. Ten en cuenta que es posible exponer múltiples Servicios en el mismo nodo, siempre que utilicen puertos diferentes.
+
+Cuando el Pod de ServiceLB se ejecuta en un nodo que tiene una IP externa configurada, la IP externa del nodo se incluye en la lista de direcciones del Servicio `status.loadBalancer.ingress` con `ipMode: VIP`. De lo contrario, se utiliza la IP interna del nodo.
+
+Si el tráfico a la IP externa está sujeto a link:https://en.wikipedia.org/wiki/Network_address_translation[Traducción de Dirección de Red (NAT)] - por ejemplo, en nubes públicas al usar la IP pública del nodo como IP externa - el tráfico se enruta al pod de ServiceLB a través del hostPort. El pod luego utiliza el paquete de tablas IP (iptables) para redirigir el tráfico a la dirección y puerto ClusterIP del Servicio. Si el tráfico no está sujeto a NAT y en su lugar llega con una dirección de destino que coincide con la dirección del LoadBalancer, el tráfico es interceptado (normalmente por las cadenas del paquete de tablas IP (iptables) de kube-proxy o ipvs) y redirigido a la dirección y puerto ClusterIP del Servicio.
+
+=== Uso
+
+Crea un https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer[Servicio de tipo LoadBalancer] en K3s.
+
+[WARNING]
+.Problema conocido
+====
+Si el tráfico externo llega al nodo utilizando un NAT (por ejemplo, en nubes públicas) y necesitas `externalTrafficPolicy=local` para propósitos como la preservación de la IP de origen del cliente, por favor no definas la configuración de k3s `node-external-ip` para ninguno de los nodos, ya que eso no funcionará correctamente.
+====
+
+=== Controlando la Selección de Nodos de ServiceLB
+
+Agregar la etiqueta `svccontroller.k3s.cattle.io/enablelb=true` a uno o más nodos cambia el controlador ServiceLB a modo de lista permitida, donde solo los nodos con la etiqueta son elegibles para alojar pods de LoadBalancer. Los nodos que permanecen sin etiquetar serán excluidos del uso por ServiceLB.
+
+[NOTE]
+====
+Por defecto, los nodos no están etiquetados. Mientras todos los nodos permanezcan sin etiquetar, todos los nodos con puertos disponibles serán utilizados por ServiceLB.
+====
+
+
+=== Creando Grupos de Nodos de ServiceLB
+
+Para seleccionar un subconjunto particular de nodos que alojen pods para un LoadBalancer, añade la etiqueta `enablelb` a los nodos deseados y establece valores de etiquetas `lbpool` coincidentes en los Nodos y Servicios. Por ejemplo:
+
+. Etiqueta el Nodo A y el Nodo B con `svccontroller.k3s.cattle.io/lbpool=pool1` y `svccontroller.k3s.cattle.io/enablelb=true`.
+. Etiqueta el Nodo C y el Nodo D con `svccontroller.k3s.cattle.io/lbpool=pool2` y `svccontroller.k3s.cattle.io/enablelb=true`.
+. Crea un Servicio LoadBalancer en el puerto 443 con la etiqueta `svccontroller.k3s.cattle.io/lbpool=pool1`. El DaemonSet para este servicio solo despliega Pods en el Nodo A y el Nodo B.
+. Crea otro Servicio LoadBalancer en el puerto 443 con la etiqueta `svccontroller.k3s.cattle.io/lbpool=pool2`. El DaemonSet solo desplegará Pods en el Nodo C y el Nodo D.
+
+=== Deshabilitando ServiceLB.
+
+Para deshabilitar ServiceLB, configura todos los servidores en el clúster con la opción `--disable=servicelb`.
+
+Esto es necesario si deseas ejecutar un LB diferente, como MetalLB.
+
+== Desplegando un Gestor de Controlador de Nube Externo.
+
+K3s proporciona un Gestor de Controlador de Nube (CCM) embebido que realiza lo siguiente:
+
+* Aloja el controlador de LoadBalancer del Servicio <<_service_load_balancer, Load Balancer>>.
+* Elimina el taint `node.cloudprovider.kubernetes.io/uninitialized`.
+* Establece los campos de dirección del nodo en función de las opciones `--node-ip`, `--node-external-ip`, `--node-internal-dns` y `--node-external-dns`.
+
+Antes de desplegar un CCM externo, debes iniciar todos los servidores K3s con la opción `--disable-cloud-controller` para deshabilitar el CCM embebido. Al usar un CCM externo, las direcciones de los nodos serán proporcionadas por las APIs de metadatos de instancias del proveedor de nube, en lugar de los valores de las banderas de K3s.
+
+[NOTE]
+====
+Si deshabilitas el CCM integrado y no despliegas ni configuras adecuadamente un sustituto externo, los nodos permanecerán marcados y no programables.
+====
+

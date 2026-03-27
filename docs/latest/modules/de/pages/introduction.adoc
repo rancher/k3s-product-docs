@@ -1,0 +1,38 @@
+= {k3s-product-name}
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-10-23
+:page-revdate: {revdate}
+:page-role: -Inhalt
+
+K3s ist ein offizielles https://www.cncf.io[CNCF] Sandbox-Projekt, das eine schlanke und dennoch leistungsstarke, zertifizierte Kubernetes-Distribution bietet, die für Produktions-Workloads an ressourcenbeschränkten, entfernten Standorten oder auf IoT-Geräten entwickelt wurde. In Verbindung mit SUSE® Rancher Prime ist K3s eine einfach zu installierende, ressourcenschonende und dennoch hochverfügbare Kubernetes-Distribution, die sich innerhalb der Rancher-Orchestrierungsplattform leicht verwalten lässt.
+
+== Hauptfunktionen
+
+* Wird als eine einzelne Binärdatei oder minimales Container-Image verteilt.
+* Leichtgewichtiges Datenspeichersystem, basierend auf sqlite3 als Standard-Speicher-Backend. etcd3, MySQL und Postgres sind ebenfalls verfügbar.
+* Verpackt in einen einfachen Launcher, der einen Großteil der Komplexität von TLS und Optionen übernimmt.
+* Standardmäßig sicher mit angemessenen Voreinstellungen für ressourcenschonende Umgebungen.
+* Der Betrieb aller Kubernetes-Steuerungskomponenten ist in einer einzigen Binärdatei und einem Prozess gekapselt, was es K3s ermöglicht, komplexe Clusteroperationen wie die Verteilung von Zertifikaten zu automatisieren und zu verwalten.
+* Externe Abhängigkeiten wurden minimiert; die einzigen Anforderungen sind ein moderner Kernel und cgroup-Mounts.
+* Packt die erforderlichen Abhängigkeiten für eine einfache "Batterien inklusive" Clustererstellung:
+ ** containerd / cri-dockerd Container-Laufzeit (CRI)
+ ** Flannel Container-Netzwerkschnittstelle (CNI)
+ ** CoreDNS Cluster-DNS
+ ** Traefik Ingress-Controller
+ ** ServiceLB Load-Balancer-Controller
+ ** Kube-router Netzwerk-Richtlinien-Controller
+ ** Local-Pfad-Provisioner Persistent Volume-Controller
+ ** Spegel verteiltes Container-Image-Registry-Mirror
+ ** Host-Dienstprogramme (iptables, socat, etc)
+
+== Großartig für:
+
+* Edge
+* Homelab
+* Internet der Dinge (IoT)
+* Continuous Integration (CI)
+* Entwicklung
+* Einplatinencomputer (ARM)
+* Air-Gapped-Umgebungen
+* Embedded K8s
+* Situationen, in denen ein PhD in K8s-Clusterologie nicht machbar ist

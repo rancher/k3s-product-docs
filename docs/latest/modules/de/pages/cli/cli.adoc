@@ -1,0 +1,43 @@
+= Kommandozeilenschnittstelle-Tools
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-11
+:page-revdate: {revdate}
+
+Die K3s-Binärdatei enthält eine Reihe zusätzlicher Tools, die Ihnen helfen, Ihren Cluster zu verwalten.
+
+|===
+| Kommando | Beschreibung
+
+| `k3s server`
+| Führen Sie einen K3s-Serverknoten aus, der die Kubernetes `apiserver`, `scheduler`, `controller-manager` und `cloud-controller-manager` Komponenten sowie einen Datenspeicher und die Agentenkomponenten startet. Weitere Informationen finden Sie in der xref:cli/server.adoc[`k3s server` Befehlsdokumentation].
+
+| `k3s agent`
+| Führen Sie den K3s-Agentenknoten aus, der `containerd`, `flannel`, `kube-router` Netzwerkrichtliniencontroller und die Kubernetes `kubelet` und `kube-proxy` Komponenten startet. Weitere Informationen finden Sie in der xref:cli/agent.adoc[`k3s agent` Befehlsdokumentation].
+
+| `k3s kubectl`
+| Führen Sie den eingebetteten https://kubernetes.io/docs/reference/kubectl[`kubectl` Befehl] aus. Dies ist eine Kommandozeilenschnittstelle zur Interaktion mit dem Kubernetes API-Server.  Wenn die `KUBECONFIG` Umgebungsvariable nicht gesetzt ist, wird automatisch versucht, die kubeconfig unter `/etc/rancher/k3s/k3s.yaml` zu verwenden.
+
+| `k3s crictl`
+| Führen Sie den eingebetteten https://github.com/kubernetes-sigs/cri-tools/blob/master/docs/crictl.md[`crictl` Befehl] aus. Dies ist eine Kommandozeilenschnittstelle für die Interaktion mit der Container-Laufzeitschnittstelle (CRI) von Kubernetes. Nützlich zum Debuggen.
+
+| `k3s ctr`
+| Führen Sie den eingebetteten https://github.com/projectatomic/containerd/blob/master/docs/cli.md[`ctr` Befehl] aus. Dies ist eine Kommandozeilenschnittstelle für containerd, den Container-Daemon, der von K3s verwendet wird. Nützlich zum Debuggen.
+
+| `k3s token`
+| Verwalten Sie Bootstrap-Token. Weitere Informationen finden Sie in der xref:cli/token.adoc[`k3s token` Befehlsdokumentation].
+
+| `k3s etcd-snapshot`
+| Führen Sie auf Abruf Sicherungen der K3s-Cluster-Daten durch und laden Sie sie in S3 hoch. Weitere Informationen finden Sie in der xref:cli/etcd-snapshot.adoc[`k3s etcd-snapshot` Befehlsdokumentation].
+
+| `k3s secrets-encrypt`
+| Konfigurieren Sie K3s, um Geheimnisse beim Speichern im Cluster zu verschlüsseln. Weitere Informationen finden Sie in der xref:cli/secrets-encrypt.adoc[`k3s secrets-encrypt` Befehlsdokumentation].
+
+| `k3s certificate`
+| Verwalten Sie K3s-Zertifikate. Weitere Informationen finden Sie in der xref:cli/certificate.adoc[`k3s certificate` Befehlsdokumentation].
+
+| `k3s completion`
+| Generieren Sie Shell-Vervollständigungsskripte für k3s.
+
+| `k3s help`
+| Zeigt eine Liste von Befehlen oder Hilfe für einen Befehl an.
+|===

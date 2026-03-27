@@ -1,0 +1,37 @@
+= Cesser la prise en charge des indicateurs
+:page-languages: [en, ja, ko, zh]
+:revdate: 2024-09-09
+:page-revdate: {revdate}
+
+K3s est un projet en évolution rapide, et en tant que tel, nous avons besoin d'un moyen de cesser la prise en charge des indicateurs et des options de configuration. Cette page décrit le processus pour cesser la prise en charge des indicateurs et des options de configuration. Afin de s'assurer que les utilisateurs ne soient pas surpris par la suppression des indicateurs, le processus est similaire à la https://kubernetes.io/docs/reference/using-api/deprecation-policy/[Kubernetes Deprecation Policy].
+
+== Processus
+
+. Les indicateurs peuvent être déclarés comme "À cesser la prise en charge" à tout moment.
+. Les indicateurs qui sont "À cesser la prise en charge" doivent être étiquetés comme tels dans le prochain correctif de toutes les versions actuellement prises en charge. De plus, l'indicateur commencera à avertir les utilisateurs qu'il va cesser d'être pris en charge dans la prochaine version mineure.
+. Lors de la prochaine version mineure, un indicateur sera marqué comme cessant d'être pris en charge dans la documentation et converti en indicateur caché dans le code. L'indicateur continuera de fonctionner et d'avertir les utilisateurs.
+. Dans la branche de la version mineure suivante, les indicateurs dont la prise en charge a cessé deviendront "non opérationnels", provoquant une erreur fatale s'ils sont utilisés. Cette erreur doit expliquer à l'utilisateur tout nouvel indicateur ou toute nouvelle configuration qui remplace cet indicateur.
+. Dans la prochaine version mineure, les indicateurs non opérationnels seront supprimés de la documentation et du code.
+
+== Par exemple :
+
+Un exemple du processus :
+
+* `--foo` existe dans v1.22.14, v1.23.10 et v1.24.2.
+* Après la version v1.24.2, il est décidé de cesser la prise en charge de `--foo` en faveur de `--new-foo`.
+* Dans v1.22.15, v1.23.11 et v1.24.3, `--foo` continue d'exister, mais avertira les utilisateurs :
++
+----
+[Warning] --foo will be deprecated in v1.25.0, use `--new-foo` instead
+----
++
+`--foo` continuera d'exister en tant qu'indicateur opérationnel pendant la durée de v1.22, v1.23 et v1.24.
+
+* Dans v1.25.0, `--foo` est marqué comme cessant d'être pris en charge dans la documentation et sera caché dans le code. Il continuera de fonctionner et d'avertir les utilisateurs de passer à `--new-foo`.
+* Dans la version 1.26.0, `--foo` provoquera une erreur fatale si utilisé. Le message d'erreur indiquera :
++
+----
+[Fatal] exit 1: --foo is no longer supported, use --new-foo instead
+----
+
+* Dans la version 1.27.0, `--foo` sera complètement supprimé de tout le code et de la documentation.

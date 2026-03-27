@@ -1,0 +1,449 @@
+= k3s etcd-instantánea
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-09-17
+:page-revdate: {revdate}
+
+Esta página describe cómo utilizar la herramienta CLI `k3s etcd-snapshot` para gestionar instantáneas de etcd y cómo restaurar desde una instantánea de etcd.
+
+Las instantáneas de K3s etcd se almacenan en el sistema de archivos del nodo y pueden ser opcionalmente subidas a un almacén de objetos compatible con S3 para escenarios de recuperación ante desastres. Las instantáneas pueden ser tanto automatizadas en un horario recurrente como tomadas manualmente bajo demanda. La herramienta CLI `k3s etcd-snapshot` ofrece un conjunto de subcomandos que se pueden utilizar para crear, eliminar y gestionar instantáneas.
+
+|===
+| Subcomando | Descripción
+
+| `delete`
+| Eliminar instantánea(s) dada(s)
+
+| `ls`, `list`, `l`
+| Listar instantáneas
+
+| `prune`
+| Eliminar instantáneas que superen el recuento de retención configurado
+
+| `save`
+| Activar una instantánea de etcd bajo demanda
+|===
+
+Para información adicional sobre los subcomandos de instantáneas de etcd, ejecuta `k3s etcd-snapshot --help`.
+
+== Creación de Instantáneas
+
+[tabs,sync-group-id=snapshots]
+======
+Programadas::
++
+--
+Las instantáneas programadas están habilitadas por defecto, a las 00:00 y 12:00 hora del sistema, con 5 instantáneas retenidas. Las instantáneas programadas tienen un nombre que comienza con `etcd-snapshot`, seguido del nombre del nodo y la marca de tiempo.
+
+Las siguientes opciones controlan la operación de las instantáneas programadas:
+
+|===
+| Indicadores | Descripción
+
+| `--etcd-disable-snapshots`
+| Desactivar instantáneas programadas.
+
+| `--etcd-snapshot-name`
+| Establece el nombre base de las instantáneas programadas de etcd. (Predeterminado: `etcd-snapshot`)
+
+| `--etcd-snapshot-compress`
+| Comprimir instantáneas de etcd.
+
+| `--etcd-snapshot-dir`
+| Directorio para guardar las instantáneas de la base de datos. (Ubicación por defecto: `$<data-dir>/db/snapshots`)
+
+| `--etcd-snapshot-retention`
+| Número de instantáneas a retener. (Por defecto: 5)
+
+| `--etcd-snapshot-schedule-cron`
+| Tiempo de intervalo de instantáneas en especificación cron. Por ejemplo, cada 5 horas `0 */5 * * *` (por defecto: `0 */12 * * *`).
+|===
+
+El valor de data-dir por defecto es `/var/lib/rancher/k3s` y se puede cambiar de forma independiente configurando la bandera `--data-dir`.
+
+Las instantáneas programadas se guardan en la vía establecida por el valor `--etcd-snapshot-dir` del servidor. Si deseas que se repliquen en almacenes de objetos compatibles con S3, consulta las xref:#_s3_compatible_object_store_support[opciones de configuración de S3].
+--
+
+Bajo demanda::
++
+--
+Las instantáneas se pueden guardar manualmente ejecutando el comando `k3s etcd-snapshot save`. No hay retención para estas instantáneas a demanda y el usuario necesita eliminarlas manualmente utilizando los comandos `k3s etcd-snapshot delete` o `k3s etcd-snapshot prune`. Las instantáneas a demanda tienen un nombre que comienza con `on-demand`, seguido del nombre del nodo y la marca de tiempo.
+
+Las siguientes opciones controlan la operación de las instantáneas a demanda:
+
+|===
+| Indicadores | Descripción
+
+| `--name`
+| Establece el nombre base de las instantáneas a demanda de etcd. (Predeterminado: `on-demand`)
+
+| `--etcd-snapshot-compress`
+| Comprimir instantáneas de etcd.
+
+| `--etcd-snapshot-dir`
+| Directorio para guardar las instantáneas de la base de datos. (Ubicación por defecto: `$<data-dir>/db/snapshots`)
+|===
+
+El valor de data-dir por defecto es `/var/lib/rancher/k3s` y se puede cambiar de forma independiente configurando la bandera `--data-dir`.
+
+La bandera `--name` solo se puede establecer al ejecutar el comando `k3s etcd-snapshot save`. Las otras dos también pueden ser parte del `k3s server` xref:installation/configuration.adoc#_configuration_file[archivo de configuración].
+
+Las instantáneas a demanda se guardan en la vía establecida por el valor `--etcd-snapshot-dir` del servidor. Si deseas que se repliquen en almacenes de objetos compatibles con S3, consulta las xref:#_s3_compatible_object_store_support[opciones de configuración de S3].
+--
+======
+
+== Eliminación de instantáneas
+
+Las instantáneas programadas se eliminan automáticamente cuando el número de instantáneas supera el recuento de retención configurado (5 por defecto). Las instantáneas más antiguas se eliminan primero. 
+
+Para eliminar manualmente las instantáneas programadas o las instantáneas a demanda, puedes usar el comando `k3s etcd-snapshot delete`:
+
+[,bash]
+----
+k3s etcd-snapshot delete <SNAPSHOT-NAME-1> <SNAPSHOT-NAME-2> ...
+----
+
+El subcomando `prune` elimina las instantáneas que coinciden con el prefijo de nombre (`on-demand` por defecto) y que superan el recuento de retención configurado. Incluye la bandera `--snapshot-retention` para establecer el recuento de retención. Para las instantáneas programadas, sobrescribe la directiva de retención predeterminada. Las instantáneas a demanda no tienen directiva de retención y, por lo tanto, esta bandera es necesaria.
+
+Recorta las instantáneas bajo demanda a una cantidad menor:
+
+[,bash]
+----
+k3s etcd-snapshot prune --snapshot-retention  <NUM-OF-SNAPSHOTS-TO-RETAIN>
+----
+
+Recorta las instantáneas "programadas" a una cantidad menor:
+
+[,bash]
+----
+k3s etcd-snapshot prune --name etcd-snapshot --etcd-snapshot-retention <NUM-OF-SNAPSHOTS-TO-RETAIN>
+----
+
+=== Soporte para almacenamiento de objetos compatible con S3
+
+K3s admite la replicación de instantáneas etcd a y la restauración de instantáneas etcd desde almacenes de objetos compatibles con S3. El soporte de S3 está disponible tanto para instantáneas bajo demanda como programadas.
+
+|===
+| Indicadores | Descripción
+
+| `--etcd-s3`
+| Habilitar copia de seguridad en S3
+
+| `--etcd-s3-endpoint`
+| URL del punto final de S3
+
+| `--etcd-s3-endpoint-ca`
+| Certificado CA personalizado de S3 para conectarse al punto final de S3
+
+| `--etcd-s3-skip-ssl-verify`
+| Desactiva la validación del certificado SSL de S3
+
+| `--etcd-s3-access-key`
+| Clave de acceso de S3
+
+| `--etcd-s3-secret-key`
+| Clave secreta de S3
+
+| `--etcd-s3-bucket`
+| Nombre del bucket de S3
+
+| `--etcd-s3-region`
+| Región de S3 / ubicación del bucket (opcional). Predeterminado a `us-east-1`.
+
+| `--etcd-s3-folder`
+| Carpeta de S3
+
+| `--etcd-s3-proxy`
+| Servidor proxy a utilizar al conectarse a S3, sobrescribiendo cualquier variable de entorno relacionada con el proxy.
+
+| `--etcd-s3-insecure`
+| Desactiva S3 sobre HTTPS
+
+| `--etcd-s3-timeout`
+| Tiempo de espera de S3 (por defecto: `5m0s`)
+
+| `--etcd-s3-config-secret`
+| Nombre del secreto en el espacio de nombres kube-system utilizado para configurar S3, si etcd-s3 está habilitado y no se establecen otras opciones de etcd-s3
+|===
+
+Por ejemplo, así es como funcionaría la creación y eliminación de instantáneas etcd bajo demanda en S3:
+
+[,shell-session]
+----
+$ k3s etcd-snapshot --s3 --s3-bucket=test-bucket --s3-access-key=test --s3-secret-key=secret save
+INFO[0155] Snapshot on-demand-server-0-1753178523 saved. 
+INFO[0155] Snapshot on-demand-server-0-1753178523 saved. 
+
+$ k3s etcd-snapshot --s3 --s3-bucket=test-bucket --s3-access-key=test --s3-secret-key=secret ls
+Name                              Location                                                                          Size    Created
+on-demand-server-0-1753178523     s3://test-bucket/test-folder/on-demand-server-0-1753178523                        5062688 2025-07-22T10:02:03Z
+on-demand-server-0-1753178523     file:///var/lib/rancher/k3s/server/db/snapshots/on-demand-server-0-1753178523     5062688 2025-07-22T10:02:03Z
+
+$ k3s etcd-snapshot --s3 --s3-bucket=test-bucket --s3-access-key=test --s3-secret-key=secret delete on-demand-server-0-1753178523
+INFO[0000] Snapshot on-demand-server-0-1753178523 deleted.
+
+$ k3s etcd-snapshot --s3 --s3-bucket=test-bucket --s3-access-key=test --s3-secret-key=secret ls
+Name                              Location                                                                          Size    Created
+----
+
+=== Retención de S3
+
+[NOTE]
+.Puerta de Versión
+====
+A partir de las versiones v1.34.0+k3s1, v1.33.4+k3s1, v1.32.8+k3s1, v1.31.12+k3s1, K3s incluye una nueva bandera para la retención de S3. Tiene el mismo valor predeterminado que la retención de instantáneas locales.
+====
+
+|===
+| Indicadores | Descripción
+
+| `--etcd-s3-retention`
+| Número de instantáneas en S3 a retener. (Predeterminado: `5`)
+|===
+
+=== Soporte de Secreto de Configuración S3
+
+[NOTE]
+.Puerta de Versión
+====
+El soporte de Secreto de Configuración S3 está disponible a partir de las versiones de agosto de 2024: v1.30.4+k3s1, v1.29.8+k3s1, v1.28.13+k3s1.
+====
+
+K3s admite la lectura de la configuración de instantáneas S3 de etcd desde un Secreto de Kubernetes.
+Esto puede ser preferido a codificar credenciales en las banderas de CLI de K3s o en archivos de configuración por razones de seguridad, o si las credenciales necesitan ser rotadas sin reiniciar K3s.
+Para pasar la configuración de instantáneas S3 a través de un Secreto, inicia K3s con `--etcd-s3` y `--etcd-s3-config-secret=<SECRET-NAME>`.
+El Secreto no necesita existir cuando se inicia K3s, pero se comprobará cada vez que se realice una operación de guardar/listar/eliminar/recortar instantáneas.
+
+El secreto de configuración S3 no puede ser utilizado al restaurar una instantánea, ya que el apiserver no está disponible para proporcionar el secreto durante una restauración.
+La configuración S3 debe ser pasada a través de la CLI al restaurar una instantánea almacenada en S3.
+
+[NOTE]
+====
+Pasa solo las banderas `--etcd-s3` y `--etcd-s3-config-secret` para habilitar el secreto.
+Si se establecen otras banderas de configuración S3, el secreto será ignorado.
+====
+
+Las claves en el secreto corresponden a las banderas de la CLI `--etcd-s3-*` listadas arriba.
+La clave `etcd-s3-endpoint-ca` acepta un paquete CA codificado en PEM, o la clave `etcd-s3-endpoint-ca-name` puede ser utilizada para especificar el nombre de un ConfigMap en el espacio de nombres `kube-system` que contiene uno o más paquetes CA codificados en PEM.
+
+[,yaml]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+  name: k3s-etcd-snapshot-s3-config
+  namespace: kube-system
+type: etcd.k3s.cattle.io/s3-config-secret
+stringData:
+  etcd-s3-endpoint: ""
+  etcd-s3-endpoint-ca: ""
+  etcd-s3-endpoint-ca-name: ""
+  etcd-s3-skip-ssl-verify: "false"
+  etcd-s3-access-key: "AWS_ACCESS_KEY_ID"
+  etcd-s3-secret-key: "AWS_SECRET_ACCESS_KEY"
+  etcd-s3-bucket: "bucket"
+  etcd-s3-folder: "folder"
+  etcd-s3-region: "us-east-1"
+  etcd-s3-insecure: "false"
+  etcd-s3-timeout: "5m"
+  etcd-s3-proxy: ""
+----
+
+== Restaurando Instantáneas
+
+K3s pasa por varios pasos al restaurar una instantánea:
+
+. Si la instantánea está almacenada en S3, el archivo se descarga en el directorio de instantáneas.
+. Si la instantánea está comprimida, se descomprime.
+. Si está presente, los archivos de base de datos etcd actuales se mueven a `<data-dir>/server/db/etcd-old-$TIMESTAMP/`.
+. El contenido de la instantánea se extrae al disco y se verifica la suma de comprobación.
+. Se inicia etcd, y todos los miembros del clúster etcd excepto el nodo actual son eliminados del clúster.
+. Los certificados CA y otros datos confidenciales se extraen de la tienda de datos y se escriben en disco, para su uso posterior.
+. La restauración está completa y K3s puede reiniciarse y utilizarse normalmente en el servidor donde se realizó la restauración.
+. (opcional) Los agentes y los servidores del plano de control pueden iniciarse normalmente. 
+. (opcional) Los servidores de Etcd pueden reiniciarse para volver a unirse al clúster después de eliminar los archivos de base de datos antiguos.
+
+Al restaurar una instantánea, no es necesario utilizar la misma versión de K3s que la que la creó; una versión menor más alta también es aceptable.
+
+[#_snapshot_restore_steps]
+=== Pasos para la Restauración de la Instantánea
+
+Selecciona la pestaña a continuación que coincida con la configuración de tu clúster.
+
+[tabs,sync-group-id=etcdsnap]
+======
+Servidor Único::
++
+--
+. Detén el servicio de K3s:
++
+[,bash]
+----
+systemctl stop k3s
+----
+
+. Ejecuta `k3s server` con la bandera `--cluster-reset`, y `--cluster-reset-restore-path` indicando la ruta a la instantánea a restaurar.
+   Si la instantánea está almacenada en S3, proporciona las banderas de configuración de S3 (`--etcd-s3`, `--etcd-s3-bucket`, etc.), y da solo el nombre de archivo de la instantánea como la ruta de restauración.
++
+[NOTE]
+====
+Usar la bandera `--cluster-reset` sin especificar una instantánea a restaurar simplemente restablece el clúster de etcd a un solo miembro sin restaurar una instantánea.
+====
++
+[,bash]
+----
+k3s server \
+  --cluster-reset \
+  --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
+----
++
+**Resultado:** K3s restaura la instantánea y restablece la membresía del clúster, luego imprime un mensaje indicando que está listo para ser reiniciado:
+`Managed etcd cluster membership has been reset, restart without --cluster-reset flag now.`
+
+. Inicia K3s de nuevo:
++
+[,bash]
+----
+systemctl start k3s
+----
+
+Si se define una configuración de copia de seguridad de etcd-s3 dentro del archivo de configuración de K3s, la restauración de K3s intenta obtener el archivo de la instantánea del bucket de S3 configurado. En este caso, solo se debe pasar el nombre de archivo de la instantánea en el argumento `--cluster-reset-restore-path`. Para restaurar desde un archivo de instantánea local, donde hay una configuración de copia de seguridad de etcd-s3 presente, añade el argumento `--etcd-s3=false` y pasa la ruta completa al archivo de instantánea local en el argumento `--cluster-reset-restore-path`.
+
+Como mecanismo de seguridad, cuando K3s restablece el clúster, crea un archivo vacío en `/var/lib/rancher/k3s/server/db/reset-flag` que impide que los usuarios ejecuten accidentalmente múltiples restablecimientos del clúster en sucesión. Este archivo se elimina cuando K3s se inicia normalmente.
+--
+
+Múltiples Servidores::
++
+--
+En este ejemplo hay 3 servidores, `S1`, `S2` y `S3`. La instantánea se encuentra en `S1`.
+
+. Terminad K3s en todos los servidores:
++
+[,bash]
+----
+systemctl stop k3s
+----
+
+. En S1, ejecutad `k3s server` con la opción `--cluster-reset`, y `--cluster-reset-restore-path` indicando la ruta a la instantánea que se va a restaurar.
+   Si la instantánea está almacenada en S3, proporciona las banderas de configuración de S3 (`--etcd-s3`, `--etcd-s3-bucket`, etc.), y da solo el nombre del archivo de la instantánea como la ruta de restauración.
++
+[NOTE]
+====
+Usar la bandera `--cluster-reset` sin especificar una instantánea a restaurar simplemente restablece el clúster de etcd a un solo miembro sin restaurar una instantánea.
+====
++
+[,bash]
+----
+k3s server \
+  --cluster-reset \
+  --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
+----
++
+**Resultado:** K3s restaura la instantánea y restablece la membresía del clúster, luego imprime un mensaje indicando que está listo para ser reiniciado:
+`Managed etcd cluster membership has been reset, restart without --cluster-reset flag now.`
+`Backup and delete $\{datadir}/server/db on each peer etcd server and rejoin the nodes.`
+
+. En S1, iniciad K3s de nuevo:
++
+[,bash]
+----
+systemctl start k3s
+----
+
+. En S2 y S3, eliminad el directorio de datos, `/var/lib/rancher/k3s/server/db/`:
++
+[,bash]
+----
+rm -rf /var/lib/rancher/k3s/server/db/
+----
+
+. En S2 y S3, iniciad K3s de nuevo para uniros al clúster restaurado:
++
+[,bash]
+----
+systemctl start k3s
+----
+
+Si se define una configuración de copia de seguridad de etcd-s3 dentro del archivo de configuración de K3s, la restauración de K3s intenta obtener el archivo de la instantánea del bucket de S3 configurado. En este caso, solo se debe pasar el nombre de archivo de la instantánea en el argumento `--cluster-reset-restore-path`. Para restaurar desde un archivo de instantánea local, donde hay una configuración de copia de seguridad de etcd-s3 presente, añade el argumento `--etcd-s3=false` y pasa la ruta completa al archivo de instantánea local en el argumento `--cluster-reset-restore-path`.
+
+Como mecanismo de seguridad, cuando K3s restablece el clúster, crea un archivo vacío en `/var/lib/rancher/k3s/server/db/reset-flag` que impide que los usuarios ejecuten accidentalmente múltiples restablecimientos del clúster en sucesión. Este archivo se elimina cuando K3s se inicia normalmente.
+--
+======
+
+==== Restaurando a Nuevos Hosts
+
+Es posible restaurar una instantánea de etcd en un host diferente al que fue tomada. Al hacerlo, debéis pasar el xref:cli/token.adoc#_server[token del servidor] que se utilizó originalmente al tomar la instantánea, ya que se utiliza para descifrar los datos de arranque dentro de la instantánea. El proceso es el mismo que el anterior, pero cambiando el paso 2 a:
+
+. En el nodo que tomó la instantánea, guardad el valor de: `/var/lib/rancher/k3s/server/token`. Esto es `<BACKED-UP-TOKEN-VALUE>` en el paso 3.
+. Copiad la instantánea al nuevo nodo. La ruta en el nodo es `<PATH-TO-SNAPSHOT>` en el paso 3.
+. Iniciad la restauración desde la instantánea en el primer nodo del servidor con los siguientes comandos:
++
+[,bash]
+----
+k3s server \
+  --cluster-reset \
+  --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
+  --token=<BACKED-UP-TOKEN-VALUE>
+----
++
+El valor del token también se puede establecer en el archivo de configuración de K3s.
+
+
+[WARNING]
+======
+. Los recursos del nodo también están incluidos en la instantánea de etcd. Si restauráis a un nuevo conjunto de nodos, debéis eliminar manualmente cualquier nodo antiguo que ya no esté presente en el clúster.
+. Si hay un token establecido en el archivo de configuración de K3s, aseguraos de que sea el mismo que el `<BACKED-UP-TOKEN-VALUE>`, de lo contrario K3s no podrá iniciarse.
+======
+
+== Recursos personalizados de ETCDSnapshotFile
+
+[NOTE]
+.Puerta de Versión
+====
+Los ETCDSnapshotFiles están disponibles a partir de las versiones de noviembre de 2023: v1.28.4+k3s2, v1.27.8+k3s2, v1.26.11+k3s2, v1.25.16+k3s4.
+====
+
+Las instantáneas se pueden ver de forma remota utilizando cualquier cliente de Kubernetes al listar o describir recursos `ETCDSnapshotFile` de ámbito de clúster. A diferencia del comando `k3s etcd-snapshot list`, que solo muestra las instantáneas visibles para ese nodo, los recursos `ETCDSnapshotFile` rastrean todas las instantáneas presentes en los miembros del clúster.
+
+[,shell-session]
+----
+$ kubectl get etcdsnapshotfile
+NAME                                             SNAPSHOTNAME                        NODE           LOCATION                                                                            SIZE      CREATIONTIME
+local-on-demand-k3s-server-1-1730308816-3e9290   on-demand-k3s-server-1-1730308816   k3s-server-1   file:///var/lib/rancher/k3s/server/db/snapshots/on-demand-k3s-server-1-1730308816   2891808   2024-10-30T17:20:16Z
+s3-on-demand-k3s-server-1-1730308816-79b15c      on-demand-k3s-server-1-1730308816   s3             s3://etcd/k3s-test/on-demand-k3s-server-1-1730308816                                2891808   2024-10-30T17:20:16Z
+----
+
+[,shell-session]
+----
+$ kubectl describe etcdsnapshotfile s3-on-demand-k3s-server-1-1730308816-79b15c
+Name:         s3-on-demand-k3s-server-1-1730308816-79b15c
+Namespace:
+Labels:       etcd.k3s.cattle.io/snapshot-storage-node=s3
+Annotations:  etcd.k3s.cattle.io/snapshot-token-hash: b4b83cda3099
+API Version:  k3s.cattle.io/v1
+Kind:         ETCDSnapshotFile
+Metadata:
+  Creation Timestamp:  2024-10-30T17:20:16Z
+  Finalizers:
+    wrangler.cattle.io/managed-etcd-snapshots-controller
+  Generation:        1
+  Resource Version:  790
+  UID:               bec9a51c-dbbe-4746-922e-a5136bef53fc
+Spec:
+  Location:   s3://etcd/k3s-test/on-demand-k3s-server-1-1730308816
+  Node Name:  s3
+  s3:
+    Bucket:           etcd
+    Endpoint:         s3.example.com
+    Prefix:           k3s-test
+    Region:           us-east-1
+    Skip SSL Verify:  true
+  Snapshot Name:      on-demand-k3s-server-1-1730308816
+Status:
+  Creation Time:  2024-10-30T17:20:16Z
+  Ready To Use:   true
+  Size:           2891808
+Events:
+  Type    Reason               Age   From            Message
+  ----    ------               ----  ----            -------
+  Normal  ETCDSnapshotCreated  113s  k3s-supervisor  Snapshot on-demand-k3s-server-1-1730308816 saved on S3
+----

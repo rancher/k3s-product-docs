@@ -1,0 +1,65 @@
+= Arquitectura
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-01-06
+:page-revdate: {revdate}
+
+== Servidores y Agentes
+
+* Un nodo de servidor se define como un host que ejecuta el comando `k3s server`, con componentes de plano de control y de almacenamiento gestionados por K3s.
+* Un nodo agente se define como un host que ejecuta el comando `k3s agent`, sin ningún componente de almacenamiento o de plano de control.
+* Tanto los servidores como los agentes ejecutan el kubelet, el entorno de ejecución de contenedor y CNI. Consulta la documentación de xref:advanced.adoc#_running_agentless_servers_experimental[Opciones Avanzadas] para más información sobre la ejecución de servidores sin agentes.
+
+image:how-it-works-k3s-revised.svg[]
+
+== Configuración de un solo servidor con una base de datos incrustada
+
+El siguiente diagrama muestra un ejemplo de un clúster que tiene un servidor K3s de un solo nodo con una base de datos SQLite incrustada.
+
+En esta configuración, cada nodo agente está registrado en el mismo nodo servidor. Un usuario de K3s puede manipular recursos de Kubernetes llamando a la API de K3s en el nodo servidor.
+
+image:k3s-architecture-single-server.svg[Arquitectura de K3s con un Solo Servidor]
+
+[#_high_availability_k3s]
+== K3s de Alta Disponibilidad
+
+Los clústeres de un solo servidor pueden satisfacer una variedad de casos de uso, pero para entornos donde el tiempo de funcionamiento del plano de control de Kubernetes es crítico, puedes ejecutar K3s en una configuración de HA. Un clúster de K3s en HA se compone de:
+
+[tabs]
+======
+Base de datos incrustada::
++
+--
+* Tres o más *nodos de servidor* que servirán la API de Kubernetes y ejecutarán otros servicios del plano de control
+* Un *almacenamiento etcd incrustado* (en oposición al almacenamiento SQLite incrustado utilizado en configuraciones de un solo servidor)
+
+image:k3s-architecture-ha-embedded.svg[Arquitectura de K3s con Servidores de Alta Disponibilidad]
+--
+
+Base de datos externa::
++
+--
+* Dos o más *nodos de servidor* que servirán la API de Kubernetes y ejecutarán otros servicios del plano de control
+* Un *almacenamiento externo* (como MySQL, PostgreSQL o etcd)
+
+image:k3s-architecture-ha-external.svg[Arquitectura de K3s con Servidores de Alta Disponibilidad y una Base de Datos Externa]
+--
+======
+
+== Dirección de Registro Fija para Nodos Agente
+
+En la configuración de servidor de alta disponibilidad, cada nodo también puede registrarse con la API de Kubernetes utilizando una dirección de registro fija, como se muestra en el diagrama a continuación.
+
+Después del registro, los nodos agente establecen una conexión directamente con uno de los nodos de servidor.
+
+image:k3s-production-setup.svg[Registro de Agente HA]
+
+[#_how_agent_node_registration_works]
+== Cómo Funciona el Registro de Nodos Agente
+
+Los nodos agente se registran con una conexión websocket iniciada por el proceso `k3s agent`, y la conexión es mantenida por un equilibrador de carga del lado del cliente que se ejecuta como parte del proceso del agente. Inicialmente, el agente se conecta al supervisor (y kube-apiserver) a través del equilibrador de carga local en el puerto 6443. El equilibrador de carga mantiene una lista de puntos finales disponibles para conectarse. El punto final predeterminado (y inicialmente único) se establece mediante el nombre de host de la dirección `--server`. Una vez que se conecta al clúster, el agente recupera una lista de direcciones de kube-apiserver de la lista de puntos finales del servicio de Kubernetes en el espacio de nombres predeterminado. Esos puntos finales se añaden al equilibrador de carga, que luego mantiene conexiones estables con todos los servidores en el clúster, proporcionando una conexión al kube-apiserver que tolera las interrupciones de servidores individuales.
+
+Los agentes se registrarán con el servidor utilizando el secreto del clúster de nodos junto con una contraseña generada aleatoriamente para el nodo, almacenada en `/etc/rancher/node/password`. El servidor almacenará las contraseñas para nodos individuales como secretos de Kubernetes, y cualquier intento posterior debe utilizar la misma contraseña. Los secretos de contraseña de nodo se almacenan en el espacio de nombres `kube-system` con nombres que utilizan la plantilla `<host>.node-password.k3s`. Esto se hace para proteger la integridad de los ID de nodo.
+
+Si se elimina el directorio `/etc/rancher/node` de un agente, o si desea volver a unir un nodo utilizando un nombre existente, el nodo debe ser eliminado del clúster. Esto limpiará tanto la entrada del nodo antiguo como el secreto de la contraseña del nodo, y permitirá que el nodo se (re)una al clúster.
+
+Si se reutilizan frecuentemente nombres de host, pero no se pueden eliminar los secretos de la contraseña del nodo, se puede añadir automáticamente un ID de nodo único al nombre de host al lanzar servidores o agentes K3s utilizando la opción `--with-node-id`. Cuando está habilitado, el ID del nodo también se almacena en `/etc/rancher/node/`.

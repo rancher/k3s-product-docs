@@ -1,0 +1,64 @@
+= Gestionar roles de servidor
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-03-03
+:page-revdate: {revdate}
+
+Iniciar el servidor K3s con `--cluster-init` ejecutará todos los componentes del plano de control, incluyendo el apiserver, controller-manager, scheduler y etcd. Es posible deshabilitar componentes específicos para dividir los roles del plano de control y etcd en nodos separados.
+
+[IMPORTANT]
+====
+Este documento solo es relevante al usar etcd embebido. Cuando no se utiliza etcd embebido, todos los servidores tendrán el rol de plano de control y ejecutarán componentes del plano de control.
+====
+
+
+== Nodos dedicados `etcd`
+
+Para crear un servidor con solo el rol de `etcd`, inicia K3s con todos los componentes del plano de control deshabilitados:
+
+----
+curl -fL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server --cluster-init --disable-apiserver --disable-controller-manager --disable-scheduler
+----
+Donde `INSTALL_K3S_ARTIFACT_URL` es la https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[URL de Artefactos Primarios]
+
+Este primer nodo iniciará etcd y esperará a que se unan nodos adicionales `etcd` y/o `control-plane`. El clúster no será utilizable hasta que se una un servidor adicional con los componentes `control-plane` habilitados.
+
+== Nodos dedicados `control-plane`
+
+[NOTE]
+====
+Un nodo dedicado `control-plane` no puede ser el primer servidor en el clúster; debe haber un nodo existente con el rol de `etcd` antes de unir nodos dedicados `control-plane`.
+====
+
+
+Para crear un servidor con solo el rol de `control-plane`, inicia k3s con etcd deshabilitado:
+
+[,bash]
+----
+curl -fL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server --token <token> --disable-etcd --server https://<etcd-only-node>:6443
+----
+
+Después de crear nodos de servidor dedicados, los roles seleccionados serán visibles en `kubectl get node`:
+
+[,bash]
+----
+$ kubectl get nodes
+NAME           STATUS   ROLES                       AGE     VERSION
+k3s-server-1   Ready    etcd                        5h39m   v1.20.4+k3s1
+k3s-server-2   Ready    control-plane,master        5h39m   v1.20.4+k3s1
+----
+
+== Añadiendo roles a servidores existentes
+
+Los roles pueden ser añadidos a nodos dedicados existentes reiniciando K3s con las banderas de deshabilitación eliminadas. Por ejemplo, si deseas añadir el rol de `control-plane` a un nodo dedicado `etcd`, puedes eliminar las banderas `--disable-apiserver --disable-controller-manager --disable-scheduler` de la unidad systemd o del archivo de configuración, y reiniciar el servicio.
+
+== Sintaxis del Archivo de Configuración
+
+Al igual que con todas las demás banderas de CLI, puedes usar el xref:installation/configuration.adoc#_configuration_file[Archivo de Configuración] para deshabilitar componentes, en lugar de pasar las opciones como banderas de CLI. Por ejemplo, para crear un nodo dedicado `etcd`, puedes colocar los siguientes valores en `/etc/rancher/k3s/config.yaml`:
+
+[,yaml]
+----
+cluster-init: true
+disable-apiserver: true
+disable-controller-manager: true
+disable-scheduler: true
+----

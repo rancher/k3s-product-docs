@@ -1,0 +1,80 @@
+= Bilder importieren
+:page-languages: [en, ja, ko, zh]
+:revdate: 2026-01-05
+:page-revdate: {revdate}
+:page-aliases: import-images.adoc
+
+Containerbilder werden lokal auf jedem Knoten vom Containerd-Image-Store zwischengespeichert. Bilder können nach Bedarf von der Registry durch Pods abgerufen, vorab geladen oder aus einem Image-Tarball importiert werden.
+
+== Bildabruf nach Bedarf
+
+Kubernetes zieht standardmäßig automatisch Bilder, wenn ein Pod sie benötigt, sofern das Bild nicht bereits auf dem Knoten vorhanden ist. Dieses Verhalten kann durch die Verwendung des https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[Image-Pull-Richtlinie] Feldes des Pods geändert werden. Bei Verwendung der Standard-`IfNotPresent` Richtlinie zieht containerd das Bild entweder von Upstream (Standard) oder von Ihrer xref:installation/private-registry.adoc[privaten Registry] und speichert es im Containerd-Image-Store. Benutzer müssen keine zusätzliche Konfiguration vornehmen, damit der Bildabruf nach Bedarf funktioniert.
+
+
+== Bilder vorab importieren
+
+[IMPORTANT]
+.Versionssperre
+====
+Das Vorabimportieren von Bildern während der Ausführung von K3s ist ab den Releases von Januar 2025 verfügbar: v1.32.0+k3s1, v1.31.5+k3s1, v1.30.9+k3s1, v1.29.13+k3s1. Davor hat K3s die Bilder nur beim Booten vorab importiert.
+====
+
+Das Vorabimportieren von Bildern auf den Knoten ist entscheidend, wenn Sie Kubernetes' `imagePullPolicy` als `Never` konfigurieren. Sie könnten dies aus Sicherheitsgründen tun oder um die Zeit zu reduzieren, die Ihre K3s-Knoten zum Hochfahren benötigen.
+
+K3s umfasst zwei Mechanismen, um Bilder in den Containerd-Image-Store vorab zu importieren:
+
+[tabs,sync-group-id=import-images]
+======
+Online-Bildimport::
++
+--
+
+Benutzer können einen Pull von Bildern in den Containerd-Image-Store auslösen, indem sie eine Textdatei mit den Bildnamen, jeweils einen pro Zeile, im `/var/lib/rancher/k3s/agent/images` Verzeichnis ablegen. Die Textdatei kann vor dem Start von K3s abgelegt sowie während der Ausführung von K3s erstellt oder geändert werden. K3s zieht die Bilder nacheinander über die CRI-API, optional unter Verwendung der xref:installation/private-registry.adoc[registries.yaml] Konfiguration.
+
+Beispiel:
+
+[,bash]
+----
+mkdir /var/lib/rancher/k3s/agent/images
+cp example.txt /var/lib/rancher/k3s/agent/images
+----
+
+Wo `example.txt` enthält:
+
+----
+docker.io/library/redis:latest
+docker.io/library/mysql:latest
+----
+
+Nach einigen Sekunden sind die `redis` und die `mysql` Bilder im Containerd-Image-Store des Knotens verfügbar. 
+
+Verwenden Sie `sudo k3s ctr images list`, um den Containerd-Image-Store abzufragen.
+--
+
+Offline-Bildimport::
++
+--
+Benutzer können Bilder direkt in den Containerd-Image-Store importieren, indem sie Bild-Tarballs im `/var/lib/rancher/k3s/agent/images` Verzeichnis ablegen. Der Tarball kann vor dem Start von K3s abgelegt sowie erstellt oder geändert werden, während K3s läuft. K3s dekomprimiert den Bild-Tarball, falls erforderlich, extrahiert die Bilder und lädt sie in den Containerd-Image-Store.
+
+Beispiel:
+
+[,bash]
+----
+mkdir /var/lib/rancher/k3s/agent/images
+curl  https://github.com/k3s-io/k3s/releases/download/v1.33.1%2Bk3s1/k3s-airgap-images-amd64.tar.zst -O  /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst
+----
+
+Nach einigen Sekunden sind die im Bild-Tarball enthaltenen Bilder im Containerd-Image-Store des Knotens verfügbar. 
+
+Verwenden Sie `sudo k3s ctr images list`, um den Containerd-Image-Store abzufragen.
+
+Dies ist die Methode, die in Air-Gapped-Umgebungen verwendet wird. Bitte folgen Sie der xref:installation/airgap.adoc[Air Gap-Installationsdokumentation] für detaillierte Informationen.
+--
+======
+
+== Richten Sie eine Image-Registry ein
+
+K3s unterstützt zwei Alternativen für Image-Registries:
+
+* xref:installation/private-registry.adoc[Konfiguration der privaten Registry] behandelt die Verwendung von `registries.yaml`, um die Authentifizierung und das Spiegeln der Container-Registry zu konfigurieren.
+* xref:installation/registry-mirror.adoc[Eingebetteter Registry-Spiegel] zeigt, wie man den eingebetteten, verteilten Registry-Spiegel aktiviert, um Bilder im Peer-to-Peer-Verfahren zwischen Knoten auszutauschen.

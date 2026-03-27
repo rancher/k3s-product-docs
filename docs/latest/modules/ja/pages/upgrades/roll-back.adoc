@@ -1,22 +1,22 @@
-= Rolling Back K3s
+= K3sのロールバック
 :page-languages: [en, ja, ko, zh]
 :revdate: 2026-03-03
 :page-revdate: {revdate}
 
-You can roll back the K3s Kubernetes version after an upgrade, using a combination of K3s binary downgrade and datastore restoration. Rollback can be performed on clusters of all types, including a single-node SQLite, an external datastore, or an embedded etcd. When rolling back to a previous Kubernetes minor version, you must have a datastore snapshot taken on the Kubernetes minor version you wish to roll back to.
+アップグレード後にK3sのKubernetesバージョンをロールバックするには、K3sバイナリのダウングレードとデータストアの復元を組み合わせて使用します。ロールバックは、シングルノードのSQLite、外部データストア、または組み込みのetcdを含むすべてのタイプのクラスターで実行できます。以前のKubernetesマイナーバージョンにロールバックする場合、ロールバック先のKubernetesマイナーバージョンで取得したデータストアのスナップショットが必要です。
 
 [WARNING]
 ====
-If you cannot restore the database, you cannot roll back to a previous minor version.
+データベースを復元できない場合、以前のマイナーバージョンにロールバックすることはできません。
 ====
 
-== Important Considerations
+== 重要な考慮事項
 
-* *Backups:* Before upgrading, ensure you have a valid database or etcd snapshot from your cluster running the older version of K3s. Without a backup, a rollback is impossible.
-* *Potential Data Loss:* The `k3s-killall.sh` script forcefully terminates K3s processes and may result in data loss if applications are not properly shut down.
-* *Version Specifics:* Always verify K3s and component versions before and after the rollback.
+* *バックアップ:*アップグレード前に、古いバージョンのK3sを実行しているクラスターから有効なデータベースまたはetcdのスナップショットを取得していることを確認してください。バックアップがない場合、ロールバックは不可能です。
+* *データ損失の可能性:*`k3s-killall.sh`スクリプトはK3sプロセスを強制終了させ、アプリケーションが適切にシャットダウンされていない場合、データ損失が発生する可能性があります。
+* *バージョンの詳細:*ロールバックの前後にK3sおよびコンポーネントのバージョンを常に確認してください。
 
-== Rolling Back a K3s Cluster
+== K3sクラスターのロールバック
 
 [tabs]
 ======
@@ -24,53 +24,51 @@ If you cannot restore the database, you cannot roll back to a previous minor ver
 SQLite::
 +
 --
-To roll back a K3s cluster when using a SQLite database, replace the `.db` file with the copy of the `.db` file you made while backing up your database.
+SQLiteデータベースを使用してK3sクラスターをロールバックするには、`.db`ファイルをデータベースのバックアップを取ったときに作成した`.db`ファイルのコピーと置き換えます。
 --
 
-Embedded etcd::
+組み込みetcd::
 +
 --
-To roll back a K3s cluster when using an embedded etcd, follow these steps: 
+組み込みetcdを使用してK3sクラスターをロールバックするには、次の手順に従ってください：
 
-. If the cluster is running and the Kubernetes API is available, gracefully stop workloads by draining all nodes: 
+. クラスターが実行中でKubernetes APIが利用可能な場合、すべてのノードをドレインしてワークロードを優雅に停止します:
 +
 [,bash]
 ----
 kubectl drain --ignore-daemonsets --delete-emptydir-data <NODE-ONE-NAME> <NODE-TWO-NAME> <NODE-THREE-NAME> ...
 ----
 
-. On each node, stop the K3s service and all running pod processes:
+. 各ノードで、K3sサービスとすべての実行中のポッドプロセスを停止します:
 +
 [,bash]
 ----
 k3s-killall.sh
 ----
 
-. On each node, roll back the K3s binary to the previous version, but *do not* start K3s.
+. 各ノードで、K3sバイナリを前のバージョンにロールバックしますが、*起動しないで*ください。
 
-* Clusters with Internet Access:
+* インターネットアクセスのあるクラスター:
 
-Where `INSTALL_K3S_ARTIFACT_URL` is the https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL].
-
-** Server nodes: 
+** サーバーノード:
 +
 [,bash]
 ----
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_VERSION=vX.Y.Zk3s1 INSTALL_K3S_EXEC="server" INSTALL_K3S_SKIP_START="true" sh -
 ----
 
-** Agent nodes:
+** エージェントノード:
 +
 [,bash]
 ----
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_VERSION=vX.Y.Zk3s1 INSTALL_K3S_EXEC="agent" INSTALL_K3S_SKIP_START="true" sh -
 ----
 
-* Air-gapped Clusters:
+* エアギャップ(された)クラスター:
 
-** Download the artifacts and run the xref:installation/airgap.adoc#_install_k3s[install script] locally. Add the environment variable `INSTALL_K3S_SKIP_START="true"` when running the install script to prevent K3s from starting.
+** アーティファクトをダウンロードし、xref:installation/airgap.adoc#_install_k3s[インストールスクリプト]をローカルで実行します。インストールスクリプトを実行する際に、K3sが起動しないように環境変数`INSTALL_K3S_SKIP_START="true"`を追加します。
 
-. On the first server node or the node without a `server:` entry in its xref:installation/configuration.adoc[K3s config file], initiate the cluster restore. Refer to the xref:cli/etcd-snapshot.adoc#_snapshot_restore_steps[Snapshot Restore Steps] for more information: 
+. 最初のサーバーノードまたはxref:installation/configuration.adoc[K3s設定ファイル]に`server:`エントリがないノードで、クラスターの復元を開始します。詳細については、xref:cli/etcd-snapshot.adoc#_snapshot_restore_steps[スナップショット復元手順]を参照してください:
 +
 [,bash]
 ----
@@ -79,46 +77,46 @@ k3s server --cluster-reset --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
 +
 [WARNING]
 ====
-This overwrites all data in the etcd datastore. Verify the snapshot's integrity before restoring. Be aware that large snapshots can take a long time to restore.
+これはetcdデータストア内のすべてのデータを上書きします。復元する前にスナップショットの整合性を確認してください。大きなスナップショットは復元に時間がかかる場合があることに注意してください。
 ====
 
-. Start the K3s service on the first server node: 
+. 最初のサーバーノードでK3sサービスを開始します：
 +
 [,bash]
 ----
 systemctl start k3s
 ----
  
-. On the other server nodes, remove the K3s database directory:
+. 他のサーバーノードでK3sのデータベースディレクトリを削除します：
 +
 [,bash]
 ----
 rm -rf /var/lib/rancher/k3s/server/db
 ----
  
-. Start the K3s service on the other server nodes: 
+. 他のサーバーノードでK3sサービスを開始します：
 +
 [,bash]
 ----
 systemctl start k3s
 ----
 
-. Start the K3s service on all agent nodes:
+. すべてのエージェントノードでK3sサービスを開始します：
 +
 [,bash]
 ----
 systemctl start k3s
 ----
 
-. Verify the K3s service status with `systemctl status k3s`. 
+. `systemctl status k3s`を使用してK3sサービスのステータスを確認します。
 --
 
-External Database:: 
+外部データベース:: 
 +
 --
-To roll back a K3s cluster when using an external database (e.g., PostgreSQL, MySQL), follow these steps: 
+外部データベース（例：PostgreSQL、MySQL）を使用してK3sクラスターをロールバックするには、次の手順に従ってください:
 
-. If the cluster is running and the Kubernetes API is available, gracefully stop workloads by draining all nodes: 
+. クラスターが実行中でKubernetes APIが利用可能な場合、すべてのノードをドレインしてワークロードを優雅に停止します:
 +
 [,bash]
 ----
@@ -127,63 +125,61 @@ kubectl drain --ignore-daemonsets --delete-emptydir-data <NODE-ONE-NAME> <NODE-T
 +
 [NOTE]
 ====
-This process may disrupt running applications.
+このプロセスは、実行中のアプリケーションに影響を与える可能性があります。
 ====
 
-. On each node, stop the K3s service and all running pod processes:
+. 各ノードで、K3sサービスとすべての実行中のポッドプロセスを停止します：
 +
 [,bash]
 ----
 k3s-killall.sh
 ----
 
-. Restore a database snapshot taken before upgrading K3s and verify the integrity of the database. For example, if you're using PostgreSQL, run the following command:
+. K3sのアップグレード前に取得したデータベーススナップショットを復元し、データベースの整合性を確認してください。例えば、PostgreSQLを使用している場合は、次のコマンドを実行してください：
 +
 [,bash]
 ----
 pg_restore -U <DB-USER> -d <DB-NAME> <BACKUP-FILE>
 ----
 
-. On each node, roll back the K3s binary to the previous version. 
+. 各ノードで、K3sのバイナリを前のバージョンにロールバックします。
 
-* Clusters with Internet Access:
+* インターネットアクセスのあるクラスター:
 
-Where `INSTALL_K3S_ARTIFACT_URL` is the https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL].
-
-** Server nodes:
+** サーバーノード:
 +
 [,bash]
 ----
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_VERSION=vX.Y.Zk3s1 INSTALL_K3S_EXEC="server" sh -
 ----
 
-** Agent nodes:
+** エージェントノード:
 +
 [,bash]
 ----
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_VERSION=vX.Y.Zk3s1 INSTALL_K3S_EXEC="agent" sh -
 ----
 
-* Air-gapped Clusters:
+* エアギャップ(された)クラスター:
 
-** Download the artifacts and run the xref:installation/airgap.adoc#_install_k3s[install script] locally. Verify the K3s version after install with `k3s --version` and reapply any custom configurations that were used before the upgrade. 
+** アーティファクトをダウンロードし、xref:installation/airgap.adoc#_install_k3s[インストールスクリプト]をローカルで実行します。インストール後に`k3s --version`でK3sのバージョンを確認し、アップグレード前に使用されていたカスタム設定を再適用してください。
 
-. Start the K3s service on each node:
+. 各ノードでK3sサービスを開始します：
 +
 [,bash]
 ----
 systemctl start k3s
 ----
 
-. Verify the K3s service status with `systemctl status k3s`.
+. `systemctl status k3s`を使用してK3sサービスのステータスを確認します。
 --
 ======
 
-== Verification 
+== 検証 
 
-After the rollback, verify the following: 
+ロールバック後、次のことを確認してください：
 
-* K3s version: `k3s --version` 
-* Kubernetes cluster health: `kubectl get nodes` 
-* Application functionality. 
-* Check the K3s logs for errors.
+* K3sのバージョン：`k3s --version`
+* Kubernetesクラスタの健康状態：`kubectl get nodes`
+* アプリケーションの機能。
+* K3sのログにエラーがないか確認してください。

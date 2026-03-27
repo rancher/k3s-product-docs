@@ -4,164 +4,165 @@
 :page-revdate: {revdate}
 :page-aliases: helm.adoc
 
-Helm 是 Kubernetes 的包管理工具。Helm Chart 为 Kubernetes YAML 清单文件提供了模板语法。借助 Helm，开发人员或集群管理员可以创建称为 Chart 的可配置模板，而不仅仅是使用静态清单。如果你需要创建自己的 Chart catalog，请参阅 https://helm.sh/docs/intro/quickstart/。
+Helm是Kubernetes的首选软件包管理工具。Helm图表为Kubernetes YAML清单文档提供模板语法。使用Helm，开发人员或集群管理员可以创建称为图表的可配置模板，而不仅仅是使用静态清单。有关创建您自己的图表目录的更多信息，请查看https://helm.sh/docs/intro/quickstart/.中的文档。
 
-K3s 不需要使用任何特殊配置来支持 Helm。请确保你已根据xref:cluster-access.adoc[集群访问]文档正确设置了 kubeconfig 路径。
+K3s不需要任何特殊配置即可支持Helm。只需确保您已根据xref:cluster-access.adoc[集群访问]文档正确设置kubeconfig路径。
 
-K3s 包含一个 https://github.com/k3s-io/helm-controller/[Helm Controller]，它使用 HelmChart 自定义资源定义 (CRD) 来管理 Helm Chart 的安装、升级、重新配置和卸载。与xref:installation/packaged-components.adoc[自动部署 AddOn 清单]配合使用后，它可以在磁盘上创建单个文件，自动在集群上安装 Helm Chart。
+K3s包括一个https://github.com/k3s-io/helm-controller/[Helm控制器]，它使用HelmChart自定义资源定义（CRD）管理Helm图表的安装、升级/重新配置和卸载。与xref:installation/packaged-components.adoc[自动部署的附加组件清单]配合使用，在集群上安装Helm图表可以通过在磁盘上创建一个文件来实现自动化。
 
-== 使用 Helm Controller
+== 使用Helm控制器
 
-https://github.com/k3s-io/helm-controller#helm-controller[HelmChart Custom Resource] 捕获了你通常传递给 `helm` 命令行工具的大部分选项。
+https://github.com/k3s-io/helm-controller#helm-controller[HelmChart自定义资源]捕获您通常会传递给`helm`命令行工具的大部分选项。
 
-=== HelmChart 字段定义
+=== HelmChart字段定义
 
 [NOTE]
 ====
-`name` 字段需要遵循 Helm Chart 命名约定。有关更多信息，请参阅 https://helm.sh/docs/chart_best_practices/conventions/#chart-names[Helm 最佳实践文档]。
+`name`字段应遵循Helm图表命名约定，以及Kubernetes对https://kubernetes.io/docs/concepts/overview/working-with-objects/names/[对象名称和ID]的规则。请参考https://helm.sh/docs/chart_best_practices/conventions/#chart-names[Helm最佳实践文档]以了解更多信息。
 ====
 
 |===
-| 字段 | 默认 | 描述 | Helm 参数/标志等效项
+| 字段 | 默认值 | 说明 | Helm参数/标志等效
 
 | metadata.name
 |
-| Helm Chart 名称
-| NAME
+| Helm图表名称
+| 名称
 
 | spec.chart
 |
-| 仓库中的 Helm Chart 名称，或 chart archive (.tgz) 的完整 HTTPS URL
-| CHART
+| 储存库中的Helm图表名称，或指向图表归档（.tgz）的完整HTTPS URL
+| 图表
 
 | spec.chartContent
 |
-| Base64 编码的 chart archive .tgz，覆盖 spec.chart
-| CHART
+| Base64编码的图表归档.tgz - 覆盖spec.chart
+| 图表
 
 | spec.targetNamespace
 | default
-| Helm Chart 目标命名空间
+| Helm图表目标命名空间
 | `--namespace`
 
 | spec.createNamespace
 | false
-| Create target namespace if not present
+| 如果不存在，则创建目标命名空间
 | `--create-namespace`
 
 | spec.version
 |
-| Helm Chart 版本（通过仓库安装时）
+| Helm图表版本（从储存库安装时）
 | `--version`
 
 | spec.repo
 |
-| Helm Chart 仓库 URL
+| Helm图表储存库URL
 | `--repo`
 
 | spec.repoCA
 |
-| 指定启用 HTTPS 的 Server 的证书
+| 使用此 CA 包验证启用 HTTPS 的服务器的证书。应为包含一个或多个 PEM 编码 CA 证书的字符串。
 | `--ca-file`
 
 | spec.repoCAConfigMap
 |
-| Reference to a ConfigMap containing CA Certificates to be be trusted by Helm. Can be used along with or instead of `repoCA`
+| 指向包含 Helm 信任的 CA 证书的 ConfigMap。可以与 `repoCA` 一起使用或替代
 | `--ca-file`
 
 | spec.plainHTTP
 | false
-| Use insecure HTTP connections for the chart download.
+| 使用不安全的 HTTP 连接下载图表。
 | `--plain-http`
 
 | spec.insecureSkipTLSVerify
 | false
-| Skip TLS certificate checks for the chart download.
+| 跳过图表下载的 TLS 证书检查。
 | `--insecure-skip-tls-verify`
 
 | spec.helmVersion
 | v3
-| Helm version to use. Only `v3` is currently supported.
+| 要使用的 Helm 版本。目前仅支持 `v3`。
 |
 
 | spec.bootstrap
 | False
-| 如果需要此 Chart 来引导集群（Cloud Controller Manager 等），请设置为 `True`
+| 如果此图表需要启动集群（云控制器管理器等），则设置为 True。
 |
 
 | spec.jobImage
 |
-| 指定安装 helm chart 时要使用的镜像。例如：rancher/klipper-helm:v0.3.0
+| 指定安装Helm图表时使用的镜像。例如：rancher/klipper-helm:v0.3.0。
 |
 
 | spec.podSecurityContext
 |
-| Custom https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#podsecuritycontext-v1-core[`v1.PodSecurityContext`] for the Helm job pod
+| Helm 作业 Pod 的自定义 https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#podsecuritycontext-v1-core[`v1.PodSecurityContext`]
 |
 
 | spec.securityContext
 |
-| Custom https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#securitycontext-v1-core[`v1.SecurityContext`] for the Helm job pod's containers
+| Helm 作业 Pod 的容器的自定义 https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#securitycontext-v1-core[`v1.SecurityContext`]
 |
 
 | spec.backOffLimit
 | 1000
-| Specify the number of retries before considering a job failed.
+| 指定在将作业视为失败之前的重试次数。
 |
 
 | spec.timeout
-| 300s
-| Helm 操作的超时，作为 https://pkg.go.dev/time#ParseDuration[duration string]（`300s`、`10m`、`1h` 等）
+| 300秒
+| Helm 操作的超时，作为 https://pkg.go.dev/time#ParseDuration[持续时间字符串]（`300s`，`10m`，`1h` 等）
 | `--timeout`
 
 | spec.failurePolicy
-| reinstall
-| 如果设置为 `abort`，Helm 操作会被中止，等待操作人员的手动干预。
+| 重新安装
+| 设置为 `abort`，此情况下 Helm 操作将被中止，等待操作员的手动干预。
 |
 
 | spec.authSecret
 |
-| Reference to Secret of type `kubernetes.io/basic-auth` holding Basic auth credentials for the Chart repo.
+| 引用类型为 `kubernetes.io/basic-auth` 的 Secret，持有图表储存库的基本身份验证凭据。
 |
 
 | spec.authPassCredentials
 | false
-| Pass Basic auth credentials to all domains.
+| 将基本身份验证凭据传递给所有域。
 | `--pass-credentials`
 
 | spec.dockerRegistrySecret
 |
-| Reference to Secret of type `kubernetes.io/dockerconfigjson` holding Docker auth credentials for the OCI-based registry acting as the Chart repo.
+| 引用类型为 `kubernetes.io/dockerconfigjson` 的 Secret，持有作为 Chart 储存库的 OCI 基础注册表的 Docker 身份验证凭据。
 |
 
 | spec.set
 |
-| 覆盖简单的默认 Chart 值。优先于通过 valuesContent 设置的选项。
+| 覆盖简单的默认 Chart 值。这些优先于通过 valuesContent 设置的选项。
 | `--set` / `--set-string`
+
 
 | spec.valuesContent
 |
-| 通过 YAML 文件内容覆盖复杂的默认 Chart 值
+| 通过 YAML 文件内容覆盖复杂的默认 Chart 值。
 | `--values`
 
 | spec.valuesSecrets
 |
-| Override complex Chart values via references to external Secrets
+| 通过引用外部 Secrets 来覆盖复杂的 Chart 值。
 | `--values`
 |===
 
-你可以通过集群内的 Kubernetes APIServer 匿名访问 `/var/lib/rancher/k3s/server/static/` 中的内容。此 URL 可以使用 `spec.chart` 字段中的特殊变量 `+%{KUBERNETES_API}%+` 进行模板化。例如，打包的 Traefik 组件通过 `+https://%{KUBERNETES_API}%/static/charts/traefik-VERSION.tgz+` 加载 Chart。
+放置在 `/var/lib/rancher/k3s/server/static/` 中的内容可以通过集群内的 Kubernetes APIServer 匿名访问。此 URL 可以在 `spec.chart` 字段中使用特殊变量 `%{KUBERNETES_API}%` 进行模板化。例如，打包的 Traefik 组件从 `https://%{KUBERNETES_API}%/static/charts/traefik-VERSION.tgz` 加载其图表。
 
-Chart values are used in the following order, from least to greatest precedence:
+Chart 值的使用顺序，从最低到最高优先级：
 
-. Chart default values
+. Chart 默认值
 . HelmChart `spec.valuesContent`
-. HelmChart `spec.valuesSecrets` in listed order of secret name and keys
+. 按 Secret 名称和键的列出顺序的 HelmChart `spec.valuesSecrets`
 . HelmChartConfig `spec.valuesContent`
-. HelmChartConfig `spec.valuesSecrets` in listed order of secret name and keys
+. 按 Secret 名称和键的列出顺序的 HelmChartConfig `spec.valuesSecrets`
 . HelmChart `spec.set`
 
-以下示例说明了如何从 Bitnami Chart 仓库部署 Apache，并覆盖某些默认的 Chart 值。请注意，HelmChart 资源本身位于 `kube-system` 命名空间中，但 Chart 的资源将部署到在同一清单中创建的 `web` 命名空间。如果你希望将 HelmChart 资源与其部署的资源分开，这将很有用。
+以下是如何从 Bitnami Chart 储存库部署 Apache 的示例，覆盖一些默认的 Chart 值。请注意，HelmChart 资源本身位于 `kube-system` 命名空间，但图表的资源将被部署到 `web` 命名空间，该命名空间在同一清单中创建。如果您希望将 HelmChart 资源与其部署的资源分开，这可能会很有用。
 
 [,yaml]
 ----
@@ -189,7 +190,7 @@ spec:
       enabled: true
 ----
 
-An example of deploying a helm chart from a private repo with authentication:
+从带有身份验证的私有储存库部署 Helm图表的示例：
 
 [,yaml]
 ----
@@ -234,31 +235,31 @@ data:
     -----END CERTIFICATE-----
 ----
 
-=== Chart Values from Secrets
+=== 来自 Secrets 的 Chart 值
 
-Chart values can be read from externally-managed Secrets, instead of storing the values in the `spec.set` or `spec.valuesContent` fields. This should be done when passing confidential information such as credentials in to Charts that do not support referring to existing Secrets via the `existingSecret` pattern.
+Chart 值可以从外部管理的 Secrets 中读取，而不是将值存储在 `spec.set` 或 `spec.valuesContent` 字段中。在将机密信息（例如凭据）传递给不支持通过 `existingSecret` 模式引用现有 Secrets 的 Charts 时，应执行此操作。
 
-As with other Secrets (`spec.authSecret` and `spec.dockerRegistrySecret`), Secrets referenced in `spec.valuesSecrets` must be in the same namespace as the HelmChart.
+与其他 Secrets (`spec.authSecret` 和 `spec.dockerRegistrySecret`) 一样，在 `spec.valuesSecrets` 中引用的 Secrets 必须与 HelmChart 在同一命名空间中。
 
-Each listed `valuesSecrets` entry has the following fields:
+每个列出的 `valuesSecrets` 条目具有以下字段：
 
 |===
-| Field | Description
+| 字段 | 说明
 
 | name
-| The name of the Secret. Required.
+| Secret 的名称。必需。
 
-| keys
-| List of keys to read values from, values are used in the listed order. Required.
+| 密钥
+| 要读取值的键列表，值按列出顺序使用。必需。
 
 | ignoreUpdates
-| Mark this Secret as optional, and do not update the chart if the Secret changes. Optional, defaults to `false`.
+| 将此 Secret 标记为可选，如果 Secret 更改，则不更新图表。可选，默认为 `false`。
 |===
 
-* If `ignoreUpdates` is set to `false` or unspecified, the Secret and all listed keys must exist. Any change to a referenced values Secret will cause the chart to be updated with new values.  
-* If `ignoreUpdates` is set to `true`, the Secret is used if it exists when the Chart is created, or updated due to any other change to related resources. Changes to the Secret will not cause the chart to be updated.
+* 如果 `ignoreUpdates` 设置为 `false` 或未指定，则 Secret 和所有列出的键必须存在。对引用的值 Secret 的任何更改将导致图表更新为新值。
+* 如果 `ignoreUpdates` 设置为 `true`，则在创建图表时，如果 Secret 存在，则使用该 Secret，或者由于与相关资源的其他更改而更新。对 Secret 的更改不会导致图表更新。
 
-An example of deploying a helm chart using an existing Secret with two keys:
+使用具有两个键的现有 Secret 部署 Helm图表的示例：
 
 [,yaml]
 ----
@@ -304,32 +305,32 @@ stringData:
 [#_customizing_packaged_components_with_helmchartconfig]
 == 使用 HelmChartConfig 自定义打包组件
 
-为了允许覆盖部署为 HelmCharts（例如 Traefik）的打包组件的值，K3s 支持通过 HelmChartConfig 资源进行自定义部署。HelmChartConfig 资源必须与对应的 HelmChart 名称和命名空间匹配，并且支持提供额外的 `valuesContent`，它作为附加值文件传递给 `helm` 命令。
+为了允许覆盖作为 HelmCharts 部署的打包组件的值（例如 Traefik），K3s 支持通过 HelmChartConfig 资源自定义部署。HelmChartConfig 资源必须与其对应的 HelmChart 的名称和命名空间匹配，并且支持提供额外的 `valuesContent`，该值作为附加值文件传递给 `helm` 命令。
 
-### HelmChartConfig Field Definitions
+### HelmChartConfig 字段定义
 
 |===
-| Field | Description
+| 字段 | 说明
 
 | metadata.name
-| Helm Chart name - must match the HelmChart resource name.
+| Helm Chart 名称 - 必须与 HelmChart 资源名称匹配。
 
 | spec.valuesContent
-| Override complex default Chart values via YAML file content.
+| 通过 YAML 文件内容覆盖复杂的默认 Chart 值。
 
 | spec.valuesSecrets
-| Override complect default Chart values via external Secrets.
+| 通过外部 Secrets 覆盖复杂的默认 Chart 值。
 
 | spec.failurePolicy
-| Set to `abort` which case the Helm operation is aborted, pending manual intervention by the operator.
+| 设置为 `abort`，此情况下 Helm 操作将被中止，等待操作员的手动干预。
 |===
 
 [NOTE]
 ====
-HelmChart `spec.set` 值会覆盖 HelmChart 和 HelmChartConfig `spec.valuesContent` 和 `spec.valuesSecrets` 设置, as described above。
+HelmChart `spec.set` 值覆盖 HelmChart 和 HelmChartConfig `spec.valuesContent` 和 `spec.valuesSecrets` 设置，如上所述。
 ====
 
-例如，要自定义打包的 Traefik ingress 配置，你可以创建一个名为 `/var/lib/rancher/k3s/server/manifests/traefik-config.yaml` 的文件并使用以下内容填充它：
+例如，要自定义打包的 Traefik ingress 配置，您可以创建一个名为 `/var/lib/rancher/k3s/server/manifests/traefik-config.yaml` 的文件，并用以下内容填充它：
 
 [,yaml]
 ----

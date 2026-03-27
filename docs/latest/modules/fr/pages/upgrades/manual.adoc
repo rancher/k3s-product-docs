@@ -1,0 +1,103 @@
+= Mises à niveau manuelles
+:page-languages: [en, ja, ko, zh]
+:revdate: 2025-12-30
+:page-revdate: {revdate}
+
+Vous pouvez mettre à niveau K3s en utilisant le script d'installation ou en installant manuellement le binaire de la version souhaitée.
+
+[NOTE]
+====
+Lors de la mise à niveau, mettez d'abord à niveau les nœuds du serveur un par un, puis les nœuds agents.
+====
+
+[#_release_channels]
+== Canaux de publication
+
+Les mises à niveau effectuées via le script d'installation ou en utilisant notre fonctionnalité de xref:upgrades/automated.adoc[mises à niveau automatisées] peuvent être liées à différents canaux de publication. Les canaux suivants sont disponibles :
+
+|===
+| Canal | Description
+
+| stable
+| (Par défaut) Stable est recommandé pour les environnements de production. Ces versions ont été soumises à une période de test communautaire.
+
+| latest
+| latest pointe toujours vers la version non préliminaire la plus élevée disponible, comme déterminé par les règles de classement semver. Ces versions n'ont pas encore été soumises à une période de test communautaire.
+
+| v1.33 (exemple)
+| Il existe un canal de publication lié à chaque version mineure de Kubernetes, y compris les versions qui sont en fin du service. Ces canaux sélectionnent la dernière version disponible pour cette version mineure, pas nécessairement une version stable.
+|===
+
+Pour une liste exhaustive et à jour des canaux, vous pouvez visiter le https://update.k3s.io/v1-release/channels[service API des canaux k3s]. Pour plus de détails techniques sur le fonctionnement des canaux, vous pouvez consulter le https://github.com/rancher/channelserver[projet channelserver].
+
+[TIP]
+====
+Lors de la tentative de mise à niveau vers une nouvelle version de K3s, la https://kubernetes.io/docs/setup/release/version-skew-policy/[politique de décalage de version Kubernetes] s'applique. Assurez-vous que votre plan ne saute pas les versions mineures intermédiaires lors de la mise à niveau. Le contrôleur de mise à niveau du système ne protègera pas contre les changements non pris en charge de la version de Kubernetes.
+====
+
+
+== Mettez à niveau K3s en utilisant le script d'installation
+
+Pour mettre à niveau K3s à partir d'une version antérieure, vous pouvez relancer le script d'installation en utilisant les mêmes options de configuration que celles que vous avez initialement utilisées lors de l'exécution du script d'installation.
+
+[IMPORTANT]
+.Remarque
+====
+La variable `INSTALL_K3S_EXEC`, les variables `K3S_` et les arguments de shell en fin de ligne sont tous utilisés par le script d'installation pour générer le fichier d'unité systemd et le fichier d'environnement.
+Si vous avez défini une configuration lors de l'exécution initiale du script d'installation, mais que vous ne la définissez pas à nouveau lors de la relance du script d'installation, les valeurs originales seront perdues.
+
+Le contenu du xref:installation/configuration.adoc#_configuration_file[fichier de configuration] n'est pas géré par le script d'installation.
+Si vous souhaitez que votre configuration soit indépendante du script d'installation, vous devez utiliser un fichier de configuration au lieu de passer des variables d'environnement ou des arguments au script d'installation.
+====
+
+
+L'exécution du script d'installation va :
+
+. Télécharger le nouveau binaire k3s
+. Mettre à jour l'unité systemd ou le script d'initialisation openrc pour refléter les arguments passés au script d'installation
+. Redémarrer le service k3s
+
+[NOTE]
+====
+Les conteneurs pour les Pods continuent de fonctionner même lorsque K3s est arrêté. Le script d'installation ne vide pas ni n'isole le nœud avant de redémarrer K3s. Si votre charge de travail est sensible aux brèves interruptions du serveur API, vous devez manuellement https://kubernetes.io/docs/reference/kubectl/generated/kubectl_drain/[vider et isoler] le nœud en utilisant `kubectl` avant de relancer le script d'installation pour mettre à niveau K3s ou modifier la configuration, et le désisoler ensuite.
+====
+
+Par exemple, pour mettre à niveau vers la version stable actuelle :
+
+[,sh]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s <EXISTING_K3S_ENV> sh -s - <EXISTING_K3S_ARGS>
+----
+
+Si vous souhaitez mettre à niveau vers une version plus récente dans un canal spécifique (tel que latest), vous pouvez spécifier le canal :
+
+[,sh]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_CHANNEL=latest <EXISTING_K3S_ENV> sh -s - <EXISTING_K3S_ARGS>
+----
+
+Si vous souhaitez mettre à niveau vers une version spécifique, vous pouvez exécuter la commande suivante :
+
+[,sh]
+----
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_VERSION=vX.Y.Z+k3s1 <EXISTING_K3S_ENV> sh -s - <EXISTING_K3S_ARGS>
+----
+
+[TIP]
+====
+Si vous souhaitez télécharger la nouvelle version de k3s, mais ne pas la démarrer, vous pouvez utiliser la variable d'environnement `INSTALL_K3S_SKIP_START=true`.
+====
+
+
+== Mettez à niveau K3s en utilisant le binaire
+
+Pour mettre à niveau K3s manuellement, vous pouvez télécharger la version souhaitée du binaire K3s et remplacer le binaire existant par le nouveau.
+
+. Téléchargez la version souhaitée du binaire K3s depuis https://github.com/k3s-io/k3s/releases[releases]
+. Copiez le binaire téléchargé dans `/usr/local/bin/k3s` (ou à l'emplacement de votre choix)
+. Redémarrez le service k3s ou k3s-agent ou redémarrez le processus k3s (binaire)
+
+[NOTE]
+====
+Les conteneurs pour les Pods continuent de fonctionner même lorsque K3s est arrêté. Il est généralement sûr de redémarrer K3s sans vider les pods et sans isoler le nœud. Si votre charge de travail est sensible aux brèves interruptions du serveur API, vous devez manuellement https://kubernetes.io/docs/reference/kubectl/generated/kubectl_drain/[vider et isoler] le nœud en utilisant `kubectl` avant de redémarrer K3s, et le désisoler ensuite.
+====

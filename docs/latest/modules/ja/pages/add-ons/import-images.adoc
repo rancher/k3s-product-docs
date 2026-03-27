@@ -1,37 +1,37 @@
-= Import images
+= 画像をインポートする
 :page-languages: [en, ja, ko, zh]
 :revdate: 2026-01-05
 :page-revdate: {revdate}
 :page-aliases: import-images.adoc
 
-Container images are cached locally on each node by the containerd image store. Images can be pulled from the registry as needed by pods, preloaded via image pull, or imported from an image tarball.
+コンテナイメージは、containerd イメージストアによって各ノードにローカルにキャッシュされます。イメージは、ポッドによって必要に応じてレジストリからプルされるか、イメージプルを介して事前にロードされるか、イメージtarボールからインポートされます。
 
-== On-demand image pulling
+== オンデマンドイメージプル
 
-Kubernetes, by default, automatically pulls images when a Pod requires them if the image is not already present on the node. This behavior can be changed by using the https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[image pull policy] field of the Pod. When using the default `IfNotPresent` policy, containerd will pull the image from either upstream (default) or your xref:installation/private-registry.adoc[private registry] and store it in its image store. Users do not need to apply any additional configuration for on-demand image pulling to work.
+Kubernetesは、デフォルトで、ノードにイメージが存在しない場合、ポッドが必要とする際に自動的にイメージをプルします。この動作は、ポッドのhttps://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[イメージプルポリシー]フィールドを使用することで変更できます。デフォルトの`IfNotPresent`ポリシーを使用する場合、containerdは、アップストリーム（デフォルト）またはあなたのxref:installation/private-registry.adoc[プライベートレジストリ]からイメージをプルし、それをイメージストアに保存します。ユーザーは、オンデマンドイメージプルが機能するために、追加の設定を適用する必要はありません。
 
 
-== Pre-import images
+== 事前にインポートされたイメージ
 
 [IMPORTANT]
-.Version Gate
+.バージョンゲート
 ====
-The pre-importing of images while K3s is running feature is available as of January 2025 releases: v1.32.0+k3s1, v1.31.5+k3s1, v1.30.9+k3s1, v1.29.13+k3s1. Before that, K3s pre-imported the images only when booting.
+K3sが実行中の間にイメージを事前にインポートする機能は、2025年1月のリリースから利用可能です：v1.32.0+k3s1、v1.31.5+k3s1、v1.30.9+k3s1、v1.29.13+k3s1。それ以前は、K3sは起動時にのみイメージを事前にインポートしていました。
 ====
 
-Pre-importing images onto the node is essential if you configure Kubernetes' `imagePullPolicy` as `Never`. You might do this for security reasons or to reduce the time it takes for your K3s nodes to spin up.
+ノードにイメージを事前にインポートすることは、Kubernetesの`imagePullPolicy`を`Never`として構成する場合に重要です。これは、セキュリティ上の理由や、K3sノードの起動時間を短縮するために行うことがあります。
 
-K3s includes two mechanisms to pre-import images into the containerd image store:
+K3sには、containerdイメージストアにイメージを事前にインポートするための2つのメカニズムが含まれています：
 
 [tabs,sync-group-id=import-images]
 ======
-Online image importing::
+オンラインイメージインポート::
 +
 --
 
-Users can trigger a pull of images into the containerd image store by placing a text file containing the image names, one per line, in the `/var/lib/rancher/k3s/agent/images` directory. The text file can be placed before K3s is started as well as created or  modified while K3s is running. K3s sequentially pulls the images via the CRI API, optionally using the xref:installation/private-registry.adoc[registries.yaml] configuration.
+ユーザーは、イメージ名を1行ごとに含むテキストファイルを`/var/lib/rancher/k3s/agent/images`ディレクトリに配置することで、containerdイメージストアへのイメージのプルをトリガーできます。テキストファイルは、K3sが起動する前に配置することも、K3sが実行中に作成または変更することもできます。K3sは、CRI APIを介してイメージを順次プルし、オプションでxref:installation/private-registry.adoc[registries.yaml]構成を使用します。
 
-For example:
+次に例を示します。
 
 [,bash]
 ----
@@ -39,24 +39,24 @@ mkdir /var/lib/rancher/k3s/agent/images
 cp example.txt /var/lib/rancher/k3s/agent/images
 ----
 
-Where `example.txt` contains:
+`example.txt` には次の内容が含まれます：
 
 ----
 docker.io/library/redis:latest
 docker.io/library/mysql:latest
 ----
 
-After a few seconds, the `redis` and the `mysql` images are available in the containerd image store of the node. 
+数秒後、`redis` と `mysql` のイメージがノードのcontainerdイメージストアに利用可能になります。
 
-Use `sudo k3s ctr images list` to query the containerd image store.
+containerd イメージストアをクエリするには `sudo k3s ctr images list` を使用してください。
 --
 
-Offline image importing::
+オフラインイメージのインポート::
 +
 --
-Users can import images directly into the containerd image store by placing image tarballs in the `/var/lib/rancher/k3s/agent/images` directory. The tarball can be placed before K3s is started as well as created or modified while K3s is running. K3s decompresses the image tarball if necessary, extract the images, and loads them into the containerd image store.
+ユーザーは、`/var/lib/rancher/k3s/agent/images` ディレクトリにイメージtarballを配置することで、containerd イメージストアに直接イメージをインポートできます。tarball は、K3s が起動する前に配置することも、K3s が実行中に作成または変更することもできます。K3s は必要に応じてイメージtarballを解凍し、イメージを抽出して、containerd イメージストアにロードします。
 
-For example:
+次に例を示します。
 
 [,bash]
 ----
@@ -64,17 +64,17 @@ mkdir /var/lib/rancher/k3s/agent/images
 curl  https://github.com/k3s-io/k3s/releases/download/v1.33.1%2Bk3s1/k3s-airgap-images-amd64.tar.zst -O  /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst
 ----
 
-After a few seconds, the images included in the image tarball are available in the containerd image store of the node. 
+数秒後、イメージtarballに含まれるイメージがノードのcontainerd イメージストアで利用可能になります。
 
-Use `sudo k3s ctr images list` to query the containerd image store.
+containerd イメージストアをクエリするには `sudo k3s ctr images list` を使用してください。
 
-This is the method used in air-gapped environments. Please follow the xref:installation/airgap.adoc[air-gap installation documentation] for detailed information.
+これはエアギャップ(された)環境で使用される方法です。詳細情報については、xref:installation/airgap.adoc[エアギャップインストールドキュメント]を参照してください。
 --
 ======
 
-== Set up an image registry
+== イメージレジストリを設定する
 
-K3s supports two alternatives for image registries:
+K3s はイメージレジストリのための2つの代替手段をサポートしています：
 
-* xref:installation/private-registry.adoc[Private Registry Configuration] covers use of `registries.yaml` to configure container image registry authentication and mirroring.
-* xref:installation/registry-mirror.adoc[Embedded Registry Mirror] shows how to enable the embedded distributed image registry mirror, for peer-to-peer sharing of images between nodes.
+* xref:installation/private-registry.adoc[プライベートレジストリの設定] では、`registries.yaml` を使用してコンテナイメージレジストリの認証とミラーリングを設定する方法について説明します。
+* xref:installation/registry-mirror.adoc[埋め込みレジストリミラー] では、ノード間でのイメージのピアツーピア共有のために、埋め込み分散イメージレジストリミラーを有効にする方法を示します。
