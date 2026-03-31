@@ -1,6 +1,6 @@
 = Networking Services
 :page-languages: [en, ja, ko, zh]
-:revdate: 2026-01-05
+:revdate: 2026-03-31
 :page-revdate: {revdate}
 
 This page explains how CoreDNS, Traefik Ingress controller, Network Policy controller, and ServiceLB load balancer controller work within K3s.
@@ -116,6 +116,5 @@ Before deploying an external CCM, you must start all K3s servers with the `--dis
 
 [NOTE]
 ====
-If you disable the built-in CCM and do not deploy and properly configure an external substitute, nodes will remain tainted and unschedulable.
+If you disable the built-in CCM and set `--kubelet-arg=cloud-provider=external` without deploying and properly configuring an external substitute, nodes will remain tainted and unschedulable. By default, disabling the built-in CCM prevents K3s from setting the kubelet `cloud-provider` arg, which indicates that no cloud provider is in use. Without any cloud-provider, Node Provider-IDs and External Addresses will not be set.
 ====
-
