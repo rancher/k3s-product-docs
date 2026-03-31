@@ -1,6 +1,6 @@
 = k3s token
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-05-26
+:revdate: 2026-03-31
 :page-revdate: {revdate}
 
 K3s uses tokens to secure the node join process and to encrypt confidential information that is persisted to the datastore. Tokens authenticate the cluster to the joining node, and the node to the cluster.
@@ -198,13 +198,6 @@ List bootstrap tokens, showing their ID, description, and remaining time-to-live
 
 [discrete]
 === `k3s token rotate`
-
-[IMPORTANT]
-.Version Gate
-====
-Available as of the October 2023 releases (v1.28.2+k3s1, v1.27.7+k3s1, v1.26.10+k3s1, v1.25.15+k3s1).
-====
-
 
 Rotate original server token with a new server token. After running this command, all servers and any agents that originally joined with the old token must be restarted with the new token.
 

@@ -1,6 +1,6 @@
 = k3s etcd-snapshot
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-09-17
+:revdate: 2026-03-31
 :page-revdate: {revdate}
 
 This page describes how to use the `k3s etcd-snapshot` CLI tool to manage etcd snapshots and how to restore from an etcd snapshot.
@@ -404,12 +404,6 @@ The token value can also be set in the K3s config file.
 ======
 
 == ETCDSnapshotFile Custom Resources
-
-[NOTE]
-.Version Gate
-====
-ETCDSnapshotFiles are available as of the November 2023 releases: v1.28.4+k3s2, v1.27.8+k3s2, v1.26.11+k3s2, v1.25.16+k3s4.
-====
 
 Snapshots can be viewed remotely using any Kubernetes client by listing or describing cluster-scoped `ETCDSnapshotFile` resources. Unlike the `k3s etcd-snapshot list` command, which only shows snapshots visible to that node, `ETCDSnapshotFile` resources track all snapshots present on cluster members.
 

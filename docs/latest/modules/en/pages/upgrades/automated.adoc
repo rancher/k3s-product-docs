@@ -1,6 +1,6 @@
 = Automated Upgrades
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-09-16
+:revdate: 2026-03-31
 :page-revdate: {revdate}
 
 == Overview
@@ -156,13 +156,6 @@ spec:
 Jobs to execute upgrades for a plan are not created outside the time window. After jobs are created, plans may continue running after the window has closed.
 
 == Downgrade Prevention
-
-[IMPORTANT]
-.Version Gate
-====
-Starting with the 2023-07 releases (https://github.com/k3s-io/k3s-upgrade/releases/tag/v1.27.4%2Bk3s1[v1.27.4+k3s1], https://github.com/k3s-io/k3s-upgrade/releases/tag/v1.26.7%2Bk3s1[v1.26.7+k3s1], https://github.com/k3s-io/k3s-upgrade/releases/tag/v1.25.12%2Bk3s1[v1.25.12+k3s1], https://github.com/k3s-io/k3s-upgrade/releases/tag/v1.24.16%2Bk3s1[v1.24.16+k3s1])
-====
-
 
 Kubernetes does not support downgrades of control-plane components. The k3s-upgrade image used by upgrade plans will refuse to downgrade K3s, failing the plan. Nodes with `cordon: true` configured in their plan will stay cordoned following the failure.
 
