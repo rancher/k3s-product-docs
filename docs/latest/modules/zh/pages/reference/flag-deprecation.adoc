@@ -1,5 +1,5 @@
 = 标记弃用
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2024-09-09
 :page-revdate: {revdate}
 

@@ -1,5 +1,5 @@
 = Deteniendo K3s
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2024-09-26
 :page-revdate: {revdate}
 

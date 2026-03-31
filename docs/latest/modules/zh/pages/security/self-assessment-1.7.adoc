@@ -1,5 +1,5 @@
 = CIS 1.7 自我评估指南
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2024-09-11
 :page-revdate: {revdate}
 

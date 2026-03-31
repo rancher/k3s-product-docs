@@ -1,5 +1,5 @@
 = Cesser la prise en charge des indicateurs
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2024-09-09
 :page-revdate: {revdate}
 

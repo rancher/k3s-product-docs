@@ -1,5 +1,5 @@
 = Architektur
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-01-06
 :page-revdate: {revdate}
 

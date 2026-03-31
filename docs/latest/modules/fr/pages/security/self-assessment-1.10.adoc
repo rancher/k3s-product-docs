@@ -1,5 +1,5 @@
 = CIS 1.10 Guide d'auto-évaluation
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-12-31
 :page-revdate: {revdate}
 

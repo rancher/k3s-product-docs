@@ -1,5 +1,5 @@
 = agent K3s
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-01-15
 :page-revdate: {revdate}
 
