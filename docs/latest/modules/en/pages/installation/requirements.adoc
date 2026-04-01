@@ -1,6 +1,6 @@
 = Requirements
 :page-languages: [en, ja, ko, zh]
-:revdate: 2025-12-31
+:revdate: 2026-03-31
 :page-revdate: {revdate}
 
 K3s is very lightweight, but has some minimum requirements as outlined below.
@@ -249,6 +249,8 @@ If you wish to utilize the metrics server, all nodes must be accessible to each 
 
 If you plan on achieving high availability with embedded etcd, server nodes must be accessible to each other on ports 2379 and 2380.
 
+Additional changes to the firewall may be required depending on the OS used.
+
 [TIP]
 .Important
 ====
@@ -289,7 +291,7 @@ Flannel relies on the https://www.cni.dev/plugins/current/main/bridge/[Bridge CN
 | 10250
 | All nodes
 | All nodes
-| Kubelet metrics
+| Kubelet metrics and API
 
 | UDP
 | 51820
@@ -316,9 +318,61 @@ Flannel relies on the https://www.cni.dev/plugins/current/main/bridge/[Bridge CN
 | Required only for embedded distributed registry (Spegel)
 |===
 
+=== Outbound Rules for K3s Nodes
+
 Typically, all outbound traffic is allowed.
 
-Additional changes to the firewall may be required depending on the OS used.
+=== Local Ports
+
+Kubernetes and the Container Runtime listen on the loopback interface for monitoring and communication between components. Avoid deploying other workloads that use these ports, or using these as the Node Port for pods or services.
+
+|===
+|Protocol |Port |Description
+
+| TCP
+| 2381
+| etcd metrics
+
+| TCP
+| 2382
+| etcd legacy HTTP API
+
+| TCP
+| 6444
+| kube-apiserver local access
+
+| TCP
+| 10010
+| containerd and cri-dockerd CRI service exec/logs streaming
+
+| TCP
+| 10248
+| kubelet health
+
+| TCP
+| 10249
+| kube-proxy metrics
+
+| TCP
+| 10250
+| kubelet metrics and API
+
+| TCP
+| 10256
+| kube-proxy health
+
+| TCP
+| 10257
+| kube-controller-manager metrics
+
+| TCP
+| 10258
+| cloud-controller-manager metrics
+
+| TCP
+| 10259
+| kube-scheduler metrics
+|===
 
 == Large Clusters
 
