@@ -30,7 +30,7 @@ Upgrades performed via the installation script or using our xref:upgrades/automa
 
 For an exhaustive and up-to-date list of channels, you can visit the https://update.k3s.io/v1-release/channels[k3s channel service API]. For more technical details on how channels work, you see the https://github.com/rancher/channelserver[channelserver project].
 
-[TIP]
+[WARNING]
 ====
 When attempting to upgrade to a new version of K3s, the https://kubernetes.io/docs/setup/release/version-skew-policy/[Kubernetes version skew policy] applies. Ensure that your plan does not skip intermediate minor versions when upgrading. The system-upgrade-controller itself will not protect against unsupported changes to the Kubernetes version.
 ====
