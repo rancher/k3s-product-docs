@@ -1,52 +1,50 @@
-= Private Registry Configuration
-:page-languages: [en, ja, ko, zh]
+= 私有注册表配置
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-12-30
 :page-revdate: {revdate}
 
-Containerd can be configured to connect to private registries and use them to pull images as needed by the kubelet.
+Containerd 可以配置为连接到私有注册表，并根据 kubelet 的需要使用它们来拉取镜像。
 
-Upon startup, K3s will check to see if `/etc/rancher/k3s/registries.yaml` exists. If so, the registry configuration contained in this file is used when generating the containerd configuration.
+在启动时，K3s 将检查 `/etc/rancher/k3s/registries.yaml` 是否存在。如果存在，则在生成 containerd 配置时将使用此配置文件中包含的注册表配置。
 
-* If you want to use a private registry as a mirror for a public registry such as docker.io, then you will need to configure `registries.yaml` on each node that you want to use the mirror.
-* If your private registry requires authentication, uses custom TLS certificates, or does not use TLS, you will need to configure `registries.yaml` on each node that will pull images from your registry.
+* 如果您想将私有注册表用作公共注册表（如 docker.io）的镜像，则需要在每个希望使用该镜像的节点上配置 `registries.yaml`。
+* 如果您的私有注册表需要身份验证、使用自定义 TLS 证书或不使用 TLS，则需要在每个将从您的注册表拉取镜像的节点上配置 `registries.yaml`。
 
-Note that server nodes are schedulable by default. If you have not tainted the server nodes and will be running workloads on them,
-please ensure you also create the `registries.yaml` file on each server as well.
+请注意，服务器节点默认是可调度的。如果您没有标记服务器节点并且将在其上运行工作负载，请确保在每个服务器上也创建 `registries.yaml` 配置文件。
 
 [#_default_endpoint_fallback]
-== Default Endpoint Fallback
+== 默认端点回退
 
-Containerd has an implicit "default endpoint" for all registries.
-The default endpoint is always tried as a last resort, even if there are other endpoints listed for that registry in `registries.yaml`.
-Rewrites are not applied to pulls against the default endpoint.
-For example, when pulling `registry.example.com:5000/rancher/mirrored-pause:3.6`, containerd will use a default endpoint of `+https://registry.example.com:5000/v2+`.
+Containerd 对所有注册表都有一个隐式的 "默认端点"。
+即使在 `registries.yaml` 中列出了该注册表的其他端点，默认端点也始终作为最后的手段进行尝试。
+重写不会应用于对默认端点的拉取。
+例如，当拉取 `registry.example.com:5000/rancher/mirrored-pause:3.6` 时，containerd 将使用默认端点 `https://registry.example.com:5000/v2`。
 
-* The default endpoint for `docker.io` is `\https://index.docker.io/v2`.
-* The default endpoint for all other registries is `\https://<REGISTRY>/v2`, where `<REGISTRY>` is the registry hostname and optional port.
+* `docker.io` 的默认端点是 `\https://index.docker.io/v2`。
+* 所有其他注册表的默认端点是 `\https://<REGISTRY>/v2`，其中 `<REGISTRY>` 是注册表主机名和可选端口。
 
-In order to be recognized as a registry, the first component of the image name must contain at least one period or colon.
-For historical reasons, images without a registry specified in their name are implicitly identified as being from `docker.io`.
+为了被识别为注册表，镜像名称的第一个组件必须包含至少一个句点或冒号。
+出于历史原因，名称中未指定注册表的镜像被隐式识别为来自 `docker.io`。
 
 [IMPORTANT]
-.Version Gate
+.版本门控
 ====
-The `--disable-default-registry-endpoint` option is available as of January 2024 releases: v1.26.13+k3s1, v1.27.10+k3s1, v1.28.6+k3s1, v1.29.1+k3s1
+`--disable-default-registry-endpoint` 选项自 2024 年 1 月发布以来可用：v1.26.13+k3s1，v1.27.10+k3s1，v1.28.6+k3s1，v1.29.1+k3s1
 ====
 
 
-Nodes may be started with the `--disable-default-registry-endpoint` option.
-When this is set, containerd will not fall back to the default registry endpoint, and will only pull from configured mirror endpoints,
-along with the distributed registry if it is enabled.
+节点可以使用 `--disable-default-registry-endpoint` 选项启动。
+当设置此选项时，containerd 将不会回退到默认的注册表端点，而只会从已配置的镜像端点拉取镜像；如果启用了分布式注册表，也会从中拉取镜像。
 
-This may be desired if your cluster is in a true air-gapped environment where the upstream registry is not available,
-or if you wish to have only some nodes pull from the upstream registry.
+如果您的集群处于真正的隔离环境中，上游注册表不可用，
+或者如果您希望只有某些节点从上游注册表拉取，这可能是所需的。
 
-Disabling the default registry endpoint applies only to registries configured via `registries.yaml`.
-If the registry is not explicitly configured via mirror entry in `registries.yaml`, the default fallback behavior will still be used.
+禁用默认注册表端点仅适用于通过 `registries.yaml` 配置的注册表。
+如果注册表未通过 `registries.yaml` 中的镜像条目显式配置，则仍将使用默认回退行为。
 
-== Registries Configuration File
+== 注册表配置文件
 
-The file consists of two top-level keys, with subkeys for each registry:
+该文件由两个顶级键组成，每个注册表都有子键：
 
 [,yaml]
 ----
@@ -67,9 +65,9 @@ configs:
       insecure_skip_verify: <SKIP TLS CERT VERIFICATION BOOLEAN>
 ----
 
-=== Mirrors
+=== 镜像
 
-The mirrors section defines the names and endpoints of registries, for example:
+镜像部分定义了注册表的名称和端点，例如：
 
 ----
 mirrors:
@@ -78,14 +76,13 @@ mirrors:
       - "https://registry.example.com:5000"
 ----
 
-Each mirror must have a name and set of endpoints. When pulling an image from a registry, containerd will try these endpoint URLs, plus the default endpoint, and use the first working one.
+每个镜像必须有一个名称和一组端点。从注册表拉取镜像时，containerd 将尝试这些端点，以及默认端点，并使用第一个可用的端点。
 
-==== Redirects
+==== 重定向
 
-If the private registry is used as a mirror for another registry, such as when configuring a https://docs.docker.com/registry/recipes/mirror/[pull through cache],
-images pulls are transparently redirected to the listed endpoints. The original registry name is passed to the mirror endpoint via the `ns` query parameter.
+如果私有注册表用作另一个注册表的镜像，例如在配置 https://docs.docker.com/registry/recipes/mirror/[拉取缓存] 时，镜像拉取操作会透明地重定向到列出的端点。原始注册表名称通过 `ns` 查询参数传递给镜像端点。
 
-For example, if you have a mirror configured for `docker.io`:
+例如，如果您为 `docker.io` 配置了一个镜像：
 
 [,yaml]
 ----
@@ -95,15 +92,15 @@ mirrors:
       - "https://registry.example.com:5000"
 ----
 
-Then pulling `docker.io/rancher/mirrored-pause:3.6` will transparently pull the image as `registry.example.com:5000/rancher/mirrored-pause:3.6`.
+那么拉取 `docker.io/rancher/mirrored-pause:3.6` 将透明地拉取镜像作为 `registry.example.com:5000/rancher/mirrored-pause:3.6`。
 
-==== Rewrites
+==== 重写
 
-Each mirror can have a set of rewrites, which use regular expressions to match and transform the name of an image when it is pulled from a mirror.
-This is useful if the organization/project structure in the private registry is different than the registry it is mirroring.
-Rewrites match and transform only the image name, NOT the tag.
+每个镜像可以有一组重写，这些重写使用正则表达式在从镜像拉取时匹配和转换镜像的名称。
+如果私有注册表中的组织/项目结构与其镜像的注册表不同，这很有用。
+重写仅匹配和转换镜像名称，而不匹配标签。
 
-For example, the following configuration would transparently pull the image `docker.io/rancher/mirrored-pause:3.6` as `registry.example.com:5000/mirrorproject/rancher-images/mirrored-pause:3.6`:
+例如，以下配置会透明地以 `registry.example.com:5000/mirrorproject/rancher-images/mirrored-pause:3.6` 的形式拉取镜像 `docker.io/rancher/mirrored-pause:3.6`：
 
 [,yaml]
 ----
@@ -116,17 +113,17 @@ mirrors:
 ----
 
 [NOTE]
-.Version Gate
+.版本门控
 ====
-Rewrites are no longer applied to the xref:#_default_endpoint_fallback[Default Endpoint] as of the January 2024 releases: v1.26.13+k3s1, v1.27.10+k3s1, v1.28.6+k3s1, v1.29.1+k3s1.
-Prior to these releases, rewrites were also applied to the default endpoint, which would prevent K3s from pulling from the upstream registry if the image could not be pulled from a mirror endpoint, and the image was not available under the modified name in the upstream.
+自2024年1月的版本发布以来，重写不再应用于 xref:#_default_endpoint_fallback[默认端点]：v1.26.13+k3s1，v1.27.10+k3s1，v1.28.6+k3s1，v1.29.1+k3s1。
+在这些版本发布之前，重写也适用于默认端点，这会阻止 K3s 从上游注册表拉取，如果图像无法从镜像端点拉取，并且在上游中没有以修改后的名称提供该图像。
 ====
 
-If you want to apply rewrites when pulling directly from a registry - when it is not being used as a mirror for a different upstream registry - you must provide a mirror endpoint that does not match the default endpoint.
-Mirror endpoints in `registries.yaml` that match the default endpoint are ignored; the default endpoint is always tried last with no rewrites, if fallback has not been disabled.
+如果您希望在直接从注册表拉取时应用重写 - 当它不作为不同上游注册表的镜像使用时 - 您必须提供一个与默认端点不匹配的镜像端点。
+在 `registries.yaml` 中与默认端点匹配的镜像端点将被忽略；如果未禁用回退，默认端点总是最后尝试且不进行重写。
 
-For example, if you have a registry at `+https://registry.example.com/+`, and want to apply rewrites when explicitly pulling `registry.example.com/rancher/mirrored-pause:3.6`, you can add a mirror endpoint with the port listed.
-Because the mirror endpoint does not match the default endpoint - **`"https://registry.example.com:443/v2" != "https://registry.example.com/v2"`** - the endpoint is accepted as a mirror and rewrites are applied, despite it being effectively the same as the default.
+例如，如果您在 `https://registry.example.com/` 处有一个注册表，并希望在明确拉取 `registry.example.com/rancher/mirrored-pause:3.6` 时应用重写，您可以添加一个列出端口的镜像端点。
+因为镜像端点与默认端点不匹配 - **`"https://registry.example.com:443/v2" != "https://registry.example.com/v2"`** - 所以该端点被接受为镜像并应用重写，尽管它实际上与默认端点相同。
 
 [,yaml]
 ----
@@ -138,61 +135,61 @@ mirrors:
      "^rancher/(.*)": "mirrorproject/rancher-images/$1"
 ----
 
-Note that when using mirrors and rewrites, images will still be stored under the original name.
-For example, `crictl image ls` will show `docker.io/rancher/mirrored-pause:3.6` as available on the node, even if the image was pulled from a mirror with a different name.
+请注意，在使用镜像和重写时，图像仍将以原始名称存储。
+例如，`crictl image ls` 将显示 `docker.io/rancher/mirrored-pause:3.6` 在节点上可用，即使图像是从具有不同名称的镜像拉取的。
 
-=== Configs
+=== 配置
 
-The `configs` section defines the TLS and credential configuration for each mirror. For each mirror you can define `auth` and/or `tls`.
+`configs` 部分定义了每个镜像的 TLS 和凭证配置。对于每个镜像，您可以定义 `auth` 和/或 `tls`。
 
-The `tls` part consists of:
+`tls` 部分包括：
 
 |===
-| Directive | Description
+| 指令 | 说明
 
 | `cert_file`
-| The client certificate path that will be used to authenticate with the registry
+| 将用于与注册表进行身份验证的客户端证书路径
 
 | `key_file`
-| The client key path that will be used to authenticate with the registry
+| 将用于与注册表进行身份验证的客户端密钥路径
 
 | `ca_file`
-| Defines the CA certificate path to be used to verify the registry's server cert file
+| 定义用于验证注册表服务器证书文件的 CA 证书路径
 
 | `insecure_skip_verify`
-| Boolean that defines if TLS verification should be skipped for the registry
+| 布尔值，定义是否应跳过注册表的 TLS 验证
 |===
 
-The `auth` part consists of either username/password or authentication token:
+`auth` 部分由用户名/密码或身份验证令牌组成：
 
 |===
-| Directive | Description
+| 指令 | 说明
 
 | `username`
-| user name of the private registry basic auth
+| 私有注册表基本身份验证的用户名
 
 | `password`
-| user password of the private registry basic auth
+| 私有注册表基本身份验证的用户密码
 
 | `auth`
-| authentication token of the private registry basic auth
+| 私有注册表基本身份验证的身份验证令牌
 |===
 
-Below are basic examples of using private registries in different modes:
+以下是使用私有注册表的不同模式的基本示例：
 
-=== Wildcard Support
+=== 通配符支持
 
 [IMPORTANT]
-.Version Gate
+.版本门控
 ====
-Wildcard support is available as of the March 2024 releases: v1.26.15+k3s1, v1.27.12+k3s1, v1.28.8+k3s1, v1.29.3+k3s1
+通配符支持自2024年3月发布的版本开始提供：v1.26.15+k3s1、v1.27.12+k3s1、v1.28.8+k3s1、v1.29.3+k3s1
 ====
 
 
-The `"*"` wildcard entry can be used in the `mirrors` and `configs` sections to provide default configuration for all registries.
-The default configuration will only be used if there is no specific entry for that registry. Note that the asterisk MUST be quoted.
+`"*"` 通配符条目可以在 `mirrors` 和 `configs` 部分中使用，以为所有注册表提供默认配置。
+默认配置仅在该注册表没有特定条目时使用。请注意，星号必须用引号括起来。
 
-In the following example, a local registry mirror will be used for all registries. TLS verification will be disabled for all registries, except `docker.io`.
+在以下示例中，将为所有注册表使用本地注册表镜像。对于所有注册表，TLS 验证将被禁用，除了 `docker.io`。
 
 [,yaml]
 ----
@@ -207,13 +204,13 @@ configs:
       insecure_skip_verify: true
 ----
 
-=== With TLS
+=== 使用 TLS
 
-Below are examples showing how you may configure `/etc/rancher/k3s/registries.yaml` on each node when using TLS.
+以下是使用 TLS 时，您如何在每个节点上配置 `/etc/rancher/k3s/registries.yaml` 的示例。
 
 [tabs]
 ======
-With Authentication::
+使用身份验证::
 +
 [,yaml]
 ----
@@ -232,7 +229,7 @@ configs:
       ca_file:   # path to the ca file used in the registry
 ----
 
-Without Authentication::
+不使用身份验证::
 +
 [,yaml]
 ----
@@ -249,13 +246,13 @@ configs:
 ----
 ======
 
-=== Without TLS
+=== 不使用 TLS
 
-Below are examples showing how you may configure `/etc/rancher/k3s/registries.yaml` on each node when _not_ using TLS.
+以下是当 _不_ 使用 TLS 时，您如何在每个节点上配置 `/etc/rancher/k3s/registries.yaml` 的示例。
 
 [tabs]
 ======
-With Authentication::
+使用身份验证::
 +
 [,yaml]
 ----
@@ -270,7 +267,7 @@ configs:
       password: xxxxxx # this is the registry password
 ----
 
-Without Authentication::
+不使用身份验证::
 +
 [,yaml]
 ----
@@ -282,27 +279,26 @@ mirrors:
 ======
 
 ____
-In case of no TLS communication, you need to specify `http://` for the endpoints, otherwise it will default to https.
+如果没有 TLS 通信，您需要为端点指定 `http://`，否则将默认为 https。
 ____
 
-In order for the registry changes to take effect, you need to restart K3s on each node.
+为了使注册表更改生效，您需要在每个节点上重新启动 K3s。
 
-== Troubleshooting Image Pulls
+== 故障排除镜像拉取
 
-When Kubernetes experiences problems pulling an image, the error displayed by the kubelet may only reflect the terminal error returned
-by the pull attempt made against the default endpoint, making it appear that the configured endpoints are not being used.
+当 Kubernetes 在拉取镜像时遇到问题时，kubelet 显示的错误可能仅反映对默认端点的拉取尝试返回的终端错误，这使得配置的端点似乎未被使用。
 
-Check the containerd log on the node at `/var/lib/rancher/k3s/agent/containerd/containerd.log` for detailed information on the root cause of the failure. Note that you must look at the logs on the node where the pod is scheduled. You can check which node your pod is scheduled to by issuing `kubectl get pod -o wide -n NAMESPACE POD` and checking the NODE column.
+检查节点上 `/var/lib/rancher/k3s/agent/containerd/containerd.log` 的 containerd 日志，以获取有关故障根本原因的详细信息。请注意，您必须查看调度有该 Pod 的节点上的日志。您可以通过发出 `kubectl get pod -o wide -n NAMESPACE POD` 并检查 NODE 列来查看您的 Pod 被调度到哪个节点。
 
-== Adding Images to the Private Registry
+== 将镜像添加到私有注册表
 
-Mirroring images to a private registry requires a host with Docker or other 3rd party tooling that is capable of pulling and pushing images. +
-The steps below assume you have a host with dockerd and the docker CLI tools, and access to both docker.io and your private registry.
+将镜像复制到私有注册表需要一台配备 Docker 或其他能够拉取和推送镜像的第三方工具的主机。 +
+以下步骤假设您有一个带有 dockerd 和 docker CLI 工具的主机，并且可以访问 docker.io 和您的私有注册表。
 
-. Obtain the `k3s-images.txt` file from GitHub for the release you are working with.
-. Pull each of the K3s images listed on the k3s-images.txt file from docker.io. +
-Example: `docker pull docker.io/rancher/mirrored-pause:3.6`
-. Retag the images to the private registry. +
-Example: `docker tag docker.io/rancher/mirrored-pause:3.6 registry.example.com:5000/rancher/mirrored-pause:3.6`
-. Push the images to the private registry. +
-Example: `docker push registry.example.com:5000/rancher/mirrored-pause:3.6`
+. 从 GitHub 获取您正在使用的版本的 `k3s-images.txt` 文件。
+. 从 docker.io 拉取 k3s-images.txt 文件中列出的每个 K3s 镜像。 +
+示例：`docker pull docker.io/rancher/mirrored-pause:3.6`
+. 将镜像重新标记为私有注册表。 +
+示例：`docker tag docker.io/rancher/mirrored-pause:3.6 registry.example.com:5000/rancher/mirrored-pause:3.6`
+. 将镜像推送到私有注册表。 +
+示例：`docker push registry.example.com:5000/rancher/mirrored-pause:3.6`

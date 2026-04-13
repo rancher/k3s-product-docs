@@ -1,15 +1,15 @@
-= クラスター・ロードバランサー
-:page-languages: [en, ja, ko, zh]
+= クラスタロードバランサー
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-03-03
 :page-revdate: {revdate}
 
-このセクションでは、外部ロードバランサーを高可用性（HA）K3sクラスターのサーバーノードの前にインストールする方法について説明します。NginxとHAProxyの2つの例が提供されています。
+このセクションでは、高可用性（HA）K3sクラスタのサーバーノードの前に外部ロードバランサーをインストールする方法について説明します。2つの例が提供されています：NginxとHAProxy。
 
 [TIP]
 ====
-外部ロードバランサーは、Kubernetes LoadBalancerサービスをサードパーティのロードバランサーコントローラーをデプロイせずに使用できるようにする組み込みコントローラーであるServiceLBと混同しないでください。詳細については、xref:networking/networking-services.adoc#_service_load_balancer[Service Load Balancer]を参照してください。
+外部ロードバランサーは、Kubernetes LoadBalancerサービスを使用するためにサードパーティのロードバランサーコントローラーを展開せずに使用できる組み込みコントローラーであるServiceLBと混同しないでください。詳細については、xref:networking/networking-services.adoc#_service_load_balancer[サービスロードバランサー]を参照してください。
 
-外部ロードバランサーは、ノードの登録用の固定登録アドレスを提供したり、Kubernetes APIサーバーへの外部アクセスを提供するために使用できます。LoadBalancerサービスを公開するために、外部ロードバランサーはServiceLBと一緒に、または代わりに使用できますが、ほとんどの場合、MetalLBやKube-VIPなどの代替ロードバランサーコントローラーの方が良い選択です。
+外部ロードバランサーは、ノードを登録するための固定登録アドレスを提供したり、Kubernetes APIサーバーへの外部アクセスを提供したりするために使用できます。LoadBalancerサービスを公開するために、外部ロードバランサーはServiceLBと一緒に使用することも、代わりに使用することもできますが、ほとんどの場合、MetalLBやKube-VIPなどの置き換え用ロードバランサーコントローラーがより良い選択です。
 ====
 
 
@@ -17,7 +17,7 @@
 
 この例のすべてのノードはUbuntu 20.04を実行しています。
 
-両方の例では、xref:datastore/ha-embedded.adoc[組み込みetcdを使用したHA K3sクラスター]が3つのノードにインストールされていると仮定します。
+両方の例について、xref:datastore/ha-embedded.adoc[組み込みetcdを持つHA K3sクラスタ]が3つのノードにインストールされていると仮定します。
 
 各k3sサーバーは次のように構成されています：
 
@@ -28,18 +28,18 @@ token: lb-cluster-gd
 tls-san: 10.10.10.100
 ----
 
-ノードのホスト名とIPは次の通りです：
+ノードのホスト名とIPは次のとおりです：
 
 * server-1: `10.10.10.50`
 * server-2: `10.10.10.51`
 * server-3: `10.10.10.52`
 
-ロードバランシング用に追加の2つのノードがホスト名とIPで構成されています：
+負荷分散用に追加の2つのノードが、ホスト名とIPで構成されています：
 
 * lb-1: `10.10.10.98`
 * lb-2: `10.10.10.99`
 
-追加の3つのノードがホスト名とIPで存在します：
+ホスト名とIPを持つ追加の3つのノードがあります：
 
 * agent-1: `10.10.10.101`
 * agent-2: `10.10.10.102`
@@ -47,23 +47,23 @@ tls-san: 10.10.10.100
 
 == ロードバランサーのセットアップ
 
-[tabs]
+[tabs,sync-group-id=ext-load-balancer]
 ======
 HAProxy::
 +
 --
-http://www.haproxy.org/[HAProxy]は、TCPロードバランサーを提供するオープンソースのオプションです。また、ロードバランサー自体のHAをサポートし、すべてのレベルで冗長性を確保します。詳細については、http://docs.haproxy.org/2.8/intro.html[HAProxy Documentation]を参照してください。
+http://www.haproxy.org/[HAProxy]は、TCPロードバランサーを提供するオープンソースのオプションです。また、ロードバランサー自体のHAをサポートしており、すべてのレベルで冗長性を確保します。詳細については、http://docs.haproxy.org/2.8/intro.html[HAProxyドキュメント]を参照してください。
 
-さらに、クラスターにアクセスするために使用される仮想IP（VIP）を生成するためにKeepAlivedを使用します。詳細については、https://www.keepalived.org/manpage.html[KeepAlived Documentation]を参照してください。
+さらに、クラスターにアクセスするために使用される仮想IP（VIP）を生成するためにKeepAlivedを使用します。詳細については、https://www.keepalived.org/manpage.html[KeepAlivedドキュメント]を参照してください。
 
-. HAProxyとKeepAlivedをインストールします：
+. HAProxyとKeepAlivedをインストールします:
 +
 [,bash]
 ----
 sudo apt-get install haproxy keepalived
 ----
 
-. lb-1とlb-2の``/etc/haproxy/haproxy.cfg``に次の内容を追加します：
+. lb-1とlb-2の`/etc/haproxy/haproxy.cfg`に次の内容を追加します:
 +
 ----
 frontend k3s-frontend
@@ -82,18 +82,23 @@ backend k3s-backend
     server server-3 10.10.10.52:6443 check
 ----
 
-. lb-1とlb-2の``/etc/keepalived/keepalived.conf``に次の内容を追加します：
+. lb-1とlb-2の`/etc/keepalived/keepalived.conf`に次の内容を追加します:
 +
 ----
+global_defs {
+  enable_script_security
+  script_user root
+}
+
 vrrp_script chk_haproxy {
-    script 'killall -0 haproxy' # pidofよりも高速
+    script 'killall -0 haproxy' # faster than pidof
     interval 2
 }
 
 vrrp_instance haproxy-vip {
     interface eth1
-    state <STATE> # lb-1ではMASTER、lb-2ではBACKUP
-    priority <PRIORITY> # lb-1では200、lb-2では100
+    state <STATE> # MASTER on lb-1, BACKUP on lb-2
+    priority <PRIORITY> # 200 on lb-1, 100 on lb-2
 
     virtual_router_id 51
 
@@ -107,7 +112,7 @@ vrrp_instance haproxy-vip {
 }
 ----
 
-. lb-1とlb-2でHAProxyとKeepAlivedを再起動します：
+. lb-1とlb-2でHAProxyとKeepAlivedを再起動します:
 +
 [,bash]
 ----
@@ -115,14 +120,15 @@ systemctl restart haproxy
 systemctl restart keepalived
 ----
 
-. agent-1、agent-2、およびagent-3で次のコマンドを実行してk3sをインストールし、クラスターに参加します：
+. agent-1、agent-2、およびagent-3で、k3sをインストールしてクラスターに参加するために次のコマンドを実行します:
 +
 [,bash]
 ----
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=lb-cluster-gd sh -s - agent --server https://10.10.10.100:6443
 ----
+ここで、`INSTALL_K3S_ARTIFACT_URL`はhttps://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[プライムアーティファクトURL]です。
 +
-サーバーノードから``kubectl``を使用してクラスターと対話できます。
+これで、サーバーノードから`kubectl`を使用してクラスターと対話できます。
 +
 [,bash]
 ----
@@ -142,12 +148,12 @@ Nginx::
 --
 [WARNING]
 ====
-Nginxはネイティブに高可用性（HA）構成をサポートしていません。HAクラスターを設定する場合、K3sの前に単一のロードバランサーを配置すると、単一障害点が再導入されます。
+Nginxは、高可用性（HA）設定をネイティブにサポートしていません。HAクラスターを構築する場合、K3sの前に単一のロードバランサーを配置すると、単一障害点が再び発生してしまいます。
 ====
 
-http://nginx.org/[Nginx Open Source]は、TCPロードバランサーを提供します。詳細については、https://nginx.org/en/docs/http/load_balancing.html[Using nginx as HTTP load balancer]を参照してください。
+http://nginx.org/[Nginxオープンソース]は、TCPロードバランサーを提供します。詳細については、https://nginx.org/en/docs/http/load_balancing.html[nginxをHTTPロードバランサーとして使用する]を参照してください。
 
-. lb-1に次の内容の``nginx.conf``ファイルを作成します：
+. lb-1上に、次の内容が含まれる`nginx.conf`ファイルを作成します:
 +
 ----
 events {}
@@ -166,9 +172,9 @@ stream {
 }
 ----
 
-. lb-1でNginxロードバランサーを実行します：
+. lb-1でNginxロードバランサーを実行します:
 +
-Dockerを使用する場合：
+Dockerを使用して:
 +
 [,bash]
 ----
@@ -178,7 +184,7 @@ docker run -d --restart unless-stopped \
     nginx:stable
 ----
 +
-またはlink:https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/[Nginxをインストール]してから次を実行します：
+またはhttps://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/[nginxをインストール]してから実行します:
 +
 [,bash]
 ----
@@ -186,14 +192,14 @@ cp nginx.conf /etc/nginx/nginx.conf
 systemctl start nginx
 ----
 
-. agent-1、agent-2、およびagent-3で次のコマンドを実行してk3sをインストールし、クラスターに参加します：
+. エージェント-1、エージェント-2、およびエージェント-3で、k3sをインストールしてクラスターに参加するために次のコマンドを実行します:
 +
 [,bash]
 ----
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=lb-cluster-gd sh -s - agent --server https://10.10.10.98:6443
 ----
 +
-サーバーノードから``kubectl``を使用してクラスターと対話できます。
+これで、サーバーノードから`kubectl`を使用してクラスターと対話できます。
 +
 [,bash]
 ----

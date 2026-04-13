@@ -1,146 +1,146 @@
-= 资源分析
-:page-languages: [en, ja, ko, zh]
+= 资源剖析
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-01-06
 :page-revdate: {revdate}
 
-本文介绍了测试结果，用于确定 K3s 的最低资源要求。
+本节记录了确定 K3s 最低资源需求的测试结果。
 
-== Minimum Resource Requirements for K3s
+== K3s 的最低资源需求
 
 结果总结如下：
 
 |===
-| 组件 | 处理器 | 最小 CPU | Kine/SQLite 的最小 RAM | 嵌入式 etcd 的最小 RAM
+| 组件 | 处理器 | 最小 CPU | 使用 Kine/SQLite 的最小 RAM | 使用嵌入式 etcd 的最小 RAM
 
-| 具有工作负载的 K3s Server
+| 带有工作负载的 K3s 服务器
 | Intel 8375C CPU, 2.90 GHz
-| 核的 6%
-| 1596M
-| 1606M
+| 6% 的内核
+| 1596 M
+| 1606 M
 
-| 具有单个 Agent 的 K3s 集群
+| 带有单个代理的 K3s 集群
 | Intel 8375C CPU, 2.90 GHz
-| 核的 5%
-| 1428M
-| 1450M
+| 5% 的内核
+| 1428 M
+| 1450 M
 
-| K3s agent
+| K3s 代理
 | Intel 8375C CPU, 2.90 GHz
-| 核的 3%
-| 275M
-| 275M
+| 3% 的内核
+| 275 M
+| 275 M
 
-| 具有工作负载的 K3s Server
-| Pi4B BCM2711, 1.50 GHz
-| 核的 30%
-| 1588M
-| 1613M
+| 带有工作负载的 K3s 服务器
+| Pi4B BCM2711，1.50 GHz
+| 30% 的内核
+| 1588 M
+| 1613 M
 
-| 具有单个 Agent 的 K3s 集群
-| Pi4B BCM2711, 1.50 GHz
-| 核的 25%
-| 1215M
-| 1413M
+| 带有单个代理的 K3s 集群
+| Pi4B BCM2711，1.50 GHz
+| 25% 的内核
+| 1215 M
+| 1413 M
 
-| K3s agent
-| Pi4B BCM2711, 1.50 GHz
-| 核的 10%
-| 268M
-| 268M
+| K3s 代理
+| Pi4B BCM2711，1.50 GHz
+| 10% 的内核
+| 268 M
+| 268 M
 |===
 
 === 资源测试范围
 
 资源测试旨在解决以下问题：
 
-* 在单节点集群上，确定要为整个 K3s 服务器堆栈预留的最小 CPU、内存和 IOP 数量（假设集群上将部署真实的工作负载）。
-* 在 Agent（Worker）节点上，确定要为 Kubernetes 和 K3s control plane 组件（kubelet 和 k3s agent）预留的最小 CPU、内存和 IOP 数量。
+* 在单节点集群上，确定应预留的合法最小 CPU、内存和 IOPs 以运行整个 K3s 堆栈服务器堆栈，假设集群上将部署真实工作负载。
+* 在代理（工作）节点上，确定应预留的合法最小 CPU、内存和 IOPs 以支持 Kubernetes 和 K3s 控制平面组件（kubelet 和 k3s 代理）。
 
-=== 用于基线测量的组件
+=== 基准测量中包含的组件
 
 测试的组件包括：
 
-* 启用所有打包组件的 K3s 1.26.5
-* Prometheus + Grafana 监控栈
+* 启用所有打包组件的 K3s v1.26.5
+* Prometheus + Grafana 监控堆栈
 * https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[Kubernetes 示例 Nginx 部署]
 
-这些是一个稳定系统的基线数据，只使用 K3s 打包的组件（Traefik Ingress、Klipper lb、本地路径存储），运行标准的监控堆栈（Prometheus 和 Grafana）和 Guestbook 示例应用程序。
+这些是仅使用 K3s 打包组件（Traefik Ingress、Klipper lb、local-path 存储）运行标准监控堆栈（Prometheus 和 Grafana）以及 Guestbook 示例 APP 的稳定系统的基准数据。
 
-包括 IOPS 在内的资源数据仅用于 Kubernetes 数据存储和 control plane，不包括系统级 management agent 或 logging、容器镜像管理或任何工作负载要求的开销。
+包括 IOPS 的资源数据仅适用于 Kubernetes 数据存储和控制平面，不包括系统级管理代理或日志记录、容器镜像管理或任何特定工作负载要求的开销。
 
 === 方法
 
-Prometheus v2.43.0 的独立实例可以通过 apt 安装的 `prometheus-node-exporter` 收集主机 CPU、内存和磁盘 IO 统计信息。
+使用 `prometheus-node-exporter` 通过 apt 安装的 收集主机 CPU、内存和磁盘 IO 统计信息的独立 Prometheus v2.43.0 实例。
 
-`systemd-cgtop` 用于抽查 systemd cgroup 级别的 CPU 和内存利用率。`system.slice/k3s.service` 跟踪 K3s 和 containerd 的资源利用率，而单个 pod 位于 `kubepods` 层级下。
+使用 `systemd-cgtop` 检查 systemd cgroup 级别的 CPU 和内存利用率。`system.slice/k3s.service` 跟踪 K3s 和 containerd 的资源利用率，而单个 pod 则位于 `kubepods` 层级下。
 
-其他详细的 K3s 内存利用率数据是使用 server 和 agent 进程的集成 metrics-server 从 `kubectl top node` 收集的。
+利用集成的 metrics-server，从 `kubectl top node` 收集了针对服务器和代理进程的额外详细 K3s 内存利用率数据。
 
-利用率数据来自于运行所述工作负载的节点上稳态运行的第 95 个百分位读数。
+利用率数据基于在运行所述工作负载的节点上进行的稳态操作的第95百分位数读数。
 
 === 环境
 
 |===
-| Arch | OS | System | CPU | RAM | Disk
+| 架构 | OS | 系统 | CPU | RAM | 磁盘
 
 | x86_64
 | Ubuntu 22.04
 | AWS c6id.xlarge
-| Intel Xeon Platinum 8375C CPU, 4 Core 2.90 GHz
+| 英特尔至强铂金8375C CPU，4核 2.90 GHz
 | 8 GB
 | NVME SSD
 
 | aarch64
 | Raspberry Pi OS 11
 | Raspberry Pi 4 Model B
-| BCM2711, 4 Core 1.50 GHz
+| BCM2711，4核 1.50 GHz
 | 8 GB
 | UHS-III SDXC
 |===
 
-=== 基准资源要求
+=== 基线资源要求
 
-本文介绍了测试结果，用于确定基本 K3s 操作的最低资源要求。
+本节记录了确定基本K3s操作的最低资源要求的测试结果。
 
-==== 具有工作负载的 K3s Server
+==== 带有工作负载的 K3s 服务器
 
-这些是单节点集群的要求，其中 K3s Server 与link:https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[简单工作负载]共享资源。
+这些是单节点集群的要求，其中 K3s 服务器与 https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[简单工作负载] 共享资源。
 
-CPU 要求：
+CPU要求为：
 
 |===
-| 系统 | CPU 核用量
+| 系统 | CPU核心使用情况
 
-| Intel 8375C
-| 核的 6%
+| 英特尔8375C
+| 6% 的内核
 
 | Pi4B
-| 核的 30%
+| 30% 的内核
 |===
 
-内存要求：
+内存要求为：
 
 |===
 | 测试的数据存储 | 系统 | 内存
 
 | Kine/SQLite
-| Intel 8375C
-| 1596M
+| 英特尔8375C
+| 1596 M
 
 |
 | Pi4B
-| 1588M
+| 1588 M
 
-| 嵌入式 etcd
-| Intel 8375C
-| 1606M
+| 嵌入式etcd
+| 英特尔8375C
+| 1606 M
 
 |
 | Pi4B
-| 1613M
+| 1613 M
 |===
 
-磁盘要求：
+磁盘要求为：
 
 |===
 | 测试的数据存储 | IOPS | KiB/sec | 延迟
@@ -150,115 +150,115 @@ CPU 要求：
 | 500
 | < 10 ms
 
-| 嵌入式 etcd
+| 嵌入式etcd
 | 50
 | 250
 | < 5 ms
 |===
 
-==== 具有单个 Agent 的 K3s 集群
+==== 单代理的 K3s 集群
 
-以下介绍具有 K3s Server 节点和 K3s Agent，但没有工作负载的 K3s 集群的基线要求。
+这些是 K3s 集群的基本要求，包含一个 K3s 服务器节点和一个 K3s 代理，但没有工作负载。
 
-===== K3s Server
+===== K3s 服务器
 
-CPU 要求：
+CPU要求为：
 
 |===
-| 系统 | CPU 核用量
+| 系统 | CPU核心使用情况
 
-| Intel 8375C
-| 核的 5%
+| 英特尔8375C
+| 5% 的内核
 
 | Pi4B
-| 核的 25%
+| 25% 的内核
 |===
 
-内存要求：
+内存要求为：
 
 |===
 | 测试的数据存储 | 系统 | 内存
 
 | Kine/SQLite
-| Intel 8375C
-| 1428M
+| 英特尔8375C
+| 1428 M
 
 |
 | Pi4B
-| 1215M
+| 1215 M
 
-| 嵌入式 etcd
-| Intel 8375C
-| 1450M
+| 嵌入式etcd
+| 英特尔8375C
+| 1450 M
 
 |
 | Pi4B
-| 1413M
+| 1413 M
 |===
 
-==== K3s Agent
+===== K3s 代理
 
-要求：
+要求为：
 
 |===
-| 系统 | CPU 核用量 | RAM
+| 系统 | CPU核心使用情况 | RAM
 
-| Intel 8375C
-| 核的 3%
-| 275M
+| 英特尔8375C
+| 3% 的内核
+| 275 M
 
 | Pi4B
-| 核的 5%
-| 268M
+| 5% 的内核
+| 268 M
 |===
 
-=== 分析主要资源使用率决定因素
+=== 主要资源利用驱动因素分析
 
-K3s Server 利用率数据主要取决于 Kubernetes 数据存储（kine 或 etcd）、API Server、Controller-Manager 和 Scheduler 控制循环的支持，以及影响系统状态更改的任何管理任务。如果对 Kubernetes control plane 添加额外负载（例如创建/修改/删除资源），利用率会出现临时峰值。如果使用大量使用 Kubernetes 数据存储的 Operator 或应用程序（例如 Rancher 或其他 Operator 类型的应用程序），server 的资源需求将增加。如果通过添加额外的节点或创建大量集群资源来扩展集群，server 的资源需求将增加。
+K3s 服务器的利用率主要受 Kubernetes 数据存储（kine 或 etcd）、API 服务器、控制器管理器和调度程序控制循环的支持驱动，以及进行系统状态更改所需的任何管理任务。对 Kubernetes 控制平面施加额外负载的操作，例如创建/修改/删除资源，将导致利用率的暂时峰值。使用广泛利用 Kubernetes 数据存储的操作员或 APP（如 Rancher 或其他操作员类型的 APP）将增加服务器的资源要求。通过添加额外节点或创建许多集群资源来扩展集群将增加服务器的资源要求。
 
-K3s Agent 利用率数据主要取决于容器生命周期管理控制循环的支持。如果存在涉及管理镜像、配置存储或创建/销毁容器的操作，利用率会出现临时峰值。尤其是镜像拉取（通常与 CPU 和 IO 高度绑定），因为涉及将镜像内容解压缩到磁盘。如果可能，你可以将工作负载存储（pod 临时存储和卷）与 Agent 组件（/var/lib/rancher/k3s/agent）隔离，从而确保没有资源冲突。
+K3s 代理的利用率主要受容器生命周期管理控制循环的支持驱动。涉及管理镜像、配置存储或创建/销毁容器的操作将导致利用率的暂时峰值。特别是镜像拉取通常高度依赖 CPU 和 IO，因为它们涉及将镜像内容解压到磁盘。如果可能，工作负载存储（pod 瞬态存储和卷）应与代理组件（/var/lib/rancher/k3s/agent）隔离，以确保没有资源冲突。
 
-=== 防止 Agent 和工作负载干扰集群数据存储
+=== 防止代理和工作负载干扰集群数据存储
 
-如果在 server 还托管了工作负载 pod 的环境中运行，你需要确保 agent 和工作负载 IOPS 不会干扰数据存储。
+在服务器同时托管工作负载 Pod 的环境中运行时，应注意确保代理和工作负载的 IOPS 不会干扰数据存储。
 
-你可以将 server 组件 (/var/lib/rancher/k3s/server) 放置在与 agent 组件 (/var/lib/rancher/k3s/agent) 不同的存储介质，其中包括 containerd 镜像存储区。
+这可以通过将服务器组件（/var/lib/rancher/k3s/server）放置在与代理组件（/var/lib/rancher/k3s/agent）不同的存储介质上来最好地实现，后者包括 containerd 容器镜像存储。
 
-工作负载存储（pod 临时存储和卷）也应该与数据存储区隔离。
+工作负载存储（Pod 瞬态存储和卷）也应与数据存储隔离。
 
-如果未能满足数据存储吞吐量和延迟要求，control plane 的响应可能会延迟，control plane 也可能无法维持系统状态。
+未能满足数据存储的吞吐量和延迟要求可能导致控制平面响应延迟和/或控制平面无法维持系统状态。
 
 [#_server_sizing_requirements_for_k3s]
-== Server Sizing Requirements for K3s
+== K3s 的服务器规格要求
 
-=== Environment
+=== 环境
 
-* All agents were t3.medium AWS ec2 instances.
-** A single agent was a c5.4xlarge instance. This hosted the grafana monitoring stack and prevented it from interfering with the control-plane resources.
-* The Server was a c5 AWS ec2 instance. As the number of agents increased, the server was upgraded to larger c5 instances.
+* 所有代理都是 t3.medium 的 AWS EC2 实例。
+** 单个代理是 c5.4xlarge 实例。这托管了 grafana 监控堆栈，并防止其干扰控制平面的资源。
+* 服务器是 c5 的 AWS EC2 实例。随着代理数量的增加，服务器升级为更大的 c5 实例。
 
-=== Methodology
+=== 方法
 
-This data was retrieved under specific test conditions. It will vary depending upon environment and workloads. The steps below give an overview of the test that was run to retrieve this. It was last performed on v1.31.0+k3s1. All the machines were provisioned in AWS with standard 20 GiB gp3 volumes. The test was run with the following steps:
+这些数据是在特定测试条件下检索的。这将根据环境和工作负载而有所不同。以下步骤概述了为检索此数据而进行的测试。最后一次在 v1.31.0+k3s1 上执行。所有机器均在 AWS 中配置，使用标准的 20 GiB gp3 卷。测试按照以下步骤进行：
 
-. Monitor resources on grafana using prometheus data source. 
-. Deploy workloads in such a way to simulate continuous cluster activity:
-** A basic workload that scales up and down continuously
-** A workload that is deleted and recreated in a loop
-** A constant workload that contains multiple other resources including CRDs.
-. Join agent nodes in batches of 50-100 at a time.
-. Stop adding agents when server CPU spikes above 90% utilization on agent joining, or if RAM was above 80% utilization. 
+. 使用 prometheus 数据源在 grafana 上监控资源。
+. 以模拟持续集群活动的方式部署工作负载：
+** 一个基本的工作负载，持续地扩展和缩减
+** 一个在循环中被删除和重新创建的工作负载
+** 一个包含多个其他资源（包括 CRD）的恒定工作负载。
+. 以每次 50-100 个的批次加入代理节点。
+. 当服务器 CPU 在加入代理时的利用率超过 90% 或 RAM 利用率超过 80% 时，停止添加代理。
 
-=== Observations
+=== 观察结果
 
-* When joining agents, server CPU saw spikes of ~20% over baseline.
-* Typically, the limiting factor was CPU, not RAM. For most of the tests, when the CPU hit 90% utilization, RAM utilization was around 60%.
+* 在加入代理时，服务器 CPU 的利用率比基线高出约 20%。
+* 通常，限制因素是 CPU，而不是 RAM。在大多数测试中，当 CPU 达到 90% 的利用率时，RAM 的利用率约为 60%。
 
-==== A note on High Availability (HA)
+==== 关于高可用性 (HA) 的说明
 
-At the end of each test, two additional servers were joined (forming a basic 3 node HA cluster) to observe what effect this had on the original server resources. The effect was:
+在每次测试结束时，加入了两个额外的服务器（形成一个基本的 3 节点 HA 集群），以观察这对原始服务器资源的影响。影响是：
 
-* A noticeable drop in CPU utilization, usually 30-50%.
-* RAM utilization remained the same.
+* CPU 利用率明显下降，通常下降 30-50%。
+* RAM 利用率保持不变。
 
-While not tested, with CPU utilization as the limiting factor on a single server, it is expected that the number of agents that can be joined would increase by ~50% with a 3 node HA cluster.
+虽然没有进行测试，但在单个服务器上 CPU 利用率作为限制因素的情况下，预计可以加入的代理数量将在 3 节点 HA 集群下增加约 50%。

@@ -1,66 +1,68 @@
-= FAQ
-:page-languages: [en, ja, ko, zh]
+= FAQ（よくある質問と答え）
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2024-09-11
 :page-revdate: {revdate}
 
-FAQは定期的に更新され、K3sに関してユーザーが最も頻繁に尋ねる質問に答えるために設計されています。
+FAQは定期的に更新され、ユーザーがK3sについて最も頻繁に尋ねる質問に答えるように設計されています。
 
-== K3sはKubernetesの代替として適していますか？
+== K3sはKubernetesの適切な代替品ですか？
 
-K3sはCNCF認定のKubernetesディストリビューションであり、標準的なKubernetesクラスターに必要なすべてのことを実行できます。ただし、より軽量なバージョンです。詳細についてはxref:introduction.adoc[メイン]ドキュメントページを参照してください。
+K3sはCNCF認定のKubernetesディストリビューションであり、標準のKubernetesクラスターに必要なすべての機能を提供できます。それは単により軽量なバージョンです。詳細については、xref:introduction.adoc[メイン]ドキュメントページをご覧ください。
 
 == Traefikの代わりに自分のIngressを使用するにはどうすればよいですか？
 
-単にK3sサーバーを``--disable=traefik``オプションで起動し、Ingressをデプロイしてください。
+K3sサーバーを`--disable=traefik`で起動し、Ingressをデプロイするだけです。
 
 == K3sはWindowsをサポートしていますか？
 
-現時点ではK3sはネイティブにWindowsをサポートしていませんが、将来的にはその可能性を検討しています。
+現時点ではK3sはWindowsをネイティブにサポートしていませんが、将来的な対応については前向きに検討しております。
 
 == サーバーとエージェントとは具体的に何ですか？
 
-サーバーとエージェントを構成するコンポーネントの詳細については、xref:architecture.adoc[アーキテクチャページ]を参照してください。
+サーバーとエージェントを構成するコンポーネントの詳細については、xref:architecture.adoc[アーキテクチャページ]をご覧ください。
 
 == ソースからビルドするにはどうすればよいですか？
 
-K3sのlink:https://github.com/k3s-io/k3s/blob/main/BUILDING.md[BUILDING.md]を参照してください。
+K3sのhttps://github.com/k3s-io/k3s/blob/main/BUILDING.md[BUILDING.md]を参照してください。
 
 == K3sのログはどこにありますか？
 
 K3sのログの場所は、K3sの実行方法やノードのOSによって異なります。
 
-* コマンドラインから実行する場合、ログはstdoutとstderrに送信されます。
-* openrcで実行する場合、ログは``/var/log/k3s.log``に作成されます。
-* Systemdで実行する場合、ログはJournaldに送信され、``journalctl -u k3s``で表示できます。
-* Podのログは``/var/log/pods``にあります。
-* Containerdのログは``/var/lib/rancher/k3s/agent/containerd/containerd.log``にあります。
+* コマンドラインから実行すると、ログはstdoutとstderrに送信されます。
+* openrcで実行している場合、ログは`/var/log/k3s.log`に作成されます。
+* Systemdで実行している場合、ログはJournaldに送信され、`journalctl -u k3s`を使用して表示できます。
+* Podのログは`/var/log/pods`にあります。
+* Containerdのログは`/var/lib/rancher/k3s/agent/containerd/containerd.log`にあります。
 
-K3sを起動する際に``--debug``フラグ（または設定ファイルで``debug: true``）を使用すると、より詳細なログを生成できます。
+K3sを起動する際に`--debug`フラグを使用することで、より詳細なログを生成できます（または環境設定ファイル内で`debug: true`を使用します）。
 
-Kubernetesは``klog``というロギングフレームワークを使用しており、プロセス内のすべてのコンポーネントに対して単一のロギング設定を使用します。K3sはすべてのKubernetesコンポーネントを単一のプロセス内で実行するため、個々のKubernetesコンポーネントに対して異なるログレベルや出力先を設定することはできません。``-v=<level>``や``--vmodule=<module>=<level>``のコンポーネント引数を使用しても、期待通りの効果は得られない可能性があります。
+Kubernetesは`klog`というログフレームワークを使用しており、プロセス内のすべてのコンポーネントに対して単一のログ設定を使用します。
+K3sはすべてのKubernetesコンポーネントを単一のプロセス内で実行するため、個々のKubernetesコンポーネントに対して異なるログレベルや宛先を設定することはできません。
+`-v=<level>`または`--vmodule=<module>=<level>`コンポーネント引数の使用は、望ましい効果を得られない可能性があります。
 
-さらに多くのログオプションについては、xref:advanced.adoc#_additional_logging_sources[追加のログソース]を参照してください。
+さらに多くのログオプションについては、xref:advanced.adoc#_additional_logging_sources[追加のログソース]をご覧ください。
 
-== DockerでK3sを実行できますか？
+== K3sをDockerで実行できますか？
 
-はい、DockerでK3sを実行する方法はいくつかあります。詳細についてはxref:advanced.adoc#_running_k3s_in_docker[高度なオプション]を参照してください。
+はい、K3sをDockerで実行する方法はいくつかあります。詳細については、xref:advanced.adoc#_running_k3s_in_docker[高度なオプション]をご覧ください。
 
-== K3sサーバーとエージェントトークンの違いは何ですか？
+== K3sサーバートークンとエージェントトークンの違いは何ですか？
 
-K3sの参加トークンの管理に関する詳細は、xref:cli/token.adoc[``k3s token``コマンドのドキュメント]を参照してください。
+K3sの参加トークンの管理に関する詳細は、xref:cli/token.adoc[`k3s token`コマンドのドキュメント]をご覧ください。
 
 == 異なるバージョンのK3sの互換性はどの程度ですか？
 
-一般的に、https://kubernetes.io/docs/setup/release/version-skew-policy/[Kubernetesのバージョンスキューポリシー]が適用されます。
+一般的に、https://kubernetes.io/docs/setup/release/version-skew-policy/[Kubernetesバージョンスキューポリシー]が適用されます。
 
-簡単に言えば、サーバーはエージェントより新しいバージョンであることができますが、エージェントはサーバーより新しいバージョンであってはなりません。
+要するに、サーバー側はエージェント側よりも新しいバージョンであっても問題ありませんが、エージェント側がサーバーより新しいバージョンであることはできません。
 
-== 問題が発生した場合、どこで助けを得られますか？
+== 問題が発生しています。どこで助けを得られますか？
 
-K3sのデプロイに問題がある場合は、以下を行ってください：
+K3sのデプロイに問題がある場合は、次のことを行うべきです：
 
 . xref:known-issues.adoc[既知の問題]ページを確認してください。
-. xref:installation/requirements.adoc#_operating_systems[追加のOS準備]が解決されていることを確認してください。``k3s check-config``を実行し、パスすることを確認してください。
-. K3sのlink:https://github.com/k3s-io/k3s/issues[Issues]およびlink:https://github.com/k3s-io/k3s/discussions[Discussions]で、問題に一致するものを検索してください。
-. https://slack.rancher.io/[Rancher Slack]のK3sチャンネルに参加して助けを求めてください。
-. K3s Githubにlink:https://github.com/k3s-io/k3s/issues/new/choose[新しいIssue]を提出し、セットアップと発生している問題を説明してください。
+. xref:installation/requirements.adoc#_operating_systems[追加のOS準備]が解決されていることを確認してください。`k3s check-config`を実行し、それが通過することを確認してください。
+. K3sのhttps://github.com/k3s-io/k3s/issues[問題]とhttps://github.com/k3s-io/k3s/discussions[ディスカッション]を検索して、あなたの問題に一致するものを探してください。
+. https://slack.rancher.io/[Rancher Slack] K3s チャンネルに参加して、サポートを受けてください。
+. K3s Github に https://github.com/k3s-io/k3s/issues/new/choose[新しい問題] を提出し、あなたのセットアップと直面している問題を説明してください。

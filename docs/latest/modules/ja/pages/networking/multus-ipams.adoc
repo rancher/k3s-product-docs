@@ -1,41 +1,41 @@
-= Multus and IPAM plugins
-:page-languages: [en, ja, ko, zh]
+= MultusおよびIPAMプラグイン
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-09-16
 :page-revdate: {revdate}
 
-https://github.com/k8snetworkplumbingwg/multus-cni[Multus CNI] is a CNI plugin that enables attaching multiple network interfaces to pods. Multus does not replace CNI plugins, instead it acts as a CNI plugin multiplexer. Multus is useful in certain use cases, especially when pods are network intensive and require extra network interfaces that support dataplane acceleration techniques such as SR-IOV.
+https://github.com/k8snetworkplumbingwg/multus-cni[Multus CNI]は、ポッドに複数のネットワークインタフェースを接続することを可能にするCNIプラグインです。MultusはCNIプラグインを置き換えるのではなく、CNIプラグインのマルチプレクサとして機能します。Multusは特定のユースケースで役立ち、特にポッドがネットワーク集約型で、SR-IOVなどのデータプレーン加速技術をサポートする追加のネットワークインタフェースを必要とする場合に有用です。
 
-For more information about Multus, refer to the https://github.com/k8snetworkplumbingwg/multus-cni/tree/master/docs[multus-cni] documentation.
+Multusに関する詳細は、https://github.com/k8snetworkplumbingwg/multus-cni/tree/master/docs[multus-cni]のドキュメントを参照してください。
 
-Multus can not be deployed standalone. It always requires at least one conventional CNI plugin that fulfills the Kubernetes cluster network requirements. That CNI plugin becomes the default for Multus, and will be used to provide the primary interface for all pods. When deploying K3s with default options, that CNI plugin is Flannel.
+Multusは単独でデプロイすることはできません。常にKubernetesクラスターのネットワーク要件を満たす少なくとも1つの従来のCNIプラグインが必要です。そのCNIプラグインはMultusのデフォルトとなり、すべてのポッドに対してプライマリネットワークインタフェースを提供するために使用されます。デフォルトオプションでK3sをデプロイする場合、そのCNIプラグインはFlannelです。
 
 [NOTE]
-.Version Gate
+.バージョンゲート
 ====
-K3s uses a fixed CNI binary path as of the October 2024 releases: v1.28.15+k3s1, v1.29.10+k3s1, v1.30.6+k3s1, v1.31.2+k3s1.
+K3sは2024年10月のリリース以降、固定のCNIバイナリパスを使用します：v1.28.15+k3s1、v1.29.10+k3s1、v1.30.6+k3s1、v1.31.2+k3s1。
 ====
 
-K3s looks at `$DATA_DIR/data/cni` for CNI plugin binaries. By default this is `/var/lib/rancher/k3s/data/cni`. Additional CNI plugins should be installed to this location.
+K3sは`$DATA_DIR/data/cni`でCNIプラグインバイナリを探します。デフォルトでは、これは`/var/lib/rancher/k3s/data/cni`です。追加のCNIプラグインはこの場所にインストールする必要があります。
 
-Prior to the October 2024 releases, CNI binaries were part of the K3s userspace bundle at `$DATA_DIR/data/$HASH/bin`, where the hash is unique to each release of K3s.
-This made it difficult to deploy additional CNI plugins, as the path would change every time K3s was upgraded.
+2024年10月のリリース以前は、CNIバイナリは`$DATA_DIR/data/$HASH/bin`のK3sユーザースペースバンドルの一部であり、ハッシュはK3sの各リリースに固有でした。
+これにより、追加のCNIプラグインをデプロイすることが難しくなり、K3sがアップグレードされるたびにパスが変更されました。
 
-If deploying Multus to an older release of K3s, you should use `/var/lib/rancher/k3s/data/current/bin/` as the CNI bin dir, but expect that the plugins will need to be re-deployed whenever K3s is upgraded.
+古いリリースのK3sにMultusをデプロイする場合、CNIバイナリディレクトリとして`/var/lib/rancher/k3s/data/current/bin/`を使用する必要がありますが、K3sがアップグレードされるたびにプラグインを再デプロイする必要があることを期待してください。
 
-== Deploy with an IPAM plugin
+== IPAMプラグインでデプロイする
 
-An IP Address Manager (IPAM) plugin is required to assign IP addresses on the extra interfaces created by Multus. One or more IPAMs can be installed; the examples below each show use of a single IPAM plugin but they may be combined as needed.
+IPアドレスマネージャー（IPAM）プラグインは、Multusによって作成された追加のネットワークインタフェースにIPアドレスを割り当てるために必要です。1つ以上のIPAMをインストールできます。以下の例は、単一のIPAMプラグインの使用を示していますが、必要に応じて組み合わせることができます。
 
-The helm deployment examples below will deploy a DaemonSet to create Multus pods to install the required CNI binaries in `/var/lib/rancher/k3s/data/cni/` and Multus CNI config in `/var/lib/rancher/k3s/agent/etc/cni/net.d`.
+以下のhelmデプロイメントの例は、DaemonSetをデプロイして、`/var/lib/rancher/k3s/data/cni/`に必要なCNIバイナリをインストールし、`/var/lib/rancher/k3s/agent/etc/cni/net.d`にMultus CNI設定を作成します。
 
 [tabs,sync-group-id=MultusIPAMplugins]
 ======
 host-local::
 +
 --
-The host-local IPAM plugin allocates ip addresses out of a set of address ranges. It stores the state locally on the host filesystem, hence ensuring uniqueness of IP addresses on a single host. Therefore, we don't recommend it for multi-node clusters. This IPAM plugin does not require any extra deployment. For more information: https://www.cni.dev/plugins/current/ipam/host-local/.
+ホストローカルIPAMプラグインは、アドレス範囲のセットからIPアドレスを割り当てます。それはホストファイルシステム上に状態をローカルに保存し、したがって単一のホスト上でのIPアドレスの一意性を確保します。したがって、マルチノードクラスターには推奨しません。このIPAMプラグインは、追加のデプロイメントを必要としません。詳細情報: https://www.cni.dev/plugins/current/ipam/host-local/.
 
-To use the host-local plugin, deploy Multus with the following configuration:
+ホストローカルプラグインを使用するには、次の構成でMultusをデプロイします:
 
 [,yaml]
 ----
@@ -55,17 +55,17 @@ spec:
         confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
         binDir: /var/lib/rancher/k3s/data/cni/
         kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
-	      # Comment the following line when using rke2-multus < v4.2.202
-	      multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+          # Comment the following line when using rke2-multus < v4.2.202
+          multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
 ----
 --
 
-Whereabouts::
+ウェアアバウツ::
 +
 --
-https://github.com/k8snetworkplumbingwg/whereabouts[Whereabouts] is an IP Address Management (IPAM) CNI plugin that assigns IP addresses cluster-wide.
+https://github.com/k8snetworkplumbingwg/whereabouts[ウェアアバウツ]は、クラスター全体にIPアドレスを割り当てるIPアドレス管理（IPAM）CNIプラグインです。
 
-To use the Whereabouts IPAM plugin, deploy Multus with the following configuration:
+ウェアアバウツIPAMプラグインを使用するには、次の構成でMultusをデプロイします:
 
 [,yaml]
 ----
@@ -85,8 +85,8 @@ spec:
         confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
         binDir: /var/lib/rancher/k3s/data/cni/
         kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
-	      # Comment the following line when using rke2-multus < v4.2.202
-	      multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+          # Comment the following line when using rke2-multus < v4.2.202
+          multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
     rke2-whereabouts:
       fullnameOverride: whereabouts
       enabled: true
@@ -95,9 +95,9 @@ spec:
         binDir: /var/lib/rancher/k3s/data/cni/
 ----
 
-When using whereabouts on K3s, `configuration_path` must be set to `/var/lib/rancher/k3s/agent/etc/cni/net.d/whereabouts.d/whereabouts.conf` in the NetworkAttachmentDefinition's `ipam` configuration.
+K3sでウェアアバウツを使用する場合、`configuration_path`はNetworkAttachmentDefinitionの`ipam`構成で`/var/lib/rancher/k3s/agent/etc/cni/net.d/whereabouts.d/whereabouts.conf`に設定する必要があります。
 
-For example, when using whereabouts as the IPAM with the macvlan plugin:
+例えば、macvlanプラグインと共にIPAMとしてウェアアバウツを使用する場合:
 
 [,yaml]
 ----
@@ -122,12 +122,12 @@ spec:
 ----
 --
 
-Multus DHCP daemon::
+Multus DHCPデーモン::
 +
 --
-The dhcp IPAM plugin can be deployed when there is already a DHCP server running on the network. This daemonset takes care of periodically renewing the DHCP lease. For more information please check the official docs of https://www.cni.dev/plugins/current/ipam/dhcp/[DHCP IPAM plugin].
+DHCPサーバーがネットワーク上で既に稼働している場合、dhcp IPAMプラグインをデプロイできます。このデーモンセットは、DHCPリースを定期的に更新することを担当します。詳細情報については、https://www.cni.dev/plugins/current/ipam/dhcp/[DHCP IPAMプラグイン]の公式ドキュメントを確認してください。
 
-To use the DHCP plugin, deploy Multus with the following configuration:
+DHCPプラグインを使用するには、次の構成でMultusをデプロイします:
 
 [,yaml]
 ----
@@ -147,18 +147,18 @@ spec:
         confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
         binDir: /var/lib/rancher/k3s/data/cni/
         kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
-	      # Comment the following line when using rke2-multus < v4.2.202
-	      multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+          # Comment the following line when using rke2-multus < v4.2.202
+          multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
     manifests:
       dhcpDaemonSet: true
 ----
 --
 ======
 
-=== Using Multus
+=== Multusを使用する
 
-Once Multus has been deployed, you can create NetworkAttachmentDefinition resources, and reference these in Pod specs to attach additional interfaces.
-For example, using the whereabouts example above, you can create an `eth1` interface on a Pod using the `k8s.v1.cni.cncf.io/networks` annotation:
+Multusがデプロイされると、NetworkAttachmentDefinitionリソースを作成し、これをPodの仕様に参照して追加のネットワークインタフェースを接続することができます。
+例えば、上記のウェアアバウツの例を使用して、`eth1`ネットワークインタフェースを`k8s.v1.cni.cncf.io/networks`アノテーションを使用してPodに作成することができます。
 
 [,yaml]
 ----
@@ -189,4 +189,4 @@ spec:
           - "3600"
 ----
 
-See the upstream documentation for additional information and examples.
+追加の情報や例については、アップストリームのドキュメントを参照してください。

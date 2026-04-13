@@ -1,6 +1,6 @@
 = Known Issues
-:page-languages: [en, ja, ko, zh]
 :revdate: 2026-03-31
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 
 The Known Issues are updated periodically and designed to inform you about any issues that may not be immediately addressed in the next upcoming release. For the most up-to-date information, check open and pinned issues on the https://github.com/k3s-io/k3s/issues[K3s Project Issue Tracker]. If you are not running the most recent release of K3s, make sure to also search closed issues and release notes to ensure that your issue has not already been resolved.

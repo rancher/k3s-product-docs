@@ -1,42 +1,42 @@
 = k3s エージェント
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-01-15
 :page-revdate: {revdate}
 
-このセクションでは、K3sエージェントの設定方法を学びます。
+このセクションでは、K3s エージェントの設定方法を学びます。
 
-サーバーもエージェントを実行するため、このページに記載されているすべてのフラグはサーバーでも使用可能です。
+サーバーもエージェントを実行しているため、このページに記載されているすべてのフラグはサーバーでも使用できます。
 
-オプションはCLIフラグとしてこのページに記載されていますが、設定ファイルオプションとしても渡すことができます。YAML設定ファイルの使用方法については、xref:installation/configuration.adoc#_configuration_file[設定ファイル]のドキュメントを参照してください。
+オプションはこのページにCLIフラグとして記載されていますが、設定ファイルのオプションとしても渡すことができます。xref:installation/configuration.adoc#_configuration_file[設定ファイル] ドキュメントを参照し、YAML 設定ファイルの使用方法についての詳細をご確認ください。
 
-== ロギング
+== ログ記録
 
 |===
 | フラグ | デフォルト | 説明
 
 | `-v` 値
 | 0
-| ログレベルの冗長度の数値
+| ログレベルの詳細度を示す番号
 
 | `--vmodule` 値
 | N/A
-| ファイルフィルタリングされたログのためのFILE_PATTERN=LOG_LEVEL設定のカンマ区切りリスト
+| ファイルフィルターロギングのための FILE_PATTERN=LOG_LEVEL 設定のカンマ区切りリスト
 
-| `--log 値, -l` 値
+| `--log value, -l` 値
 | N/A
-| ファイルにログを記録
+| ファイルにログを記録する
 
 | `--alsologtostderr`
 | N/A
-| ファイルに設定されている場合、標準エラーにもログを記録
+| ファイル（設定されている場合）に加えて標準エラーにもログを記録する
 |===
 
-== クラスターオプション
+== クラスタオプション
 
 |===
 | フラグ | 環境変数 | 説明
 
-| `--token 値, -t` 値
+| `--token value, -t` 値
 | `K3S_TOKEN`
 | 認証に使用するトークン
 
@@ -44,7 +44,7 @@
 | `K3S_TOKEN_FILE`
 | 認証に使用するトークンファイル
 
-| `--server 値, -s` 値
+| `--server value, -s` 値
 | `K3S_URL`
 | 接続するサーバー
 |===
@@ -52,18 +52,18 @@
 == Listener
 
 |===
-| Flag |  Default | Description
+| フラグ |  デフォルト | 説明
 | `--bind-address`
 | 0.0.0.0
-| k3s bind address
+| k3s バインドアドレス
 |===
 
-== データ
+== Data
 
 |===
 | フラグ | デフォルト | 説明
 
-| `--data-dir 値, -d` 値
+| `--data-dir value, -d` 値
 | "/var/lib/rancher/k3s"
 | 状態を保持するフォルダー
 |===
@@ -75,31 +75,31 @@
 
 | `--node-name` 値
 | `K3S_NODE_NAME`
-| ノード名
+| Node name(ノード名)
 
 | `--with-node-id`
 | N/A
-| ノード名にIDを追加
+| ノード名にIDを追加する
 
 | `--node-label` 値
 | N/A
-| ラベルのセットでkubeletを登録および開始
+| ラベルのセットで kubelet を登録して起動する
 
 | `--node-taint` 値
 | N/A
-| taintsのセットでkubeletを登録
+| テイントのセットで kubelet を登録する
 
 | `--protect-kernel-defaults`
 | N/A
-| カーネルのチューニング動作。設定されている場合、カーネルのチューナブルがkubeletのデフォルトと異なる場合にエラーを発生させます。
+| カーネル調整の動作。設定されている場合、カーネルの調整可能パラメータが kubelet のデフォルトと異なるとエラーが発生します。
 
 | `--selinux`
 | `K3S_SELINUX`
-| containerdでSELinuxを有効にする
+| containerd でSELinuxを有効にする
 
 | `--lb-server-port` 値
 | `K3S_LB_SERVER_PORT`
-| スーパーバイザークライアントのロードバランサーのローカルポート。スーパーバイザーとapiserverが同じ場所にない場合、このポートの1つ少ない追加ポートもapiserverクライアントのロードバランサーに使用されます。（デフォルト: 6444）
+| スーパーバイザークライアントのロードバランサー用のローカルポート。スーパーバイザーとapiserverが同じ場所にない場合、apiserverクライアントのロードバランサーにもこのポートより1つ少ない追加のポートが使用されます。（デフォルト：6444）
 |===
 
 == ランタイム
@@ -109,23 +109,23 @@
 
 | `--container-runtime-endpoint`
 | N/A
-| 組み込みのcontainerdを無効にし、指定されたパスのCRIソケットを使用します。--dockerと一緒に使用する場合、cri-dockerソケットパスを設定します
+| 組み込みのcontainerdを無効にし、指定されたパスのCRIソケットを使用します。--dockerと一緒に使用する場合、これはdockerソケットのパスを設定します。
 
 | `--default-runtime`
 | N/A
-| Set the default runtime in containerd
+| containerdのデフォルトのランタイムを設定します。
 
 | `--image-service-endpoint`
 | N/A
-| Disable embedded containerd image service and use remote image service socket at the given path. If not specified, defaults to --container-runtime-endpoint.
+| 組み込みのcontainerdイメージサービスを無効にし、指定されたパスのリモートイメージサービスソケットを使用します。指定されていない場合、デフォルトは--container-runtime-endpointです。
 
 | `--pause-image` 値
 | "docker.io/rancher/pause:3.1"
-| containerdまたはdockerサンドボックス用のカスタマイズされたpauseイメージ
+| containerd または docker サンドボックス用のカスタマイズされたポーズイメージ
 
 | `--private-registry` 値
 | "/etc/rancher/k3s/registries.yaml"
-| プライベートレジストリの設定ファイル
+| プライベート レジストリの設定ファイル
 |===
 
 == ネットワーキング
@@ -133,37 +133,37 @@
 |===
 | フラグ | 環境変数 | 説明
 
-| `--node-ip 値, -i` 値
+| `--node-ip value, -i` 値
 | N/A
-| ノードの広告用IPアドレス
+| ノードのために広告するIPアドレス
 
 | `--node-external-ip` 値
 | N/A
-| ノードの広告用外部IPアドレス
+| ノードのために広告する外部IPアドレス
 
 | `--node-internal-dns`
 | N/A
-| internal DNS addresses to advertise for node
+| ノードのために広告する内部DNSアドレス
 
 | `--node-external-dns`
 | N/A
-| external DNS addresses to advertise for node
+| ノードのために広告する外部DNSアドレス
 
 | `--resolv-conf` 値
 | `K3S_RESOLV_CONF`
-| Kubeletのresolv.confファイル
+| Kubelet resolv.conf file
 
 | `--flannel-iface` 値
 | N/A
-| デフォルトのflannelインターフェースを上書き
+| デフォルトのフランネルインターフェースを上書きします。
 
 | `--flannel-conf` 値
 | N/A
-| デフォルトのflannel設定ファイルを上書き
+| デフォルトのフランネル設定ファイルを上書きします。
 
 | `--flannel-cni-conf` 値
 | N/A
-| デフォルトのflannel cni設定ファイルを上書き
+| デフォルトのフランネルCNI設定ファイルを上書きします。
 |===
 
 == カスタマイズされたフラグ
@@ -190,41 +190,41 @@
 | containerdの代わりにcri-dockerdを使用
 
 | `--enable-pprof`
-| Enable pprof endpoint on supervisor port
+| スーパーバイザーポートでpprofエンドポイントを有効にする
 
 | `--prefer-bundled-bin`
-| ホストバイナリよりもバンドルされたユーザースペースバイナリを優先
+| ホストバイナリよりもバンドルされたユーザースペースバイナリを優先する
 
 | `--disable-default-registry-endpoint`
-| "xref:installation/private-registry.adoc#_default_endpoint_fallback[デフォルトエンドポイントフォールバック]"を参照
+| 「xref:installation/private-registry.adoc#_default_endpoint_fallback[デフォルトエンドポイントフォールバック]」を参照してください
 
 | `--vpn-auth`
-| See "xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[Integration with the Tailscale VPN provider]" 
+| 「xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[Tailscale VPNプロバイダーとの統合]」を参照してください 
 
 | `--vpn-auth-file`
-| See "xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[Integration with the Tailscale VPN provider]"
+| 「xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[Tailscale VPNプロバイダーとの統合]」を参照してください
 |===
 
-== 廃止予定
+== 非推奨
 
 |===
 | フラグ | 環境変数 | 説明
 
 | `--no-flannel`
 | N/A
-| ``--flannel-backend=none``を使用
+| `--flannel-backend=none`の利用
 
 | `--cluster-secret` 値
 | `K3S_CLUSTER_SECRET`
-| ``--token``を使用
+| `--token`の利用
 |===
 
 [#_node_labels_and_taints_for_agents]
-== エージェントのノードラベルとtaints
+== エージェントのノードラベルとテイント
 
-K3sエージェントは、``--node-label``および``--node-taint``オプションを使用して設定でき、これによりkubeletにラベルとtaintが追加されます。これらのオプションは登録時にのみラベルおよび/またはtaintを追加するため、一度だけ追加され、その後K3sコマンドを実行しても変更できません。
+K3sエージェントは、kubeletにラベルとテイントを追加するオプション`--node-label`と`--node-taint`で構成できます。この2つのオプションは、登録時にのみラベルと/またはテイントを追加するため、K3sコマンドを実行してからは変更できません。
 
-以下は、ラベルとtaintを追加する方法を示す例です：
+以下は、ラベルとテイントを追加する方法の例です：
 
 [,bash]
 ----
@@ -233,65 +233,65 @@ K3sエージェントは、``--node-label``および``--node-taint``オプショ
      --node-taint key1=value1:NoExecute
 ----
 
-ノード登録後にノードラベルとtaintを変更したい場合は、``kubectl``を使用する必要があります。taintsの追加方法については公式のKubernetesドキュメントを参照してください。link:https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[taints]およびlink:https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[ノードラベル]の追加方法についての詳細を参照してください。
+ノード登録後にノードラベルとテイントを変更したい場合は、`kubectl`を使用してください。https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[テイント]とhttps://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[ノードラベル]を追加する方法の詳細については、公式のKubernetesドキュメントを参照してください。
 
 == K3sエージェントCLIヘルプ
 
 ____
-以下にオプションが角括弧で表示されている場合、例えば``[$K3S_URL]``、そのオプションはその名前の環境変数として渡すことができることを意味します。
+以下のようにブラケット内にオプションが表示されている場合、例えば`[$K3S_URL]`、そのオプションはその名前の環境変数として渡すことができることを意味します。
 ____
 
 [,bash]
 ----
 NAME:
-   k3s agent - ノードエージェントを実行
+   k3s agent - Run node agent
 
 USAGE:
    k3s agent [OPTIONS]
 
 OPTIONS:
-   --config FILE, -c FILE                     (config) FILEから設定を読み込む (デフォルト: "/etc/rancher/k3s/config.yaml") [$K3S_CONFIG_FILE]
-   --debug                                    (logging) デバッグログを有効にする [$K3S_DEBUG]
-   -v 値                                   (logging) ログレベルの冗長度の数値 (デフォルト: 0)
-   --vmodule 値                            (logging) ファイルフィルタリングされたログのためのFILE_PATTERN=LOG_LEVEL設定のカンマ区切りリスト
-   --log 値, -l 値                      (logging) ファイルにログを記録
-   --alsologtostderr                          (logging) ファイルに設定されている場合、標準エラーにもログを記録
-   --token 値, -t 値                    (cluster) 認証に使用するトークン [$K3S_TOKEN]
-   --token-file 値                         (cluster) 認証に使用するトークンファイル [$K3S_TOKEN_FILE]
-   --server 値, -s 値                   (cluster) 接続するサーバー [$K3S_URL]
-   --data-dir 値, -d 値                 (agent/data) 状態を保持するフォルダー (デフォルト: "/var/lib/rancher/k3s") [$K3S_DATA_DIR]
-   --node-name 値                          (agent/node) ノード名 [$K3S_NODE_NAME]
-   --with-node-id                             (agent/node) ノード名にIDを追加
-   --node-label 値                         (agent/node) ラベルのセットでkubeletを登録および開始
-   --node-taint 値                         (agent/node) taintsのセットでkubeletを登録
-   --image-credential-provider-bin-dir 値  (agent/node) クレデンシャルプロバイダープラグインバイナリが配置されているディレクトリのパス (デフォルト: "/var/lib/rancher/credentialprovider/bin")
-   --image-credential-provider-config 値   (agent/node) クレデンシャルプロバイダープラグイン設定ファイルのパス (デフォルト: "/var/lib/rancher/credentialprovider/config.yaml")
-   --selinux                                  (agent/node) containerdでSELinuxを有効にする [$K3S_SELINUX]
-   --lb-server-port 値                     (agent/node) スーパーバイザークライアントのロードバランサーのローカルポート。スーパーバイザーとapiserverが同じ場所にない場合、このポートの1つ少ない追加ポートもapiserverクライアントのロードバランサーに使用されます。（デフォルト: 6444） [$K3S_LB_SERVER_PORT]
-   --protect-kernel-defaults                  (agent/node) カーネルのチューニング動作。設定されている場合、カーネルのチューナブルがkubeletのデフォルトと異なる場合にエラーを発生させます。
-   --container-runtime-endpoint 値         (agent/runtime) 組み込みのcontainerdを無効にし、指定されたパスのCRIソケットを使用します。--dockerと一緒に使用する場合、dockerソケットパスを設定します
+   --config FILE, -c FILE                     (config) Load configuration from FILE (default: "/etc/rancher/k3s/config.yaml") [$K3S_CONFIG_FILE]
+   --debug                                    (logging) Turn on debug logs [$K3S_DEBUG]
+   -v value                                   (logging) Number for the log level verbosity (default: 0)
+   --vmodule value                            (logging) Comma-separated list of FILE_PATTERN=LOG_LEVEL settings for file-filtered logging
+   --log value, -l value                      (logging) Log to file
+   --alsologtostderr                          (logging) Log to standard error as well as file (if set)
+   --token value, -t value                    (cluster) Token to use for authentication [$K3S_TOKEN]
+   --token-file value                         (cluster) Token file to use for authentication [$K3S_TOKEN_FILE]
+   --server value, -s value                   (cluster) Server to connect to [$K3S_URL]
+   --data-dir value, -d value                 (agent/data) Folder to hold state (default: "/var/lib/rancher/k3s") [$K3S_DATA_DIR]
+   --node-name value                          (agent/node) Node name [$K3S_NODE_NAME]
+   --with-node-id                             (agent/node) Append id to node name
+   --node-label value                         (agent/node) Registering and starting kubelet with set of labels
+   --node-taint value                         (agent/node) Registering kubelet with set of taints
+   --image-credential-provider-bin-dir value  (agent/node) The path to the directory where credential provider plugin binaries are located (default: "/var/lib/rancher/credentialprovider/bin")
+   --image-credential-provider-config value   (agent/node) The path to the credential provider plugin config file (default: "/var/lib/rancher/credentialprovider/config.yaml")
+   --selinux                                  (agent/node) Enable SELinux in containerd [$K3S_SELINUX]
+   --lb-server-port value                     (agent/node) Local port for supervisor client load-balancer. If the supervisor and apiserver are not colocated an additional port 1 less than this port will also be used for the apiserver client load-balancer. (default: 6444) [$K3S_LB_SERVER_PORT]
+   --protect-kernel-defaults                  (agent/node) Kernel tuning behavior. If set, error if kernel tunables are different than kubelet defaults.
+   --container-runtime-endpoint value         (agent/runtime) Disable embedded containerd and use the CRI socket at the given path; when used with --docker this sets the docker socket path
    --default-runtime value                    (agent/runtime) Set the default runtime in containerd
    --image-service-endpoint value             (agent/runtime) Disable embedded containerd image service and use remote image service socket at the given path. If not specified, defaults to --container-runtime-endpoint.
-   --pause-image 値                        (agent/runtime) containerdまたはdockerサンドボックス用のカスタマイズされたpauseイメージ (デフォルト: "rancher/mirrored-pause:3.6")
-   --snapshotter 値                        (agent/runtime) デフォルトのcontainerdスナップショッターを上書き (デフォルト: "overlayfs")
-   --private-registry 値                   (agent/runtime) プライベートレジストリの設定ファイル (デフォルト: "/etc/rancher/k3s/registries.yaml")
+   --pause-image value                        (agent/runtime) Customized pause image for containerd or docker sandbox (default: "rancher/mirrored-pause:3.6")
+   --snapshotter value                        (agent/runtime) Override default containerd snapshotter (default: "overlayfs")
+   --private-registry value                   (agent/runtime) Private registry configuration file (default: "/etc/rancher/k3s/registries.yaml")
    --disable-default-registry-endpoint        (agent/containerd) Disables containerd fallback default registry endpoint when a mirror is configured for that registry
    --nonroot-devices                          (agent/containerd) Allows non-root pods to access devices by setting device_ownership_from_security_context=true in the containerd CRI config
-   --node-ip 値, -i 値                  (agent/networking) ノードの広告用IPv4/IPv6アドレス
+   --node-ip value, -i value                  (agent/networking) IPv4/IPv6 addresses to advertise for node
    --bind-address value                       (listener) k3s bind address (default: 0.0.0.0)
-   --node-external-ip value                   (agent/networking) ノードの広告用IPv4/IPv6外部IPアドレス
+   --node-external-ip value                   (agent/networking) IPv4/IPv6 external IP addresses to advertise for node
    --node-internal-dns value                  (agent/networking) internal DNS addresses to advertise for node
    --node-external-dns value                  (agent/networking) external DNS addresses to advertise for node
-   --resolv-conf value                        (agent/networking) Kubeletのresolv.confファイル [$K3S_RESOLV_CONF]
-   --flannel-iface value                      (agent/networking) デフォルトのflannelインターフェースを上書き
-   --flannel-conf value                       (agent/networking) デフォルトのflannel設定ファイルを上書き
-   --flannel-cni-conf value                   (agent/networking) デフォルトのflannel cni設定ファイルを上書き
-   --kubelet-arg value                        (agent/flags) kubeletプロセスのカスタマイズフラグ
-   --kube-proxy-arg value                     (agent/flags) kube-proxyプロセスのカスタマイズフラグ
+   --resolv-conf value                        (agent/networking) Kubelet resolv.conf file [$K3S_RESOLV_CONF]
+   --flannel-iface value                      (agent/networking) Override default flannel interface
+   --flannel-conf value                       (agent/networking) Override default flannel config file
+   --flannel-cni-conf value                   (agent/networking) Override default flannel cni config file
+   --kubelet-arg value                        (agent/flags) Customized flag for kubelet process
+   --kube-proxy-arg value                     (agent/flags) Customized flag for kube-proxy process
    --enable-pprof                             (experimental) Enable pprof endpoint on supervisor port
-   --rootless                                 (experimental) ルートレスで実行
-   --prefer-bundled-bin                       (experimental) ホストのバイナリよりもバンドルされたユーザースペースバイナリを優先
-   --docker                                   (agent/runtime) (experimental) containerdの代わりにcri-dockerdを使用
+   --rootless                                 (experimental) Run rootless
+   --prefer-bundled-bin                       (experimental) Prefer bundled userspace binaries over host binaries
+   --docker                                   (agent/runtime) (experimental) Use cri-dockerd instead of containerd
    --vpn-auth value                           (agent/networking) (experimental) Credentials for the VPN provider. It must include the provider name and join key in the format name=<vpn-provider>,joinKey=<key>[,controlServerURL=<url>][,extraArgs=<args>] [$K3S_VPN_AUTH]
    --vpn-auth-file value                      (agent/networking) (experimental) File containing credentials for the VPN provider. It must include the provider name and join key in the format name=<vpn-provider>,joinKey=<key>[,controlServerURL=<url>][,extraArgs=<args>] [$K3S_VPN_AUTH_FILE]
    --disable-apiserver-lb                     (agent/networking) (experimental) Disable the agent client-side load-balancer and connect directly to the configured server address

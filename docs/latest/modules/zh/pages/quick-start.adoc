@@ -1,66 +1,58 @@
 = 快速入门指南
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-03-03
 :page-revdate: {revdate}
 
-本指南帮助你使用默认选项快速启动集群。xref:installation/installation.adoc[安装部分]更详细地介绍了如何设置 K3s。
+本指南将帮助您快速启动一个具有默认选项的集群。在继续之前，请确保您的节点满足xref:installation/requirements.adoc[要求]。
 
-有关 K3s 组件如何协同工作的信息，请参阅xref:architecture.adoc[架构]。
+* 有关安装和配置K3s的详细信息，请参阅xref:installation/installation.adoc[安装]页面。
+* 有关K3s组件如何协同工作的更多信息，请参阅xref:architecture.adoc[架构]页面。
+* 如果您是Kubernetes新手，https://kubernetes.io/docs/tutorials/kubernetes-basics/[官方Kubernetes文档]提供了很好的教程，涵盖所有集群管理员应熟悉的基础知识。
 
 [IMPORTANT]
 ====
-Kubernetes 新手？Kubernetes 官方文档介绍了一些很好的link:https://kubernetes.io/docs/tutorials/kubernetes-basics/[基础知识教程]。
+您可以使用在Prime Artifacts URL上列出的任何K3s Prime版本来获取这些步骤中提到的资产。要了解有关Prime Artifacts URL的更多信息，请参阅我们的https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[仅限Prime的文档]。需要身份验证。使用您的https://scc.suse.com/home[SUSE 客户中心（SCC）]凭据登录。
 ====
 
 
 == 安装脚本
 
-K3s 提供了一个安装脚本，可以方便地将其作为服务安装在基于 systemd 或 openrc 的系统上。该脚本可在 https://get.k3s.io 获得。要使用这种方法安装 K3s，只需运行：
+{k3s-product-name}提供了一个安装脚本，这是在基于systemd或openrc的系统上作为服务安装的便捷方式。该脚本可在https://get.k3s.io.获取。要使用此方法安装{k3s-product-name}，请执行以下操作：
+
+运行安装程序，其中`INSTALL_K3S_ARTIFACT_URL`是https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL]，`INSTALL_K3S_CHANNEL`是您可以订阅的发布渠道，默认为`stable`。在此示例中，`INSTALL_K3S_CHANNEL="latest"`为您提供{k3s-product-name}的最新版本。
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_CHANNEL="latest" sh -
 ----
+如果您想指定一个版本，请设置`INSTALL_RKE2_VERSION`环境变量：
 
-[NOTE]
-====
-中国用户，可以使用以下方法加速安装：
-
+[,bash]
 ----
-curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh -
+curl -sfL https://get.k3s.io/ | sudo INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_VERSION="<VERSION>" sh -
 ----
-====
-
 
 运行此安装后：
 
-* K3s 服务将被配置为在节点重启后或进程崩溃或被杀死时自动重启。
-* 将安装其他实用程序，包括 `kubectl`、`crictl`、`ctr`、`k3s-killall.sh` 和 `k3s-uninstall.sh`。
-* https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/[kubeconfig] 文件将写入到 `/etc/rancher/k3s/k3s.yaml`，由 K3s 安装的 kubectl 将自动使用该文件。
+* K3s服务将配置为在节点重启后或进程崩溃或被终止时自动重启。
+* 将安装其他实用程序，包括`kubectl`、`crictl`、`ctr`、`k3s-killall.sh`和`k3s-uninstall.sh`。
+* 一个 https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/[kubeconfig] 文件将被写入到 `/etc/rancher/k3s/k3s.yaml`，由 {k3s-product-name} 安装的 kubectl 将自动使用它
 
-单节点 Server 安装是一个功能齐全的 Kubernetes 集群，它包括了托管工作负载 pod 所需的所有数据存储、control plane、kubelet 和容器运行时组件。除非你希望向集群添加容量或冗余，否则没有必要添加额外的 Server 或 Agent 节点。
+单节点服务器安装是一个功能齐全的 Kubernetes 集群，包括所有必要的数据库、控制平面、kubelet 和容器运行时组件，以托管工作负载 pod。不需要添加额外的服务器或代理节点，但您可能希望这样做以增加集群的容量或冗余。
 
-要安装其他 Agent 节点并将它们添加到集群，请使用 `K3S_URL` 和 `K3S_TOKEN` 环境变量运行安装脚本。以下示例演示了如何添加 Agent 节点：
+要安装额外的代理节点并将其添加到集群中，请使用 `K3S_URL` 和 `K3S_TOKEN` 环境变量运行安装脚本。以下是一个示例，展示如何加入一个代理：
 
 [,bash]
 ----
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_URL=https://myserver:6443 K3S_TOKEN=mynodetoken sh -
 ----
 
-[NOTE]
-====
-中国用户，可以使用以下方法加速安装：
-
-----
-curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn K3S_URL=https://myserver:6443 K3S_TOKEN=mynodetoken sh -
-----
-====
-
-
-`K3S_URL` 参数会导致安装程序将 K3s 配置为 Agent 而不是 Server。K3s Agent 将注册到在 URL 上监听的 K3s Server。`K3S_TOKEN` 使用的值存储在 Server 节点上的 `/var/lib/rancher/k3s/server/node-token` 中。
+设置 `K3S_URL` 参数会导致安装程序将 K3s 配置为代理，而不是服务器。K3s 代理将向在提供的 URL 上侦听的 K3s 服务器注册。用于 `K3S_TOKEN` 的值存储在您的服务器节点的 `/var/lib/rancher/k3s/server/node-token` 上。
 
 [NOTE]
 ====
-每台主机必须具有唯一的主机名。如果你的计算机没有唯一的主机名，请传递 `K3S_NODE_NAME` 环境变量，并为每个节点提供一个有效且唯一的主机名。
+每台机器必须有一个唯一的主机名。如果您的机器没有唯一的主机名，请传递 `K3S_NODE_NAME` 环境变量，并为每个节点提供一个有效且唯一的主机名。
 ====
 
+
+如果您有兴趣拥有更多服务器节点，请查看 xref:datastore/ha-embedded.adoc[高可用性嵌入式 etcd] 和 xref:datastore/ha.adoc[高可用性外部数据库] 页面以获取更多信息。

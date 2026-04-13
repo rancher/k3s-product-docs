@@ -1,110 +1,110 @@
-= CIS 1.9 Self Assessment Guide
-:page-languages: [en, ja, ko, zh]
+= CIS 1.9 セルフアセスメントガイド
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-09-16
 :page-revdate: {revdate}
 
-== Overview
+== 概要
 
-This document is a companion to the xref:security/hardening-guide.adoc[K3s security hardening guide]. The hardening guide provides prescriptive guidance for hardening a production installation of K3s, and this benchmark guide is meant to help you evaluate the level of security of the hardened cluster against each control in the CIS Kubernetes Benchmark. It is to be used by K3s operators, security teams, auditors, and decision-makers.
+この文書は、xref:security/hardening-guide.adoc[K3s セキュリティハードニングガイド]の補足資料です。ハードニングガイドは、K3sの本番インストールをハードニングするための指針を提供し、このベンチマークガイドは、CIS Kubernetes ベンチマークの各コントロールに対してハードニングされたクラスターのセキュリティレベルを評価するのに役立つことを目的としています。これは、K3sオペレーター、セキュリティチーム、監査人、意思決定者によって使用されることを意図しています。
 
-This guide is specific to the *v1.27-v1.29* release line of K3s and the *v1.9* release of the CIS Kubernetes Benchmark.
+このガイドは、K3sの*v1.27-v1.29*リリースラインおよびCIS Kubernetes ベンチマークの*v1.9*リリースに特化しています。
 
-For more information about each control, including detailed descriptions and remediations for failing tests, you can refer to the corresponding section of the CIS Kubernetes Benchmark v1.9. You can download the benchmark, after creating a free account, in https://www.cisecurity.org/benchmark/kubernetes[Center for Internet Security (CIS)].
+各コントロールに関する詳細な説明や失敗したテストの修正方法を含む情報については、CIS Kubernetes ベンチマーク v1.9の該当セクションを参照してください。ベンチマークは、無料アカウントを作成した後にhttps://www.cisecurity.org/benchmark/kubernetes[インターネットセキュリティセンター (CIS)]からダウンロードできます。
 
-=== Testing controls methodology
+=== コントロールテストの方法論
 
-Each control in the CIS Kubernetes Benchmark was evaluated against a K3s cluster that was configured according to the accompanying hardening guide.
+CIS Kubernetes ベンチマークの各コントロールは、付随するハードニングガイドに従って構成されたK3sクラスターに対して評価されました。
 
-Where control audits differ from the original CIS benchmark, the audit commands specific to K3s are provided for testing.
+コントロール監査が元のCISベンチマークと異なる場合、K3sに特有の監査コマンドがテスト用に提供されます。
 
-These are the possible results for each control:
+これらは各コントロールの可能な結果です：
 
-* *Pass* - The K3s cluster under test passed the audit outlined in the benchmark.
-* *Not Applicable* - The control is not applicable to K3s because of how it is designed to operate. The remediation section will explain why this is so.
-* *Warn* - The control is manual in the CIS benchmark and it depends on the cluster's use case or some other factor that must be determined by the cluster operator. These controls have been evaluated to ensure K3s does not prevent their implementation, but no further configuration or auditing of the cluster under test has been performed.
+* *合格* - テスト対象のK3sクラスターは、ベンチマークに示された監査に合格しました。
+* *該当せず* - このコントロールは、K3sの設計上の動作により該当しません。修正セクションでは、なぜそうなるのかを説明します。
+* *警告* - このコントロールはCISベンチマークで手動であり、クラスターの使用ケースやクラスターオペレーターによって決定される他の要因に依存します。これらのコントロールは、K3sがその実装を妨げないことを確認するために評価されましたが、テスト対象のクラスターに対するさらなる構成や監査は行われていません。
 
-This guide makes the assumption that K3s is running as a Systemd unit. Your installation may vary and will require you to adjust the "audit" commands to fit your scenario.
+このガイドは、K3sがSystemdユニットとして実行されているという前提を置いています。あなたのインストールは異なる場合があり、シナリオに合わせて「監査」コマンドを調整する必要があります。
 
-== 1.1 Control Plane Node Configuration Files
+== 1.1 コントロールプレーンノードの設定ファイル
 
-=== 1.1.1 Ensure that the API server pod specification file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.1 APIサーバーポッド仕様ファイルのパーミッションが600以上に設定されていることを確認してください（自動化）
 
-*Result:* Not Applicable
+*結果:*該当なし
 
-*Rationale:*
+*理由:*
 
-By default, K3s embeds the api server within the k3s process. There is no API server pod specification file.
+デフォルトでは、K3sはapiサーバーをk3sプロセス内に埋め込んでいます。APIサーバーポッド仕様ファイルは存在しません。
 
-=== 1.1.2 Ensure that the API server pod specification file ownership is set to root:root (Automated)
+=== 1.1.2 APIサーバーポッド仕様ファイルの所有者がroot:rootに設定されていることを確認してください（自動化）
 
-*Result:* Not Applicable
+*結果:*該当なし
 
-*Rationale:*
+*理由:*
 
-By default, K3s embeds the api server within the k3s process. There is no API server pod specification file.
+デフォルトでは、K3sはapiサーバーをk3sプロセス内に埋め込んでいます。APIサーバーポッド仕様ファイルは存在しません。
 
-=== 1.1.3 Ensure that the controller manager pod specification file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.3 コントローラーマネージャーポッド仕様ファイルのパーミッションが600以上に設定されていることを確認してください（自動化）
 
-*Result:* Not Applicable
+*結果:*該当なし
 
-*Rationale:*
+*理由:*
 
-By default, K3s embeds the controller manager within the k3s process. There is no controller manager pod specification file.
+デフォルトでは、K3sはコントローラーマネージャーをk3sプロセス内に埋め込んでいます。コントローラーマネージャーポッド仕様ファイルは存在しません。
 
-=== 1.1.4 Ensure that the controller manager pod specification file ownership is set to root:root (Automated)
+=== 1.1.4 コントローラーマネージャーポッド仕様ファイルの所有者がroot:rootに設定されていることを確認してください（自動化）
 
-*Result:* Not Applicable
+*結果:*該当なし
 
-*Rationale:*
+*理由:*
 
-By default, K3s embeds the controller manager within the k3s process. There is no controller manager pod specification file.
+デフォルトでは、K3sはコントローラーマネージャーをk3sプロセス内に埋め込んでいます。コントローラーマネージャーポッド仕様ファイルは存在しません。
 
-=== 1.1.5 Ensure that the scheduler pod specification file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.5 スケジューラーポッド仕様ファイルのパーミッションが600以上に設定されていることを確認してください（自動化）
 
-*Result:* Not Applicable
+*結果:*該当なし
 
-*Rationale:*
+*理由:*
 
-By default, K3s embeds the scheduler within the k3s process. There is no scheduler pod specification file.
+デフォルトでは、K3sはスケジューラーをk3sプロセス内に埋め込んでいます。スケジューラーポッド仕様ファイルは存在しません。
 
-=== 1.1.6 Ensure that the scheduler pod specification file ownership is set to root:root (Automated)
+=== 1.1.6 スケジューラーポッド仕様ファイルの所有者がroot:rootに設定されていることを確認してください（自動化）
 
-*Result:* Not Applicable
+*結果:*該当なし
 
-*Rationale:*
+*理由:*
 
-By default, K3s embeds the scheduler within the k3s process. There is no scheduler pod specification file.
+デフォルトでは、K3sはスケジューラーをk3sプロセス内に埋め込んでいます。スケジューラーポッド仕様ファイルは存在しません。
 
-=== 1.1.7 Ensure that the etcd pod specification file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.7 etcdポッド仕様ファイルのパーミッションが600以上に設定されていることを確認してください（自動化）
 
-*Result:* Not Applicable
+*結果:*該当なし
 
-*Rationale:*
+*理由:*
 
-By default, K3s embeds etcd within the k3s process. There is no etcd pod specification file.
+デフォルトでは、K3sはetcdをk3sプロセス内に埋め込んでいます。etcdポッド仕様ファイルは存在しません。
 
-=== 1.1.8 Ensure that the etcd pod specification file ownership is set to root:root (Automated)
+=== 1.1.8 etcdポッド仕様ファイルの所有者がroot:rootに設定されていることを確認してください（自動化）
 
-*Result:* Not Applicable
+*結果:*該当なし
 
-*Rationale:*
+*理由:*
 
-By default, K3s embeds etcd within the k3s process. There is no etcd pod specification file.
+デフォルトでは、K3sはetcdをk3sプロセス内に埋め込んでいます。etcdポッド仕様ファイルは存在しません。
 
-=== 1.1.9 Ensure that the Container Network Interface file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.9 コンテナネットワークインタフェースファイルのパーミッションが600以上に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
 
 [,bash]
 ----
 find /var/lib/cni/networks -type f ! -name lock 2> /dev/null | xargs --no-run-if-empty stat -c permissions=%a
 ----
 
-*Expected Result:* permissions has permissions 600, expected 600 or more restrictive
+*期待される結果:* パーミッションは600であり、600以上であることが期待されます。
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -118,26 +118,26 @@ permissions=600
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s sets the CNI file permissions to 600. Note that for many CNIs, a lock file is created with permissions 750. This is expected and can be ignored. If you modify your CNI configuration, ensure that the permissions are set to 600. For example, `chmod 600 /var/lib/cni/networks/<filename>`
+デフォルトでは、K3sはCNIファイルの権限を600に設定します。多くのCNIでは、権限750のロックファイルが作成されることに注意してください。これは予想されることであり、無視しても構いません。CNI設定を変更する場合は、権限が600に設定されていることを確認してください。例えば、`chmod 600 /var/lib/cni/networks/<filename>`
 ======
 
-=== 1.1.10 Ensure that the Container Network Interface file ownership is set to root:root (Automated)
+=== 1.1.10 コンテナネットワークインタフェースファイルの所有権がroot:rootに設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 find /var/lib/cni/networks -type f 2> /dev/null | xargs --no-run-if-empty stat -c %U:%G
 ----
 
-*Expected Result:* 'root:root' is present 
+*期待される結果:* 'root:root' が存在します 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -152,26 +152,26 @@ root:root
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-Run the below command (based on the file location on your system) on the control plane node. For example, `chown root:root /var/lib/cni/networks/<filename>`
+制御プレーンノードで、以下のコマンドを実行してください（システム上のファイルの場所に基づいて）。例えば、`chown root:root /var/lib/cni/networks/<filename>`
 ======
 
-=== 1.1.11 Ensure that the etcd data directory permissions are set to 700 or more restrictive (Manual)
+=== 1.1.11 etcdデータディレクトリの権限が700またはそれ以上に制限されていることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 stat -c permissions=%a /var/lib/rancher/k3s/server/db/etcd
 ----
 
-*Expected Result:* permissions has permissions 700, expected 700 or more restrictive 
+*期待される結果:* 権限は700であり、期待されるのは700またはそれ以上の制限です 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -180,32 +180,32 @@ permissions=700
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-Not applicable for the non-etcd cluster. If running master only with no etcd role, this check is not applicable. If controlplane and etcd roles are present on the same nodes but this check is warn then On the etcd server node, get the etcd data directory, passed as an argument --data-dir, from the command 'ps -ef | grep etcd'. Run the below command (based on the etcd data directory found above). For example, `chmod 700 /var/lib/rancher/k3s/server/db/etcd`
+非etcdクラスターには適用されません。etcdロールなしでマスターのみを実行している場合、このチェックは適用されません。制御プレーンとetcdロールが同じノードに存在するが、このチェックが警告の場合、etcdサーバーノードで、コマンド 'ps -ef | grep etcd' から引数 --data-dir として渡されたetcdデータディレクトリを取得します。上記で見つかったetcdデータディレクトリに基づいて、以下のコマンドを実行してください。例えば、`chmod 700 /var/lib/rancher/k3s/server/db/etcd`
 ======
 
-=== 1.1.12 Ensure that the etcd data directory ownership is set to etcd:etcd (Automated)
+=== 1.1.12 etcdデータディレクトリの所有権がetcd:etcdに設定されていることを確認してください（自動化）
 
-*Result:* Not Applicable
+*結果:*該当なし
 
-*Rationale:* For K3s, etcd is embedded within the k3s process. There is no separate etcd process. Therefore the etcd data directory ownership is managed by the k3s process and should be root:root.
+*理由:*K3sでは、etcdはk3sプロセス内に組み込まれています。別のetcdプロセスは存在しません。したがって、etcdデータディレクトリの所有権はk3sプロセスによって管理され、root:rootである必要があります。
 
-=== 1.1.13 Ensure that the admin.conf file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.13 admin.confファイルのパーミッションが600またはそれ以上に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/server/cred/admin.kubeconfig; then stat -c permissions=%a /var/lib/rancher/k3s/server/cred/admin.kubeconfig; fi'
 ----
 
-*Expected Result:* permissions has permissions 600, expected 600 or more restrictive 
+*期待される結果:* パーミッションは600であり、600以上であることが期待されます。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -214,26 +214,26 @@ permissions=600
 ----
 ======
 
-.*Remediation:*
+.*Remediation:* → *修正:*
 [%collapsible]
 ======
-Run the below command (based on the file location on your system) on the control plane node. For example, `chmod 600 /var/lib/rancher/k3s/server/cred/admin.kubeconfig`
+制御プレーンノードで、以下のコマンドを実行してください（システム上のファイルの場所に基づいて）。例えば、`chmod 600 /var/lib/rancher/k3s/server/cred/admin.kubeconfig`
 ======
 
-=== 1.1.14 Ensure that the admin.conf file ownership is set to root:root (Automated)
+=== 1.1.14 admin.confファイルの所有者がroot:rootに設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/server/cred/admin.kubeconfig; then stat -c %U:%G /var/lib/rancher/k3s/server/cred/admin.kubeconfig; fi'
 ----
 
-*Expected Result:* 'root:root' is equal to 'root:root' 
+*期待される結果:* 'root:root' は 'root:root' と等しい 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -242,26 +242,26 @@ root:root
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-Run the below command (based on the file location on your system) on the control plane node. For example, `chown root:root /var/lib/rancher/k3s/server/cred/admin.kubeconfig`
+制御プレーンノードで、以下のコマンドを実行してください（システム上のファイルの場所に基づいて）。例えば、`chown root:root /var/lib/rancher/k3s/server/cred/admin.kubeconfig`
 ======
 
-=== 1.1.15 Ensure that the scheduler.conf file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.15 scheduler.confファイルのパーミッションが600またはそれ以上に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig; then stat -c permissions=%a /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig; fi'
 ----
 
-*Expected Result:* permissions has permissions 600, expected 600 or more restrictive 
+*期待される結果:* パーミッションは600ですが、600またはそれよりも厳しい設定が期待されます。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -270,26 +270,26 @@ permissions=600
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-Run the below command (based on the file location on your system) on the control plane node. For example, `chmod 600 /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig`
+制御プレーンノードで、以下のコマンドを実行してください（システム上のファイルの場所に基づいて）。例えば、`chmod 600 /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig`
 ======
 
-=== 1.1.16 Ensure that the scheduler.conf file ownership is set to root:root (Automated)
+=== 1.1.16 scheduler.confファイルの所有者がroot:rootに設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig; then stat -c %U:%G /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig; fi'
 ----
 
-*Expected Result:* 'root:root' is present 
+*期待される結果:* 'root:root' が存在します 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -298,26 +298,26 @@ root:root
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-Run the below command (based on the file location on your system) on the control plane node. For example, `chown root:root /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig`
+制御プレーンノードで、以下のコマンドを実行してください（システム上のファイルの場所に基づいて）。例えば、`chown root:root /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig`
 ======
 
-=== 1.1.17 Ensure that the controller-manager.conf file permissions are set to 600 or more restrictive (Automated)
+=== 1.1.17 controller-manager.confファイルのパーミッションが600またはそれ以上に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/server/cred/controller.kubeconfig; then stat -c permissions=%a /var/lib/rancher/k3s/server/cred/controller.kubeconfig; fi'
 ----
 
-*Expected Result:* permissions has permissions 600, expected 600 or more restrictive 
+*期待される結果:* パーミッションは600ですが、600またはそれよりも厳しい設定が期待されます。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -326,26 +326,26 @@ permissions=600
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-Run the below command (based on the file location on your system) on the control plane node. For example, `chmod 600 /var/lib/rancher/k3s/server/cred/controller.kubeconfig`
+制御プレーンノードで、以下のコマンドを実行してください（システム上のファイルの場所に基づいて）。例えば、`chmod 600 /var/lib/rancher/k3s/server/cred/controller.kubeconfig`
 ======
 
-=== 1.1.18 Ensure that the controller-manager.conf file ownership is set to root:root (Automated)
+=== 1.1.18 controller-manager.confファイルの所有者がroot:rootに設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 stat -c %U:%G /var/lib/rancher/k3s/server/cred/controller.kubeconfig
 ----
 
-*Expected Result:* 'root:root' is equal to 'root:root' 
+*期待される結果:* 'root:root' は 'root:root' と等しい 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -354,26 +354,26 @@ root:root
 ----
 ======
 
-.*Remediation:*
+.*補修:*
 [%collapsible]
 ======
-Run the below command (based on the file location on your system) on the control plane node. For example, `chown root:root /var/lib/rancher/k3s/server/cred/controller.kubeconfig`
+制御プレーンノードで、以下のコマンドを実行してください（システム上のファイルの場所に基づいて）。例えば、`chown root:root /var/lib/rancher/k3s/server/cred/controller.kubeconfig`
 ======
 
-=== 1.1.19 Ensure that the Kubernetes PKI directory and file ownership is set to root:root (Automated)
+=== 1.1.19 Kubernetes PKIディレクトリとファイルの所有者がroot:rootに設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 stat -c %U:%G /var/lib/rancher/k3s/server/tls
 ----
 
-*Expected Result:* 'root:root' is present 
+*期待される結果:* 'root:root' が存在します 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -382,32 +382,32 @@ root:root
 ----
 ======
 
-.*Remediation:*
+.*補修:*
 [%collapsible]
 ======
-Run the below command (based on the file location on your system) on the control plane node. For example, `chown -R root:root /var/lib/rancher/k3s/server/tls`
+制御プレーンノードで、以下のコマンドを実行してください（システム上のファイルの場所に基づいて）。例えば、`chown -R root:root /var/lib/rancher/k3s/server/tls`
 ======
 
-=== 1.1.20 Ensure that the Kubernetes PKI certificate file permissions are set to 600 or more restrictive (Manual)
+=== 1.1.20 Kubernetes PKI証明書ファイルのパーミッションが600またはそれ以上に設定されていることを確認してください（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Run the below command (based on the file location on your system) on the master node. For example, `chmod -R 600 /var/lib/rancher/k3s/server/tls/*.crt`
+*修正:*マスターノードで以下のコマンドを実行してください（システム上のファイルの場所に基づいて）。例えば、`chmod -R 600 /var/lib/rancher/k3s/server/tls/*.crt`
 
-=== 1.1.21 Ensure that the Kubernetes PKI key file permissions are set to 600 (Automated)
+=== 1.1.21 Kubernetes PKIキーファイルのパーミッションが600に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 /bin/sh -c 'stat -c permissions=%a /var/lib/rancher/k3s/server/tls/*.key'
 ----
 
-*Expected Result:* permissions has permissions 600, expected 600 or more restrictive 
+*期待される結果:* パーミッションは600であり、600またはそれよりも厳しいことが期待されます。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -432,28 +432,28 @@ permissions=600
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-Run the below command (based on the file location on your system) on the master node. For example, `chmod -R 600 /var/lib/rancher/k3s/server/tls/*.key`
+マスターノードで以下のコマンドを実行してください（システム上のファイルの場所に基づいて）。例えば、`chmod -R 600 /var/lib/rancher/k3s/server/tls/*.key`
 ======
 
-== 1.2 API Server
+== 1.2 APIサーバー
 
-=== 1.2.1 Ensure that the --anonymous-auth argument is set to false (Automated)
+=== 1.2.1 --anonymous-auth引数がfalseに設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'anonymous-auth'
 ----
 
-*Expected Result:* '--anonymous-auth' is equal to 'false' 
+*期待される結果:* '--anonymous-auth' は 'false' と等しい 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -462,30 +462,30 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s sets the --anonymous-auth argument to false. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove anything similar to below.
+デフォルトでは、K3sは--anonymous-auth引数をfalseに設定します。このチェックが失敗した場合、K3sの設定ファイル/etc/rancher/k3s/config.yamlを編集し、以下のようなものを削除してください。
 
 ----
 kube-apiserver-arg: - "anonymous-auth=true"
 ----
 ======
 
-=== 1.2.2 Ensure that the --token-auth-file parameter is not set (Automated)
+=== 1.2.2 --token-auth-fileパラメータが設定されていないことを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-*Expected Result:* '--token-auth-file' is not present 
+*期待される結果:* '--token-auth-file' は存在しない 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -494,10 +494,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-Follow the documentation and configure alternate mechanisms for authentication. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove anything similar to below.
+ドキュメントに従って、認証のための代替メカニズムを構成してください。このチェックが失敗した場合、K3sの設定ファイル/etc/rancher/k3s/config.yamlを編集し、以下のようなものを削除してください。
 
 ----
 kube-apiserver-arg:
@@ -505,31 +505,31 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.3 Ensure that the --DenyServiceExternalIPs is set (Manual)
+=== 1.2.3 --DenyServiceExternalIPsが設定されていることを確認してください（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* By default, K3s does not set DenyServiceExternalIPs. To enable this flag, edit the K3s config file /etc/rancher/k3s/config.yaml like below.
+*修正:*デフォルトでは、K3sはDenyServiceExternalIPsを設定しません。このフラグを有効にするには、K3sの設定ファイル/etc/rancher/k3s/config.yamlを以下のように編集してください。
 
 ----
 kube-apiserver-arg:
   - "enable-admission-plugins=DenyServiceExternalIPs"
 ----
 
-=== 1.2.4 Ensure that the --kubelet-client-certificate and --kubelet-client-key arguments are set as appropriate (Automated)
+=== 1.2.4 --kubelet-client-certificateおよび--kubelet-client-key引数が適切に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-*Expected Result:* '--kubelet-client-certificate' is present AND '--kubelet-client-key' is present 
+*期待される結果:* '--kubelet-client-certificate'が存在し、かつ'--kubelet-client-key'が存在する 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -538,10 +538,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s automatically provides the kubelet client certificate and key. They are generated and located at /var/lib/rancher/k3s/server/tls/client-kube-apiserver.crt and /var/lib/rancher/k3s/server/tls/client-kube-apiserver.key If for some reason you need to provide your own certificate and key, you can set the below parameters in the K3s config file /etc/rancher/k3s/config.yaml.
+デフォルトでは、K3sはkubeletクライアント証明書とキーを自動的に提供します。それらは生成され、/var/lib/rancher/k3s/server/tls/client-kube-apiserver.crtおよび/var/lib/rancher/k3s/server/tls/client-kube-apiserver.keyにあります。何らかの理由で独自の証明書とキーを提供する必要がある場合は、K3sの設定ファイル/etc/rancher/k3s/config.yamlに以下のパラメータを設定できます。
 
 ----
 kube-apiserver-arg:
@@ -549,20 +549,20 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.5 Ensure that the --kubelet-certificate-authority argument is set as appropriate (Automated)
+=== 1.2.5 --kubelet-certificate-authority引数が適切に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'kubelet-certificate-authority'
 ----
 
-*Expected Result:* '--kubelet-certificate-authority' is present 
+*期待される結果:* '--kubelet-certificate-authority'が存在する 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -571,10 +571,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s automatically provides the kubelet CA cert file, at /var/lib/rancher/k3s/server/tls/server-ca.crt. If for some reason you need to provide your own ca certificate, look at using the k3s certificate command line tool. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+デフォルトでは、K3sはkubelet CA証明書ファイルを自動的に提供し、/var/lib/rancher/k3s/server/tls/server-ca.crtにあります。何らかの理由で独自のCA証明書を提供する必要がある場合は、k3s証明書コマンドラインツールの使用を検討してください。このチェックが失敗した場合は、K3sの設定ファイル/etc/rancher/k3s/config.yamlを編集し、以下のような行を削除してください。
 
 ----
 kube-apiserver-arg:
@@ -582,20 +582,20 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.6 Ensure that the --authorization-mode argument is not set to AlwaysAllow (Automated)
+=== 1.2.6 --authorization-mode引数がAlwaysAllowに設定されていないことを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'authorization-mode'
 ----
 
-*Expected Result:* '--authorization-mode' does not have 'AlwaysAllow' 
+*期待される結果:* '--authorization-mode'が'AlwaysAllow'を持たない 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -604,10 +604,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s does not set the --authorization-mode to AlwaysAllow. If this check fails, edit K3s config file /etc/rancher/k3s/config.yaml, remove any lines like below.
+デフォルトでは、K3sは--authorization-modeをAlwaysAllowに設定しません。このチェックが失敗した場合は、K3sの設定ファイル/etc/rancher/k3s/config.yamlを編集し、以下のような行を削除してください。
 
 ----
 kube-apiserver-arg:
@@ -615,20 +615,20 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.7 Ensure that the --authorization-mode argument includes Node (Automated)
+=== 1.2.7 --authorization-mode引数にNodeが含まれていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'authorization-mode'
 ----
 
-*Expected Result:* '--authorization-mode' has 'Node' 
+*期待される結果:* '--authorization-mode'が'Node'を持つ 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -637,26 +637,26 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s sets the --authorization-mode to Node and RBAC. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml, ensure that you are not overriding authorization-mode.
+デフォルトでは、K3sは--authorization-modeをNodeおよびRBACに設定します。このチェックが失敗した場合は、K3sの設定ファイル/etc/rancher/k3s/config.yamlを編集し、authorization-modeを上書きしていないことを確認してください。
 ======
 
-=== 1.2.8 Ensure that the --authorization-mode argument includes RBAC (Automated)
+=== 1.2.8 --authorization-mode引数にRBACが含まれていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'authorization-mode'
 ----
 
-*Expected Result:* '--authorization-mode' has 'RBAC' 
+*期待される結果:* '--authorization-mode' は 'RBAC' を持っています。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -665,37 +665,37 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s sets the --authorization-mode to Node and RBAC. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml, ensure that you are not overriding authorization-mode.
+デフォルトでは、K3sは--authorization-modeをNodeおよびRBACに設定します。このチェックが失敗した場合は、K3sの設定ファイル/etc/rancher/k3s/config.yamlを編集し、authorization-modeを上書きしていないことを確認してください。
 ======
 
-=== 1.2.9 Ensure that the admission control plugin EventRateLimit is set (Manual)
+=== 1.2.9 admission control プラグイン EventRateLimit が設定されていることを確認してください（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Follow the Kubernetes documentation and set the desired limits in a configuration file. Then, edit the K3s config file /etc/rancher/k3s/config.yaml and set the below parameters.
+*修正:*Kubernetes のドキュメントに従い、設定ファイルに希望の制限を設定してください。次に、K3s の設定ファイル /etc/rancher/k3s/config.yaml を編集し、以下のパラメータを設定してください。
 
 ----
 kube-apiserver-arg:
   - "enable-admission-plugins=\...,EventRateLimit,\..." - "admission-control-config-file=<path/to/configuration/file>"
 ----
 
-=== 1.2.10 Ensure that the admission control plugin AlwaysAdmit is not set (Automated)
+=== 1.2.10 Admission control プラグイン AlwaysAdmit が設定されていないことを確認してください（自動）。
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'enable-admission-plugins'
 ----
 
-*Expected Result:* '--enable-admission-plugins' does not have 'AlwaysAdmit' OR '--enable-admission-plugins' is not present 
+*期待される結果:* '--enable-admission-plugins' は 'AlwaysAdmit' を持っていないか、'--enable-admission-plugins' が存在しません。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -704,10 +704,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s does not set the --enable-admission-plugins to AlwaysAdmit. If this check fails, edit K3s config file /etc/rancher/k3s/config.yaml, remove any lines like below.
+デフォルトでは、K3s は --enable-admission-plugins を AlwaysAdmit に設定しません。このチェックが失敗した場合は、K3sの設定ファイル/etc/rancher/k3s/config.yamlを編集し、以下のような行を削除してください。
 
 ----
 kube-apiserver-arg:
@@ -715,31 +715,31 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.11 Ensure that the admission control plugin AlwaysPullImages is set (Manual)
+=== 1.2.11 Admission control プラグイン AlwaysPullImages が設定されていることを確認してください（手動）。
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Permissive, per CIS guidelines, "This setting could impact offline or isolated clusters, which have images pre-loaded and do not have access to a registry to pull in-use images. This setting is not appropriate for clusters which use this configuration." Edit the K3s config file /etc/rancher/k3s/config.yaml and set the below parameter.
+*修正:*CIS ガイドラインに従い、"この設定は、オフラインまたは孤立したクラスターに影響を与える可能性があります。これらのクラスターは、事前にイメージがロードされており、使用中のイメージをプルするためのレジストリにアクセスできません。"この設定は、この構成を使用するクラスターには適していません。K3s の設定ファイル /etc/rancher/k3s/config.yaml を編集し、以下のパラメータを設定してください。
 
 ----
 kube-apiserver-arg:
   - "enable-admission-plugins=\...,AlwaysPullImages,\..."
 ----
 
-=== 1.2.12 Ensure that the admission control plugin ServiceAccount is set (Automated)
+=== 1.2.12 Admission control プラグイン ServiceAccount が設定されていることを確認してください（自動）。
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-*Expected Result:* '--disable-admission-plugins' is present OR '--disable-admission-plugins' is not present 
+*期待される結果:* '--disable-admission-plugins' が存在するか、'--disable-admission-plugins' が存在しません。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -748,10 +748,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s does not set the --disable-admission-plugins to anything. Follow the documentation and create ServiceAccount objects as per your environment. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+デフォルトでは、K3s は --disable-admission-plugins を何にも設定しません。ドキュメントに従い、環境に応じて ServiceAccount オブジェクトを作成してください。このチェックが失敗した場合は、K3sの設定ファイル/etc/rancher/k3s/config.yamlを編集し、以下のような行を削除してください。
 
 ----
 kube-apiserver-arg:
@@ -759,20 +759,20 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.13 Ensure that the admission control plugin NamespaceLifecycle is set (Automated)
+=== 1.2.13 Admission control プラグイン NamespaceLifecycle が設定されていることを確認してください（自動）。
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-*Expected Result:* '--disable-admission-plugins' is present OR '--disable-admission-plugins' is not present 
+*期待される結果:* '--disable-admission-plugins' が存在するか、'--disable-admission-plugins' が存在しません。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -781,10 +781,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s does not set the --disable-admission-plugins to anything. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+デフォルトでは、K3s は --disable-admission-plugins を何にも設定しません。このチェックが失敗した場合は、K3sの設定ファイル/etc/rancher/k3s/config.yamlを編集し、以下のような行を削除してください。
 
 ----
 kube-apiserver-arg:
@@ -792,20 +792,20 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.14 Ensure that the admission control plugin NodeRestriction is set (Automated)
+=== 1.2.14 Admission control プラグイン NodeRestriction が設定されていることを確認してください（自動）。
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'enable-admission-plugins'
 ----
 
-*Expected Result:* '--enable-admission-plugins' has 'NodeRestriction' 
+*期待される結果:* '--enable-admission-plugins' は 'NodeRestriction' を持っています。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -814,10 +814,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s sets the --enable-admission-plugins to NodeRestriction. If using the K3s config file /etc/rancher/k3s/config.yaml, check that you are not overriding the admission plugins. If you are, include NodeRestriction in the list.
+デフォルトでは、K3s は --enable-admission-plugins を NodeRestriction に設定します。K3s の設定ファイル /etc/rancher/k3s/config.yaml を使用している場合、admission プラグインを上書きしていないことを確認してください。もしそうであれば、NodeRestrictionをリストに含めてください。
 
 ----
 kube-apiserver-arg:
@@ -825,20 +825,20 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.15 Ensure that the --profiling argument is set to false (Automated)
+=== 1.2.15 --profiling引数がfalseに設定されていることを確認してください（自動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'profiling'
 ----
 
-*Expected Result:* '--profiling' is equal to 'false' 
+*期待される結果:* '--profiling'は'false'と等しい 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -847,10 +847,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-By default, K3s sets the --profiling argument to false. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+デフォルトでは、K3s は --profiling引数をfalseに設定します。このチェックが失敗した場合は、K3sの設定ファイル/etc/rancher/k3s/config.yamlを編集し、以下のような行を削除してください。
 
 ----
 kube-apiserver-arg:
@@ -858,20 +858,20 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.16 Ensure that the --audit-log-path argument is set (Manual)
+=== 1.2.16 --audit-log-path引数が設定されていることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-*Expected Result:* '--audit-log-path' is present 
+*期待される結果:* '--audit-log-path'が存在する 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -880,10 +880,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-Edit the K3s config file /etc/rancher/k3s/config.yaml and set the audit-log-path parameter to a suitable path and file where you would like audit logs to be written, for example,
+K3s の設定ファイル /etc/rancher/k3s/config.yaml を編集し、audit-log-path パラメータを監査ログを書き込む適切なパスとファイルに設定してください。例えば、
 
 ----
 kube-apiserver-arg:
@@ -891,20 +891,20 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.17 Ensure that the --audit-log-maxage argument is set to 30 or as appropriate (Manual)
+=== 1.2.17 --audit-log-maxage引数が30 または適切な値に設定されていることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-*Expected Result:* '--audit-log-maxage' is greater or equal to 30 
+*期待される結果:* '--audit-log-maxage'は30以上である 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -913,10 +913,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-Edit the K3s config file /etc/rancher/k3s/config.yaml on the control plane node and set the audit-log-maxage parameter to 30 or as an appropriate number of days, for example,
+K3s の設定ファイル /etc/rancher/k3s/config.yaml をコントロールプレーンノードで編集し、audit-log-maxage パラメータを30 または適切な日数に設定してください。例えば、
 
 ----
 kube-apiserver-arg:
@@ -924,20 +924,20 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.18 Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate (Manual)
+=== 1.2.18 --audit-log-maxbackup引数が10 または適切な値に設定されていることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-*Expected Result:* '--audit-log-maxbackup' is greater or equal to 10 
+*期待される結果:* '--audit-log-maxbackup'は10以上である 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -946,10 +946,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-Edit the K3s config file /etc/rancher/k3s/config.yaml on the control plane node and set the audit-log-maxbackup parameter to 10 or to an appropriate value. For example,
+K3s の設定ファイル /etc/rancher/k3s/config.yaml をコントロールプレーンノードで編集し、audit-log-maxbackup パラメータを10 または適切な値に設定してください。などです。別の例をあげれば、
 
 ----
 kube-apiserver-arg:
@@ -957,20 +957,20 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.19 Ensure that the --audit-log-maxsize argument is set to 100 or as appropriate (Manual)
+=== 1.2.19 --audit-log-maxsize引数が100 または適切な値に設定されていることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-*Expected Result:* '--audit-log-maxsize' is greater or equal to 100 
+*期待される結果:* '--audit-log-maxsize'は100以上である 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -979,10 +979,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-Edit the K3s config file /etc/rancher/k3s/config.yaml on the control plane node and set the audit-log-maxsize parameter to an appropriate size in MB. For example,
+K3sの設定ファイル/etc/rancher/k3s/config.yamlをコントロールプレーンノードで編集し、audit-log-maxsizeパラメータを適切なサイズ（MB単位）に設定してください。などです。別の例をあげれば、
 
 ----
 kube-apiserver-arg:
@@ -990,31 +990,31 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.20 Ensure that the --request-timeout argument is set as appropriate (Manual)
+=== 1.2.20 --request-timeout引数が適切に設定されていることを確認してください（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Permissive, per CIS guidelines, "it is recommended to set this limit as appropriate and change the default limit of 60 seconds only if needed". Edit the K3s config file /etc/rancher/k3s/config.yaml and set the below parameter if needed. For example,
+*修正:*CISガイドラインに従い、"この制限を適切に設定し、必要な場合にのみデフォルトの60秒の制限を変更することを推奨します"。必要に応じて、K3sの設定ファイル/etc/rancher/k3s/config.yamlを編集し、以下のパラメータを設定してください。などです。別の例をあげれば、
 
 ----
 kube-apiserver-arg:
   - "request-timeout=300s"
 ----
 
-=== 1.2.21 Ensure that the --service-account-lookup argument is set to true (Automated)
+=== 1.2.21 --service-account-lookup引数がtrueに設定されていることを確認してください（自動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-*Expected Result:* '--service-account-lookup' is not present OR '--service-account-lookup' is present 
+*期待される結果:* '--service-account-lookup' は存在しないか、または '--service-account-lookup' は存在します。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1023,33 +1023,33 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s does not set the --service-account-lookup argument. Edit the K3s config file /etc/rancher/k3s/config.yaml and set the service-account-lookup. For example,
+デフォルトでは、K3s は --service-account-lookup 引数を設定しません。K3s の設定ファイル /etc/rancher/k3s/config.yaml を編集し、service-account-lookup を設定してください。などです。別の例をあげれば、
 
 ----
 kube-apiserver-arg:
   - "service-account-lookup=true"
 ----
 
-Alternatively, you can delete the service-account-lookup parameter from this file so that the default takes effect.
+また、このファイルから service-account-lookup パラメータを削除することで、デフォルトが適用されるようにできます。
 ======
 
-=== 1.2.22 Ensure that the --service-account-key-file argument is set as appropriate (Automated)
+=== 1.2.22 --service-account-key-file 引数が適切に設定されていることを確認してください（自動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1
 ----
 
-*Expected Result:* '--service-account-key-file' is present 
+*期待される結果:* '--service-account-key-file' は存在します。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1058,10 +1058,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-K3s automatically generates and sets the service account key file. It is located at /var/lib/rancher/k3s/server/tls/service.key. If this check fails, edit K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+K3s は自動的にサービスアカウントキー ファイルを生成し、設定します。それは /var/lib/rancher/k3s/server/tls/service.key にあります。このチェックが失敗した場合は、K3s の設定ファイル /etc/rancher/k3s/config.yaml を編集し、以下のような行を削除してください。
 
 ----
 kube-apiserver-arg:
@@ -1069,11 +1069,11 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.23 Ensure that the --etcd-certfile and --etcd-keyfile arguments are set as appropriate (Automated)
+=== 1.2.23 --etcd-certfile と --etcd-keyfile 引数が適切に設定されていることを確認してください（自動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
@@ -1084,9 +1084,9 @@ else
 fi
 ----
 
-*Expected Result:* '--etcd-certfile' is present AND '--etcd-keyfile' is present 
+*期待される結果:* '--etcd-certfile' は存在し、かつ '--etcd-keyfile' は存在します。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1095,10 +1095,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-K3s automatically generates and sets the etcd certificate and key files. They are located at /var/lib/rancher/k3s/server/tls/etcd/client.crt and /var/lib/rancher/k3s/server/tls/etcd/client.key. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+K3s は自動的にetcd証明書とキー ファイルを生成し、設定します。それらは /var/lib/rancher/k3s/server/tls/etcd/client.crt と /var/lib/rancher/k3s/server/tls/etcd/client.key にあります。このチェックが失敗した場合は、K3s の設定ファイル /etc/rancher/k3s/config.yaml を編集し、以下のような行を削除してください。
 
 ----
 kube-apiserver-arg:
@@ -1106,20 +1106,20 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.24 Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate (Automated)
+=== 1.2.24 --tls-cert-file と --tls-private-key-file 引数が適切に設定されていることを確認してください（自動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep -A1 'Running kube-apiserver' | tail -n2
 ----
 
-*Expected Result:* '--tls-cert-file' is present AND '--tls-private-key-file' is present 
+*期待される結果:* '--tls-cert-file' は存在し、かつ '--tls-private-key-file' は存在します。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1128,10 +1128,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s automatically generates and provides the TLS certificate and private key for the apiserver. They are generated and located at /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.crt and /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.key If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+デフォルトでは、K3s は自動的にTLS証明書とプライベートキーをapiserverに提供します。それらは生成され、/var/lib/rancher/k3s/server/tls/serving-kube-apiserver.crt および /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.key に配置されます。このチェックが失敗した場合は、K3s の設定ファイル /etc/rancher/k3s/config.yaml を編集し、以下のような行を削除してください。
 
 ----
 kube-apiserver-arg:
@@ -1139,20 +1139,20 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.25 Ensure that the --client-ca-file argument is set as appropriate (Automated)
+=== 1.2.25 --client-ca-file 引数が適切に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'client-ca-file'
 ----
 
-*Expected Result:* '--client-ca-file' is present 
+*期待される結果:* '--client-ca-file' は存在します。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1161,10 +1161,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*Remediation:* 修正方法:
 [%collapsible]
 ======
-By default, K3s automatically provides the client certificate authority file. It is generated and located at /var/lib/rancher/k3s/server/tls/client-ca.crt. If for some reason you need to provide your own ca certificate, look at using the k3s certificate command line tool. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+デフォルトでは、K3sは自動的にクライアント証明書認証局ファイルを提供します。これは /var/lib/rancher/k3s/server/tls/client-ca.crt に生成され、配置されます。何らかの理由で独自のCA証明書を提供する必要がある場合は、k3s証明書コマンドラインツールの使用を検討してください。このチェックが失敗した場合は、K3s の設定ファイル /etc/rancher/k3s/config.yaml を編集し、以下のような行を削除してください。
 
 ----
 kube-apiserver-arg:
@@ -1172,20 +1172,20 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.26 Ensure that the --etcd-cafile argument is set as appropriate (Automated)
+=== 1.2.26 --etcd-cafile 引数が適切に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'etcd-cafile'
 ----
 
-*Expected Result:* '--etcd-cafile' is present 
+*期待される結果:* '--etcd-cafile' が存在します 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1194,10 +1194,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*Remediation:* 修正方法:
 [%collapsible]
 ======
-By default, K3s automatically provides the etcd certificate authority file. It is generated and located at /var/lib/rancher/k3s/server/tls/client-ca.crt. If for some reason you need to provide your own ca certificate, look at using the k3s certificate command line tool. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+デフォルトでは、K3s は etcd 証明書認証局ファイルを自動的に提供します。これは /var/lib/rancher/k3s/server/tls/etcd-ca.crt に生成され、配置されます。何らかの理由で独自のCA証明書を提供する必要がある場合は、k3s証明書コマンドラインツールの使用を検討してください。このチェックが失敗した場合は、K3s の設定ファイル /etc/rancher/k3s/config.yaml を編集し、以下のような行を削除してください。
 
 ----
 kube-apiserver-arg:
@@ -1205,20 +1205,20 @@ kube-apiserver-arg:
 ----
 ======
 
-=== 1.2.27 Ensure that the --encryption-provider-config argument is set as appropriate (Manual)
+=== 1.2.27 --encryption-provider-config 引数が適切に設定されていることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'encryption-provider-config'
 ----
 
-*Expected Result:* '--encryption-provider-config' is present 
+*期待される結果:* '--encryption-provider-config' が存在します 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1227,17 +1227,17 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*補修:*
 [%collapsible]
 ======
-K3s can be configured to use encryption providers to encrypt secrets at rest. Edit the K3s config file /etc/rancher/k3s/config.yaml on the control plane node and set the below parameter. secrets-encryption: true Secrets encryption can then be managed with the k3s secrets-encrypt command line tool. If needed, you can find the generated encryption config at /var/lib/rancher/k3s/server/cred/encryption-config.json.
+K3s は、秘密情報を静止状態で暗号化するために暗号化プロバイダーを使用するように構成できます。制御プレーンノードの K3s 設定ファイル /etc/rancher/k3s/config.yaml を編集し、以下のパラメータを設定します。 secrets-encryption: true その後、秘密の暗号化は k3s secrets-encrypt コマンドラインツールで管理できます。必要に応じて、生成された暗号化設定は /var/lib/rancher/k3s/server/cred/encryption-config.json にあります。
 ======
 
-=== 1.2.28 Ensure that encryption providers are appropriately configured (Manual)
+=== 1.2.28 暗号化プロバイダーが適切に設定されていることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
@@ -1245,9 +1245,9 @@ ENCRYPTION_PROVIDER_CONFIG=$(journalctl -m -u k3s | grep 'Running kube-apiserver
 if test -e $ENCRYPTION_PROVIDER_CONFIG; then grep -o 'providers\"\:\[.*\]' $ENCRYPTION_PROVIDER_CONFIG | grep -o "[A-Za-z]*" | head -2 | tail -1 | sed 's/{caret}/provider=/'; fi
 ----
 
-*Expected Result:* 'provider' contains valid elements from 'aescbc,kms,secretbox' 
+*期待される結果:* 'provider' に 'aescbc,kms,secretbox' の有効な要素が含まれています 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1256,26 +1256,26 @@ provider=aescbc
 ----
 ======
 
-.*Remediation:*
+.*Remediation:* 修正方法:
 [%collapsible]
 ======
-K3s can be configured to use encryption providers to encrypt secrets at rest. K3s will utilize the aescbc provider. Edit the K3s config file /etc/rancher/k3s/config.yaml on the control plane node and set the below parameter. secrets-encryption: true Secrets encryption can then be managed with the k3s secrets-encrypt command line tool. If needed, you can find the generated encryption config at /var/lib/rancher/k3s/server/cred/encryption-config.json
+K3s は、秘密情報を静止状態で暗号化するために暗号化プロバイダーを使用するように構成できます。K3s は aescbc プロバイダーを利用します。制御プレーンノードの K3s 設定ファイル /etc/rancher/k3s/config.yaml を編集し、以下のパラメータを設定します。 secrets-encryption: true その後、秘密の暗号化は k3s secrets-encrypt コマンドラインツールで管理できます。必要に応じて、生成された暗号化設定は /var/lib/rancher/k3s/server/cred/encryption-config.json にあります。
 ======
 
-=== 1.2.29 Ensure that the API Server only makes use of Strong Cryptographic Ciphers (Automated)
+=== 1.2.29 API サーバーが強力な暗号化暗号のみを使用することを確認してください（自動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'tls-cipher-suites'
 ----
 
-*Expected Result:* '--tls-cipher-suites' contains valid elements from 'TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256,TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_256_GCM_SHA384' 
+*期待される結果:* '--tls-cipher-suites' に 'TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256,TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_256_GCM_SHA384' の有効な要素が含まれています。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1284,10 +1284,10 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*Remediation:* 修正方法:
 [%collapsible]
 ======
-By default, the K3s kube-apiserver complies with this test. Changes to these values may cause regression, therefore ensure that all apiserver clients support the new TLS configuration before applying it in production deployments. If a custom TLS configuration is required, consider also creating a custom version of this rule that aligns with your requirements. If this check fails, remove any custom configuration around `tls-cipher-suites` or update the /etc/rancher/k3s/config.yaml file to match the default by adding the following:
+デフォルトでは、K3s kube-apiserver はこのテストに準拠しています。これらの値の変更は後退を引き起こす可能性があるため、運用デプロイメントに適用する前にすべての apiserver クライアントが新しい TLS 設定をサポートしていることを確認してください。カスタム TLS 構成が必要な場合は、要件に合わせたこのルールのカスタムバージョンを作成することも検討してください。このチェックが失敗した場合は、`tls-cipher-suites` の周りのカスタム設定を削除するか、/etc/rancher/k3s/config.yaml ファイルをデフォルトに一致させるために以下を追加してください。
 
 ----
 kube-apiserver-arg:
@@ -1295,22 +1295,22 @@ kube-apiserver-arg:
 ----
 ======
 
-== 1.3 Controller Manager
+== 1.3 コントローラーマネージャ
 
-=== 1.3.1 Ensure that the --terminated-pod-gc-threshold argument is set as appropriate (Manual)
+=== 1.3.1 --terminated-pod-gc-threshold 引数が適切に設定されていることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-controller-manager' | tail -n1 | grep 'terminated-pod-gc-threshold'
 ----
 
-*Expected Result:* '--terminated-pod-gc-threshold' is present 
+*期待される結果:* '--terminated-pod-gc-threshold' が存在します 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1319,30 +1319,30 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-Edit the K3s config file /etc/rancher/k3s/config.yaml on the control plane node and set the --terminated-pod-gc-threshold to an appropriate threshold,
+コントロールプレーンノードの K3s 設定ファイル /etc/rancher/k3s/config.yaml を編集し、--terminated-pod-gc-threshold を適切な閾値に設定してください。
 
 ----
 kube-controller-manager-arg: - "terminated-pod-gc-threshold=10"
 ----
 ======
 
-=== 1.3.2 Ensure that the --profiling argument is set to false (Automated)
+=== 1.3.2 --profiling 引数がfalseに設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-controller-manager' | tail -n1 | grep 'profiling'
 ----
 
-*Expected Result:* '--profiling' is equal to 'false' 
+*期待される結果:* '--profiling'は'false'と等しい 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1351,30 +1351,30 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-By default, K3s sets the --profiling argument to false. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+デフォルトでは、K3sは --profiling 引数をfalseに設定します。このチェックが失敗した場合は、K3sの設定ファイル/etc/rancher/k3s/config.yamlを編集し、以下のような行を削除してください。
 
 ----
 kube-controller-manager-arg: - "profiling=true"
 ----
 ======
 
-=== 1.3.3 Ensure that the --use-service-account-credentials argument is set to true (Automated)
+=== 1.3.3 --use-service-account-credentials 引数がtrueに設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-controller-manager' | tail -n1 | grep 'use-service-account-credentials'
 ----
 
-*Expected Result:* '--use-service-account-credentials' is not equal to 'false' 
+*期待される結果:* '--use-service-account-credentials' は 'false' と等しくありません 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1383,30 +1383,30 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-By default, K3s sets the --use-service-account-credentials argument to true. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+デフォルトでは、K3sは--use-service-account-credentials引数をtrueに設定します。このチェックが失敗した場合は、K3sの設定ファイル/etc/rancher/k3s/config.yamlを編集し、以下のような行を削除してください。
 
 ----
 kube-controller-manager-arg: - "use-service-account-credentials=false"
 ----
 ======
 
-=== 1.3.4 Ensure that the --service-account-private-key-file argument is set as appropriate (Automated)
+=== 1.3.4 --service-account-private-key-file 引数が適切に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-controller-manager' | tail -n1 | grep 'service-account-private-key-file'
 ----
 
-*Expected Result:* '--service-account-private-key-file' is present 
+*期待される結果:* '--service-account-private-key-file' が存在します 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1415,30 +1415,30 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-By default, K3s automatically provides the service account private key file. It is generated and located at /var/lib/rancher/k3s/server/tls/service.current.key. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+デフォルトでは、K3sはサービスアカウントの秘密鍵ファイルを自動的に提供します。それは生成され、/var/lib/rancher/k3s/server/tls/service.current.key にあります。このチェックが失敗した場合は、K3sの設定ファイル/etc/rancher/k3s/config.yamlを編集し、以下のような行を削除してください。
 
 ----
 kube-controller-manager-arg: - "service-account-private-key-file=<path>"
 ----
 ======
 
-=== 1.3.5 Ensure that the --root-ca-file argument is set as appropriate (Automated)
+=== 1.3.5 --root-ca-file 引数が適切に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-controller-manager' | tail -n1 | grep 'root-ca-file'
 ----
 
-*Expected Result:* '--root-ca-file' is present 
+*期待される結果:* '--root-ca-file' が存在します 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1447,30 +1447,30 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-By default, K3s automatically provides the root CA file. It is generated and located at /var/lib/rancher/k3s/server/tls/server-ca.crt. If for some reason you need to provide your own ca certificate, look at using the k3s certificate command line tool. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+デフォルトでは、K3sはルートCAファイルを自動的に提供します。それは生成され、/var/lib/rancher/k3s/server/tls/server-ca.crt にあります。何らかの理由で独自のCA証明書を提供する必要がある場合は、k3sのcertificateコマンドラインツールの使用を検討してください。このチェックが失敗した場合は、K3sの設定ファイル /etc/rancher/k3s/config.yaml を編集し、以下のような行を削除してください。
 
 ----
 kube-controller-manager-arg: - "root-ca-file=<path>"
 ----
 ======
 
-=== 1.3.6 Ensure that the RotateKubeletServerCertificate argument is set to true (Automated)
+=== 1.3.6 RotateKubeletServerCertificate引数がtrueに設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-controller-manager' | tail -n1
 ----
 
-*Expected Result:* '--feature-gates' is present OR '--feature-gates' is not present 
+*期待される結果:* '--feature-gates' が存在するか、または '--feature-gates' が存在しない 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1479,30 +1479,30 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*是正措置:*
 [%collapsible]
 ======
-By default, K3s does not set the RotateKubeletServerCertificate feature gate. If you have enabled this feature gate, you should remove it. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml, remove any lines like below.
+デフォルトでは、K3sはRotateKubeletServerCertificate機能ゲートを設定しません。この機能ゲートを有効にしている場合は、削除する必要があります。このチェックが失敗した場合は、K3sの設定ファイル /etc/rancher/k3s/config.yaml を編集し、以下のような行を削除してください。
 
 ----
 kube-controller-manager-arg: - "feature-gate=RotateKubeletServerCertificate"
 ----
 ======
 
-=== 1.3.7 Ensure that the --bind-address argument is set to 127.0.0.1 (Automated)
+=== 1.3.7 --bind-address引数が127.0.0.1に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-controller-manager' | tail -n1
 ----
 
-*Expected Result:* '--bind-address' is equal to '127.0.0.1' OR '--bind-address' is not present 
+*期待される結果:* '--bind-address' は '127.0.0.1' と等しいか、または '--bind-address' が存在しない 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1511,32 +1511,32 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*是正措置:*
 [%collapsible]
 ======
-By default, K3s sets the --bind-address argument to 127.0.0.1 If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+デフォルトでは、K3sは--bind-address引数を127.0.0.1に設定します。このチェックが失敗した場合は、K3sの設定ファイル /etc/rancher/k3s/config.yaml を編集し、以下のような行を削除してください。
 
 ----
 kube-controller-manager-arg: - "bind-address=<IP>"
 ----
 ======
 
-== 1.4 Scheduler
+== 1.4 スケジューラ
 
-=== 1.4.1 Ensure that the --profiling argument is set to false (Automated)
+=== 1.4.1 --profiling引数がfalseに設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-scheduler' | tail -n1 | grep 'profiling'
 ----
 
-*Expected Result:* '--profiling' is equal to 'false' 
+*期待される結果:* '--profiling' は 'false' と等しい 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1545,30 +1545,30 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*是正措置:*
 [%collapsible]
 ======
-By default, K3s sets the --profiling argument to false. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+デフォルトでは、K3sは--profiling引数をfalseに設定します。このチェックが失敗した場合は、K3sの設定ファイル /etc/rancher/k3s/config.yaml を編集し、以下のような行を削除してください。
 
 ----
 kube-scheduler-arg: - "profiling=true"
 ----
 ======
 
-=== 1.4.2 Ensure that the --bind-address argument is set to 127.0.0.1 (Automated)
+=== 1.4.2 --bind-address引数が127.0.0.1に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s | grep 'Running kube-scheduler' | tail -n1 | grep 'bind-address'
 ----
 
-*Expected Result:* '--bind-address' is equal to '127.0.0.1' OR '--bind-address' is not present 
+*期待される結果:* '--bind-address' は '127.0.0.1' と等しいか、または '--bind-address' が存在しない 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1577,31 +1577,31 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*是正措置:*
 [%collapsible]
 ======
-By default, K3s sets the --bind-address argument to 127.0.0.1 If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml and remove any lines like below.
+デフォルトでは、K3sは--bind-address引数を127.0.0.1に設定します。このチェックが失敗した場合は、K3sの設定ファイル /etc/rancher/k3s/config.yaml を編集し、以下のような行を削除してください。
 
 ----
 kube-scheduler-arg: - "bind-address=<IP>"
 ----
 ======
 
-== 2 Etcd Node Configuration
+== 2 Etcdノードの設定
 
-=== 2.1 Ensure that the --cert-file and --key-file arguments are set as appropriate (Manual)
+=== 2.1 --cert-fileおよび--key-file引数が適切に設定されていることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
 
 [,bash]
 ----
 ----
 
-*Expected Result:* '.client-transport-security.cert-file' is equal to '/var/lib/rancher/k3s/server/tls/etcd/server-client.crt' AND '.client-transport-security.key-file' is equal to '/var/lib/rancher/k3s/server/tls/etcd/server-client.key' 
+*期待される結果:* '.client-transport-security.cert-file' は '/var/lib/rancher/k3s/server/tls/etcd/server-client.crt' と等しく、かつ '.client-transport-security.key-file' は '/var/lib/rancher/k3s/server/tls/etcd/server-client.key' と等しい 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1637,25 +1637,25 @@ snapshot-count: 10000
 ----
 ======
 
-.*Remediation:*
+.*是正措置:*
 [%collapsible]
 ======
-If running on with sqlite or a external DB, etcd checks are Not Applicable. When running with embedded-etcd, K3s generates cert and key files for etcd. These are located in /var/lib/rancher/k3s/server/tls/etcd/. If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config has not been modified to use custom cert and key files.
+SQLiteや外部DBで実行している場合、etcdのチェックは適用されません。埋め込みetcdで実行している場合、K3sはetcd用の証明書と鍵ファイルを生成します。/var/lib/rancher/k3s/server/tls/etcd/にあります。このチェックが失敗した場合、環境設定ファイル/var/lib/rancher/k3s/server/db/etcd/configがカスタムの証明書と鍵ファイルを使用するように変更されていないことを確認してください。
 ======
 
-=== 2.2 Ensure that the --client-cert-auth argument is set to true (Manual)
+=== 2.2 --client-cert-auth引数がtrueに設定されていることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
 
 [,bash]
 ----
 ----
 
-*Expected Result:* '.client-transport-security.client-cert-auth' is equal to 'true' 
+*期待される結果:* '.client-transport-security.client-cert-auth'が'true'と等しい 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1691,25 +1691,25 @@ snapshot-count: 10000
 ----
 ======
 
-.*Remediation:*
+.*是正措置:*
 [%collapsible]
 ======
-If running on with sqlite or a external DB, etcd checks are Not Applicable. When running with embedded-etcd, K3s sets the --client-cert-auth parameter to true. If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config has not been modified to disable client certificate authentication.
+SQLiteや外部DBで実行している場合、etcdのチェックは適用されません。埋め込みetcdで実行している場合、K3sは--client-cert-authパラメータをtrueに設定します。このチェックが失敗した場合、環境設定ファイル/var/lib/rancher/k3s/server/db/etcd/configがクライアント証明書認証を無効にするように変更されていないことを確認してください。
 ======
 
-=== 2.3 Ensure that the --auto-tls argument is not set to true (Manual)
+=== 2.3 --auto-tls引数がtrueに設定されていないことを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
 
 [,bash]
 ----
 ----
 
-*Expected Result:* '.client-transport-security.auto-tls' is present OR '.client-transport-security.auto-tls' is not present 
+*期待される結果:* '.client-transport-security.auto-tls' が存在するか、または '.client-transport-security.auto-tls' が存在しない 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1745,25 +1745,25 @@ snapshot-count: 10000
 ----
 ======
 
-.*Remediation:*
+.*補修:*
 [%collapsible]
 ======
-If running on with sqlite or a external DB, etcd checks are Not Applicable. When running with embedded-etcd, K3s does not set the --auto-tls parameter. If this check fails, edit the etcd pod specification file /var/lib/rancher/k3s/server/db/etcd/config on the master node and either remove the --auto-tls parameter or set it to false. client-transport-security: auto-tls: false
+SQLiteや外部DBで実行している場合、etcdのチェックは適用されません。埋め込みetcdで実行している場合、K3sは--auto-tlsパラメータを設定しません。このチェックが失敗した場合、マスターノードのetcdポッド仕様ファイル/var/lib/rancher/k3s/server/db/etcd/configを編集し、--auto-tlsパラメータを削除するか、falseに設定してください。client-transport-security: auto-tls: false
 ======
 
-=== 2.4 Ensure that the --peer-cert-file and --peer-key-file arguments are set as appropriate (Manual)
+=== 2.4 --peer-cert-fileおよび--peer-key-file引数が適切に設定されていることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
 
 [,bash]
 ----
 ----
 
-*Expected Result:* '.peer-transport-security.cert-file' is equal to '/var/lib/rancher/k3s/server/tls/etcd/peer-server-client.crt' AND '.peer-transport-security.key-file' is equal to '/var/lib/rancher/k3s/server/tls/etcd/peer-server-client.key' 
+*期待される結果:* '.peer-transport-security.cert-file' は '/var/lib/rancher/k3s/server/tls/etcd/peer-server-client.crt' と等しく、かつ '.peer-transport-security.key-file' は '/var/lib/rancher/k3s/server/tls/etcd/peer-server-client.key' と等しい 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1799,25 +1799,25 @@ snapshot-count: 10000
 ----
 ======
 
-.*Remediation:*
+.*是正措置:*
 [%collapsible]
 ======
-If running on with sqlite or a external DB, etcd checks are Not Applicable. When running with embedded-etcd, K3s generates peer cert and key files for etcd. These are located in /var/lib/rancher/k3s/server/tls/etcd/. If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config has not been modified to use custom peer cert and key files.
+SQLiteや外部DBで実行している場合、etcdのチェックは適用されません。埋め込みetcdで実行している場合、K3sはetcd用のピア証明書と鍵ファイルを生成します。/var/lib/rancher/k3s/server/tls/etcd/にあります。このチェックが失敗した場合、設定ファイル/var/lib/rancher/k3s/server/db/etcd/configがカスタムのピア証明書と鍵ファイルを使用するように変更されていないことを確認してください。
 ======
 
-=== 2.5 Ensure that the --peer-client-cert-auth argument is set to true (Manual)
+=== 2.5 --peer-client-cert-auth引数がtrueに設定されていることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
 
 [,bash]
 ----
 ----
 
-*Expected Result:* '.peer-transport-security.client-cert-auth' is equal to 'true' 
+*期待される結果:* '.peer-transport-security.client-cert-auth' は 'true' と等しい 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1853,25 +1853,25 @@ snapshot-count: 10000
 ----
 ======
 
-.*Remediation:*
+.*是正措置:*
 [%collapsible]
 ======
-If running on with sqlite or a external DB, etcd checks are Not Applicable. When running with embedded-etcd, K3s sets the --peer-cert-auth parameter to true. If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config has not been modified to disable peer client certificate authentication.
+SQLiteや外部DBで実行している場合、etcdのチェックは適用されません。埋め込みetcdで実行している場合、K3sは--peer-cert-authパラメータをtrueに設定します。このチェックが失敗した場合、設定ファイル/var/lib/rancher/k3s/server/db/etcd/configがピアクライアント証明書認証を無効にするように変更されていないことを確認してください。
 ======
 
-=== 2.6 Ensure that the --peer-auto-tls argument is not set to true (Manual)
+=== 2.6 --peer-auto-tls引数がtrueに設定されていないことを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
 
 [,bash]
 ----
 ----
 
-*Expected Result:* '.peer-transport-security.auto-tls' is present OR '.peer-transport-security.auto-tls' is not present 
+*期待される結果:* '.peer-transport-security.auto-tls' が存在するか、または '.peer-transport-security.auto-tls' が存在しない 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1907,25 +1907,25 @@ snapshot-count: 10000
 ----
 ======
 
-.*Remediation:*
+.*是正措置:*
 [%collapsible]
 ======
-If running on with sqlite or a external DB, etcd checks are Not Applicable. When running with embedded-etcd, K3s does not set the --peer-auto-tls parameter. If this check fails, edit the etcd pod specification file /var/lib/rancher/k3s/server/db/etcd/config on the master node and either remove the --peer-auto-tls parameter or set it to false. peer-transport-security: auto-tls: false
+SQLiteや外部DBで実行している場合、etcdのチェックは適用されません。埋め込みetcdで実行する場合、K3sは--peer-auto-tlsパラメータを設定しません。このチェックに失敗した場合、マスターノードのetcdポッド仕様ファイル /var/lib/rancher/k3s/server/db/etcd/config を編集し、--peer-auto-tlsパラメータを削除するか、falseに設定してください。 peer-transport-security: auto-tls: false
 ======
 
-=== 2.7 Ensure that a unique Certificate Authority is used for etcd (Manual)
+=== 2.7 etcdに対して一意の認証局が使用されていることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
 
 [,bash]
 ----
 ----
 
-*Expected Result:* '.peer-transport-security.trusted-ca-file' is equal to '/var/lib/rancher/k3s/server/tls/etcd/peer-ca.crt' 
+*期待される結果:* '.peer-transport-security.trusted-ca-file' は '/var/lib/rancher/k3s/server/tls/etcd/peer-ca.crt' と等しい 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -1961,40 +1961,40 @@ snapshot-count: 10000
 ----
 ======
 
-.*Remediation:*
+.*是正措置:*
 [%collapsible]
 ======
-If running on with sqlite or a external DB, etcd checks are Not Applicable. When running with embedded-etcd, K3s generates a unique certificate authority for etcd. This is located at /var/lib/rancher/k3s/server/tls/etcd/peer-ca.crt. If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config has not been modified to use a shared certificate authority.
+SQLiteや外部DBで実行している場合、etcdのチェックは適用されません。埋め込みetcdで実行する場合、K3sはetcd用の一意の認証局を生成します。これは /var/lib/rancher/k3s/server/tls/etcd/peer-ca.crt にあります。このチェックに失敗した場合、環境設定ファイル /var/lib/rancher/k3s/server/db/etcd/config が共有の認証局を使用するように変更されていないことを確認してください。
 ======
 
-== 4.1 Worker Node Configuration Files
+== 4.1 ワーカーノードの設定ファイル
 
-=== 4.1.1 Ensure that the kubelet service file permissions are set to 600 or more restrictive (Automated)
+=== 4.1.1 kubeletサービスファイルの権限が600またはそれ以上の制限に設定されていることを確認してください（自動化）
 
-*Result:* Not Applicable
+*結果:*該当なし
 
-*Rationale:* The kubelet is embedded in the k3s process. There is no kubelet service file, all configuration is passed in as arguments at runtime.
+*理由:*kubeletはk3sプロセスに埋め込まれています。kubeletサービスファイルは存在せず、すべての設定は実行時に引数として渡されます。
 
-=== 4.1.2 Ensure that the kubelet service file ownership is set to root:root (Automated)
+=== 4.1.2 kubeletサービスファイルの所有権がroot:rootに設定されていることを確認してください（自動化）
 
-*Result:* Not Applicable
+*結果:*該当なし
 
-*Rationale:* The kubelet is embedded in the k3s process. There is no kubelet service file, all configuration is passed in as arguments at runtime. All configuration is passed in as arguments at container run time.
+*理由:*kubeletはk3sプロセスに埋め込まれています。kubeletサービスファイルは存在せず、すべての設定は実行時に引数として渡されます。すべての設定はコンテナの実行時に引数として渡されます。
 
-=== 4.1.3 If proxy kubeconfig file exists ensure permissions are set to 600 or more restrictive (Automated)
+=== 4.1.3 プロキシkubeconfigファイルが存在する場合、権限が600またはそれ以上の制限に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig; then stat -c permissions=%a /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig; fi'
 ----
 
-*Expected Result:* permissions has permissions 600, expected 600 or more restrictive 
+*期待される結果:* 権限は600であり、期待されるのは600またはそれ以上の制限です 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2003,26 +2003,26 @@ permissions=600
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-Run the below command (based on the file location on your system) on the each worker node. For example, `chmod 600 /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig`
+各ワーカーノードで（システム上のファイルの場所に基づいて）以下のコマンドを実行してください。例えば、`chmod 600 /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig`
 ======
 
-=== 4.1.4 If proxy kubeconfig file exists ensure ownership is set to root:root (Automated)
+=== 4.1.4 プロキシkubeconfigファイルが存在する場合、所有権が root:root に設定されていることを確認してください (自動化)
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig; then stat -c %U:%G /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig; fi'
 ----
 
-*Expected Result:* 'root:root' is present 
+*期待される結果:* 'root:root' が存在します 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2031,26 +2031,26 @@ root:root
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-Run the below command (based on the file location on your system) on the each worker node. For example, `chown root:root /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig`
+各ワーカーノードで（システム上のファイルの場所に基づいて）以下のコマンドを実行してください。例えば、`chown root:root /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig`
 ======
 
-=== 4.1.5 Ensure that the --kubeconfig kubelet.conf file permissions are set to 600 or more restrictive (Automated)
+=== 4.1.5 --kubeconfig kubelet.conf ファイルの権限が 600 以上に設定されていることを確認してください (自動化)
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 /bin/sh -c 'if test -e /var/lib/rancher/k3s/agent/kubelet.kubeconfig; then stat -c permissions=%a /var/lib/rancher/k3s/agent/kubelet.kubeconfig; fi'
 ----
 
-*Expected Result:* permissions has permissions 600, expected 600 or more restrictive 
+*期待される結果:* 権限は600であり、期待されるのは600またはそれ以上の制限です 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2059,26 +2059,26 @@ permissions=600
 ----
 ======
 
-.*Remediation:*
+.*補修:*
 [%collapsible]
 ======
-Run the below command (based on the file location on your system) on the each worker node. For example, `chmod 600 /var/lib/rancher/k3s/agent/kubelet.kubeconfig`
+各ワーカーノードで（システム上のファイルの場所に基づいて）以下のコマンドを実行してください。例えば、`chmod 600 /var/lib/rancher/k3s/agent/kubelet.kubeconfig`
 ======
 
-=== 4.1.6 Ensure that the --kubeconfig kubelet.conf file ownership is set to root:root (Automated)
+=== 4.1.6 --kubeconfig kubelet.conf ファイルの所有権が root:root に設定されていることを確認してください (自動化)
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 stat -c %U:%G /var/lib/rancher/k3s/agent/kubelet.kubeconfig
 ----
 
-*Expected Result:* 'root:root' is present 
+*期待される結果:* 'root:root' が存在します 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2087,26 +2087,26 @@ root:root
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-Run the below command (based on the file location on your system) on the each worker node. For example, `chown root:root /var/lib/rancher/k3s/agent/kubelet.kubeconfig`
+各ワーカーノードで（システム上のファイルの場所に基づいて）以下のコマンドを実行してください。例えば、`chown root:root /var/lib/rancher/k3s/agent/kubelet.kubeconfig`
 ======
 
-=== 4.1.7 Ensure that the certificate authorities file permissions are set to 600 or more restrictive (Automated)
+=== 4.1.7 証明書機関ファイルの権限が 600 以上に設定されていることを確認してください (自動化)
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 stat -c permissions=%a /var/lib/rancher/k3s/agent/client-ca.crt
 ----
 
-*Expected Result:* permissions has permissions 600, expected 600 or more restrictive 
+*期待される結果:* 権限は600であり、期待されるのは600またはそれ以上の制限です 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2115,26 +2115,26 @@ permissions=600
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-Run the following command to modify the file permissions of the --client-ca-file `chmod 600 /var/lib/rancher/k3s/agent/client-ca.crt`
+次のコマンドを実行して --client-ca-file `chmod 600 /var/lib/rancher/k3s/agent/client-ca.crt` のファイル権限を変更してください
 ======
 
-=== 4.1.8 Ensure that the client certificate authorities file ownership is set to root:root (Automated)
+=== 4.1.8 クライアント証明書機関ファイルの所有権が root:root に設定されていることを確認してください (自動化)
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 stat -c %U:%G /var/lib/rancher/k3s/agent/client-ca.crt
 ----
 
-*Expected Result:* 'root:root' is equal to 'root:root' 
+*期待される結果:* 'root:root' は 'root:root' と等しいです 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2143,38 +2143,38 @@ root:root
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-Run the following command to modify the ownership of the --client-ca-file. `chown root:root /var/lib/rancher/k3s/agent/client-ca.crt`
+次のコマンドを実行して --client-ca-file の所有権を変更してください。 `chown root:root /var/lib/rancher/k3s/agent/client-ca.crt`
 ======
 
-=== 4.1.9 Ensure that the kubelet --config configuration file has permissions set to 600 or more restrictive (Automated)
+=== 4.1.9 kubelet --config 設定ファイルの権限が 600 以上に設定されていることを確認してください (自動化)
 
-*Result:* Not Applicable
+*結果:*該当なし
 
-*Rationale:* The kubelet is embedded in the k3s process. There is no kubelet config file, all configuration is passed in as arguments at runtime.
+*理由:*kubeletはk3sプロセスに埋め込まれています。kubelet 設定ファイルは存在せず、すべての設定は実行時に引数として渡されます。
 
-=== 4.1.10 Ensure that the kubelet --config configuration file ownership is set to root:root (Automated)
+=== 4.1.10 kubelet --config 設定ファイルの所有権が root:root に設定されていることを確認してください (自動化)
 
-*Result:* Not Applicable
+*結果:*該当なし
 
-*Rationale:* The kubelet is embedded in the k3s process. There is no kubelet config file, all configuration is passed in as arguments at runtime. ## 4.2 Kubelet
+*理由:*kubeletはk3sプロセスに埋め込まれています。kubelet 設定ファイルは存在せず、すべての設定は実行時に引数として渡されます。 ## 4.2 Kubelet
 
-=== 4.2.1 Ensure that the --anonymous-auth argument is set to false (Automated)
+=== 4.2.1 --anonymous-auth 引数が false に設定されていることを確認してください (自動化)
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 /bin/sh -c 'if test $(journalctl -m -u k3s | grep "Running kube-apiserver" | wc -l) -gt 0; then journalctl -m -u k3s | grep "Running kube-apiserver" | tail -n1 | grep "anonymous-auth" | grep -v grep; else echo "--anonymous-auth=false"; fi'
 ----
 
-*Expected Result:* '--anonymous-auth' is equal to 'false' 
+*期待される結果:* '--anonymous-auth' は 'false' と等しいです 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2183,33 +2183,33 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-By default, K3s sets the --anonymous-auth to false. If you have set this to a different value, you should set it back to false. If using the K3s config file /etc/rancher/k3s/config.yaml, remove any lines similar to below.
+デフォルトでは、K3s は --anonymous-auth を false に設定します。これを別の値に設定した場合は、false に戻す必要があります。K3s 設定ファイル /etc/rancher/k3s/config.yaml を使用している場合は、以下のような行を削除してください。
 
 ----
 kubelet-arg:
   - "anonymous-auth=true"
 ----
 
-If using the command line, edit the K3s service file and remove the below argument. --kubelet-arg="anonymous-auth=true" Based on your system, restart the k3s service. For example, systemctl daemon-reload systemctl restart k3s.service
+コマンドラインを使用している場合は、K3s サービスファイルを編集し、以下の引数を削除してください。 --kubelet-arg="anonymous-auth=true" システムに基づいて、k3s サービスを再起動してください。例えば、systemctl daemon-reload systemctl restart k3s.service
 ======
 
-=== 4.2.2 Ensure that the --authorization-mode argument is not set to AlwaysAllow (Automated)
+=== 4.2.2 --authorization-mode引数がAlwaysAllowに設定されていないことを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 /bin/sh -c 'if test $(journalctl -m -u k3s | grep "Running kube-apiserver" | wc -l) -gt 0; then journalctl -m -u k3s | grep "Running kube-apiserver" | tail -n1 | grep "authorization-mode"; else echo "--authorization-mode=Webhook"; fi'
 ----
 
-*Expected Result:* '--authorization-mode' does not have 'AlwaysAllow' 
+*期待される結果:* '--authorization-mode'は'AlwaysAllow'を持っていません 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2218,33 +2218,33 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-By default, K3s does not set the --authorization-mode to AlwaysAllow. If using the K3s config file /etc/rancher/k3s/config.yaml, remove any lines similar to below.
+デフォルトでは、K3sは--authorization-modeをAlwaysAllowに設定しません。K3s 設定ファイル /etc/rancher/k3s/config.yaml を使用している場合は、以下のような行を削除してください。
 
 ----
 kubelet-arg:
   - "authorization-mode=AlwaysAllow"
 ----
 
-If using the command line, edit the K3s service file and remove the below argument. --kubelet-arg="authorization-mode=AlwaysAllow" Based on your system, restart the k3s service. For example, systemctl daemon-reload systemctl restart k3s.service
+コマンドラインを使用する場合は、K3sサービスファイルを編集し、以下の引数を削除してください。--kubelet-arg="authorization-mode=AlwaysAllow" システムに基づいて、k3sサービスを再起動してください。例えば、systemctl daemon-reload systemctl restart k3s.service
 ======
 
-=== 4.2.3 Ensure that the --client-ca-file argument is set as appropriate (Automated)
+=== 4.2.3 --client-ca-file引数が適切に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 /bin/sh -c 'if test $(journalctl -m -u k3s | grep "Running kube-apiserver" | wc -l) -gt 0; then journalctl -m -u k3s | grep "Running kube-apiserver" | tail -n1 | grep "client-ca-file"; else echo "--client-ca-file=/var/lib/rancher/k3s/server/tls/request-header-ca.crt"; fi'
 ----
 
-*Expected Result:* '--client-ca-file' is present 
+*期待される結果:* '--client-ca-file'が存在します 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2253,26 +2253,26 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-By default, K3s automatically provides the client ca certificate for the Kubelet. It is generated and located at /var/lib/rancher/k3s/agent/client-ca.crt
+デフォルトでは、K3sはKubelet用のクライアントCA証明書を自動的に提供します。それは生成され、/var/lib/rancher/k3s/agent/client-ca.crtにあります。
 ======
 
-=== 4.2.4 Verify that the --read-only-port argument is set to 0 (Automated)
+=== 4.2.4 --read-only-port引数が0に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-*Expected Result:* '--read-only-port' is equal to '0' OR '--read-only-port' is not present 
+*期待される結果:* '--read-only-port'は'0'と等しいか、または'--read-only-port'は存在しません 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2281,33 +2281,33 @@ Jul 29 19:36:16 server-0 k3s[2235]: time="2025-07-29T19:36:16Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-By default, K3s sets the --read-only-port to 0. If you have set this to a different value, you should set it back to 0. If using the K3s config file /etc/rancher/k3s/config.yaml, remove any lines similar to below.
+デフォルトでは、K3sは--read-only-portを0に設定します。これを別の値に設定した場合は、0に戻す必要があります。K3s 設定ファイル /etc/rancher/k3s/config.yaml を使用している場合は、以下のような行を削除してください。
 
 ----
 kubelet-arg:
   - "read-only-port=XXXX"
 ----
 
-If using the command line, edit the K3s service file and remove the below argument. --kubelet-arg="read-only-port=XXXX" Based on your system, restart the k3s service. For example, systemctl daemon-reload systemctl restart k3s.service
+コマンドラインを使用する場合は、K3sサービスファイルを編集し、以下の引数を削除してください。--kubelet-arg="read-only-port=XXXX" システムに基づいて、k3sサービスを再起動してください。例えば、systemctl daemon-reload systemctl restart k3s.service
 ======
 
-=== 4.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0 (Manual)
+=== 4.2.5 --streaming-connection-idle-timeout引数が0に設定されていないことを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-*Expected Result:* '--streaming-connection-idle-timeout' is not equal to '0' OR '--streaming-connection-idle-timeout' is not present 
+*期待される結果:* '--streaming-connection-idle-timeout'は'0'と等しくないか、または'--streaming-connection-idle-timeout'は存在しません 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2316,33 +2316,33 @@ Jul 29 19:36:16 server-0 k3s[2235]: time="2025-07-29T19:36:16Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正方法:*
 [%collapsible]
 ======
-If using the K3s config file /etc/rancher/k3s/config.yaml, set the following parameter to an appropriate value.
+K3s 設定ファイル /etc/rancher/k3s/config.yaml を使用する場合は、以下のパラメータを適切な値に設定してください。
 
 ----
 kubelet-arg:
   - "streaming-connection-idle-timeout=5m"
 ----
 
-If using the command line, run K3s with --kubelet-arg="streaming-connection-idle-timeout=5m". Based on your system, restart the k3s service. For example, systemctl restart k3s.service
+コマンドラインを使用する場合は、--kubelet-arg="streaming-connection-idle-timeout=5m"でK3sを実行してください。システムに基づいて、k3sサービスを再起動してください。例えば、systemctl restart k3s.service
 ======
 
-=== 4.2.6 Ensure that the --make-iptables-util-chains argument is set to true (Automated)
+=== 4.2.6 --make-iptables-util-chains引数がtrueに設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-*Expected Result:* '--make-iptables-util-chains' is equal to 'true' OR '--make-iptables-util-chains' is not present 
+*期待される結果:* '--make-iptables-util-chains' は 'true' と等しいか、'--make-iptables-util-chains' が存在しないこと。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2351,39 +2351,39 @@ Jul 29 19:36:16 server-0 k3s[2235]: time="2025-07-29T19:36:16Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-If using the K3s config file /etc/rancher/k3s/config.yaml, set the following parameter.
+K3sの設定ファイル /etc/rancher/k3s/config.yaml を使用する場合、次のパラメータを設定してください。
 
 ----
 kubelet-arg:
   - "make-iptables-util-chains=true"
 ----
 
-If using the command line, run K3s with --kubelet-arg="make-iptables-util-chains=true". Based on your system, restart the k3s service. For example, systemctl restart k3s.service
+コマンドラインを使用する場合、K3sを --kubelet-arg="make-iptables-util-chains=true" で実行してください。システムに基づいて、k3sサービスを再起動してください。例えば、systemctl restart k3s.service
 ======
 
-=== 4.2.7 Ensure that the --hostname-override argument is not set (Automated)
+=== 4.2.7 --hostname-override 引数が設定されていないことを確認してください（自動化）
 
-*Result:* Not Applicable
+*結果:*該当なし
 
-*Rationale:* By default, K3s does set the --hostname-override argument. Per CIS guidelines, this is to comply with cloud providers that require this flag to ensure that hostname matches node names.
+*理由:*デフォルトでは、K3sは --hostname-override 引数を設定します。CISガイドラインに従って、これはホスト名がノード名と一致することを求めるクラウドプロバイダーに対応するためです。
 
-=== 4.2.8 Ensure that the eventRecordQPS argument is set to a level which ensures appropriate event capture (Manual)
+=== 4.2.8 eventRecordQPS 引数が適切なイベントキャプチャを保証するレベルに設定されていることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-*Expected Result:* '--event-qps' is greater or equal to 0 OR '--event-qps' is not present 
+*期待される結果:* '--event-qps' は 0 以上であるか、'--event-qps' が存在しないこと。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2392,33 +2392,33 @@ Jul 29 19:36:16 server-0 k3s[2235]: time="2025-07-29T19:36:16Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s sets the event-qps to 0. Should you wish to change this, If using the K3s config file /etc/rancher/k3s/config.yaml, set the following parameter to an appropriate value.
+デフォルトでは、K3sは event-qps を 0 に設定します。これを変更したい場合、K3sの設定ファイル /etc/rancher/k3s/config.yaml で次のパラメータを適切な値に設定してください。
 
 ----
 kubelet-arg:
   - "event-qps=<value>"
 ----
 
-If using the command line, run K3s with --kubelet-arg="event-qps=<value>". Based on your system, restart the k3s service. For example, systemctl restart k3s.service
+コマンドラインを使用する場合、K3sを --kubelet-arg="event-qps=<value>" で実行してください。システムに基づいて、k3sサービスを再起動してください。例えば、systemctl restart k3s.service
 ======
 
-=== 4.2.9 Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate (Automated)
+=== 4.2.9 --tls-cert-file と --tls-private-key-file 引数が適切に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-*Expected Result:* '--tls-cert-file' is present AND '--tls-private-key-file' is present 
+*期待される結果:* '--tls-cert-file' が存在し、かつ '--tls-private-key-file' が存在すること。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2427,10 +2427,10 @@ Jul 29 19:36:16 server-0 k3s[2235]: time="2025-07-29T19:36:16Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s automatically provides the TLS certificate and private key for the Kubelet. They are generated and located at /var/lib/rancher/k3s/agent/serving-kubelet.crt and /var/lib/rancher/k3s/agent/serving-kubelet.key If for some reason you need to provide your own certificate and key, you can set the below parameters in the K3s config file /etc/rancher/k3s/config.yaml.
+デフォルトでは、K3sはKubelet用のTLS証明書と秘密鍵を自動的に提供します。それらは生成され、/var/lib/rancher/k3s/agent/serving-kubelet.crt と /var/lib/rancher/k3s/agent/serving-kubelet.key に配置されます。何らかの理由で独自の証明書と鍵を提供する必要がある場合は、K3sの設定ファイル /etc/rancher/k3s/config.yaml に以下のパラメータを設定できます。
 
 ----
 kubelet-arg:
@@ -2438,20 +2438,20 @@ kubelet-arg:
 ----
 ======
 
-=== 4.2.10 Ensure that the --rotate-certificates argument is not set to false (Automated)
+=== 4.2.10 --rotate-certificates 引数が false に設定されていないことを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-*Expected Result:* '--rotate-certificates' is present OR '--rotate-certificates' is not present 
+*期待される結果:* '--rotate-certificates' が存在するか、'--rotate-certificates' が存在しないこと。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2460,26 +2460,26 @@ Jul 29 19:36:16 server-0 k3s[2235]: time="2025-07-29T19:36:16Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s does not set the --rotate-certificates argument. If you have set this flag with a value of `false`, you should either set it to `true` or completely remove the flag. If using the K3s config file /etc/rancher/k3s/config.yaml, remove any rotate-certificates parameter. If using the command line, remove the K3s flag --kubelet-arg="rotate-certificates". Based on your system, restart the k3s service. For example, systemctl restart k3s.service
+デフォルトでは、K3sは --rotate-certificates 引数を設定しません。このフラグを `false` の値で設定した場合は、それを `true` に設定するか、フラグを完全に削除する必要があります。K3sの設定ファイル /etc/rancher/k3s/config.yaml を使用する場合、rotate-certificates パラメータを削除してください。コマンドラインを使用している場合は、K3s フラグ --kubelet-arg="rotate-certificates" を削除してください。システムに基づいて、k3sサービスを再起動してください。例えば、systemctl restart k3s.service
 ======
 
-=== 4.2.11 Verify that the RotateKubeletServerCertificate argument is set to true (Automated)
+=== 4.2.11 RotateKubeletServerCertificate 引数が true に設定されていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-*Expected Result:* 'RotateKubeletServerCertificate' is present OR 'RotateKubeletServerCertificate' is not present 
+*期待される結果:*'RotateKubeletServerCertificate' が存在するか、または 'RotateKubeletServerCertificate' が存在しない 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2488,26 +2488,26 @@ Jul 29 19:36:16 server-0 k3s[2235]: time="2025-07-29T19:36:16Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-By default, K3s does not set the RotateKubeletServerCertificate feature gate. If you have enabled this feature gate, you should remove it. If using the K3s config file /etc/rancher/k3s/config.yaml, remove any feature-gate=RotateKubeletServerCertificate parameter. If using the command line, remove the K3s flag --kubelet-arg="feature-gate=RotateKubeletServerCertificate". Based on your system, restart the k3s service. For example, systemctl restart k3s.service
+デフォルトでは、K3sは RotateKubeletServerCertificate 機能ゲートを設定しません。この機能ゲートを有効にしている場合は、削除する必要があります。K3s 設定ファイル /etc/rancher/k3s/config.yaml を使用している場合は、feature-gate=RotateKubeletServerCertificate パラメータを削除してください。コマンドラインを使用している場合は、K3s フラグ --kubelet-arg="feature-gate=RotateKubeletServerCertificate" を削除してください。システムに基づいて、k3sサービスを再起動してください。例えば、systemctl restart k3s.service
 ======
 
-=== 4.2.12 Ensure that the Kubelet only makes use of Strong Cryptographic Ciphers (Manual)
+=== 4.2.12 Kubelet が強力な暗号のみを使用していることを確認してください（手動）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s -u k3s-agent | grep 'Running kubelet' | tail -n1
 ----
 
-*Expected Result:* '--tls-cipher-suites' contains valid elements from 'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256' 
+*期待される結果:* '--tls-cipher-suites' に 'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256' の有効な要素が含まれている 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2516,24 +2516,24 @@ Jul 29 19:36:16 server-0 k3s[2235]: time="2025-07-29T19:36:16Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-If using a K3s config file /etc/rancher/k3s/config.yaml, edit the file to set `TLSCipherSuites` to
+K3s 設定ファイル /etc/rancher/k3s/config.yaml を使用している場合は、ファイルを編集して `TLSCipherSuites` を設定してください。
 
 ----
 kubelet-arg:
   - "tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
 ----
 
-or to a subset of these values. If using the command line, add the K3s flag --kubelet-arg="tls-cipher-suites=<same values as above>" Based on your system, restart the k3s service. For example, systemctl restart k3s.service
+または、これらの値のサブセットに設定してください。コマンドラインを使用している場合は、K3s フラグ --kubelet-arg="tls-cipher-suites=<same values as above>" を追加し、システムに基づいて k3s サービスを再起動してください。例えば、systemctl restart k3s.service
 ======
 
-=== 4.2.13 Ensure that a limit is set on pod PIDs (Manual)
+=== 4.2.13 ポッドの PID に制限が設定されていることを確認してください（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Decide on an appropriate level for this parameter and set it, If using a K3s config file /etc/rancher/k3s/config.yaml, edit the file to set `podPidsLimit` to
+*修正:*このパラメータの適切なレベルを決定し、設定してください。K3s 設定ファイル /etc/rancher/k3s/config.yaml を使用している場合は、ファイルを編集して `podPidsLimit` を設定してください。
 
 ----
 kubelet-arg:
@@ -2542,20 +2542,20 @@ kubelet-arg:
 
 == 4.3 kube-proxy
 
-=== 4.3.1 Ensure that the kube-proxy metrics service is bound to localhost (Automated)
+=== 4.3.1 kube-proxy メトリクスサービスが localhost にバインドされていることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 journalctl -m -u k3s -u k3s-agent | grep 'Running kube-proxy' | tail -n1
 ----
 
-*Expected Result:* '--metrics-bind-address' is present OR '--metrics-bind-address' is not present 
+*期待される結果:* '--metrics-bind-address' が存在するか、または '--metrics-bind-address' が存在しない 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2564,28 +2564,28 @@ Jul 29 19:36:16 server-0 k3s[2235]: time="2025-07-29T19:36:16Z" level=info msg="
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-Modify or remove any values which bind the metrics service to a non-localhost address. The default value is 127.0.0.1:10249.
+メトリクスサービスを非ローカルホストアドレスにバインドする値を変更または削除してください。デフォルト値は 127.0.0.1:10249 です。
 ======
 
-== 5.1 RBAC and Service Accounts
+== 5.1 RBAC とサービスアカウント
 
-=== 5.1.1 Ensure that the cluster-admin role is only used where required (Automated)
+=== 5.1.1 クラスター管理者ロールが必要な場合にのみ使用されることを確認してください（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
 kubectl get clusterrolebindings -o=custom-columns=ROLE:.roleRef.name,NAME:.metadata.name,SUBJECT:.subjects[*].name --no-headers | grep cluster-admin
 ----
 
-*Expected Result:* 'cluster-admin' contains valid elements from 'cluster-admin, helm-kube-system-traefik, helm-kube-system-traefik-crd' 
+*期待される結果:* 'cluster-admin' は 'cluster-admin, helm-kube-system-traefik, helm-kube-system-traefik-crd' の有効な要素を含みます。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2594,27 +2594,27 @@ cluster-admin cluster-admin system:masters cluster-admin helm-kube-system-traefi
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-Identify all clusterrolebindings to the cluster-admin role. Check if they are used and if they need this role or if they could use a role with fewer privileges. K3s gives exceptions to the helm-kube-system-traefik and helm-kube-system-traefik-crd clusterrolebindings as these are required for traefik installation into the kube-system namespace for regular operations. Where possible, first bind users to a lower privileged role and then remove the clusterrolebinding to the cluster-admin role:
+すべての clusterrolebinding を cluster-admin ロールに特定します。それらが使用されているか、またはこのロールが必要か、または権限の少ないロールを使用できるかを確認します。K3s は、通常の操作のために kube-system 名前空間に traefik をインストールするために必要な helm-kube-system-traefik および helm-kube-system-traefik-crd clusterrolebinding に例外を与えます。可能な場合は、最初にユーザーを権限の低いロールにバインドし、その後 cluster-admin ロールへの clusterrolebinding を削除します：
 
 ----
 kubectl delete clusterrolebinding [name]
 ----
 ======
 
-=== 5.1.2 Minimize access to secrets (Automated)
+=== 5.1.2 秘密へのアクセスを最小限に抑える（自動化）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Where possible, remove get, list and watch access to Secret objects in the cluster.
+*修正:*可能な場合は、クラスター内の Secret オブジェクトへの get、list、および watch アクセスを削除します。
 
-=== 5.1.3 Minimize wildcard use in Roles and ClusterRoles (Automated)
+=== 5.1.3 ロールおよびクラスター ロールでのワイルドカードの使用を最小限に抑える（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
@@ -2627,7 +2627,7 @@ do
   else
     printf "**role_name: %-50s role_namespace: %-25s is_compliant: true\n" "$\{role_name}" "$\{role_namespace}" fi;
   done
-  
+
 cr_whitelist="cluster-admin k3s-cloud-controller-manager local-path-provisioner-role" 
 cr_whitelist="$cr_whitelist system:kube-controller-manager system:kubelet-api-admin system:controller:namespace-controller" 
 cr_whitelist="$cr_whitelist system:controller:disruption-controller system:controller:generic-garbage-collector" 
@@ -2646,9 +2646,9 @@ do
 done
 ----
 
-*Expected Result:* 'is_compliant' is equal to 'true' 
+*期待される結果:* 'is_compliant' は 'true' と等しい 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2734,23 +2734,23 @@ done
 ----
 ======
 
-.*Remediation:*
+.*是正措置:*
 [%collapsible]
 ======
-Where possible replace any use of wildcards in clusterroles and roles with specific objects or actions. K3s gives exceptions for following cluster roles, which are required for regular operations: - k3s-cloud-controller-manager, local-path-provisioner-role, cluster-admin - system:kube-controller-manager, system:kubelet-api-admin, system:controller:namespace-controller, - system:controller:disruption-controller, system:controller:generic-garbage-collector, - system:controller:horizontal-pod-autoscaler, system:controller:resourcequota-controller
+可能な場合は、clusterroles および roles でのワイルドカードの使用を特定のオブジェクトまたはアクションに置き換えます。K3s は、通常の操作に必要な次のクラスター ロールに例外を与えます： - k3s-cloud-controller-manager、local-path-provisioner-role、cluster-admin - system:kube-controller-manager、system:kubelet-api-admin、system:controller:namespace-controller、 - system:controller:disruption-controller、system:controller:generic-garbage-collector、 - system:controller:horizontal-pod-autoscaler、system:controller:resourcequota-controller
 ======
 
-=== 5.1.4 Minimize access to create pods (Automated)
+=== 5.1.4 ポッドの作成へのアクセスを最小限に抑える（自動化）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Where possible, remove create access to pod objects in the cluster.
+*是正措置:*可能な場合は、クラスター内のポッドオブジェクトへの作成アクセスを削除してください。
 
-=== 5.1.5 Ensure that default service accounts are not actively used. (Automated)
+=== 5.1.5 デフォルトのサービスアカウントが積極的に使用されていないことを確認します。（自動化）
 
-*Result:* FAIL
+*結果:*失敗
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
@@ -2769,9 +2769,9 @@ do
 done
 ----
 
-*Expected Result:* 'is_compliant' is equal to 'true' 
+*期待される結果:* 'is_compliant' は 'true' と等しい 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2783,21 +2783,21 @@ done
 ----
 ======
 
-.*Remediation:*
+.*是正措置:*
 [%collapsible]
 ======
-Create explicit service accounts wherever a Kubernetes workload requires specific access to the Kubernetes API server. K3s makes an exception for the default service account in the kube-system namespace. Modify the configuration of each default service account to include this value automountServiceAccountToken: false Or using kubectl:
+Kubernetes ワークロードが Kubernetes API サーバーへの特定のアクセスを必要とする場合は、明示的なサービスアカウントを作成してください。K3s は kube-system 名前空間内のデフォルトのサービスアカウントに例外を与えます。各デフォルトのサービスアカウントの設定を変更して、この値 automountServiceAccountToken: false を含めます。または、kubectl を使用します：
 
 ----
 kubectl patch serviceaccount --namespace <NAMESPACE> default --patch '{"automountServiceAccountToken": false}'
 ----
 ======
 
-=== 5.1.6 Ensure that Service Account Tokens are only mounted where necessary (Automated)
+=== 5.1.6 サービスアカウントトークンが必要な場所にのみマウントされていることを確認します（自動化）
 
-*Result:* PASS
+*結果:*PASS
 
-*Audit:*
+*Audit（監査）:*
  
 [,bash]
 ----
@@ -2816,9 +2816,9 @@ do
 done
 ----
 
-*Expected Result:* 'is_compliant' is equal to 'true' OR 'service_account' contains valid elements from 'coredns, helm-traefik, helm-traefik-crd, traefik, metrics-server, svclb, local-path-provisioner-service-account' 
+*期待される結果:* 'is_compliant' は 'true' と等しい または 'service_account' は 'coredns, helm-traefik, helm-traefik-crd, traefik, metrics-server, svclb, local-path-provisioner-service-account' の有効な要素を含みます。 
 
-.*Returned Value:*
+.*戻り値:*
 [%collapsible]
 ======
 [,log]
@@ -2833,182 +2833,182 @@ done
 ----
 ======
 
-.*Remediation:*
+.*修正:*
 [%collapsible]
 ======
-Modify the definition of ServiceAccounts and Pods which do not need to mount service account tokens to disable it, with `automountServiceAccountToken: false`. If both the ServiceAccount and the Pod's .spec specify a value for automountServiceAccountToken, the Pod spec takes precedence. Condition: Pod is_compliant to true when - ServiceAccount is automountServiceAccountToken: false and Pod is automountServiceAccountToken: false or notset - ServiceAccount is automountServiceAccountToken: true notset and Pod is automountServiceAccountToken: false K3s gives exceptions to the following service-accounts, which are required for regular operations: - coredns, helm-traefik, helm-traefik-crd, traefik, metrics-server, svclb, local-path-provisioner-service-account
+サービスアカウントおよびサービスアカウントトークンをマウントする必要のないポッドの定義を修正し、`automountServiceAccountToken: false`を使ってマウントを無効にしてください。ServiceAccountとPodの.specの両方がautomountServiceAccountTokenの値を指定している場合、Podのspecが優先されます。条件：Podは、次の条件を満たすときに準拠しています - ServiceAccountがautomountServiceAccountToken: falseで、PodがautomountServiceAccountToken: falseまたはnotsetである場合 - ServiceAccountがautomountServiceAccountToken: true notsetで、PodがautomountServiceAccountToken: falseである場合。K3sは、通常の操作に必要な次のサービスアカウントに例外を与えます： - coredns、helm-traefik、helm-traefik-crd、traefik、metrics-server、svclb、local-path-provisioner-service-account
 ======
 
-=== 5.1.7 Avoid use of system:masters group (Manual)
+=== 5.1.7 system:mastersグループの使用を避ける（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Remove the system:masters group from all users in the cluster.
+*是正措置:*クラスター内のすべてのユーザーからsystem:mastersグループを削除します。
 
-=== 5.1.8 Limit use of the Bind, Impersonate and Escalate permissions in the Kubernetes cluster (Manual)
+=== 5.1.8 Kubernetesクラスター内でのBind、Impersonate、Escalate権限の使用を制限する（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Where possible, remove the impersonate, bind and escalate rights from subjects.
+*是正措置:*可能な限り、対象からimpersonate、bind、escalate権限を削除します。
 
-=== 5.1.9 Minimize access to create persistent volumes (Manual)
+=== 5.1.9 永続ボリュームの作成へのアクセスを最小限に抑える（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Where possible, remove create access to PersistentVolume objects in the cluster.
+*是正措置:*可能な限り、クラスター内のPersistentVolumeオブジェクトへの作成アクセスを削除します。
 
-=== 5.1.10 Minimize access to the proxy sub-resource of nodes (Manual)
+=== 5.1.10 ノードのプロキシサブリソースへのアクセスを最小限に抑える（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Where possible, remove access to the proxy sub-resource of node objects.
+*是正措置:*可能な限り、ノードオブジェクトのプロキシサブリソースへのアクセスを削除します。
 
-=== 5.1.11 Minimize access to the approval sub-resource of certificatesigningrequests objects (Manual)
+=== 5.1.11 certificatesigningrequestsオブジェクトの承認サブリソースへのアクセスを最小限に抑える（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Where possible, remove access to the approval sub-resource of certificatesigningrequest objects.
+*是正措置:*可能な限り、certificatesigningrequestオブジェクトの承認サブリソースへのアクセスを削除します。
 
-=== 5.1.12 Minimize access to webhook configuration objects (Manual)
+=== 5.1.12 webhook設定オブジェクトへのアクセスを最小限に抑える（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Where possible, remove access to the validatingwebhookconfigurations or mutatingwebhookconfigurations objects
+*是正措置:*可能な限り、validatingwebhookconfigurationsまたはmutatingwebhookconfigurationsオブジェクトへのアクセスを削除します。
 
-=== 5.1.13 Minimize access to the service account token creation (Manual)
+=== 5.1.13 サービスアカウントトークンの作成へのアクセスを最小限に抑える（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Where possible, remove access to the token sub-resource of serviceaccount objects. ## 5.2 Pod Security Standards
+*是正措置:*可能な限り、serviceaccountオブジェクトのトークンサブリソースへのアクセスを削除します。## 5.2 Podセキュリティ基準
 
-=== 5.2.1 Ensure that the cluster has at least one active policy control mechanism in place (Manual)
+=== 5.2.1 クラスターに少なくとも1つのアクティブなポリシー制御メカニズムが存在することを確認する（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Ensure that either Pod Security Admission or an external policy control system is in place for every namespace which contains user workloads.
+*是正措置:*ユーザーのワークロードを含むすべての名前空間に対して、Podセキュリティアドミッションまたは外部ポリシー制御システムが存在することを確認します。
 
-=== 5.2.2 Minimize the admission of privileged containers (Manual)
+=== 5.2.2 特権コンテナの受け入れを最小限に抑える（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of privileged containers.
+*是正措置:*ユーザーのワークロードを持つクラスター内の各ネームスペースにポリシーを追加し、特権コンテナの受け入れを制限します。
 
-=== 5.2.3 Minimize the admission of containers wishing to share the host process ID namespace (Manual)
+=== 5.2.3 ホストプロセスIDネームスペースを共有したいコンテナの受け入れを最小限に抑える（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of `hostPID` containers.
+*補修:*ユーザーのワークロードを持つクラスター内の各ネームスペースにポリシーを追加し、`hostPID` コンテナの受け入れを制限します。
 
-=== 5.2.4 Minimize the admission of containers wishing to share the host IPC namespace (Manual)
+=== 5.2.4 ホストIPCネームスペースを共有したいコンテナの受け入れを最小限に抑える（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of `hostIPC` containers.
+*是正措置:*ユーザーのワークロードを持つクラスター内の各ネームスペースにポリシーを追加し、`hostIPC` コンテナの受け入れを制限します。
 
-=== 5.2.5 Minimize the admission of containers wishing to share the host network namespace (Manual)
+=== 5.2.5 ホストネットワークネームスペースを共有したいコンテナの受け入れを最小限に抑える（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of `hostNetwork` containers.
+*是正措置:*ユーザーのワークロードを持つクラスター内の各ネームスペースにポリシーを追加し、`hostNetwork` コンテナの受け入れを制限します。
 
-=== 5.2.6 Minimize the admission of containers with allowPrivilegeEscalation (Manual)
+=== 5.2.6 allowPrivilegeEscalationを持つコンテナの受け入れを最小限に抑える（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of containers with `.spec.allowPrivilegeEscalation` set to `true`.
+*是正措置:*ユーザーのワークロードを持つクラスター内の各ネームスペースにポリシーを追加し、`.spec.allowPrivilegeEscalation` が `true` に設定されているコンテナの受け入れを制限します。
 
-=== 5.2.7 Minimize the admission of root containers (Manual)
+=== 5.2.7 ルートコンテナの受け入れを最小限に抑える（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Create a policy for each namespace in the cluster, ensuring that either `MustRunAsNonRoot` or `MustRunAs` with the range of UIDs not including 0, is set.
+*是正措置:*クラスター内の各ネームスペースにポリシーを作成し、`MustRunAsNonRoot` または `MustRunAs` がUIDの範囲に0を含まないように設定されていることを確認します。
 
-=== 5.2.8 Minimize the admission of containers with the NET_RAW capability (Manual)
+=== 5.2.8 NET_RAW機能を持つコンテナの受け入れを最小限に抑える（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of containers with the `NET_RAW` capability.
+*是正措置:*ユーザーのワークロードを持つクラスター内の各ネームスペースにポリシーを追加し、`NET_RAW` 機能を持つコンテナの受け入れを制限します。
 
-=== 5.2.9 Minimize the admission of containers with added capabilities (Manual)
+=== 5.2.9 追加された機能を持つコンテナの受け入れを最小限に抑える（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Ensure that `allowedCapabilities` is not present in policies for the cluster unless it is set to an empty array.
+*是正措置:*`allowedCapabilities` が空の配列に設定されていない限り、クラスターのポリシーに存在しないことを確認します。
 
-=== 5.2.10 Minimize the admission of containers with capabilities assigned (Manual)
+=== 5.2.10 割り当てられた機能を持つコンテナの受け入れを最小限に抑える（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Review the use of capabilities in applications running on your cluster. Where a namespace contains applications which do not require any Linux capabities to operate consider adding a PSP which forbids the admission of containers which do not drop all capabilities.
+*是正措置:*クラスター上で実行されているアプリケーションの機能の使用を確認します。ネームスペースにLinux機能を必要としないアプリケーションが含まれている場合、すべての機能をドロップしないコンテナの受け入れを禁止するPSPを追加することを検討してください。
 
-=== 5.2.11 Minimize the admission of Windows HostProcess containers (Manual)
+=== 5.2.11 Windows HostProcessコンテナの受け入れを最小限に抑える（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of containers that have `.securityContext.windowsOptions.hostProcess` set to `true`.
+*是正措置:*ユーザーのワークロードを持つクラスター内の各ネームスペースにポリシーを追加し、`.securityContext.windowsOptions.hostProcess` が `true` に設定されているコンテナの受け入れを制限します。
 
-=== 5.2.12 Minimize the admission of HostPath volumes (Manual)
+=== 5.2.12 HostPathボリュームの受け入れを最小限に抑える（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of containers with `hostPath` volumes.
+*是正措置:*ユーザーのワークロードを持つクラスター内の各ネームスペースにポリシーを追加して、`hostPath` ボリュームを持つコンテナの受け入れを制限します。
 
-=== 5.2.13 Minimize the admission of containers which use HostPorts (Manual)
+=== 5.2.13 ホストポートを使用するコンテナの受け入れを最小限に抑えます（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of containers which use `hostPort` sections. ## 5.3 Network Policies and CNI
+*是正措置:*ユーザーのワークロードを持つクラスター内の各ネームスペースにポリシーを追加して、`hostPort` セクションを使用するコンテナの受け入れを制限します。 ## 5.3 ネットワークポリシーとCNI
 
-=== 5.3.1 Ensure that the CNI in use supports NetworkPolicies (Manual)
+=== 5.3.1 使用中のCNIがネットワークポリシーをサポートしていることを確認します（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* If the CNI plugin in use does not support network policies, consideration should be given to making use of a different plugin, or finding an alternate mechanism for restricting traffic in the Kubernetes cluster.
+*是正措置:*使用中のCNIプラグインがネットワークポリシーをサポートしていない場合は、別のプラグインの使用を検討するか、Kubernetesクラスター内のトラフィックを制限するための代替メカニズムを見つける必要があります。
 
-=== 5.3.2 Ensure that all Namespaces have NetworkPolicies defined (Manual)
+=== 5.3.2 すべてのネームスペースにネットワークポリシーが定義されていることを確認します（手動）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Follow the documentation and create NetworkPolicy objects as you need them. ## 5.4 Secrets Management
+*是正措置:*ドキュメントに従って、必要に応じてネットワークポリシーオブジェクトを作成します。 ## 5.4 シークレット管理
 
-=== 5.4.1 Prefer using Secrets as files over Secrets as environment variables (Manual)
+=== 5.4.1 シークレットを環境変数としてではなく、ファイルとして使用することを優先してください（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* If possible, rewrite application code to read Secrets from mounted secret files, rather than from environment variables.
+*修正:*可能であれば、アプリケーションコードを再記述して、環境変数ではなく、マウントされたシークレットファイルからシークレットを読み取るようにしてください。
 
-=== 5.4.2 Consider external secret storage (Manual)
+=== 5.4.2 外部シークレットストレージを検討してください（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Refer to the Secrets management options offered by your cloud provider or a third-party secrets management solution. ## 5.5 Extensible Admission Control
+*修正:*クラウドプロバイダーまたはサードパーティのシークレット管理ソリューションが提供するシークレット管理オプションを参照してください。 ## 5.5 拡張可能なAdmission Control
 
-=== 5.5.1 Configure Image Provenance using ImagePolicyWebhook admission controller (Manual)
+=== 5.5.1 ImagePolicyWebhookアドミッションコントローラーを使用してイメージの来歴を構成してください（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Follow the Kubernetes documentation and setup image provenance. ## 5.7 General Policies
+*修正:*Kubernetesのドキュメントに従って、イメージの来歴を設定してください。 ## 5.7 一般的なポリシー
 
-=== 5.7.1 Create administrative boundaries between resources using namespaces (Manual)
+=== 5.7.1 ネームスペースを使用してリソース間に管理境界を作成してください（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Follow the documentation and create namespaces for objects in your deployment as you need them.
+*修正:*ドキュメントに従って、必要に応じてデプロイメント内のオブジェクトのためにネームスペースを作成してください。
 
-=== 5.7.2 Ensure that the seccomp profile is set to docker/default in your Pod definitions (Manual)
+=== 5.7.2 Pod定義でseccompプロファイルがdocker/defaultに設定されていることを確認してください（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Use `securityContext` to enable the docker/default seccomp profile in your pod definitions. An example is as below: securityContext: seccompProfile: type: RuntimeDefault
+*修正:*Pod定義でdocker/default seccompプロファイルを有効にするには、`securityContext`を使用してください。以下のような例があります： securityContext: seccompProfile: type:RuntimeDefault
 
-=== 5.7.3 Apply SecurityContext to your Pods and Containers (Manual)
+=== 5.7.3 PodとコンテナにSecurityContextを適用してください（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Follow the Kubernetes documentation and apply SecurityContexts to your Pods. For a suggested list of SecurityContexts, you may refer to the CIS Security Benchmark for Docker Containers.
+*修正:*Kubernetesのドキュメントに従って、PodにSecurityContextを適用してください。推奨されるSecurityContextのリストについては、DockerコンテナのCISセキュリティベンチマークを参照してください。
 
-=== 5.7.4 The default namespace should not be used (Manual)
+=== 5.7.4 デフォルトのネームスペースは使用しないでください（マニュアル）
 
-*Result:* WARN
+*結果:*WARN
 
-*Remediation:* Ensure that namespaces are created to allow for appropriate segregation of Kubernetes resources and that all new resources are created in a specific namespace.
+*修正:*Kubernetesリソースの適切な分離を可能にするためにネームスペースが作成されていることを確認し、すべての新しいリソースが特定のネームスペース内に作成されるようにしてください。

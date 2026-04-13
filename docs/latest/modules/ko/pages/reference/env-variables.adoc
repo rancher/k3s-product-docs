@@ -1,5 +1,5 @@
 = Environment Variables
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2024-12-05
 :page-revdate: {revdate}
 

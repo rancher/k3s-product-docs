@@ -1,5 +1,5 @@
 = Advanced Options / Configuration
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-03-30
 :page-revdate: {revdate}
 
@@ -29,7 +29,7 @@ For more information, see the xref:cli/token.adoc#_k3s_token_1[`k3s token` comma
 
 === Nameserver Viability Checks
 
-On startup, each node checks the files at `/etc/resolv.conf` and `/run/systemd/resolve/resolv.conf` for loopback, multicast, or link-local nameservers. 
+On startup, each node checks the files at `/etc/resolv.conf` and `/run/systemd/resolve/resolv.conf` for loopback, multicast, or link-local nameservers.
 If any such entries are present, the configuration file is not used, as such entries would not function properly within pods that https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy[inherit name resolution configuration] from their node.
 If no usable resolv.conf is found, K3s prints a warning message to the logs, and generate a stub resolv.conf that uses `8.8.8.8` and `2001:4860:4860::8888` as the nameservers.
 
@@ -72,7 +72,7 @@ data:
 
 == Configuring an HTTP proxy
 
-If you are running K3s in an environment, which only has external connectivity through an HTTP proxy, you can configure your proxy settings on the K3s systemd service. These proxy settings will then be used in K3s and passed down to the embedded containerd and kubelet. 
+If you are running K3s in an environment, which only has external connectivity through an HTTP proxy, you can configure your proxy settings on the K3s systemd service. These proxy settings will then be used in K3s and passed down to the embedded containerd and kubelet.
 
 [NOTE]
 ====
@@ -185,7 +185,7 @@ sudo etcdctl version \
 [IMPORTANT]
 .Version Gate
 ====
-K3s includes containerd 2.0 as of the February 2025 releases: v1.31.6+k3s1 and v1.32.2+k3s1.  
+K3s includes containerd 2.0 as of the February 2025 releases: v1.31.6+k3s1 and v1.32.2+k3s1.
 Be aware that containerd 2.0 prefers config version 3, while containerd 1.7 prefers config version 2.
 ====
 
@@ -236,7 +236,7 @@ crun, lunatic, nvidia, nvidia-cdi, nvidia-experimental, slight, spin, wasmedge, 
 ----
 
 K3s uses the service's `PATH` environment variable to search for container runtime executables.
-If an installed container runtime is not detected by K3s, ensure it is present in a system path, which generally includes:  
+If an installed container runtime is not detected by K3s, ensure it is present in a system path, which generally includes:
 `/usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin`
 
 === NVIDIA Container Runtime
@@ -248,7 +248,7 @@ NVIDIA GPUs require installation of the NVIDIA Container Runtime in order to sch
 . Install the nvidia container runtime packages. For example:
 `apt install -y nvidia-container-runtime cuda-drivers-fabricmanager-515 nvidia-headless-515-server`
 . xref:installation/installation.adoc[Install K3s], or restart it if already installed.
-. Confirm that the nvidia container runtime has been found by k3s:  
+. Confirm that the nvidia container runtime has been found by k3s:
  `grep nvidia /var/lib/rancher/k3s/agent/etc/containerd/config.toml`
 
 If these steps are followed properly, K3s will automatically add NVIDIA runtimes to the containerd configuration, depending on what runtime executables are found.

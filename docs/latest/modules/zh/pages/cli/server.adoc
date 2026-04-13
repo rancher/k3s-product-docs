@@ -1,17 +1,17 @@
 = k3s server
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-05-26
 :page-revdate: {revdate}
 
-在本节中，你将学习如何配置 K3s Server。
+在本节中，您将学习如何配置 K3s 服务器。
 
-请注意，Server 也运行 Agent，因此 Server 也支持 xref:cli/agent.adoc[`k3s agent` 文档]中列出的所有配置选项。
+请注意，服务器还运行一个代理，因此在 xref:cli/agent.adoc[`k3s agent` 文档] 中列出的所有配置选项在服务器上也受支持。
 
-在本文中，选项作为 CLI 标志传递，但是也可以作为配置文件选项传递。有关使用 YAML 配置文件的更多信息，请参阅xref:installation/configuration.adoc#_configuration_file[配置文件]文档。
+选项在此页面上以 CLI 标志的形式记录，但也可以作为配置文件选项传递。有关使用 YAML 配置文件的更多信息，请参见 xref:installation/configuration.adoc#_configuration_file[配置文件] 文档。
 
 == 关键配置值
 
-以下选项必须在集群中的所有 Server 上设置为相同的值。如果不这样做，新 Server 将无法加入集群（使用嵌入式 etcd 时），或集群将无法正确运行（使用外部数据存储时）。
+以下选项必须在集群中的所有服务器上设置为相同的值。如果不这样做，将导致新服务器在使用嵌入式 etcd 时无法加入集群，或者在使用外部数据存储时集群操作不正确。
 
 * `--agent-token`
 * `--cluster-cidr`
@@ -20,8 +20,9 @@
 * `--disable-cloud-controller`
 * `--disable-helm-controller`
 * `--disable-network-policy`
-* `--disable=servicelb` _注意：其他打包组件可能会在单独服务器上禁用_
+* `--disable=servicelb` _注意：其他打包组件可能在每个服务器基础上被禁用_
 * `--egress-selector-mode`
+* `--embedded-registry`
 * `--flannel-backend`
 * `--flannel-external-ip`
 * `--flannel-ipv6-masq`
@@ -34,24 +35,24 @@
 === 数据库
 
 |===
-| 标志 | 环境变量 | Default | 描述
+| 标志 | 环境变量 | 默认值 | 说明
 
-| `--datastore-endpoint` value
+| `--datastore-endpoint` 值
 | `K3S_DATASTORE_ENDPOINT`
 |
-| 指定 etcd、NATS、MySQL、Postgres 或 SQLite（默认）数据源名称
+| 指定 etcd、NATS、MySQL、Postgres 或 SQLite 数据源名称
 
-| `--datastore-cafile` value
+| `--datastore-cafile` 值
 | `K3S_DATASTORE_CAFILE`
 |
-| 用于保护数据存储后端通信的 TLS CA 文件
+| 用于保护数据存储后端通信的 TLS 证书颁发机构文件
 
-| `--datastore-certfile` value
+| `--datastore-certfile` 值
 | `K3S_DATASTORE_CERTFILE`
 |
 | 用于保护数据存储后端通信的 TLS 证书文件
 
-| `--datastore-keyfile` value
+| `--datastore-keyfile` 值
 | `K3S_DATASTORE_KEYFILE`
 |
 | 用于保护数据存储后端通信的 TLS 密钥文件
@@ -59,74 +60,74 @@
 | `--etcd-expose-metrics`
 |
 | false
-| 向客户端接口公开 etcd 指标（默认值：false）
+| 将 etcd 指标暴露给客户端接口
 
 | `--etcd-disable-snapshots`
 |
 | false
 | 禁用自动 etcd 快照
 
-| `--etcd-snapshot-name` value
+| `--etcd-snapshot-name` 值
 |
 | "etcd-snapshot-<unix-timestamp>"
-| 设置 etcd 快照的基本名称。默认值：etcd-snapshot-<unix-timestamp>（默认值："`etcd-snapshot`"）
+| 设置 etcd 快照的基本名称。
 
-| `--etcd-snapshot-schedule-cron` value
+| `--etcd-snapshot-schedule-cron` 值
 |
 | "0 */12 * * *"
-| cron 规范中的快照间隔时间。eg. 每 5 小时 '0 */5 _ * _'（默认值："0 */12 * * *"）
+| 快照间隔时间的 cron 规范。例如，每 5 小时 "0 */5 _ * _"
 
-| `--etcd-snapshot-retention` value
+| `--etcd-snapshot-retention` 值
 |
 | 5
-| 要保留的快照数量（默认值：5）
+| 要保留的快照数量
 
-| `--etcd-snapshot-dir` value
+| `--etcd-snapshot-dir` 值
 |
-| $\{data-dir}/db/snapshots
-| 保存数据库快照的目录（默认值：$\{data-dir}/db/snapshots）
+| ${data-dir}/db/snapshots
+| 保存数据库快照的目录
 
 | `--etcd-s3`
 |
 |
 | 启用备份到 S3
 
-| `--etcd-s3-endpoint` value
+| `--etcd-s3-endpoint` 值
 |
-|  "s3.amazonaws.com"
-| S3 端点 URL（默认值："`s3.amazonaws.com`"）
+| "s3.amazonaws.com"
+| S3 端点 URL
 
-| `--etcd-s3-endpoint-ca` value
+| `--etcd-s3-endpoint-ca` 值
 |
 |
-| S3 自定义 CA 证书，用于连接到 S3 端点
+| 连接到 S3 端点的 S3 自定义 CA 证书
 
 | `--etcd-s3-skip-ssl-verify`
 |
 |
 | 禁用 S3 SSL 证书验证
 
-| `--etcd-s3-access-key` value
+| `--etcd-s3-access-key` 值
 | `AWS_ACCESS_KEY_ID`
 |
-| S3 access key
+| S3 访问密钥
 
-| `--etcd-s3-secret-key` value
+| `--etcd-s3-secret-key` 值
 | `AWS_SECRET_ACCESS_KEY`
 |
-| S3 secret key
+| S3 秘密密钥
 
-| `--etcd-s3-bucket` value
+| `--etcd-s3-bucket` 值
 |
 |
 | S3 存储桶名称
 
-| `--etcd-s3-region` value
+| `--etcd-s3-region` 值
 |
 | "us-east-1"
-| S3 区域/存储桶位置（可选）（默认值："`us-east-1`"）
+| S3 区域/存储桶位置（可选）
 
-| `--etcd-s3-folder` value
+| `--etcd-s3-folder` 值
 |
 |
 | S3 文件夹
@@ -134,48 +135,50 @@
 | `--etcd-s3-proxy`
 | 
 | 
-| Proxy server to use when connecting to S3, overriding any proxy-related environment variables
+| 连接到 S3 时使用的代理服务器，覆盖任何与代理相关的环境变量
 
 | `--etcd-s3-config-secret`
 | 
 | 
-| Name of secret in the kube-system namespace used to configure S3, if etcd-s3 is enabled and no other etcd-s3 options are set
+| 在 kube-system 名称空间中用于配置 S3 的秘密名称，如果启用了 etcd-s3 且未设置其他 etcd-s3 选项
+
 
 | `--etcd-s3-insecure`
 |
 |
-| 通过 HTTPS 禁用 S3
+| 禁用 S3 的 HTTPS
 
-| `--etcd-s3-timeout` value
+| `--etcd-s3-timeout` 值
 |
 | 5m0s
-| S3 超时（默认值：5m0s）
+| S3 超时（默认：5m0s)
 |===
 
-=== 集群选项
+[#_cluster_options]
+=== 群集选项
 
 |===
-| 标志 | 环境变量 | 描述
+| 标志 | 环境变量 | 说明
 
-| `--token` value, `-t` value
+| `--token` 值，`-t` 值
 | `K3S_TOKEN`
-| 共享密钥，用于将 server 或 agent 加入集群
+| 用于将服务器或代理加入集群的共享密钥
 
-| `--token-file` value
+| `--token-file` 值
 | `K3S_TOKEN_FILE`
-| 包含 cluster-secret/token 的文件
+| 包含集群密钥/词元的文件
 
-| `--agent-token` value
+| `--agent-token` 值
 | `K3S_AGENT_TOKEN`
-| 共享密钥，用于将 agent 加入集群，但不能用于 server
+| 用于将代理加入集群的共享密钥，但不包括服务器
 
-| `--agent-token-file` value
+| `--agent-token-file` 值
 | `K3S_AGENT_TOKEN_FILE`
-| 包含 agent secret 的文件
+| 包含代理密钥的文件
 
-| `--server` value
+| `--server` 值
 | `K3S_URL`
-| 要连接的 server，用于加入集群
+| 要连接的服务器，用于加入集群
 
 | `--cluster-init`
 | `K3S_CLUSTER_INIT`
@@ -183,133 +186,138 @@
 
 | `--cluster-reset`
 | `K3S_CLUSTER_RESET`
-| 忘记所有对等点，成为新集群的唯一成员
+| 忘记所有对等体，成为新集群的唯一成员
 |===
 
-=== 管理 Kubeconfig 选项
+=== 管理员 Kubeconfig 选项
 
 |===
-| 标志 | 环境变量 | 描述
+| 标志 | 环境变量 | 说明
 
-| `--write-kubeconfig value, -o` value
+| `--write-kubeconfig value, -o` 值
 | `K3S_KUBECONFIG_OUTPUT`
-| 将 admin 客户端的 kubeconfig 写入此文件
+| 将 kubeconfig 写入此文件以供管理员客户端使用
 
-| `--write-kubeconfig-mode` value
+| `--write-kubeconfig-mode` 值
 | `K3S_KUBECONFIG_MODE`
-| 使用此link:https://en.wikipedia.org/wiki/Chmod[模式]写入 kubeconfig。kubeconfig 文件归 root 所有，并默认使用 600 模式写入。如果将模式改为 644，主机上的其他非特权用户将能读取它。
+| 使用此 https://en.wikipedia.org/wiki/Chmod[模式] 写入 kubeconfig。kubeconfig 文件由 root 拥有，默认模式为 600。将模式更改为 644 将允许主机上的其他非特权用户读取该文件。
 
-| `--write-kubeconfig-group` value
+| `--write-kubeconfig-group` 值
 | `K3S_KUBECONFIG_GROUP`
-| Write kubeconfig group. Combining with `--write-kubeconfig-mode`, it will allow your k3s administrators accessing the kubeconfig file but keeping the file owned by root.
+| 写入 kubeconfig 组。与 `--write-kubeconfig-mode` 结合使用，将允许您的 k3s 管理员访问 kubeconfig 文件，但保持文件由 root 拥有。
 |===
 
 == 高级选项
 
-=== Logging
+=== 日志记录
 
 |===
-| 标志 | 默认 | 描述
+| 标志 | 默认值 | 说明
 
 | `--debug`
-| N/A
-| 打开 debug 日志
+| 不适用
+| 打开调试日志
 
-| `-v` value
+| `-v` 值
 | 0
-| 表示日志级别详细程度的数字
+| 日志级别详细程度的数字
 
-| `--vmodule` value
-| N/A
-| FILE_PATTERN=LOG_LEVEL 格式，用逗号分隔的列表，用于文件过滤日志
+| `--vmodule` 值
+| 不适用
+| 以逗号分隔的 FILE_PATTERN=LOG_LEVEL 设置，用于文件过滤日志记录
 
-| `--log value, -l` value
-| N/A
+| `--log value, -l` 值
+| 不适用
 | 记录到文件
 
 | `--alsologtostderr`
-| N/A
-| 记录到标准错误以及文件（如果设置）
+| 不适用
+| 同时记录到标准错误和文件（如果设置）
 |===
 
-=== Listeners
+=== 侦听器
 
 |===
-| 标志 | 默认 | 描述
+| 标志 | 默认值 | 说明
 
-| `--bind-address` value
+| `--bind-address` 值
 | 0.0.0.0
-| K3s 绑定地址
+| k3s 绑定地址
 
-| `--https-listen-port` value
+| `--https-listen-port` 值
 | 6443
-| HTTPS 监听端口
+| HTTPS 侦听端口
 
-| `--advertise-address` value
+| `--advertise-address` 值
 | node-external-ip/node-ip
-| IPv4 地址，apiserver 使用该地址向集群成员通告
+| apiserver 为其服务端点广告的 IPv4/IPv6 地址 +
+请注意，主 `service-cidr` IP 范围必须与广告地址属于同一地址族
 
-| `--advertise-port` value
+| `--advertise-port` 值
 | listen-port/0
-| apiserver 用于向集群成员通告的端口
+| apiserver 用于向集群成员广告的端口
 
-| `--tls-san` value
-| N/A
-| 在 TLS 证书上添加其他主机名或 IPv4/IPv6 地址作为 Subject Alternative Name
+| `--tls-san` 值
+| 不适用
+| 在 TLS 证书上添加额外的主机名或 IPv4/IPv6 地址作为主题备用名称
 
 | `--tls-san-security`
 | true
-| Protect the server TLS cert by refusing to add Subject Alternative Names not associated with the kubernetes apiserver service, server nodes, or values of the tls-san option 
+| 通过拒绝添加与 kubernetes apiserver 服务、服务器节点或 tls-san 选项的值无关的主题备用名称来保护服务器 TLS 证书 
 |===
 
 === 数据
 
 |===
-| 标志 | 默认 | 描述
+| 标志 | 默认值 | 说明
 
-| `--data-dir value, -d` value
-| `/var/lib/rancher/k3s`，如果不是 root，则为 `+${HOME}/.rancher/k3s+`
-| 保存状态的文件夹
+| `--data-dir value, -d` 值
+| `/var/lib/rancher/k3s` 或 `${HOME}/.rancher/k3s` 如果不是 root
+| 用于保存状态的文件夹
 |===
 
-=== Secret 加密
+=== 秘密加密
 
 |===
-| 标志 | 默认 | 描述
+| 标志 | 默认值 | 说明
 
 | `--secrets-encryption`
 | false
-| 启用 secret 静态加密
+| 启用静态秘密加密
+
+| `--secrets-encryption-provider`
+| aescbc
+| 要使用的加密提供程序
 |===
 
 === 网络
 
 |===
-| 标志 | 默认 | 描述
+| 标志 | 默认值 | 说明
 
-| `--cluster-cidr` value
+| `--cluster-cidr` 值
 | "10.42.0.0/16"
-| 用于 pod IP 的 IPv4/IPv6 网络 CIDR
+| 用于 Pod IP 的 IPv4/IPv6 网络 CIDR
 
-| `--service-cidr` value
+| `--service-cidr` 值
 | "10.43.0.0/16"
 | 用于服务 IP 的 IPv4/IPv6 网络 CIDR
 
-| `--service-node-port-range` value
+| `--service-node-port-range` 值
 | "30000-32767"
 | 为具有 NodePort 可见性的服务保留的端口范围
 
-| `--cluster-dns` value
+| `--cluster-dns` 值
 | "10.43.0.10"
-| 用于 coredns 服务的 IPv4 集群 IP。需要在 service-cidr 范围内
+| coredns 服务的 IPv4 集群 IP。应在您的 service-cidr 范围内
 
-| `--cluster-domain` value
+| `--cluster-domain` 值
 | "cluster.local"
-| 集群域名
+| 集群域
 
-| `--flannel-backend` value
+| `--flannel-backend` 值
 | "vxlan"
-| "`none`"、"`vxlan`"、"`ipsec`"（已弃用）、"`host-gw`"、"`wireguard-native`" 或 "`wireguard`"（已弃用）中的其中一个
+| 可以是 'none'、'vxlan'、'ipsec'(已弃用) 、'host-gw'、'wireguard-native' 或 'wireguard'(已弃用) 之一
 
 | `--flannel-ipv6-masq`
 | "N/A"
@@ -317,50 +325,50 @@
 
 | `--flannel-external-ip`
 | "N/A"
-| 将节点外部 IP 地址用于 Flannel 流量
+| 使用节点外部 IP 地址进行 Flannel 流量
 
-| `--servicelb-namespace` value
+| `--servicelb-namespace` 值
 | "kube-system"
 | servicelb 组件的 pod 命名空间
 
-| `--egress-selector-mode` value
+| `--egress-selector-mode` 值
 | "agent"
-a| 仅支持： 
+a| 必须是以下之一：
 
-* disabled：apiserver 不使用 agent 隧道与节点通信。要求 server 运行 agent，并直接连接到 agent 上的 kubelet，否则 apiserver 将无法访问 service 端点或执行 kubectl exec 和 kubectl 日志。
-* agent：apiserver 使用 agent 隧道与节点通信。节点允许环回地址的隧道连接。要求 server 也运行 agent，否则 apiserver 将无法访问 service 端点。K3s 的历史默认值。
-* pod：apiserver 使用 agent 隧道与节点和 service 端点通信，通过监视节点将端点连接路由到正确的 agent。节点允许环回地址或分配给节点的 CIDR 的隧道连接。
-* cluster：apiserver 使用 agent 隧道与节点和 service 端点通信，通过监视端点将端点连接路由到正确的 agent。节点允许环回地址或配置的集群 CIDR 范围的隧道连接。
+* 已禁用：apiserver 不使用代理隧道与节点通信。要求服务器运行代理程序，并且能够与代理程序上的 kubelet 直接连接，否则 apiserver 将无法访问服务端点或执行 kubectl exec 和 kubectl logs 操作。
+* 代理：apiserver 使用代理隧道与节点通信。节点允许来自环回地址的隧道连接。要求服务器也运行代理，否则 apiserver 将无法访问服务端点。k3s 的历史默认值。
+* pod：apiserver 使用代理隧道与节点和服务端点通信，通过监视节点将端点连接路由到正确的代理。节点允许来自回环地址的隧道连接，或分配给其节点的 CIDR。
+* 群集：apiserver 使用代理隧道与节点和服务端点进行通信，通过监视端点将端点连接路由到正确的代理。节点允许从环回地址或配置的集群 CIDR 范围进行隧道连接。
 |===
 
 === 存储类
 
 |===
-| 标志 | 描述
+| 标志 | 说明
 
-| `--default-local-storage-path` value
-| 本地制备器存储类的默认本地存储路径
+| `--default-local-storage-path` 值
+| 本地提供者存储类的默认本地存储路径
 |===
 
 === Kubernetes 组件
 
 |===
-| 标志 | 描述
+| 标志 | 说明
 
-| `--disable` value
-| 请参阅xref:installation/packaged-components.adoc#_using_the_disable_flag[使用 `--disable` 标志]。
+| `--disable` 值
+| 参见 "xref:installation/packaged-components.adoc#_using_the_disable_flag[使用 `--disable` 标志]"
 
 | `--disable-scheduler`
-| 禁用 Kubernetes 默认调度程序
+| 禁用 Kubernetes 默认调度器
 
 | `--disable-cloud-controller`
-| 禁用 k3s 默认云 Controller Manager
+| 禁用 k3s 默认云控制器管理器
 
 | `--disable-kube-proxy`
 | 禁用运行 kube-proxy
 
 | `--disable-network-policy`
-| 禁用 K3s 默认网络策略控制器
+| 禁用 k3s 默认网络策略控制器
 
 | `--disable-helm-controller`
 | 禁用 Helm 控制器
@@ -369,90 +377,90 @@ a| 仅支持：
 === Kubernetes 进程的自定义标志
 
 |===
-| 标志 | 描述
+| 标志 | 说明
 
-| `--etcd-arg` value
+| `--etcd-arg` 值
 | etcd 进程的自定义标志
 
-| `--kube-apiserver-arg` value
+| `--kube-apiserver-arg` 值
 | kube-apiserver 进程的自定义标志
 
-| `--kube-scheduler-arg` value
+| `--kube-scheduler-arg` 值
 | kube-scheduler 进程的自定义标志
 
-| `--kube-controller-manager-arg` value
+| `--kube-controller-manager-arg` 值
 | kube-controller-manager 进程的自定义标志
 
-| `--kube-cloud-controller-manager-arg` value
+| `--kube-cloud-controller-manager-arg` 值
 | kube-cloud-controller-manager 进程的自定义标志
 
-| `--kubelet-arg` value
+| `--kubelet-arg` 值
 | kubelet 进程的自定义标志
 
-| `--kube-proxy-arg` value
+| `--kube-proxy-arg` 值
 | kube-proxy 进程的自定义标志
 |===
 
 === 实验选项
 
 |===
-| 标志 | 描述
+| 标志 | 说明
 
 | `--rootless`
-| 无根运行
+| 以无根模式运行
 
 | `--enable-pprof`
-| 在 supervisor 端口上启用 pprof 端点
+| 在主管端口启用 pprof 端点。
 
 | `--docker`
-| 使用 cri-dockerd 而不是 containerd
+| 使用 cri-dockerd 而不是 containerd。
 
 | `--prefer-bundled-bin`
-| 偏向打包的用户空间二进制文件，而不是主机二进制文件
+| 优先使用捆绑的用户空间二进制文件而不是主机二进制文件
 
 | `--disable-agent`
-| 请参阅xref:advanced.adoc#_running_agentless_servers_experimental[运行无 Agent 的 Server]
+| 参见 "xref:advanced.adoc#_running_agentless_servers_experimental[无代理服务器运行]"
 
 | `--embedded-registry`
-| See "xref:installation/registry-mirror.adoc[Embedded Registry Mirror]"
+| 参见 "xref:installation/registry-mirror.adoc[嵌入式注册表镜像]"
 
 | `--vpn-auth`
-| See "xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[Integration with the Tailscale VPN provider]" 
+| 参见 "xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[与 Tailscale VPN 提供商的集成]" 
 
 | `--vpn-auth-file`
-| See "xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[Integration with the Tailscale VPN provider]"
+| 参见 "xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[与 Tailscale VPN 提供商的集成]" 
 |===
 
 === 已弃用选项
 
 |===
-| 标志 | 环境变量 | 描述
+| 标志 | 环境变量 | 说明
 
 | `--no-flannel`
-| N/A
+| 不适用
 | 使用 `--flannel-backend=none`
 
-| `--no-deploy` value
-| N/A
+| `--no-deploy` 值
+| 不适用
 | 使用 `--disable`
 
-| `--cluster-secret` value
+| `--cluster-secret` 值
 | `K3S_CLUSTER_SECRET`
 | 使用 `--token`
 
 | `--flannel-backend` wireguard
-| N/A
+| 不适用
 | 使用 `--flannel-backend=wireguard-native`
 
 | `--flannel-backend` value=option1=value
-| N/A
-| 使用 `--flannel-conf` 指定带有后端配置的 Flannel 配置文件
+| 不适用
+| 使用`--flannel-conf`指定带有后端配置的flannel配置文件
 |===
 
-== K3s Server CLI 帮助
+== K3s 服务器 CLI 帮助。
 
 ____
-如果某个选项出现在括号中（例如 `[$K3S_TOKEN]`），该选项可以作为该名称的环境变量传入。
+如果选项在下面的括号中出现，例如`[$K3S_TOKEN]`，则表示该选项可以作为该名称的环境变量传递。
 ____
 
 [,bash]

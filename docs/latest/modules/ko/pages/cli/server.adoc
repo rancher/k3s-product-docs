@@ -1,5 +1,5 @@
 = k3s server
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-05-26
 :page-revdate: {revdate}
 

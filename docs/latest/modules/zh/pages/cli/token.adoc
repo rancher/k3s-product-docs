@@ -1,103 +1,103 @@
-= k3s token
-:page-languages: [en, ja, ko, zh]
+= k3s 词元
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-05-26
 :page-revdate: {revdate}
 
-K3s 使用 Token 来保护加入节点的过程 and to encrypt confidential information that is persisted to the datastore。Token 用于验证加入的节点和集群。
+K3s 使用词元来保护节点加入过程，并加密持久化到数据存储中的机密信息。词元用于验证集群对加入节点的身份，以及加入节点对集群的身份。
 
-== Token 格式
+== 词元格式
 
-K3s Token 可以使用安全（secure）或短（short）格式。安全格式能让客户端在发送凭证之前验证加入的集群的身份，因此首选安全格式。
+K3s 词元可以以安全格式或简短格式指定。安全格式是首选，因为它使客户端能够在发送凭据之前验证其要加入的集群的身份。
 
-=== Secure
+=== 安全
 
-安全 Token 格式（有时称为"`完整`" Token 格式）包含以下部分：
+安全词元格式（有时称为 "完整" 词元）包含以下部分：
 
 `<prefix><cluster CA hash>::<credentials>`
 
-* `prefix`：固定的 `K10` 前缀，用来标识 token 格式
-* `cluster CA hash`：集群的 Server CA 证书的哈希，用于为加入的节点验证 Server。
- ** 对于自签名 CA 证书，这是存储在磁盘上的 PEM 格式证书的 SHA256 总和。
- ** 对于自定义 CA 证书，这是根证书的 DER 编码的 SHA256 总和，也称为证书指纹。
-* `credentials`：用户名和密码，或持有者 Token，用于验证加入集群的节点。
+* `prefix`：一个固定的 `K10` 前缀，用于标识词元格式
+* `cluster CA hash`：集群服务器 CA 证书的哈希值，用于验证服务器与加入节点之间的身份。
+ ** 对于自签名 CA 证书，这是存储在磁盘上的 PEM 格式证书的 SHA256 摘要。
+ ** 对于自定义 CA 证书，这是根证书的 DER 编码的 SHA256 摘要；通常称为证书指纹。
+* `credentials`：用于验证加入节点与集群之间身份的用户名和密码或词元。
 
-==== TLS 引导
+==== TLS 启动
 
-如果指定了安全 Token，在传输凭证之前，加入的节点会执行以下步骤来认证连接的 Server：
+当指定安全词元时，加入节点执行以下步骤以验证其连接的服务器的身份，然后再传输凭据：
 
-. 禁用 TLS 验证后，从要加入的 Server 上的 `/cacerts` 下载 CA 包。
-. 如上所述计算 CA 证书的 SHA256 哈希值。
-. 比较计算出的 SHA256 哈希值与 Token 中的哈希值。
-. 如果哈希值匹配，则验证 Server 提供的证书是否可以由 Server 的 CA 包进行验证。
-. 如果 Server 证书有效，你需要使用基础或持有者 Token 认证（根据 Token 的类型）来提供加入集群的凭证。
+. 在禁用 TLS 验证的情况下，从其要加入的服务器上的 `/cacerts` 下载 CA 包。
+. 计算 CA 证书的 SHA256 哈希值，如上所述。
+. 将计算出的 SHA256 哈希与词元中的哈希进行比较。
+. 如果哈希匹配，验证服务器提供的证书是否可以通过服务器的 CA 包进行验证。
+. 如果服务器证书有效，则根据词元类型，使用基本或词元身份验证提供凭据以加入集群。
 
-=== Short
+=== 短
 
-短 Token 格式仅包括用于验证加入集群的节点的密码或持有者 Token。
+短词元格式仅包括用于验证加入节点与集群之间身份的密码或词元。
 
-如果使用了短 Token，则加入的节点会隐式信任 Server 提供的 CA 包，以及跳过 TLS 引导过程中的步骤 2-4。初始连接可能容易受到link:https://en.wikipedia.org/wiki/Man-in-the-middle_attack[中间人]攻击。
+如果使用短词元，加入节点会隐式信任服务器提供的 CA 包；TLS 启动过程中的步骤 2-4 被跳过。初始连接可能会受到 https://en.wikipedia.org/wiki/Man-in-the-middle_attack[中间人] 攻击的威胁。
 
-== Token 类型
+== 令牌类型
 
-K3s 支持三种类型的 Token。默认情况下只有 Server Token 可用，其他类型的 Token 必须由管理员配置或创建。
+K3s 支持三种类型的词元。默认情况下，仅提供服务器词元；其他词元类型必须由管理员配置或创建。
 
 |===
 | 类型 | CLI 选项 | 环境变量
 
-| Server
+| 服务器
 | `--token`
 | `K3S_TOKEN`
 
-| Agent
+| 代理
 | `--agent-token`
 | `K3S_AGENT_TOKEN`
 
-| Bootstrap
+| 引导
 | `n/a`
 | `n/a`
 |===
 
 [#_server]
-=== Server
+=== 服务器
 
-如果在启动集群中的第一个 Server 时未提供 Token，则会使用随机密码创建。Server Token 始终以安全格式写入 `/var/lib/rancher/k3s/server/token`。
+如果在集群中启动第一个服务器时未提供词元，则会创建一个随机密码的词元。服务器词元始终以安全格式写入 `/var/lib/rancher/k3s/server/token`。
 
-The server token can be used to join both server and agent nodes to the cluster. Anyone with access to the server token essentially has full administrator access to the cluster. This token should be guarded carefully.
+服务器词元可用于将服务器和代理节点加入集群。任何拥有服务器词元的人基本上都拥有对集群的完全管理员访问权限。此词元应谨慎保管。
 
-The server token is also used as the https://en.wikipedia.org/wiki/PBKDF2[PBKDF2] passphrase to encrypt confidential information that is persisted to the datastore known as bootstrap data. Bootstrap data is essential to set up new server nodes or restore from a snapshot. For this reason, the token must be backed up alongside the cluster datastore itself.
+服务器词元还用作 https://en.wikipedia.org/wiki/PBKDF2[PBKDF2] 密码短语，以加密持久化到称为启动数据的数据存储中的机密信息。启动数据对于设置新的服务器节点或从快照恢复至关重要。因此，词元必须与集群数据存储本身一起备份。
 
 [CAUTION]
 ====
-除非使用了自定义 CA 证书，否则在启动集群的第一个 Server 时只能使用短 Token 格式（仅密码）。这是因为只有在 Server 生成自签名集群 CA 证书后才能知道集群 CA 哈希值。
+除非使用自定义 CA 证书，否则在启动集群中的第一个服务器时只能使用短（仅密码）词元格式。这是因为在服务器生成自签名集群 CA 证书之前，无法知道集群 CA 哈希。
 ====
 
 
-有关使用自定义 CA 证书的更多信息，请参阅 xref:cli/certificate.adoc[`k3s certificate` 文档]。 +
-有关备份集群的更多信息，请参阅xref:datastore/backup-restore.adoc[备份和恢复]文档。
+有关使用自定义 CA 证书的更多信息，请参见 xref:cli/certificate.adoc[`k3s certificate` 文档]。 +
+有关备份集群的更多信息，请参见 xref:datastore/backup-restore.adoc[备份和恢复] 文档。
 
-=== Agent
+=== 代理
 
-默认情况下，Agent Token 与 Server Token 相同。你可以通过更改集群中所有 Server 上的 CLI 选项或环境变量，在集群启动之前或之后设置 Agent Token。Agent Token 类似于 Server Token，是静态配置的并且不会过期。
+默认情况下，代理词元与服务器词元相同。可以在集群启动之前或之后，通过更改集群中所有服务器上的 CLI 选项或环境变量来设置代理词元。代理词元与服务器词元类似，都是静态配置的，并且不会过期。
 
-Agent Token 以安全格式写入 `/var/lib/rancher/k3s/server/agent-token`。如果未指定 Agent Token，则此文件是指向 Server Token 的链接。
+代理词元以安全格式写入 `/var/lib/rancher/k3s/server/agent-token`.如果未指定代理词元，则此文件是服务器词元的链接。
 
-=== Bootstrap
+=== 引导
 
 [IMPORTANT]
-.版本
+.版本门控
 ====
-从 2023-02 版本（v1.26.2+k3s1、v1.25.7+k3s1、v1.24.11+k3s1、v1.23.17+k3s1）开始，支持 `k3s token` 命令以及使用 Bootstrap Token 加入节点。
+从2023-02版本（v1.26.2+k3s1，v1.25.7+k3s1，v1.24.11+k3s1，v1.23.17+k3s1）开始，支持`k3s token`命令以及使用启动词元连接节点的能力。
 ====
 
-K3s supports dynamically generated, automatically expiring agent https://kubernetes.io/docs/reference/access-authn-authz/bootstrap-tokens/[bootstrap tokens].
+K3s支持动态生成、自动过期的代理https://kubernetes.io/docs/reference/access-authn-authz/bootstrap-tokens/[启动词元]。
 
 [#_k3s_token_1]
-== k3s token
+== k3s 词元
 
-The k3s token CLI tool handles:
+k3s词元CLI工具处理：
 
-* The life cycle of bootstrap tokens, using the same generation and validation code as `kubeadm token` bootstrap tokens. Note that both CLIs are similar.
-* The rotation of the server token
+* 启动词元的生命周期，使用与`kubeadm token`启动词元相同的生成和验证代码。请注意，这两个 CLI 是相似的。
+* 服务器词元的轮换
 
 ----
 NAME:
@@ -111,7 +111,7 @@ COMMANDS:
    delete    Delete bootstrap tokens on the server
    generate  Generate and print a bootstrap token, but do not create it on the server
    list      List bootstrap tokens on the server
-   rotate    Rotate original server token with a new token   
+   rotate    Rotate original server token with a new token
 
 OPTIONS:
    --help, -h  show help
@@ -120,115 +120,116 @@ OPTIONS:
 [discrete]
 === `k3s token create [token]`
 
-创建一个新 Token。`[token]` 是要写入的实际 Token，由 `k3s token generate` 生成。如果没有指定 Token，将生成一个随机 Token。
+创建一个新词元。`[token]`是实际要写入的词元，由`k3s token generate`生成。如果未提供词元，将生成一个随机词元。
 
-安全格式的 Token（包括集群 CA 哈希）会写入到 stdout。Token 的 secret 部分只显示一次，因此你需要保存此命令的输出。
+以安全格式写入的词元，包括集群CA哈希，将输出到标准输出。此命令的输出应保存，因为词元的秘密部分无法再次显示。
 
 |===
-| 标志 | 描述
+| 标志 | 说明
 
-| `--data-dir` value
-| 保存状态的（数据）文件夹，如果不是 root，则默认为 `+/var/lib/rancher/k3s 或 ${HOME}/.rancher/k3s+`
+| `--data-dir`值
+| 用于保存状态的文件夹（默认：/var/lib/rancher/k3s或${HOME}/.rancher/k3s，如果不是root）
 
-| `--kubeconfig` value
-| 要连接到 [$KUBECONFIG] 的（集群）Server
+| `--kubeconfig`值
+| 要连接的服务器[$KUBECONFIG]
 
-| `--description` value
-| 有关如何使用此 Token 的描述
+| `--description`值
+| 对该词元使用方式的友好描述
 
-| `--groups` value
-| 该 Token 用于认证的其他组（默认值："`system:bootstrappers:k3s:default-node-token`"）
+| `--groups`值
+| 当用于身份验证时，此词元将作为额外组进行身份验证。（默认：默认: "system:bootstrappers:k3s:default-node-token")
 
-| `--ttl` value
-| 自动删除 Token 的时间（例如 1s、2m、3h）。如果设置为 `0`，Token 将永不过期（默认值：24h0m0s）
+| `--ttl`值
+| 词元自动删除之前的持续时间（例如：1s, 2m, 3h）。如果设置为 '0'，则词元将永远不会过期（默认：24h0m0s)
 
-| `--usages` value
-| 描述可使用此 Token 的方式。(默认值："signing,authentication")
+| `--usages`值
+| 描述此词元可以使用的方式。（默认："签名，认证"）
 |===
 
 [discrete]
 === `k3s token delete`
 
-删除一个或多个 Token。你可以提供完整的 Token，也可以仅提供 Token ID。
+删除一个或多个词元。可以提供完整的词元，或仅提供词元 ID。
 
 |===
-| 标志 | 描述
+| 标志 | 说明
 
-| `--data-dir` value
-| 保存状态的（数据）文件夹，如果不是 root，则默认为 `+/var/lib/rancher/k3s 或 ${HOME}/.rancher/k3s+`
+| `--data-dir`值
+| 用于保存状态的文件夹（默认：/var/lib/rancher/k3s或${HOME}/.rancher/k3s，如果不是root）
 
-| `--kubeconfig` value
-| 要连接到 [$KUBECONFIG] 的（集群）Server
+| `--kubeconfig`值
+| 要连接的服务器[$KUBECONFIG]
 |===
 
 [discrete]
 === `k3s token generate`
 
-生成一个随机的 Bootstrap Token。
+生成一个随机生成的启动词元。
 
-你不需要使用此命令来生成 Token。只要格式为 `[a-z0-9]\{6}.[a-z0-9]\{16}`（其中第一部分是 Token ID，第二部分是 Secret），你就可以自己进行操作。
+您不必使用此命令来生成词元。只要格式为 `[a-z0-9]\{6}.[a-z0-9]\{16}`，您可以自己完成，其中第一部分是词元 ID，第二部分是密钥。
 
 |===
-| 标志 | 描述
+| 标志 | 说明
 
-| `--data-dir` value
-| 保存状态的（数据）文件夹，如果不是 root，则默认为 `+/var/lib/rancher/k3s 或 ${HOME}/.rancher/k3s+`
+| `--data-dir`值
+| 用于保存状态的文件夹（默认：/var/lib/rancher/k3s或${HOME}/.rancher/k3s，如果不是root）
 
-| `--kubeconfig` value
-| 要连接到 [$KUBECONFIG] 的（集群）Server
+| `--kubeconfig`值
+| 要连接的服务器[$KUBECONFIG]
 |===
 
 [discrete]
 === `k3s token list`
 
-列出 Bootstrap Token，这将显示 Token 的 ID、描述和剩余 TTL。
+列出启动词元，显示其 ID、描述和剩余生存时间。
 
 |===
-| 标志 | 描述
+| 标志 | 说明
 
-| `--data-dir` value
-| 保存状态的（数据）文件夹，如果不是 root，则默认为 `+/var/lib/rancher/k3s 或 ${HOME}/.rancher/k3s+`
+| `--data-dir`值
+| 用于保存状态的文件夹（默认：/var/lib/rancher/k3s或${HOME}/.rancher/k3s，如果不是root）
 
-| `--kubeconfig` value
-| 要连接到 [$KUBECONFIG] 的（集群）Server
+| `--kubeconfig`值
+| 要连接的服务器[$KUBECONFIG]
 
-| `--output` value
-| 输出格式。可选值：text、json（默认值：`text`）
+| `--output`值
+| 输出格式。有效选项：文本，json（默认："文本"）
 |===
 
+[discrete]
 === `k3s token rotate`
 
 [IMPORTANT]
-.Version Gate
+.版本门控
 ====
-Available as of the October 2023 releases (v1.28.2+k3s1, v1.27.7+k3s1, v1.26.10+k3s1, v1.25.15+k3s1).
+自2023年10月发布以来可用（v1.28.2+k3s1，v1.27.7+k3s1，v1.26.10+k3s1，v1.25.15+k3s1）。
 ====
 
 
-Rotate original server token with a new server token. After running this command, all servers and any agents that originally joined with the old token must be restarted with the new token.
+用新服务器词元旋转原始服务器词元。运行此命令后，所有服务器和任何最初使用旧词元加入的代理必须使用新词元重新启动。
 
-If you do not specify a new token, one will be generated for you.
+如果您未指定新词元，将为您生成一个。
 
 |===
-| Flag | Description
+| 标志 | 说明
 
-| `--data-dir` value
-| Folder to hold state (default: /var/lib/rancher/k3s or $\{HOME}/.rancher/k3s if not root)
+| `--data-dir`值
+| 用于保存状态的文件夹（默认：/var/lib/rancher/k3s或${HOME}/.rancher/k3s，如果不是root）
 
-| `--kubeconfig` value
-| Server to connect to [$KUBECONFIG]
+| `--kubeconfig`值
+| 要连接的服务器[$KUBECONFIG]
 
-| `--server` value
-| Server to connect to (default: "https://127.0.0.1:6443") [$K3S_URL]
+| `--server`值
+| 要连接的服务器（默认："\https://127.0.0.1:6443"）[$K3S_URL]
 
-| `--token` value
-| Existing token used to join a server or agent to a cluster [$K3S_TOKEN]
+| `--token`值
+| 用于将服务器或代理加入集群的现有词元 [$K3S_TOKEN]
 
-| `--new-token` value
-| New token that replaces existing token
+| `--new-token`值
+| 替换现有词元的新词元
 |===
 
 [WARNING]
 ====
-Snapshots taken before the rotation will require the old server token when restoring the cluster.
+在旋转之前拍摄的快照在恢复集群时将需要旧服务器词元。
 ====

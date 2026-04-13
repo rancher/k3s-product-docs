@@ -1,6 +1,6 @@
 = CIS Hardening Guide
-:page-languages: [en, ja, ko, zh]
 :revdate: 2026-04-01
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 
 This document provides prescriptive guidance for hardening a production installation of K3s. It outlines the configurations and controls required to address Kubernetes benchmark controls from the Center for Internet Security (CIS).
@@ -54,7 +54,7 @@ kube-apiserver-arg:
   - 'audit-log-maxage=30'
   - 'audit-log-maxbackup=10'
   - 'audit-log-maxsize=100'
-  - 'service-account-extend-token-expiration=false' 
+  - 'service-account-extend-token-expiration=false'
 kube-controller-manager-arg:
   - 'terminated-pod-gc-threshold=100'
 kubelet-arg:
@@ -674,7 +674,7 @@ kube-apiserver-arg:
 ----
 ======
 
-=== Control 4.2.13 
+=== Control 4.2.13
 
 Ensure that a limit is set on pod PIDs
 

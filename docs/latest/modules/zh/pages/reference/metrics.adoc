@@ -1,112 +1,112 @@
-= Metrics
-:page-languages: [en, ja, ko, zh]
+= 指标
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-09-16
 :page-revdate: {revdate}
 
-K3s provides metrics for monitoring the health and performance of the cluster.
+K3s 提供用于监控集群健康和性能的指标。
 
-Most metrics are provided by individual components. See the following component-specific documentation for more information:
+大多数指标由各个组件提供。有关更多信息，请参阅以下特定组件的文档：
 
-* https://coredns.io/plugins/metrics/[coredns metrics]
-* https://etcd.io/docs/v3.5/metrics/[etcd metrics]
+* https://coredns.io/plugins/metrics/[coredns 指标]
+* https://etcd.io/docs/v3.5/metrics/[etcd 指标]
 
-Additional metrics may be provided by other components. Consult the upstream project documentation for any components not listed above.
+其他组件可能提供额外的指标。请查阅上游项目文档以获取未列出的任何组件的信息。
 
-== Supervisor Metrics
+== Supervisor 指标
 
-When K3s is started with `supervisor-metrics: true`, metrics are exposed by the K3s process and can be accessed via the `/metrics` endpoint on each node at port `6443`:
+当 K3s 使用 `supervisor-metrics: true` 启动时，指标由 K3s 进程公开，并可以通过每个节点的 `/metrics` 端点在端口 `6443` 访问：
 
 [,sh]
 ----
 kubectl get --server https://NODENAME:6443 --raw /metrics
 ----
 
-The K3s supervisor process exposes the following metrics:
+K3s Supervisor 进程公开以下指标：
 
-* K3s Cluster Management Metrics
-* https://github.com/rancher/lasso/blob/main/README.md#lasso-controller[Lasso controller metrics]
-* https://github.com/kubernetes/client-go/blob/master/README.md[Kubernetes client and workqueue metrics]
-* https://kubernetes.io/docs/reference/instrumentation/node-metrics/[Kubernetes Node Metrics]
-* https://kubernetes.io/docs/reference/instrumentation/metrics/[Kubernetes Component Metrics]
-* https://pkg.go.dev/runtime/metrics#hdr-Supported_metrics[Go runtime metrics]
+* K3s 集群管理指标
+* https://github.com/rancher/lasso/blob/main/README.md#lasso-controller[Lasso 控制器指标]
+* https://github.com/kubernetes/client-go/blob/master/README.md[Kubernetes 客户端和工作队列指标]
+* https://kubernetes.io/docs/reference/instrumentation/node-metrics/[Kubernetes 节点指标]
+* https://kubernetes.io/docs/reference/instrumentation/metrics/[Kubernetes 组件指标]
+* https://pkg.go.dev/runtime/metrics#hdr-Supported_metrics[Go 运行时指标]
 
-If the K3s embedded registry is enabled, the K3s supervisor process also exposes the following metrics:
+如果启用了 K3s 嵌入式注册表，K3s Supervisor 进程还会公开以下指标：
 
-* https://spegel.dev/docs/metrics/[Spegel metrics]
-* https://github.com/libp2p/go-libp2p/blob/master/README.md[libp2p metrics]
+* https://spegel.dev/docs/metrics/[Spegel 指标]
+* https://github.com/libp2p/go-libp2p/blob/master/README.md[libp2p 指标]
 
-K3s runs all Kubernetes components in the main K3s process. Since Kubernetes uses a single Prometheus metric registry per process, metrics for all components are available via all exposed metrics endpoints. If you scrape all the individual metrics endpoints, you may find that you are collecting duplicate metrics. It is only necessary to scrape a single K3s metric endpoint to get metrics for all embedded Kubernetes components.
+K3s 在主 K3s 进程中运行所有 Kubernetes 组件。由于 Kubernetes 每个进程使用一个单独的 Prometheus 指标注册表，因此所有组件的指标都可以通过所有暴露的指标端点获得。如果您抓取所有单独的指标端点，您可能会发现收集了重复的指标。只需抓取一个 K3s 指标端点即可获取所有嵌入式 Kubernetes 组件的指标。
 
-== K3s Cluster Management Metrics
+== K3s 集群管理指标
 
 === k3s_certificate_expiration_seconds
 
-Remaining lifetime in seconds of the certificate, labeled by certificate subject and usages.
+证书的剩余有效期（以秒为单位），按证书主题和用途标记。
 
-* Type: Gauge
-* Labels: `*subject*`, `*usage*`
+* 类型:仪表
+* 标签：`*subject*`，`*usage*`
 
 === k3s_loadbalancer_server_connections
 
-Count of current connections to the load balancer server, labeled by the load balancer name and server address.
+当前连接到负载均衡服务器的数量，按负载均衡器名称和服务器地址标记。
 
-* Type: Gauge
-* Labels: `*name*`, `*server*`
+* 类型:仪表
+* 标签：`*name*`，`*server*`
 
 === k3s_loadbalancer_server_health
 
-Current health state of the load balancer backend servers, labeled by the load balancer name and server address.
+负载均衡后端服务器的当前健康状态，按负载均衡器名称和服务器地址标记。
 
-State is enum of 0=INVALID, 1=FAILED, 2=STANDBY, 3=UNCHECKED, 4=RECOVERING, 5=HEALTHY, 6=PREFERRED, 7=ACTIVE.
+状态为枚举值：0=无效，1=失败，2=待机，3=未检查，4=恢复中，5=健康，6=首选，7=活动。
 
-* Type: Gauge
-* Labels: `*name*`, `*server*`
+* 类型:仪表
+* 标签：`*name*`，`*server*`
 
 === k3s_loadbalancer_dial_duration_seconds
 
-Time in seconds taken to dial a connection to a backend server, labeled by the load balancer name and success/failure status.
+与后端服务器建立连接所需的时间（以秒为单位），按负载均衡器名称和成功/失败状态标记。
 
-* Type: Histogram
-* Labels: `*name*`, `*status*`
+* 类型:柱状图
+* 标签：`*name*`，`*status*`
 
 === k3s_etcd_snapshot_save_duration_seconds
 
-Total time in seconds taken to complete the etcd snapshot process, labeled by success/failure status.
+完成 etcd 快照处理所需的总时间（以秒为单位），按成功/失败状态标记。
 
-* Type: Histrogram
-* Labels: `*status*`
+* 类型:直方图
+* 标签：`*status*`
 
 === k3s_etcd_snapshot_save_local_duration_seconds
 
-Total time in seconds taken to save a local snapshot file, labeled by success/failure status.
+保存本地快照文件所需的总时间（以秒为单位），按成功/失败状态标记。
 
-* Type: Histrogram
-* Labels: `*status*`
+* 类型:直方图
+* 标签：`*status*`
 
 === k3s_etcd_snapshot_save_s3_duration_seconds
 
-Total time in seconds taken to upload a snapshot file to S3, labeled by success/failure status.
+将快照文件上传到 S3 所需的总时间（以秒为单位），按成功/失败状态标记。
 
-* Type: Histrogram
-* Labels: `*status*`
+* 类型:直方图
+* 标签：`*status*`
 
 === k3s_etcd_snapshot_reconcile_duration_seconds
 
-Total time in seconds taken to sync the list of etcd snapshots, labeled by success/failure status.
+同步 etcd 快照列表所需的总时间（以秒为单位），按成功/失败状态标记。
 
-* Type: Histrogram
-* Labels: `*status*`
+* 类型:直方图
+* 标签：`*status*`
 
 === k3s_etcd_snapshot_reconcile_local_duration_seconds
 
-Total time in seconds taken to list local snapshot files, labeled by success/failure status.
+列出本地快照文件所需的总时间（以秒为单位），按成功/失败状态标记。
 
-* Type: Histrogram
-* Labels: `*status*`
+* 类型:直方图
+* 标签：`*status*`
 
 === k3s_etcd_snapshot_reconcile_s3_duration_seconds
 
-Total time in seconds taken to list S3 snapshot files, labeled by success/failure status.
+列出 S3 快照文件所需的总时间（以秒为单位），按成功/失败状态标记。
 
-* Type: Histrogram
-* Labels: `*status*`
+* 类型:直方图
+* 标签：`*status*`

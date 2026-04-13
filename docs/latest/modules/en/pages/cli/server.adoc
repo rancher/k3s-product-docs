@@ -1,6 +1,7 @@
 = k3s server
-:page-languages: [en, ja, ko, zh]
 :revdate: 2026-03-31
+:page-languages: [en, de, es, fr, ja, pt, zh]
+:revdate: 2025-05-26
 :page-revdate: {revdate}
 
 In this section, you'll learn how to configure the K3s server.
@@ -133,7 +134,7 @@ The following options must be set to the same value on all servers in the cluste
 |
 | S3 bucket name
 
-| `--etcd-s3-bucket-lookup-type` value 
+| `--etcd-s3-bucket-lookup-type` value
 |
 |
 | S3 bucket lookup type, one of 'auto', 'dns', 'path'; default is 'auto' if not set
@@ -154,13 +155,13 @@ The following options must be set to the same value on all servers in the cluste
 | S3 retention limit
 
 | `--etcd-s3-proxy`
-| 
-| 
+|
+|
 | Proxy server to use when connecting to S3, overriding any proxy-related environment variables
 
 | `--etcd-s3-config-secret`
-| 
-| 
+|
+|
 | Name of secret in the kube-system namespace used to configure S3, if etcd-s3 is enabled and no other etcd-s3 options are set
 
 
@@ -284,7 +285,7 @@ Note that the primary `service-cidr` IP range must be of the same address family
 
 | `--tls-san-security`
 | true
-| Protect the server TLS cert by refusing to add Subject Alternative Names not associated with the kubernetes apiserver service, server nodes, or values of the tls-san option 
+| Protect the server TLS cert by refusing to add Subject Alternative Names not associated with the kubernetes apiserver service, server nodes, or values of the tls-san option
 |===
 
 === Data
@@ -354,7 +355,7 @@ Note that the primary `service-cidr` IP range must be of the same address family
 
 | `--egress-selector-mode` value
 | "agent"
-a| Must be one of the following: 
+a| Must be one of the following:
 
 * disabled: The apiserver does not use agent tunnels to communicate with nodes. Requires that servers run agents, and have direct connectivity to the kubelet on agents, or the apiserver will not be able to function access service endpoints or perform kubectl exec and kubectl logs.
 * agent: The apiserver uses agent tunnels to communicate with nodes. Nodes allow the tunnel connection from loopback addresses. Requires that servers also run agents, or the apiserver will not be able to access service endpoints. The historical default for k3s.
@@ -446,10 +447,10 @@ a| Must be one of the following:
 | See "xref:installation/registry-mirror.adoc[Embedded Registry Mirror]"
 
 | `--vpn-auth`
-| See "xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[Integration with the Tailscale VPN provider]" 
+| See "xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[Integration with the Tailscale VPN provider]"
 
 | `--vpn-auth-file`
-| See "xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[Integration with the Tailscale VPN provider]" 
+| See "xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[Integration with the Tailscale VPN provider]"
 |===
 
 === Deprecated Options

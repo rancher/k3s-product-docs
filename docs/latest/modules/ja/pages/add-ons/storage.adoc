@@ -1,23 +1,23 @@
 = ボリュームとストレージ
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-01-05
 :page-revdate: {revdate}
 :page-aliases: storage.adoc
 
-データを保持する必要があるアプリケーションをデプロイする際には、永続ストレージを作成する必要があります。永続ストレージを使用すると、アプリケーションのデータをアプリケーションを実行しているポッドの外部に保存できます。このストレージの方法により、アプリケーションのポッドが失敗してもアプリケーションデータを保持できます。
+データを保持する必要があるアプリケーションをデプロイする際には、永続ストレージを作成する必要があります。永続ストレージは、アプリケーションを実行しているポッドとは別にアプリケーションデータを保存することを可能にします。このストレージの実践により、アプリケーションのポッドが失敗してもアプリケーションデータを維持することができます。
 
-永続ボリューム（PV）はKubernetesクラスター内のストレージの一部であり、永続ボリュームクレーム（PVC）はストレージの要求です。PVとPVCの動作の詳細については、公式Kubernetesドキュメントのlink:https://kubernetes.io/docs/concepts/storage/volumes/[ストレージ]を参照してください。
+永続ボリューム（PV）はKubernetesクラスター内のストレージの一部であり、永続ボリュームクレーム（PVC）はストレージのリクエストです。PVsとPVCsの動作に関する詳細は、公式のKubernetesドキュメントを参照してください https://kubernetes.io/docs/concepts/storage/volumes/[storage.]
 
-K3s, as a compliant Kubernetes distribution, uses the https://github.com/container-storage-interface/spec/blob/master/spec.md[Container Storage Interface (CSI)] and https://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/[Cloud Provider Interface (CPI)] to manage persistent storage.
+K3sは準拠したKubernetesディストリビューションとして、永続ストレージを管理するためにhttps://github.com/container-storage-interface/spec/blob/master/spec.md[Container Storage Interface (CSI)]とhttps://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/[Cloud Provider Interface (CPI)]を使用します。
 
-このページでは、ローカルストレージプロバイダーまたは<<_longhornの設定,Longhorn>>を使用して永続ストレージを設定する方法について説明します。
+このページでは、ローカルストレージプロバイダまたは<<_setting_up_longhorn,Longhorn.>>を使用して永続ストレージを設定する方法について説明します。
 
 [#_setting_up_the_local_storage_provider]
-== ローカルストレージプロバイダーの設定
+== ローカルストレージプロバイダの設定
 
-K3sにはRancherのLocal Path Provisionerが付属しており、これにより、対応するノード上のローカルストレージを使用して永続ボリュームクレームをすぐに作成する機能が有効になります。以下に簡単な例を示します。詳細については、公式ドキュメントをlink:https://github.com/rancher/local-path-provisioner/blob/master/README.md#usage[こちら]で参照してください。
+K3sにはRancherのローカルパスプロビジョナーが付属しており、これにより各ノードのローカルストレージを使用して、すぐに永続ボリュームクレームを作成することが可能になります。以下に簡単な例を示します。詳細については、公式ドキュメントを参照してください https://github.com/rancher/local-path-provisioner/blob/master/README.md#usage[こちら]。
 
-hostPathをバックにした永続ボリュームクレームとそれを利用するポッドを作成します：
+hostPathに基づく永続ボリュームクレームとそれを利用するポッドを作成します：
 
 === pvc.yaml
 
@@ -78,7 +78,7 @@ kubectl get pv
 kubectl get pvc
 ----
 
-ステータスはそれぞれBoundである必要があります。
+それぞれのステータスはBoundであるべきです。
 
 == Longhornの設定
 
@@ -88,20 +88,20 @@ LonghornはARM32をサポートしていません。
 ====
 
 
-K3sは、Kubernetes用のオープンソースの分散ブロックストレージシステムであるlink:https://github.com/longhorn/longhorn[Longhorn]をサポートしています。
+K3sはKubernetes用のオープンソース分散ブロックストレージシステムであるhttps://github.com/longhorn/longhorn[Longhorn]をサポートしています。
 
 以下に簡単な例を示します。詳細については、https://documentation.suse.com/cloudnative/storage/{longhorn_docs_version}/en/longhorn-documentation.html[公式ドキュメント]を参照してください。
 
-longhorn.yamlを適用してLonghornをインストールします：
+longhorn.yamlを適用してLonghornをインストールします:
 
 [,bash]
 ----
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.8.1/deploy/longhorn.yaml
 ----
 
-Longhornは``longhorn-system``という名前空間にインストールされます。
+Longhornは、ネームスペース`longhorn-system`にインストールされます。
 
-Create a persistent volume claim and a pod to utilize it:
+永続ボリュームクレームとそれを利用するポッドを作成します:
 
 === pvc.yaml
 
@@ -145,7 +145,7 @@ spec:
       claimName: longhorn-volv-pvc
 ----
 
-PVCとポッドを作成するためにyamlを適用します：
+yamlを適用してPVCとポッドを作成します:
 
 [,bash]
 ----
@@ -161,4 +161,4 @@ kubectl get pv
 kubectl get pvc
 ----
 
-ステータスはそれぞれBoundである必要があります。
+それぞれのステータスはBoundであるべきです。

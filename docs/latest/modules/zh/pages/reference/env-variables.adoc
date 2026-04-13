@@ -1,9 +1,9 @@
 = 环境变量
-:page-languages: [en, ja, ko, zh]
-:revdate: 2025-01-06
+:page-languages: [en, de, es, fr, ja, pt, zh]
+:revdate: 2024-12-05
 :page-revdate: {revdate}
 
-如xref:quick-start.adoc[快速入门指南]中所述，你可以使用 https://get.k3s.io 上提供的安装脚本在基于 systemd 和 openrc 的系统上将 K3s 安装为服务。
+如xref:quick-start.adoc[快速入门指南]中所述，您可以使用位于https://get.k3s.io的安装脚本在基于systemd和openrc的系统上安装K3s作为服务。
 
 此命令的最简单形式如下：
 
@@ -12,94 +12,84 @@
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -
 ----
 
-[NOTE]
-====
-中国用户，可以使用以下方法加速安装：
-
-----
-curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh -
-----
-====
-
-
-使用该方法安装 K3s 时，你可以使用以下环境变量来配置安装：
+使用此方法安装K3s时，可以使用以下环境变量来配置安装：
 
 |===
-| 环境变量 | 描述
+| 环境变量 | 说明
 
 | `INSTALL_K3S_SKIP_DOWNLOAD`
-| 如果设置为 `true` 将不会下载 K3s 哈希或二进制文件。
+| 如果设置为true，将不会下载K3s的哈希或二进制文件。
 
 | `INSTALL_K3S_SYMLINK`
-| 默认情况下，如果命令不存在于路径中，将为 kubectl、crictl 和 ctr 二进制文件创建符号链接。如果设置为 `skip` 将不会创建符号链接，设置为 `force` 将会覆盖。
+| 默认情况下，如果命令在路径中不存在，将为kubectl、crictl和ctr二进制文件创建符号链接。如果设置为'skip'，将不会创建符号链接；如果设置为'force'，将覆盖。
 
 | `INSTALL_K3S_SKIP_ENABLE`
-| 如果设置为 `true` 将不会启用或启动 K3s 服务。
+| 如果设置为true，将不会启用或启动K3s服务。
 
 | `INSTALL_K3S_SKIP_START`
-| 如果设置为 `true` 将不会启动 K3s 服务。
+| 如果设置为true，将不会启动K3s服务。
 
 | `INSTALL_K3S_VERSION`
-| 从 GitHub 下载的 K3s 版本。如果未指定，将尝试从 stable channel 下载。
+| 要从Github下载的K3s版本。如果未指定，将尝试从稳定通道下载。
 
 | `INSTALL_K3S_BIN_DIR`
-| 安装 K3s 二进制文件、链接和卸载脚本的目录，或使用 `/usr/local/bin` 作为默认目录。
+| 安装K3s二进制文件、链接和卸载脚本的目录，或使用`/usr/local/bin`作为默认值。
 
 | `INSTALL_K3S_BIN_DIR_READ_ONLY`
-| 如果设置为 `true` 将不会将文件写入 `INSTALL_K3S_BIN_DIR`，强制设置为 `INSTALL_K3S_SKIP_DOWNLOAD=true`。
+| 如果设置为true，将不会写入文件到`INSTALL_K3S_BIN_DIR`，强制设置`INSTALL_K3S_SKIP_DOWNLOAD=true`。
 
 | `INSTALL_K3S_SYSTEMD_DIR`
-| 安装 systemd 服务和环境文件的目录，或使用 `/etc/systemd/system` 作为默认目录。
+| 安装systemd服务和环境文件的目录，或使用`/etc/systemd/system`作为默认值。
 
 | `INSTALL_K3S_EXEC`
-| 带有标志的命令，用于在服务中启动 K3s。如果未指定命令并且设置了 `K3S_URL`，它将默认为 "agent"。如果未设置 `K3S_URL`，它将默认为 "server"。如需帮助，请参阅xref:installation/configuration.adoc#_configuration_with_install_script[此示例]。
+| 用于启动K3s服务的命令及其标志。如果未指定命令，并且设置了`K3S_URL`，则默认为"agent"。如果未设置`K3S_URL`，则默认为"server"。有关帮助，请参阅xref:installation/configuration.adoc#_configuration_with_install_script[此示例。]
 
 | `INSTALL_K3S_NAME`
-| 要创建的 systemd 服务的名称，如果将 K3s 作为 server 运行，则默认为 "`k3s`"，如果将 K3s 作为 agent 运行，则默认为 "`k3s-agent`"。如果指定，名称将以"`k3s-`"为前缀。
+| 要创建的systemd服务名称，如果作为服务器运行k3s，则默认为'k3s'，如果作为代理运行k3s，则默认为'k3s-agent'。如果指定，名称将以'k3s-'为前缀。
 
 | `INSTALL_K3S_TYPE`
-| 要创建的 systemd 服务类型，如果未指定，将默认使用来自 K3s exec 命令的类型。
+| 要创建的systemd服务类型，如果未指定，将从K3s执行命令中默认获取。
 
 | `INSTALL_K3S_SELINUX_WARN`
-| 如果设置为 `true`，则在未找到 k3s-selinux 策略时会继续。
+| 如果设置为true，将在未找到 k3s-selinux 策略时继续执行。
 
 | `INSTALL_K3S_SKIP_SELINUX_RPM`
-| 如果设置为 `true` 将跳过 k3s RPM 的自动安装。
+| 如果设置为true，将跳过 k3s RPM 的自动安装。
 
 | `INSTALL_K3S_CHANNEL_URL`
-| 用于获取 K3s 下载 URL 的 Channel URL。默认为 https://update.k3s.io/v1-release/channels。
+| 用于获取 K3s 下载 URL 的通道 URL。默认为 https://update.k3s.io/v1-release/channels.
 
 | `INSTALL_K3S_CHANNEL`
-| 用于获取 K3s 下载 URL 的 Channel。默认为 "stable"。可选项：`stable`、`latest`、`testing`。
+| 用于获取 K3s 下载 URL 的通道。默认为 "stable"。选项包括：`stable`、`latest`、`testing`。
 |===
 
-以下示例显示了如何将上述环境变量作为选项设置（在管道符后）：
+此示例显示了在管道后放置上述环境变量作为选项的位置：
 
 [,bash]
 ----
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_CHANNEL=latest sh -
 ----
 
-以 `K3S_` 开头的环境变量将被保留，供 systemd 和 openrc 服务使用。
+以 `K3S_` 开头的环境变量将被保留供 systemd 和 openrc 服务使用。
 
-如果设置了 `K3S_URL` 但没有设置 exec 命令，将默认命令为"`agent`"。
+设置 `K3S_URL` 而不显式设置 exec 命令将默认命令设置为 "agent"。
 
-运行 agent 时，还必须设置 `K3S_TOKEN`。
+运行代理时，必须同时设置 `K3S_TOKEN`。
 
 [NOTE]
-.Version Gate
+.版本门控
 ====
-Available as of October 2024 releases: v1.28.15+k3s1, v1.29.10+k3s1, v1.30.6+k3s1, v1.31.2+k3s1.
+自 2024 年 10 月发布以来可用：v1.28.15+k3s1、v1.29.10+k3s1、v1.30.6+k3s1、v1.31.2+k3s1。
 ====
 
-K3s will now use `PATH` to find alternative container runtimes, in addition to checking the default paths used by the container runtime packages. In order to use this feature, you must modify the K3s service's PATH environment variable to add the directories containing the container runtime binaries.
+K3s 现在将使用 `PATH` 查找替代容器运行时，此外还会检查容器运行时软件包使用的默认路径。为了使用此功能，您必须修改 K3s 服务的 PATH 环境变量，以添加包含容器运行时二进制文件的目录。
 
-It's recommended that you modify one of this two environment files:
+建议您修改这两个环境文件中的一个：
 
-* /etc/default/k3s # or k3s-agent
-* /etc/sysconfig/k3s # or k3s-agent
+* /etc/default/k3s # 或 k3s-agent
+* /etc/sysconfig/k3s # 或 k3s-agent
 
-This example will add the `PATH` in `/etc/default/k3s`:
+此示例将在 `PATH` 中添加 `/etc/default/k3s`：
 
 [,bash]
 ----
@@ -108,5 +98,5 @@ echo PATH=$PATH >> /etc/default/k3s
 
 [WARNING]
 ====
-`PATH` changes should be done with care to avoid placing untrusted binaries in the path of services that run as root.
+对 `PATH` 的更改应谨慎进行，以避免将不受信任的二进制文件放置在以 root 身份运行的服务的路径中。
 ====

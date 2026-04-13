@@ -1,6 +1,6 @@
 = k3s etcd-snapshot
-:page-languages: [en, ja, ko, zh]
 :revdate: 2026-04-01
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 
 This page describes how to use the `k3s etcd-snapshot` CLI tool to manage etcd snapshots and how to restore from an etcd snapshot.
@@ -93,7 +93,7 @@ On-demand snapshots are saved to the path set by the server's `--etcd-snapshot-d
 
 == Deleting Snapshots
 
-Scheduled snapshots are deleted automatically when the number of snapshots exceeds the configured retention count (5 by default). The oldest snapshots are removed first. 
+Scheduled snapshots are deleted automatically when the number of snapshots exceeds the configured retention count (5 by default). The oldest snapshots are removed first.
 
 To manually delete scheduled snapshot(s) or on-demand snapshot(s), you can use the `k3s etcd-snapshot delete` command:
 
@@ -179,8 +179,8 @@ For example, this is how the creation and deletion of on-demand etcd snapshots i
 [,shell-session]
 ----
 $ k3s etcd-snapshot --s3 --s3-bucket=test-bucket --s3-access-key=test --s3-secret-key=secret save
-INFO[0155] Snapshot on-demand-server-0-1753178523 saved. 
-INFO[0155] Snapshot on-demand-server-0-1753178523 saved. 
+INFO[0155] Snapshot on-demand-server-0-1753178523 saved.
+INFO[0155] Snapshot on-demand-server-0-1753178523 saved.
 
 $ k3s etcd-snapshot --s3 --s3-bucket=test-bucket --s3-access-key=test --s3-secret-key=secret ls
 Name                              Location                                                                          Size    Created
@@ -227,7 +227,7 @@ S3 configuration must be passed via the CLI when restoring a snapshot stored on 
 
 [NOTE]
 ====
-Pass only the the `--etcd-s3` and `--etcd-s3-config-secret` flags to enable the Secret.  
+Pass only the the `--etcd-s3` and `--etcd-s3-config-secret` flags to enable the Secret.
 If any other S3 configuration flags are set, the Secret will be ignored.
 ====
 
@@ -268,7 +268,7 @@ K3s runs through several steps when restoring a snapshot:
 . Etcd is started, and all etcd cluster members except the current node are removed from the cluster.
 . CA Certificates and other confidential data are extracted from the datastore and written to disk, for later use.
 . The restore is complete, and K3s can be restarted and used normally on the server where the restore was performed.
-. (optional) Agents and control-plane servers can be started normally. 
+. (optional) Agents and control-plane servers can be started normally.
 . (optional) Etcd servers can be restarted to rejoin to the cluster after removing old database files.
 
 When restoring a snapshot, you do not need to use the same K3s version that created it; a higher minor version is also acceptable.
@@ -305,7 +305,7 @@ k3s server \
   --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
 ----
 +
-**Result:** K3s restores the snapshot and resets cluster membership, then prints a message indicating that it is ready to be restarted:  
+**Result:** K3s restores the snapshot and resets cluster membership, then prints a message indicating that it is ready to be restarted:
 `Managed etcd cluster membership has been reset, restart without --cluster-reset flag now.`
 
 . Start K3s again:
@@ -347,8 +347,8 @@ k3s server \
   --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
 ----
 +
-**Result:** K3s restores the snapshot and resets cluster membership, then prints a message indicating that it is ready to be restarted:  
-`Managed etcd cluster membership has been reset, restart without --cluster-reset flag now.`  
+**Result:** K3s restores the snapshot and resets cluster membership, then prints a message indicating that it is ready to be restarted:
+`Managed etcd cluster membership has been reset, restart without --cluster-reset flag now.`
 `Backup and delete $\{datadir}/server/db on each peer etcd server and rejoin the nodes.`
 
 . On S1, start K3s again:

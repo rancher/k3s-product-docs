@@ -1,6 +1,6 @@
 = Automated Upgrades
-:page-languages: [en, ja, ko, zh]
 :revdate: 2026-03-31
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 
 == Overview
@@ -15,7 +15,7 @@ The System Upgrade controller schedules upgrades by monitoring plans and selecti
 ====
 If the K3s cluster is managed by Rancher, you should use the Rancher UI to manage upgrades.
 
-* If the K3s cluster is imported (registered) into Rancher, Rancher manages the system-upgrade-controller deployment and plans by default. Do not follow the steps on this page unless you have disabled version management in Rancher.  
+* If the K3s cluster is imported (registered) into Rancher, Rancher manages the system-upgrade-controller deployment and plans by default. Do not follow the steps on this page unless you have disabled version management in Rancher.
   See https://rancher.github.io/product-docs-playbook/rancher-manager/latest/en/cluster-deployment/register-existing-clusters.html#_configuring_version_management_for_suse_rancher_prime_rke2_and_suse_rancher_prime_k3s_clusters[Configuring Version Management for RKE2 and K3s Clusters] for more information.
 * If the K3s cluster is provisioned by Rancher, Rancher uses the system agent to manage version upgrades. Do not follow the steps on this page.
 * If the K3s cluster is *not* managed by Rancher, you may follow the steps below.
@@ -52,7 +52,7 @@ The controller can be configured and customized via the previously mentioned con
 
 === Configuration
 
-Server nodes should always be upgraded before agent nodes. For this reason, it is recommended you create at least two plans: a plan for upgrading server (control-plane) nodes, and a plan for upgrading agent nodes. You can create additional plans as needed to control the rollout of the upgrade across nodes. After the plans are created, the controller picks them up and begins to upgrade your cluster. 
+Server nodes should always be upgraded before agent nodes. For this reason, it is recommended you create at least two plans: a plan for upgrading server (control-plane) nodes, and a plan for upgrading agent nodes. You can create additional plans as needed to control the rollout of the upgrade across nodes. After the plans are created, the controller picks them up and begins to upgrade your cluster.
 
 The following two example plans continuously keep your your cluster upgraded to the current stable release, by targeting the stable xref:upgrades/manual.adoc#_release_channels[release channel]:
 
@@ -105,7 +105,7 @@ spec:
 There are a few important things to call out regarding these plans:
 
 . The plans must be created in the same namespace where the controller is deployed.
-. The `concurrency` field indicates how many nodes can be upgraded at the same time. 
+. The `concurrency` field indicates how many nodes can be upgraded at the same time.
 . The server-plan targets server nodes by specifying a label selector that selects nodes with the `node-role.kubernetes.io/control-plane` label. The agent-plan targets agent nodes by specifying a label selector that select nodes without that label.
 . The `prepare` step in the agent-plan causes upgrade jobs for that plan to wait for the server-plan to complete before they execute. This logic is built into the image used for the prepare step, and is not part of system-upgrade-controller itself.
 . Both plans have the `channel` field set to the stable release channel URL. This causes the controller to monitor that URL and upgrade the cluster any time it resolves to a new release. This works well with the xref:upgrades/manual.adoc#_release_channels[release channels]. Thus, you can configure your plans with the following channel to ensure your cluster is always automatically upgraded to the newest stable release of K3s. Alternatively, you can omit the `channel` field and set the `version` field to a specific release of K3s:
