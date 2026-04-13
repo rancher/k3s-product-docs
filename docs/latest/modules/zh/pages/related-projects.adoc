@@ -1,26 +1,26 @@
-= Related Projects
-:page-languages: [en, ja, ko, zh]
+= 相关项目
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-03-31
 :page-revdate: {revdate}
 
-Projects implementing the K3s distribution are welcome additions to help expand the community. These projects help to:
+实施K3s分发的项目是扩展社区的欢迎补充。这些项目有助于：
 
-* Explore K3s capabilities and potential applications.
-* Extend K3s functionality across different platforms and environments.
-* Simplify the process of creating large High Availability (HA) K3s clusters.
+* 探索K3s的能力和潜在应用。
+* 在不同平台和环境中扩展K3s的功能。
+* 简化创建大型高可用性（HA）K3s集群的过程。
 
 == k3s-ansible
 
-For users seeking to bootstrap a multi-node K3s cluster and familiar with ansible, take a look at https://github.com/k3s-io/k3s-ansible[k3s-io/k3s-ansible] repository. This set of ansible playbooks provides a convenient way to install K3s on your nodes, allowing you to focus on the configuration of your cluster rather than the installation process.
+对于希望启动多节点K3s集群并熟悉ansible的用户，请查看https://github.com/k3s-io/k3s-ansible[k3s-io/k3s-ansible]储存库。这一组ansible剧本提供了一种方便的方式在您的节点上安装K3s，让您可以专注于集群的配置，而不是安装过程。
 
 == k3sup
 
-Another project that simplifies the process of setting up a K3s cluster is https://github.com/alexellis/k3sup[k3sup]. This project, written in golang, only requires ssh access to your nodes. It also provides a convenient way to deploy K3s with external datastores, not just the embedded etcd.
+另一个简化K3s集群设置过程的项目是https://github.com/alexellis/k3sup[k3sup]。这个用golang编写的项目只需要对您的节点进行SSH访问。它还提供了一种方便的方式将K3s部署到外部数据存储，而不仅仅是嵌入式etcd。
 
 == autok3s
 
-Another provisioning tool, https://github.com/cnrancher/autok3s[autok3s], provides a GUI for provising k3s cluster across a range of cloud providers, VMs, and local machines. This tool is useful for users who prefer a graphical interface for provising K3s clusters.
+另一个配置工具https://github.com/cnrancher/autok3s[autok3s]，为在各种云提供商、虚拟机和本地机器上配置K3s集群提供了GUI。这个工具对那些偏好使用图形界面来配置K3s集群的用户非常有用。
 
 == hetzner-k3s
 
-For users who deploy on Hetzner Cloud, take a look at link:https://github.com/vitobotta/hetzner-k3s[hetzner-k3s]. This CLI tool, written in Crystal, handles the additional steps required to set up a K3s cluster on Hetzner Cloud.
+对于在Hetzner Cloud上部署的用户，请查看link:https://github.com/vitobotta/hetzner-k3s[hetzner-k3s]。这个用Crystal编写的CLI工具处理在Hetzner Cloud上设置K3s集群所需的额外步骤。

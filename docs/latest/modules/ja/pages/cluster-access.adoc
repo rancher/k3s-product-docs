@@ -1,12 +1,14 @@
 = クラスターアクセス
-:page-languages: [en, ja, ko, zh]
-:revdate: 2024-09-09
+:page-languages: [en, de, es, fr, ja, pt, zh]
+:revdate: 2025-09-15
 :page-revdate: {revdate}
 
-`/etc/rancher/k3s/k3s.yaml` に保存されている kubeconfig ファイルは、Kubernetes クラスターへのアクセスを構成するために使用されます。kubectl や helm などの上流の Kubernetes コマンドラインツールをインストールしている場合は、正しい kubeconfig パスでそれらを構成する必要があります。これは、`KUBECONFIG` 環境変数をエクスポートするか、`--kubeconfig` コマンドラインフラグを使用して行うことができます。詳細は以下の例を参照してください。
+`/etc/rancher/k3s/k3s.yaml`に保存されている管理者kubeconfigファイルを使用して、Kubernetesクラスターへのアクセスを提供できます。このファイルは、Kubernetesによってハードコーディングされている`system:admin`ユーザーおよび`system:masters`グループとしてのアクセスを許可し、クラスター内のすべてのリソースに対して無制限のアクセスを持ちます。
 
-KUBECONFIG 環境変数を利用する方法:
+K3sに付属する`kubectl`コマンドは、デフォルトでこのパスから設定を読み込むように構成されています。kubectlやHelmなどのアップストリームKubernetesコマンドラインツールをインストールしている場合は、正しいkubeconfigパスでそれらを構成する必要があります。これは、`KUBECONFIG`環境変数をエクスポートするか、`--kubeconfig`コマンドラインフラグを呼び出すことで行うことができます。詳しくは、以下の例を参照してください。
 
+* KUBECONFIG環境変数をエクスポートします：
++
 [,bash]
 ----
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
@@ -14,14 +16,18 @@ kubectl get pods --all-namespaces
 helm ls --all-namespaces
 ----
 
-または、コマンドで kubeconfig ファイルの場所を指定する方法:
-
+* コマンドでkubeconfigファイルの場所を指定します：
 [,bash]
 ----
 kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get pods --all-namespaces
 helm --kubeconfig /etc/rancher/k3s/k3s.yaml ls --all-namespaces
 ----
 
-== kubectl を使用して外部からクラスターにアクセスする
+== kubectlを使用して外部からクラスターにアクセスする
 
-クラスター外にあるマシンに `/etc/rancher/k3s/k3s.yaml` を `~/.kube/config` としてコピーします。その後、`server` フィールドの値を K3s サーバーの IP または名前に置き換えます。これで `kubectl` は K3s クラスターを管理できるようになります。
+クラスターの外にあるあなたのマシンに`/etc/rancher/k3s/k3s.yaml`を`~/.kube/config`としてコピーします。次に、`server`フィールドの値をK3sサーバーのIPまたは名前に置き換えます。`kubectl`は、あなたのK3sクラスターを管理できるようになります。
+
+[NOTE]
+====
+K3sは、起動するたびに管理者kubeconfig内の証明書を自動的に更新します。このファイルのコピーを作成した場合は、インライン証明書が期限切れにならないように、それらのコピーを手動で更新する必要があります。
+====

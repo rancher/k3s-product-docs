@@ -1,79 +1,64 @@
 = 自動アップグレード
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-09-16
 :page-revdate: {revdate}
 
 == 概要
 
-Rancherのsystem-upgrade-controllerを使用してK3sクラスターのアップグレードを管理できます。これはKubernetesネイティブのクラスターアップグレードアプローチです。これには、https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#custom-resources[カスタムリソース定義（CRD）]、`plan`、およびlink:https://kubernetes.io/docs/concepts/architecture/controller/[コントローラー]が含まれます。
+RancherのUpgrade Controllerを使用してK3sクラスターのアップグレードを管理できます。これはクラスターアップグレードのためのKubernetesネイティブなアプローチです。https://github.com/rancher/system-upgrade-controller/blob/master/doc/plan.md#planspec[`Plan`]カスタムリソースを利用して、どのノードをアップグレードし、どのバージョンにするかを宣言的に記述します。
 
-プランはアップグレードポリシーと要件を定義します。また、https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/[ラベルセレクター]を使用して、どのノードをアップグレードするかを定義します。K3sクラスターのアップグレードに適したデフォルト設定のプランについては、以下を参照してください。より高度なプラン設定オプションについては、https://github.com/rancher/system-upgrade-controller/blob/master/pkg/apis/upgrade.cattle.io/v1/types.go[CRD]を確認してください。
+プランはアップグレードポリシーと要件を定義します。また、https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/[ラベルセレクター]を通じてどのノードをアップグレードすべきかを定義します。K3sクラスターのアップグレードに適したデフォルトのプランについては、以下を参照してください。より高度なプラン設定オプションについては、上記のプランのドキュメントを参照してください。
 
-コントローラーはプランを監視し、アップグレードlink:https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/[ジョブ]を実行するノードを選択してアップグレードをスケジュールします。ジョブが正常に完了すると、コントローラーは実行されたノードにラベルを付けます。
+システムアップグレードコントローラーは、プランを監視し、アップグレードhttps://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/[ジョブ]を実行するノードを選択することによってアップグレードをスケジュールします。ジョブが正常に完了すると、コントローラーはそれが実行されたノードに適切なラベルを付けます。
 
-[NOTE]
+[WARNING]
 ====
-起動されるアップグレードジョブは高い特権を持つ必要があります。以下の設定が必要です：
+K3sクラスターがRancherによって管理されている場合、アップグレードを管理するためにRancher UIを使用する必要があります。
 
-* ホストの``IPC``、`NET`、および``PID``ネームスペース
-* ``CAP_SYS_BOOT``キャパビリティ
-* 読み書き権限を持つホストルートが``/host``にマウントされていること
-====
-
-
-この方法でアップグレードを自動化するには、以下の手順を実行する必要があります：
-
-. クラスターにsystem-upgrade-controllerをインストールする
-. プランを設定する
-
-[CAUTION]
-====
-K3sクラスターがRancherによって管理されている場合、アップグレードの管理にはRancher UIを使用する必要があります。
-
-* K3sクラスターがRancherにインポートされた場合、Rancherはsystem-upgrade-controllerのデプロイメントとプランを管理します。このページの手順に従わないでください。
-* K3sクラスターがRancherによってプロビジョニングされた場合、Rancherはバージョンアップグレードを管理するためにシステムエージェントを使用します。このページの手順に従わないでください。
-* K3sクラスターがRancherによって管理されていない場合、以下の手順に従ってください。
+* K3sクラスターがRancherにインポート（登録）されている場合、Rancherはデフォルトでsystem-upgrade-controllerのデプロイメントとプランを管理します。Rancherでバージョン管理を無効にしていない限り、このページの手順に従わないでください。
+  詳細については、https://rancher.github.io/product-docs-playbook/rancher-manager/latest/en/cluster-deployment/register-existing-clusters.html#_configuring_version_management_for_suse_rancher_prime_rke2_and_suse_rancher_prime_k3s_clusters[RKE2およびK3sクラスターのバージョン管理の設定]を参照してください。
+* K3sクラスターがRancherによってプロビジョニングされている場合、Rancherはシステムエージェントを使用してバージョンアップグレードを管理します。このページの手順に従わないでください。
+* K3sクラスターがRancherによって*管理されていない*場合は、以下の手順に従うことができます。
 ====
 
+== システムアップグレードコントローラーの使用
 
-system-upgrade-controllerの設計とアーキテクチャ、またはK3sとの統合の詳細については、以下のGitリポジトリを参照してください：
+アップグレードを自動化するには、次のことを行う必要があります。
+
+. システムアップグレードコントローラーをクラスターにインストールします。
+. どのノードグループをアップグレードし、どのようにアップグレードするかを説明するプランを作成します。
+
+システムアップグレードコントローラーの設計とアーキテクチャ、またはK3sとの統合に関する詳細については、以下のGitリポジトリを参照してください：
 
 * https://github.com/rancher/system-upgrade-controller[system-upgrade-controller]
 * https://github.com/k3s-io/k3s-upgrade[k3s-upgrade]
 
 [TIP]
 ====
-K3sの新しいバージョンにアップグレードする際には、https://kubernetes.io/docs/setup/release/version-skew-policy/[Kubernetesバージョンスキューポリシー]が適用されます。アップグレード時に中間のマイナーバージョンをスキップしないようにプランを設定してください。system-upgrade-controller自体は、Kubernetesバージョンのサポートされていない変更を防ぎません。
+新しいバージョンのK3sにアップグレードしようとする際には、https://kubernetes.io/docs/setup/release/version-skew-policy/[Kubernetesバージョンのポリシー]が適用されます。アップグレード時に中間のマイナーバージョンをスキップしないように、プランを確認してください。システムアップグレードコントローラー自体は、Kubernetesバージョンへのサポートされていない変更から保護しません。
 ====
 
 
-== system-upgrade-controllerのインストール
+=== インストール
 
-system-upgrade-controllerはクラスターにデプロイメントとしてインストールできます。デプロイメントにはサービスアカウント、clusterRoleBinding、およびconfigmapが必要です。これらのコンポーネントをインストールするには、以下のコマンドを実行します：
-
-[,bash]
-----
-kubectl apply -f https://github.com/rancher/system-upgrade-controller/releases/latest/download/system-upgrade-controller.yaml
-----
-
-コントローラーは前述のconfigmapを介して設定およびカスタマイズできますが、変更を適用するにはコントローラーを再デプロイする必要があります。
-
-プランを適用できるようにするためには、system-upgrade-controller CRDをデプロイする必要があります：
+システムアップグレードコントローラーのマニフェストは、カスタムリソース定義、デプロイメント、サービスアカウント、クラスター役割バインディング、およびコンフィグマップをインストールします。これらのコンポーネントをインストールするには、次のコマンドを実行します：
 
 [,bash]
 ----
-kubectl apply -f https://github.com/rancher/system-upgrade-controller/releases/latest/download/crd.yaml
+kubectl apply -f https://github.com/rancher/system-upgrade-controller/releases/latest/download/crd.yaml -f https://github.com/rancher/system-upgrade-controller/releases/latest/download/system-upgrade-controller.yaml
 ----
 
-== プランの設定
+コントローラーは、前述のコンフィグマップを介して設定およびカスタマイズできますが、変更を適用するにはコントローラーポッドを削除する必要があります。
 
-少なくとも2つのプランを作成することをお勧めします：サーバー（コントロールプレーン）ノードをアップグレードするプランと、エージェントノードをアップグレードするプランです。必要に応じて追加のプランを作成し、ノード全体のアップグレードの展開を制御できます。プランが作成されると、コントローラーはそれを検出し、クラスターのアップグレードを開始します。
+=== 設定
 
-以下の2つの例プランは、クラスターをK3s v1.24.6+k3s1にアップグレードします：
+サーバーノードは常にエージェントノードの前にアップグレードする必要があります。この理由から、サーバー（コントロールプレーン）ノードをアップグレードするための計画と、エージェントノードをアップグレードするための計画の少なくとも2つを作成することをお勧めします。ノード全体でのアップグレードの展開を制御するために、必要に応じて追加の計画を作成できます。プランが作成された後、コントローラーはそれらを取得し、クラスターのアップグレードを開始します。
+
+以下の2つの例のプランは、安定したxref:upgrades/manual.adoc#_release_channels[リリースチャネル]をターゲットにして、クラスターを現在の安定リリースに継続的にアップグレードします：
 
 [,yaml]
 ----
-# サーバープラン
+# Server plan
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
@@ -93,7 +78,7 @@ spec:
     image: rancher/k3s-upgrade
   channel: https://update.k3s.io/v1-release/channels/stable
 ---
-# エージェントプラン
+# Agent plan
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
@@ -117,50 +102,71 @@ spec:
   channel: https://update.k3s.io/v1-release/channels/stable
 ----
 
-これらのプランに関して重要な点をいくつか挙げます：
+これらのプランに関して重要な点がいくつかあります：
 
-1) プランはコントローラーがデプロイされたのと同じネームスペースに作成する必要があります。
+. プランは、コントローラーがデプロイされているのと同じネームスペースで作成する必要があります。
+. `concurrency`フィールドは、同時にアップグレードできるノードの数を示します。
+. サーバープランは、`node-role.kubernetes.io/control-plane`ラベルを持つノードを選択するラベルセレクターを指定することによってサーバーノードをターゲットにします。エージェントプランは、ラベルを指定するセレクターを使用して、ラベルのないノードを選択することによってエージェントノードをターゲットにします。
+. エージェントプランの`prepare`ステップは、そのプランのアップグレードジョブがサーバープランの完了を待つようにします。このロジックは、準備ステップで使用されるイメージに組み込まれており、システムアップグレードコントローラー自体の一部ではありません。
+. 両方のプランは、`channel`フィールドが安定版リリースチャネルのURLに設定されています。これにより、コントローラーはそのURLを監視し、新しいリリースに解決されるたびにクラスターをアップグレードします。これは、xref:upgrades/manual.adoc#_release_channels[リリースチャネル]とよく機能します。したがって、次のチャネルでプランを構成することで、クラスターが常に最新の安定版K3sに自動的にアップグレードされることを保証できます。または、`channel`フィールドを省略し、`version`フィールドを特定のK3sリリースに設定することもできます：
++
+[,yaml]
+----
+apiVersion: upgrade.cattle.io/v1
+kind: Plan
+# ...
+spec:
+  # ...
+  version: v1.33.4+k3s1
+----
 
-2) ``concurrency``フィールドは、同時にアップグレードできるノードの数を示します。
+アップグレードは、コントローラーがプランのターゲットバージョンが解決されたことを検出するとすぐに開始されます。これは、バージョンフィールドから、またはチャネルサーバーをポーリングすることによって行われます。プランを変更すると、コントローラーはプランを再評価し、別のアップグレードが必要かどうかを判断します。チャネルが構成されている場合、URLも定期的にポーリングされて新しいバージョンをチェックします。
 
-3) server-planは``node-role.kubernetes.io/control-plane``ラベルを持つノードを選択するラベルセレクターを指定してサーバーノードをターゲットにします。agent-planはそのラベルを持たないノードを選択するラベルセレクターを指定してエージェントノードをターゲットにします。
+アップグレードの進行状況は、kubectlを介してプランとジョブを表示することで監視できます：
 
-4) agent-planの``prepare``ステップは、そのプランのアップグレードジョブがserver-planの完了を待ってから実行されるようにします。
+[,bash]
+----
+kubectl -n system-upgrade get plans -o wide
+kubectl -n system-upgrade get jobs
+----
 
-5) 両方のプランには``version``フィールドがv1.24.6+k3s1に設定されています。代わりに``version``フィールドを省略し、``channel``フィールドをK3sのリリースに解決されるURLに設定することもできます。これにより、コントローラーはそのURLを監視し、新しいリリースに解決されるたびにクラスターをアップグレードします。これはxref:upgrades/manual.adoc#_release_channels[リリースチャンネル]とよく連携します。したがって、次のチャンネルでプランを設定して、クラスターが常に最新の安定版K3sリリースに自動的にアップグレードされるようにすることができます：
+=== アップグレードのスケジューリング
+
+プラン仕様内の`window`フィールドを設定することにより、プランが特定の時間ウィンドウ内で発生するように制限できます。時間ウィンドウフィールドは、https://kured.dev/docs/configuration/#setting-a-schedule[kuredスケジュールオプション]と互換性があり、同じ形式を取ります。次に例を示します。
 
 [,yaml]
 ----
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
-...
+# ...
 spec:
-  ...
-  channel: https://update.k3s.io/v1-release/channels/stable
+  # ...
+  window:
+    days:
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+    startTime: 19:00
+    endTime: 21:00
+    timeZone: UTC
 ----
 
-述べたように、プランが作成されるとコントローラーがそれを検出し、アップグレードが開始されます。プランを更新すると、コントローラーはプランを再評価し、別のアップグレードが必要かどうかを判断します。
-
-kubectlを使用してプランとジョブを表示することで、アップグレードの進行状況を監視できます：
-
-[,bash]
-----
-kubectl -n system-upgrade get plans -o yaml
-kubectl -n system-upgrade get jobs -o yaml
-----
+プランのアップグレードを実行するためのジョブは、時間ウィンドウの外では作成されません。ジョブが作成された後、プランはウィンドウが閉じた後も実行を続けることがあります。
 
 == ダウングレード防止
 
 [IMPORTANT]
 .バージョンゲート
 ====
-2023年7月のリリース（https://github.com/k3s-io/k3s-upgrade/releases/tag/v1.27.4%2Bk3s1[v1.27.4+k3s1]、https://github.com/k3s-io/k3s-upgrade/releases/tag/v1.26.7%2Bk3s1[v1.26.7+k3s1]、https://github.com/k3s-io/k3s-upgrade/releases/tag/v1.25.12%2Bk3s1[v1.25.12+k3s1]、https://github.com/k3s-io/k3s-upgrade/releases/tag/v1.24.16%2Bk3s1[v1.24.16+k3s1]）から適用されます。
+2023-07リリースから開始します（https://github.com/k3s-io/k3s-upgrade/releases/tag/v1.27.4%2Bk3s1[v1.27.4+k3s1], https://github.com/k3s-io/k3s-upgrade/releases/tag/v1.26.7%2Bk3s1[v1.26.7+k3s1], https://github.com/k3s-io/k3s-upgrade/releases/tag/v1.25.12%2Bk3s1[v1.25.12+k3s1], https://github.com/k3s-io/k3s-upgrade/releases/tag/v1.24.16%2Bk3s1[v1.24.16+k3s1])
 ====
 
 
-Kubernetesはコントロールプレーンコンポーネントのダウングレードをサポートしていません。アップグレードプランで使用されるk3s-upgradeイメージはK3sのダウングレードを拒否し、プランが失敗し、ノードがコードンされたままになります。
+Kubernetesはコントロールプレーンコンポーネントのダウングレードをサポートしていません。アップグレードプランで使用されるk3s-upgradeイメージは、K3sのダウングレードを拒否し、プランが失敗します。プランに`cordon: true`が設定されているノードは、エラー後もコーデンされたままになります。
 
-以下は、失敗したアップグレードポッドとコードンされたノードを示す例です：
+ここに、失敗したアップグレードポッドとコーデンされたノードを示す例のクラスターがあります：
 
 [,console]
 ----
@@ -178,8 +184,16 @@ ip-172-31-13-213   Ready,SchedulingDisabled   control-plane,etcd,master   19h   
 ip-172-31-2-13     Ready                      <none>                      19h   v1.27.4+k3s1
 ----
 
-コードンされたノードをサービスに戻すには、次のいずれかの方法を使用します：
+コーデンされたノードをサービスに戻すには、次のいずれかの方法を使用できます：
 
-* プランのバージョンまたはチャンネルを変更して、クラスターで現在実行されているものと同じかそれ以上のリリースをターゲットにし、プランが成功するようにします。
-* プランを削除し、ノードを手動でアンコードンします。
-``kubectl get plan -n system-upgrade``を使用してプラン名を見つけ、``kubectl delete plan -n system-upgrade PLAN_NAME``を使用してプランを削除します。プランが削除されたら、``kubectl uncordon NODE_NAME``を使用して各ノードをアンコードンします。
+* プランのバージョンまたはチャネルを変更して、クラスターで現在実行中のものと同じか新しいリリースをターゲットにすることで、プランが成功するようにします。
+* プランを削除し、ノードのコーデンを手動で解除します。
+`kubectl get plan -n system-upgrade`を使用してプラン名を見つけ、その後`kubectl delete plan -n system-upgrade PLAN_NAME`を使用して削除します。プランが削除されたら、`kubectl uncordon NODE_NAME`を使用して各ノードのアンコーデンを行います。
+
+== セキュリティ
+
+起動されるアップグレードジョブは、基盤となるノードに変更を加えるために高い特権を持っている必要があります。デフォルトでは、次のように設定されています：
+
+* ホスト`IPC`、`NET`、および`PID`のネームスペース
+* `CAP_SYS_BOOT`の機能
+* 読み取りおよび書き込み権限を持つ`/host`にマウントされたホストのルート

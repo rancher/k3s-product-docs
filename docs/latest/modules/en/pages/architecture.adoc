@@ -1,6 +1,6 @@
 = Architecture
-:page-languages: [en, ja, ko, zh]
 :revdate: 2026-04-01
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 
 == Servers and Agents

@@ -1,37 +1,37 @@
-= Import images
-:page-languages: [en, ja, ko, zh]
+= 导入镜像
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-01-05
 :page-revdate: {revdate}
 :page-aliases: import-images.adoc
 
-Container images are cached locally on each node by the containerd image store. Images can be pulled from the registry as needed by pods, preloaded via image pull, or imported from an image tarball.
+容器镜像在每个节点上由 containerd 镜像存储本地缓存。镜像可以根据需要从注册表中拉取、通过镜像拉取进行预加载，或从镜像归档文件中导入。
 
-== On-demand image pulling
+== 按需镜像拉取
 
-Kubernetes, by default, automatically pulls images when a Pod requires them if the image is not already present on the node. This behavior can be changed by using the https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[image pull policy] field of the Pod. When using the default `IfNotPresent` policy, containerd will pull the image from either upstream (default) or your xref:installation/private-registry.adoc[private registry] and store it in its image store. Users do not need to apply any additional configuration for on-demand image pulling to work.
+Kubernetes默认情况下，当Pod需要镜像而节点上尚不存在该镜像时，会自动拉取镜像。可以通过使用Pod的https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[镜像拉取策略]字段来更改此行为。使用默认的`IfNotPresent`策略时，containerd将从上游（默认）或您的xref:installation/private-registry.adoc[私有注册表]拉取镜像，并将其存储在其镜像存储中。用户无需为按需镜像拉取工作应用任何额外配置。
 
 
-== Pre-import images
+== 预导入镜像
 
 [IMPORTANT]
-.Version Gate
+.版本门控
 ====
-The pre-importing of images while K3s is running feature is available as of January 2025 releases: v1.32.0+k3s1, v1.31.5+k3s1, v1.30.9+k3s1, v1.29.13+k3s1. Before that, K3s pre-imported the images only when booting.
+在K3s运行时预导入镜像的功能自2025年1月的版本开始可用：v1.32.0+k3s1，v1.31.5+k3s1，v1.30.9+k3s1，v1.29.13+k3s1。在此之前，K3s仅在启动时预导入镜像。
 ====
 
-Pre-importing images onto the node is essential if you configure Kubernetes' `imagePullPolicy` as `Never`. You might do this for security reasons or to reduce the time it takes for your K3s nodes to spin up.
+如果将 Kubernetes 的 `imagePullPolicy` 配置为 `Never`，则在节点上预导入镜像是必不可少的。您可能出于安全原因或为了减少K3s节点启动所需的时间而这样做。
 
-K3s includes two mechanisms to pre-import images into the containerd image store:
+K3s包含两种机制将镜像预导入到containerd镜像存储中：
 
 [tabs,sync-group-id=import-images]
 ======
-Online image importing::
+在线镜像导入::
 +
 --
 
-Users can trigger a pull of images into the containerd image store by placing a text file containing the image names, one per line, in the `/var/lib/rancher/k3s/agent/images` directory. The text file can be placed before K3s is started as well as created or  modified while K3s is running. K3s sequentially pulls the images via the CRI API, optionally using the xref:installation/private-registry.adoc[registries.yaml] configuration.
+用户可以通过在 `/var/lib/rancher/k3s/agent/images` 目录中放置一个包含镜像名称（每行一个）的文本文件，来触发将镜像拉取至 containerd 镜像存储中。文本文件可以在K3s启动之前放置，也可以在K3s运行时创建或修改。K3s通过CRI API顺序拉取镜像，选择性地使用xref:installation/private-registry.adoc[registries.yaml]配置。
 
-For example:
+例如：
 
 [,bash]
 ----
@@ -39,24 +39,24 @@ mkdir /var/lib/rancher/k3s/agent/images
 cp example.txt /var/lib/rancher/k3s/agent/images
 ----
 
-Where `example.txt` contains:
+`example.txt` 包含：
 
 ----
 docker.io/library/redis:latest
 docker.io/library/mysql:latest
 ----
 
-After a few seconds, the `redis` and the `mysql` images are available in the containerd image store of the node. 
+几秒钟后，`redis` 和 `mysql` 的镜像在节点的 containerd 镜像存储中可用。
 
-Use `sudo k3s ctr images list` to query the containerd image store.
+使用 `sudo k3s ctr images list` 查询 containerd 镜像存储。
 --
 
-Offline image importing::
+离线镜像导入::
 +
 --
-Users can import images directly into the containerd image store by placing image tarballs in the `/var/lib/rancher/k3s/agent/images` directory. The tarball can be placed before K3s is started as well as created or modified while K3s is running. K3s decompresses the image tarball if necessary, extract the images, and loads them into the containerd image store.
+用户可以通过将镜像归档文件放置在 `/var/lib/rancher/k3s/agent/images` 目录中，直接将镜像导入到 containerd 镜像存储中。镜像归档文件可以在 K3s 启动之前放置，也可以在 K3s 运行时创建或修改。K3s 会在必要时解压镜像归档文件，提取镜像，并将其加载到 containerd 镜像存储中。
 
-For example:
+例如：
 
 [,bash]
 ----
@@ -64,17 +64,17 @@ mkdir /var/lib/rancher/k3s/agent/images
 curl  https://github.com/k3s-io/k3s/releases/download/v1.33.1%2Bk3s1/k3s-airgap-images-amd64.tar.zst -O  /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst
 ----
 
-After a few seconds, the images included in the image tarball are available in the containerd image store of the node. 
+几秒钟后，镜像归档文件中包含的镜像在节点的 containerd 镜像存储中可用。
 
-Use `sudo k3s ctr images list` to query the containerd image store.
+使用 `sudo k3s ctr images list` 查询 containerd 镜像存储。
 
-This is the method used in air-gapped environments. Please follow the xref:installation/airgap.adoc[air-gap installation documentation] for detailed information.
+这是在隔离的环境中使用的方法。请遵循 xref:installation/airgap.adoc[隔离安装文档] 获取详细信息。
 --
 ======
 
-== Set up an image registry
+== 设置镜像注册表
 
-K3s supports two alternatives for image registries:
+K3s 支持两种镜像注册表的替代方案：
 
-* xref:installation/private-registry.adoc[Private Registry Configuration] covers use of `registries.yaml` to configure container image registry authentication and mirroring.
-* xref:installation/registry-mirror.adoc[Embedded Registry Mirror] shows how to enable the embedded distributed image registry mirror, for peer-to-peer sharing of images between nodes.
+* xref:installation/private-registry.adoc[私有注册表配置] 涉及使用 `registries.yaml` 配置容器镜像注册表的身份验证和镜像同步。
+* xref:installation/registry-mirror.adoc[嵌入式注册表镜像] 显示如何启用嵌入式分布式镜像注册表，以便实现节点之间镜像的点对点共享。

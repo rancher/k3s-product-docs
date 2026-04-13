@@ -1,0 +1,127 @@
+= Problemas conocidos
+:page-languages: [en, de, es, fr, ja, pt, zh]
+:revdate: 2025-09-15
+:page-revdate: {revdate}
+
+Los problemas conocidos se actualizan periódicamente y están diseñados para informarte sobre cualquier problema que puede no ser abordado de inmediato en la próxima versión. Para la información más actualizada, consulta los problemas abiertos y fijados en el https://github.com/k3s-io/k3s/issues[Rastreador de Problemas del Proyecto K3s]. Si no estás ejecutando la versión más reciente de K3s, asegúrate de buscar también problemas cerrados y notas de la versión para garantizar que tu problema no se haya resuelto ya.
+
+== Límite de revisión Kine/SQL 2147483647 (MAX INT)
+
+Al usar K3s con una xref:datastore/ha.adoc[base de datos SQL externa] que se creó en una versión de K3s anterior a mayo de 2024, debes aplicar migraciones de esquema a tu base de datos para permitir que se almacenen más de 2.1 millones de revisiones en la base de datos. Las bases de datos sin un esquema actualizado se vuelven de solo lectura cuando la revisión actual del almacén de datos alcanza 2147483647.
+
+Puedes comprobar la revisión actual de tu almacén de datos examinando el campo `resourceVersion` de la respuesta a una llamada de lista realizada contra la API de Kubernetes.
+Por ejemplo, en la siguiente salida, la revisión actual es 12345:
+
+[,bash]
+----
+$ kubectl get --raw /api/v1/namespaces?labelSelector=none
+{"kind":"NamespaceList","apiVersion":"v1","metadata":{"resourceVersion":"12345"},"items":[]}
+----
+
+== Docker Snap
+
+Si planeas usar K3s con el entorno de ejecución de contenedor Docker, no se recomienda el paquete snap de Docker, ya que se ha sabido que causa problemas al ejecutar K3s. Instala Docker utilizando el sistema de gestión de paquetes nativo proporcionado por tu sistema operativo.
+
+== Iptables
+
+Si tu nodo utiliza iptables v1.6.1 o anterior en modo nftables, podrías encontrar problemas. Recomendamos utilizar iptables más recientes (como 1.6.1+), o ejecutar iptables en modo legado, para evitar problemas.
+
+[,bash]
+----
+update-alternatives --set iptables /usr/sbin/iptables-legacy
+update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
+----
+
+Las versiones de iptables 1.8.0-1.8.4 también tienen problemas conocidos que pueden causar que K3s falle. Varias distribuciones populares de Linux incluyen estas versiones por defecto. Un error causa la acumulación de reglas duplicadas, lo que afecta negativamente el rendimiento y la estabilidad del nodo. Consulta https://github.com/k3s-io/k3s/issues/3117[Problema #3117] para obtener información sobre cómo determinar si te afecta este problema.
+
+K3s incluye una versión conocida y funcional de iptables (v1.8.8) que ha sido probada para funcionar correctamente. Puedes indicarle a K3s que use su versión incluida de iptables iniciándolo con la opción `--prefer-bundled-bin`, o desinstalando los paquetes de iptables/nftables de tu sistema operativo.
+
+[IMPORTANT]
+.Puerta de versión
+====
+
+La bandera `--prefer-bundled-bin` está disponible a partir de las versiones de 2022-12 (v1.26.0+k3s1, v1.25.5+k3s1, v1.24.9+k3s1, v1.23.15+k3s1).
+====
+
+== Modo sin raíz
+
+Ejecutar K3s en modo sin raíz es experimental y tiene varios xref:advanced.adoc#_known_issues_with_rootless_mode[problemas conocidos.]
+
+[#hardened-125]
+== Actualizando clústeres protegidos de v1.24.x a v1.25.x
+
+Kubernetes eliminó PodSecurityPolicy de v1.25 en favor de los Estándares de Seguridad de Pods. Puedes leer más sobre PSS en la https://kubernetes.io/docs/concepts/security/pod-security-standards/[documentación en sentido ascendente]. Para K3S, hay algunos pasos manuales que deben tomarse si se ha configurado algún `PodSecurityPolicy` en los nodos.
+
+. En todos los nodos, actualiza el valor de `kube-apiserver-arg` para eliminar el plugin de admisión `PodSecurityPolicy`. Agrega el siguiente valor de argumento en su lugar: `'admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml'`, pero NO reinicies ni actualices K3S aún. A continuación se muestra un ejemplo de cómo podría verse un archivo de configuración después de esta actualización para que el nodo esté protegido:
++
+[,yaml]
+----
+protect-kernel-defaults: true
+secrets-encryption: true
+kube-apiserver-arg:
+  - 'admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml'
+  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
+  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
+  - 'audit-log-maxage=30'
+  - 'audit-log-maxbackup=10'
+  - 'audit-log-maxsize=100'
+kube-controller-manager-arg:
+  - 'terminated-pod-gc-threshold=10'
+  - 'use-service-account-credentials=true'
+kubelet-arg:
+  - 'streaming-connection-idle-timeout=5m'
+----
+
+. Cree el archivo `/var/lib/rancher/k3s/server/psa.yaml` con el siguiente contenido. Es posible que desees excluir más espacios de nombres también. El siguiente ejemplo excluye `kube-system` (requerido), `cis-operator-system` (opcional, pero útil para cuando se realizan análisis de seguridad a través de Rancher), y `system-upgrade` (requerido si se realizan xref:upgrades/automated.adoc[Actualizaciones Automatizadas]).
++
+[,yaml]
+----
+apiVersion: apiserver.config.k8s.io/v1
+kind: AdmissionConfiguration
+plugins:
+- name: PodSecurity
+  configuration:
+ apiVersion: pod-security.admission.config.k8s.io/v1beta1
+ kind: PodSecurityConfiguration
+ defaults:
+   enforce: "restricted"
+   enforce-version: "latest"
+   audit: "restricted"
+   audit-version: "latest"
+   warn: "restricted"
+   warn-version: "latest"
+ exemptions:
+   usernames: []
+   runtimeClasses: []
+   namespaces: [kube-system, cis-operator-system, system-upgrade]
+----
+
+. Realiza la actualización como de costumbre. Si realizas xref:upgrades/automated.adoc[Actualizaciones Automatizadas], asegúrate de que el espacio de nombres donde se está ejecutando el pod `system-upgrade-controller` esté configurado para ser privilegiado de acuerdo con los https://kubernetes.io/docs/concepts/security/pod-security-admission/#pod-security-levels[Niveles de Seguridad de Pods]:
++
+[,yaml]
+----
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: system-upgrade
+  labels:
+ # This value must be privileged for the controller to run successfully.
+ pod-security.kubernetes.io/enforce: privileged
+ pod-security.kubernetes.io/enforce-version: v1.25
+ # We are setting these to our _desired_ `enforce` level, but note that these below values can be any of the available options.
+ pod-security.kubernetes.io/audit: privileged
+ pod-security.kubernetes.io/audit-version: v1.25
+ pod-security.kubernetes.io/warn: privileged
+ pod-security.kubernetes.io/warn-version: v1.25
+----
+
+. Una vez que la actualización esté completa, elimina cualquier recurso PSP restante del clúster. En muchos casos, puede haber Políticas de Seguridad de Pods y recursos RBAC asociados en archivos personalizados utilizados para la protección dentro de `/var/lib/rancher/k3s/server/manifests/`. Elimina esos recursos y k3s se actualizará automáticamente. A veces, debido a la sincronización, algunos de estos pueden quedar en el clúster, en cuyo caso necesitarás eliminarlos manualmente. Si se siguió previamente la xref:security/hardening-guide.adoc[Guía de Protección], deberías poder eliminarlos a través de lo siguiente:
+
+[,sh]
+----
+# Get the resources associated with PSPs
+$ kubectl get roles,clusterroles,rolebindings,clusterrolebindings -A | grep -i psp
+
+# Delete those resources:
+$ kubectl delete clusterrole.rbac.authorization.k8s.io/psp:restricted-psp clusterrole.rbac.authorization.k8s.io/psp:svclb-psp clusterrole.rbac.authorization.k8s.io/psp:system-unrestricted-psp clusterrolebinding.rbac.authorization.k8s.io/default:restricted-psp clusterrolebinding.rbac.authorization.k8s.io/system-unrestricted-node-psp-rolebinding && kubectl delete -n kube-system rolebinding.rbac.authorization.k8s.io/svclb-psp-rolebinding rolebinding.rbac.authorization.k8s.io/system-unrestricted-svc-acct-psp-rolebinding
+----

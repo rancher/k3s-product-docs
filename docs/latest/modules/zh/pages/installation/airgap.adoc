@@ -1,165 +1,203 @@
-= Air-Gap Install
-:page-languages: [en, ja, ko, zh]
+= 隔离安装
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-03-03
 :page-revdate: {revdate}
 
-K3s can be installed in an air-gapped environment with two different methods. You can either deploy images via the xref:#_manually_deploy_images_method[k3s-airgap-images tarball release artifact] or by using a xref:#_private_registry_method[private registry]. It is also possible to use the xref:#_embedded_registry_mirror[embedded registry mirror] as long as there is at least one cluster member that has access to the required images.
+本指南将引导您通过三步过程在隔离的环境中安装 K3s。
 
-== Load Images
+[IMPORTANT]
+====
+您可以使用在 Prime Artifacts URL 上列出的任何 K3s Prime 版本来获取这些步骤中提到的资产。要了解有关 Prime Artifacts URL 的更多信息，请参阅我们的 https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[仅限 Prime 的文档]。需要身份验证。使用您的 https://scc.suse.com/home[SUSE 客户中心 (SCC)] 凭据登录。
+====
 
-[#_private_registry_method]
-=== Private Registry Method
+== 加载镜像
 
-These steps assume you have already created nodes in your air-gap environment,
-are using the bundled containerd as the container runtime,
-and have a OCI-compliant private registry available in your environment.
+每种镜像加载方法有不同的要求，适用于不同的隔离场景。选择最适合您基础设施和安全要求的方法。
 
-If you have not yet set up a private Docker registry, refer to the https://docs.docker.com/registry/deploying/#run-an-externally-accessible-registry[official Registry documentation].
+[tabs,sync-group-id=airgap-load-images]
+======
+私有注册表方法::
++
+--
+这些步骤假设您已经在隔离环境中创建了节点，使用捆绑的 containerd 作为容器运行时，并且在您的环境中有一个符合 OCI 标准的私有注册表。
 
-==== Create the Registry YAML and Push Images
+如果您尚未设置私有 Docker 注册表，请参阅 https://docs.docker.com/registry/deploying/#run-an-externally-accessible-registry[官方注册表文档]。
 
-. Obtain the images archive for your architecture from the https://github.com/k3s-io/k3s/releases[releases] page for the version of K3s you will be running.
-. Use `docker image load k3s-airgap-images-amd64.tar.zst` to import images from the tar file into docker.
-. Use `docker tag` and `docker push` to retag and push the loaded images to your private registry.
-. Follow the xref:installation/private-registry.adoc[Private Registry Configuration] guide to create and configure the `registries.yaml` file.
-. Proceed to the <<_install_k3s,Install K3s>> section below.
+[#_create_the_registry_yaml_and_push_images]
+[pass]
+<h3><a class="anchor" id="_create_the_registry_yaml_and_push_images" href="#_create_the_registry_yaml_and_push_images"></a>创建注册表 YAML 并推送镜像</h3>
 
-[#_manually_deploy_images_method]
-=== Manually Deploy Images Method
 
-These steps assume you have already created nodes in your air-gap environment,
-are using the bundled containerd as the container runtime,
-and cannot or do not want to use a private registry.
+. 从您将运行的 K3s 版本的 https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL] 页面获取适合您架构的镜像归档。
+. 使用 `docker image load k3s-airgap-images-amd64.tar.zst` 将镜像从 tar 文件导入到 docker 中。
+. 使用 `docker tag` 和 `docker push` 重新标记并推送加载的镜像到您的私有注册表。
+. 请遵循 xref:installation/private-registry.adoc[私有注册表配置] 指南创建和配置 `registries.yaml` 文件。
+. 继续查看下面的 <<_install_k3s,安装 K3s>> 部分。
+--
 
-This method requires you to manually deploy the necessary images to each node, and is appropriate for edge deployments where running a private registry is not practical.
+手动部署镜像方法::
++
+--
+这些步骤假设您已经在隔离环境中创建了节点，使用捆绑的 containerd 作为容器运行时，并且无法或不想使用私有注册表。
 
-==== Prepare the Images Directory and Airgap Image Tarball
+此方法要求您手动将必要的镜像部署到每个节点，适用于在边缘部署中运行私有注册表不切实际的情况。
 
-. Obtain the images archive for your architecture from the https://github.com/k3s-io/k3s/releases[releases] page for the version of K3s you will be running.
-. Download the images archive to the agent's images directory, for example:
+[#_prepare_the_images_directory_and_airgap_image_tarball]
+[pass]
+<h3><a class="anchor" id="_prepare_the_images_directory_and_airgap_image_tarball" href="#_prepare_the_images_directory_and_airgap_image_tarball"></a>准备镜像目录和隔离镜像压缩包</h3>
+
+. 在可以访问互联网的机器上，从您计划安装的K3s版本的https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL]页面下载适合您架构的镜像归档。例如：
++
+[,bash]
+----
+curl -L -o k3s-airgap-images-amd64.tar.zst "<PRIME-ARTIFACTS-URL>/k3s/v1.35.1%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
+----
+
+. 将镜像归档传输到隔离节点。将它们放置在代理的镜像目录中，例如：
 +
 [,bash]
 ----
 sudo mkdir -p /var/lib/rancher/k3s/agent/images/
-sudo curl -L -o /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst "https://github.com/k3s-io/k3s/releases/download/v1.33.1%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
+sudo curl -L -o /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst ""https://github.com/k3s-io/k3s/releases/download/v1.33.1%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
+sudo cp k3s-airgap-images-amd64.tar.zst /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst
 ----
 
-. Proceed to the <<_install_k3s,Install K3s>> section below.
-
-==== Enable Conditional Image Imports
+. 继续查看下面的 <<_install_k3s,安装 K3s>> 部分。
+ 
+[#_enable_conditional_image_imports]
+[pass]
+<h3><a class="anchor" id="_enable_conditional_image_imports" href="#_enable_conditional_image_imports"></a>启用条件镜像导入</h3>
 
 [IMPORTANT]
-.Version Gate
+.版本门控
 ====
-Conditional Image imports is available as of the May 2025 releases: v1.33.1+k3s1, v1.32.5+k3s1, v1.31.9+k3s1, v1.30.13+k3s1.
+条件镜像导入自2025年5月的版本开始可用：v1.33.1+k3s1，v1.32.5+k3s1，v1.31.9+k3s1，v1.30.13+k3s1。
 ====
 
-Image archives are imported every time k3s starts. This is done to ensure that all the images are consistently available, even if some images have been removed or pruned since last startup. However, this delays startup as the kubelet is not started until after all archives have been processed. To alleviate this delay there is an option to only import tarballs that have changed since they were last imported, even across restarts.
+每次k3s启动时都会导入镜像归档。这样做是为了确保所有镜像始终可用，即使某些镜像在上次启动后被删除或修剪。然而，这会延迟启动，因为kubelet在处理完所有归档之前不会启动。为了缓解这种延迟，有一个选项可以仅导入自上次导入以来发生变化的归档，即使在重启之间也是如此。
 
-To enable this feature, create a `.cache.json` file in the images directory:
+要启用此功能，请在镜像目录中创建一个`.cache.json`文件：
 
 [,bash]
 ----
 touch /var/lib/rancher/k3s/agent/images/.cache.json
 ----
 
-The cache file will store archive metadata as files are processed. Subsequent restarts of K3s will not import the images, as long as the size and modification time of the archive remains the same.
+缓存文件将在处理归档时存储元数据。只要归档的大小和修改时间保持不变，K3s 的后续重启将不会导入镜像。
 
 [WARNING]
 ====
-When this feature is enabled, it will not be possible to ensure that all images are available every time k3s starts. If an image was removed or pruned since last startup, take manual action to reimport the image. Either:
+当启用此功能时，将无法确保每次k3s启动时所有镜像都可用。如果自上次启动以来删除或修剪了某个镜像，请手动采取措施重新导入该镜像。或者：
 
-* Manually import the archive with `ctr image import`.
-* Use `touch` to modify the timestamp of the archive containing the image.
-* Clear the contents of the `.cache.json` file, and restart k3s.
+* 手动使用`ctr image import`导入归档。
+* 使用`touch`来修改包含镜像的归档的时间戳。
+* 清空`.cache.json`文件的内容，然后重启k3s。
 ====
+--
 
-[#_embedded_registry_mirror]
-=== Embedded Registry Mirror
+嵌入式注册表镜像::
++
+--
+K3s 包含一个嵌入式分布式 OCI 兼容的注册表镜像。
+当启用并正确配置时，任何节点上的 containerd 镜像存储中的可用镜像可以被其他集群成员拉取，而无需访问外部镜像注册表。
 
-K3s includes an embedded distributed OCI-compliant registry mirror.
-When enabled and properly configured, images available in the containerd image store on any node
-can be pulled by other cluster members without access to an external image registry.
-
-The mirrored images may be sourced from an upstream registry, registry mirror, or airgap image tarball.
-For more information on enabling the embedded distributed registry mirror, see the xref:installation/registry-mirror.adoc[Embedded Registry Mirror] documentation.
+镜像可以来自上游注册表、注册表镜像或隔离镜像归档。
+有关启用嵌入式分布式注册表镜像的更多信息，请参见xref:installation/registry-mirror.adoc[嵌入式注册表镜像]文档。
+--
+======
 
 [#_install_k3s]
-== Install K3s
+== 安装K3s
 
-=== Prerequisites
+=== 先决条件
 
-Before installing K3s, complete the <<_private_registry_method,Private Registry Method>> or the <<_manually_deploy_images_method,Manually Deploy Images Method>> above to prepopulate the images that K3s needs to install.
+在安装K3s之前，选择上面的xref:#_load_images[加载镜像]选项之一，以预填充K3s安装所需的镜像。
 
-==== Binaries
+==== 下载二进制文件和脚本
 
-* Download the K3s binary from the https://github.com/k3s-io/k3s/releases[releases] page, matching the same version used to get the airgap images. Place the binary in `/usr/local/bin` on each air-gapped node and ensure it is executable.
-* Download the K3s install script at https://get.k3s.io[get.k3s.io]. Place the install script anywhere on each air-gapped node, and name it `install.sh`.
+* 从https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL]页面下载K3s二进制文件，确保与获取隔离镜像时使用的版本相匹配。将二进制文件放置在每个隔离节点的`/usr/local/bin`中，并确保其可执行。
++
+[,bash]
+----
+sudo curl -Lo /usr/local/bin/k3s <PRIME-ARTIFACTS-URL>/k3s/v1.35.1%2Bk3s1/k3s
+sudo chmod +x /usr/local/bin/k3s
+----
 
-==== Default Network Route
+* 在https://get.k3s.io[get.k3s.io]下载K3s安装脚本。将安装脚本放置在每个隔离节点的任意位置，并命名为`install.sh`。
++
+[,bash]
+----
+curl -Lo install.sh https://get.k3s.io
+chmod +x install.sh
+----
 
-If your nodes do not have an interface with a default route, a default route must be configured; even a black-hole route via a dummy interface will suffice. K3s requires a default route in order to auto-detect the node's primary IP, and for kube-proxy ClusterIP routing to function properly. To add a dummy route, do the following:
+.**设置默认网络路由** - 对于没有默认路由的节点是必需的
+[%collapsible]
+======
+如果您的节点没有具有默认路由的接口，则必须配置默认路由；即使是通过虚拟接口的黑洞路由也可以。K3s需要默认路由以自动检测节点的主IP，并使kube-proxy的ClusterIP路由正常工作。要添加虚拟路由，请执行以下操作：
 
+[,bash]
 ----
 ip link add dummy0 type dummy
 ip link set dummy0 up
 ip addr add 203.0.113.254/31 dev dummy0
 ip route add default via 203.0.113.255 dev dummy0 metric 1000
 ----
+======
 
-When running the K3s script with the `INSTALL_K3S_SKIP_DOWNLOAD` environment variable, K3s will use the local version of the script and binary.
-
-==== SELinux RPM
-
-If you intend to deploy K3s with SELinux enabled, you will need also install the appropriate k3s-selinux RPM on all nodes. The latest version of the RPM can be found https://github.com/k3s-io/k3s-selinux/releases/latest[here]. For example, on CentOS 8:
+.**下载SELinux RPM** - 对于启用SELinux的隔离节点是必需的
+[%collapsible]
+======
+如果在启用SELinux的隔离节点上运行，您必须在安装K3s之前手动安装k3s-selinux RPM。此 RPM 包含 K3s 正常运行所需的 SELinux 策略。最新版本的 RPM 可以在 https://github.com/k3s-io/k3s-selinux/releases/latest[这里] 找到。例如，在 CentOS 8 上：
 
 [,bash]
 ----
-On internet accessible machine:
-curl -LO https://github.com/k3s-io/k3s-selinux/releases/download/v1.4.stable.1/k3s-selinux-1.4-1.el8.noarch.rpm
+# On an internet accessible machine:
+curl -LO https://github.com/k3s-io/k3s-selinux/releases/download/v1.6.stable.1/k3s-selinux-1.6-1.el8.noarch.rpm
 
 # Transfer RPM to air-gapped machine
-On air-gapped machine:
-sudo yum install ./k3s-selinux-1.4-1.el8.noarch.rpm
+sudo yum install ./k3s-selinux-1.6-1.el8.noarch.rpm
 ----
 
-See the xref:advanced.adoc#_selinux_support[SELinux] section for more information.
+k3s-selinux RPM 安装需要以下依赖项在操作系统中可用：
 
-=== Installing K3s in an Air-Gapped Environment
+* container-selinux
+* policycoreutils
+* selinux-policy
 
-You can install K3s on one or more servers as described below.
-
-[tabs,sync-group-id=airgap-cluster]
+有关更多信息，请参见 xref:advanced.adoc#_selinux_support[SELinux] 部分。
 ======
-Single Server Configuration::
+
+=== 运行安装脚本
+
+您可以按照以下描述在一个或多个服务器上安装 K3s。
+
+[tabs,sync-group-id=airgap-install]
+======
+单服务器配置::
 +
 --
-To install K3s on a single server, simply do the following on the server node:
+要在单个服务器上安装 K3s，只需在服务器节点上执行以下操作：
 
 [,bash]
 ----
 INSTALL_K3S_SKIP_DOWNLOAD=true ./install.sh
 ----
 
-To add additional agents, do the following on each agent node:
+要添加额外的代理，请在每个代理节点上执行以下操作：
 
 [,bash]
 ----
 INSTALL_K3S_SKIP_DOWNLOAD=true K3S_URL=https://<SERVER_IP>:6443 K3S_TOKEN=<YOUR_TOKEN> ./install.sh
 ----
-
-[NOTE]
-=====
-The token from the server is typically found at `/var/lib/rancher/k3s/server/token`.
-=====
 --
 
-High Availability Configuration::
+高可用性配置::
 +
 --
-Reference the xref:datastore/ha.adoc[High Availability with an External DB] or xref:datastore/ha-embedded.adoc[High Availability with Embedded DB] guides. You will be tweaking install commands so you specify `INSTALL_K3S_SKIP_DOWNLOAD=true` and run your install script locally instead of via curl. You will also utilize `INSTALL_K3S_EXEC='args'` to supply any arguments to k3s.
+参考 xref:datastore/ha.adoc[使用外部数据库的高可用性] 或 xref:datastore/ha-embedded.adoc[使用嵌入式数据库的高可用性] 指南。您将调整安装命令，因此您指定 `INSTALL_K3S_SKIP_DOWNLOAD=true` 并在本地运行安装脚本，而不是通过 curl。您还将利用 `INSTALL_K3S_EXEC='args'` 来提供任何参数给 k3s。
 
-For example, step two of the High Availability with an External DB guide mentions the following:
+例如，使用外部数据库的高可用性指南的第二步提到以下内容：
 
 [,bash]
 ----
@@ -168,7 +206,7 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3
   --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name"
 ----
 
-Instead, you would modify such examples like below:
+相反，您将像下面这样修改这些示例：
 
 [,bash]
 ----
@@ -181,32 +219,37 @@ K3S_DATASTORE_ENDPOINT='mysql://username:password@tcp(hostname:3306)/database-na
 
 [NOTE]
 ====
-K3s's `--resolv-conf` flag is passed through to the kubelet, which may help with configuring pod DNS resolution in air-gap networks where the host does not have upstream nameservers configured.
+K3s 的 `--resolv-conf` 标志会传递给 kubelet，这可能有助于在没有配置上游名称服务器的隔离网络中配置 pod DNS 解析。
 ====
 
-== Upgrading
+== 升级
 
-=== Install Script Method
+[tabs,sync-group-id=airgap-upgrade]
+======
+手动升级::
++
+--
+升级隔离环境可以通过以下方式完成：
 
-Upgrading an air-gap environment can be accomplished in the following manner:
+. 从 https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL] 页面下载您将要升级的 K3s 版本的新隔离镜像（tar 文件）。将 tar 文件放置在每个节点的 `/var/lib/rancher/k3s/agent/images/` 目录中。删除旧的 tar 文件。
+. 在每个节点的 `/usr/local/bin` 中复制并替换旧的 K3s 二进制文件。将安装脚本复制到 https://get.k3s.io（因为自上次发布以来可能已更改）。再次运行脚本，就像您过去一样，使用相同的环境变量。
+. 重启 K3s 服务（如果安装程序没有自动重启的话）。
+--
 
-. Download the new air-gap images (tar file) from the https://github.com/k3s-io/k3s/releases[releases] page for the version of K3s you will be upgrading to. Place the tar in the `/var/lib/rancher/k3s/agent/images/` directory on each
-node. Delete the old tar file.
-. Copy and replace the old K3s binary in `/usr/local/bin` on each node. Copy over the install script at https://get.k3s.io (as it is possible it has changed since the last release). Run the script again just as you had done in the past
-with the same environment variables.
-. Restart the K3s service (if not restarted automatically by installer).
+自动升级方法::
++
+--
+K3s 支持xref:upgrades/automated.adoc[自动升级]。要在隔离的环境中启用此功能，您必须确保所需的镜像在您的私有注册表中可用。
 
-=== Automated Upgrades Method
+您需要与您打算升级的 K3s 版本相对应的 rancher/k3s-upgrade 版本。请注意，镜像标签将 K3s 发布中的 `+` 替换为 `-`，因为 Docker 镜像不支持 `+`。
 
-K3s supports xref:upgrades/automated.adoc[automated upgrades]. To enable this in air-gapped environments, you must ensure the required images are available in your private registry.
-
-You will need the version of rancher/k3s-upgrade that corresponds to the version of K3s you intend to upgrade to. Note, the image tag replaces the `+` in the K3s release with a `-` because Docker images do not support `+`.
-
-You will also need the versions of system-upgrade-controller and kubectl that are specified in the system-upgrade-controller manifest YAML that you will deploy. Check for the latest release of the system-upgrade-controller https://github.com/rancher/system-upgrade-controller/releases/latest[here] and download the system-upgrade-controller.yaml to determine the versions you need to push to your private registry. For example, in release v0.4.0 of the system-upgrade-controller, these images are specified in the manifest YAML:
+您还需要在您将要部署的 system-upgrade-controller 清单 YAML 中指定的 system-upgrade-controller 和 kubectl 的版本。检查system-upgrade-controller的最新发布https://github.com/rancher/system-upgrade-controller/releases/latest[这里]，并下载system-upgrade-controller.yaml以确定您需要推送到私有注册表的版本。例如，在 Upgrade Controller 的 v0.4.0 版本（即 system-upgrade-controller）中，这些映像在清单 YAML 中指定：
 
 ----
 rancher/system-upgrade-controller:v0.4.0
 rancher/kubectl:v0.17.0
 ----
 
-Once you have added the necessary rancher/k3s-upgrade, rancher/system-upgrade-controller, and rancher/kubectl images to your private registry, follow the xref:upgrades/automated.adoc[automated upgrades] guide.
+一旦您将必要的rancher/k3s-upgrade、rancher/system-upgrade-controller和rancher/kubectl映像添加到您的私有注册表中，请遵循xref:upgrades/automated.adoc[自动升级]指南。
+--
+======

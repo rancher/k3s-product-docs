@@ -1,0 +1,37 @@
+= Descontinuação de Sinalizadores
+:page-languages: [en, de, es, fr, ja, pt, zh]
+:revdate: 2024-09-09
+:page-revdate: {revdate}
+
+K3s é um projeto em rápida evolução e, por isso, precisamos de uma forma de descontinuar sinalizadores e opções de configuração. Esta página descreve o processo para descontinuar sinalizadores e opções de configuração. Para garantir que os usuários não sejam surpreendidos pela remoção de sinalizadores, o processo é semelhante à https://kubernetes.io/docs/reference/using-api/deprecation-policy/[Política de Descontinuação do Kubernetes].
+
+== Processo
+
+. Sinalizadores podem ser declarados como "A Serem Descontinuados" a qualquer momento.
+. Sinalizadores que são "A Serem Descontinuados" devem ser rotulados como tal no próximo patch de todas as versões atualmente suportadas. Além disso, o sinalizador começará a avisar os usuários que será descontinuado na próxima versão menor.
+. Na próxima versão menor, um sinalizador será marcado como descontinuado na documentação e convertido em um sinalizador oculto no código. O sinalizador continuará a operar e a dar avisos aos usuários.
+. Na próxima versão menor, os sinalizadores descontinuados se tornarão "não operacionais", causando um erro fatal se usados. Este erro deve explicar ao usuário quaisquer novos sinalizadores ou configurações que substituam este sinalizador.
+. Na próxima versão menor, os sinalizadores não operacionais serão removidos da documentação e do código.
+
+== Exemplo
+
+Um exemplo do processo:
+
+* `--foo` existe na v1.22.14, v1.23.10 e v1.24.2.
+* Após o lançamento da v1.24.2, foi decidido descontinuar `--foo` em favor de `--new-foo`.
+* Na v1.22.15, v1.23.11 e v1.24.3, `--foo` continua a existir, mas avisará os usuários:
++
+----
+[Warning] --foo will be deprecated in v1.25.0, use `--new-foo` instead
+----
++
+`--foo` continuará a existir como um sinalizador operacional durante a vida útil da v1.22, v1.23 e v1.24.
+
+* Na v1.25.0, `--foo` é marcado como descontinuado na documentação e será oculto no código. Continuará a funcionar e avisar os usuários para migrar para `--new-foo`.
+* Na v1.26.0, `--foo` causará um erro fatal se usado. A mensagem de erro dirá:
++
+----
+[Fatal] exit 1: --foo is no longer supported, use --new-foo instead
+----
+
+* Na v1.27.0, `--foo` será removido completamente de todo o código e documentação.

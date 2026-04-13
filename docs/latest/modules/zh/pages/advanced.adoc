@@ -1,50 +1,49 @@
-= 高级选项和配置
-:page-languages: [en, ja, ko, zh]
-:revdate: 2025-12-31
+= 高级选项 / 配置
+:page-languages: [en, de, es, fr, ja, pt, zh]
+:revdate: 2026-03-03
 :page-revdate: {revdate}
-:aliases: ["/k3s/latest/en/running/", "/k3s/latest/en/configuration/"]
 
-本文描述了用于运行和管理 K3s 的高级设置，以及为 K3s 准备主机操作系统所需的步骤。
+本节包含高级信息，描述了您可以运行和管理 K3s 的不同方式，以及为 K3s 使用准备主机操作系统所需的步骤。
 
 == 证书管理
 
-=== CA 证书
+=== 证书颁发机构证书
 
-K3s 在第一个 Server 节点启动时生成自签名 CA 证书。这些 CA 证书的有效期为 10 年，不会自动更新。
+K3s 在第一个服务器节点启动时生成自签名的证书颁发机构 (CA) 证书。这些 CA 证书有效期为 10 年，且不会自动续期。
 
-有关使用自定义 CA 证书或更新自签名 CA 证书的信息，请参阅 xref:cli/certificate.adoc#_certificate_authority_ca_certificates[`k3s certificate rotate-ca` 命令文档]。
+有关使用自定义 CA 证书或续签自签名 CA 证书的信息，请参见 xref:cli/certificate.adoc#_certificate_authority_ca_certificates[`k3s certificate rotate-ca` 命令文档]。
 
 === 客户端和服务器证书
 
-K3s 客户端和服务器证书自颁发日起 365 天内有效。每次启动 K3s 时，已过期或 90 天内过期的证书都会自动更新。
+K3s 客户端和服务器证书自签发之日起有效期为 365 天。任何过期的证书或在 90 天内即将过期的证书，每次 K3s 启动时会自动续期。
 
-有关手动轮换客户端和服务器证书的信息，请参阅 xref:cli/certificate.adoc#_client_and_server_certificates[`k3s certificate rotate` 命令文档]。
+有关手动轮换客户端和服务器证书的信息，请参见 xref:cli/certificate.adoc#_client_and_server_certificates[`k3s certificate rotate` 命令文档]。
 
-== Token 管理
+== 令牌管理
 
-默认情况下，K3s 为 Server 和 Agent 使用单个静态 Token。With care, this token can be rotated once the cluster has been created。
-你也可以启用只能用于加入 Agent 的第二个静态 Token，或创建自动过期的临时 `kubeadm` 联接样式 Token。
-有关详细信息，请参阅 xref:cli/token.adoc#_k3s_token_1[`k3s token` 命令文档]。
+默认情况下，K3s 对于服务器和代理使用一个静态令牌。在小心操作的情况下，集群创建后可以轮换此令牌。
+还可以启用第二个静态令牌，该令牌只能用于加入代理，或创建临时的 `kubeadm` 风格的加入令牌，这些令牌会自动过期。
+有关更多信息，请参见 xref:cli/token.adoc#_k3s_token_1[`k3s token` 命令文档]。
 
-== Configuring DNS Resolution
+== 配置 DNS 解析
 
-=== Nameserver Viability Checks
+=== 域名服务器可用性检查
 
-On startup, each node checks the files at `/etc/resolv.conf` and `/run/systemd/resolve/resolv.conf` for loopback, multicast, or link-local nameservers. 
-If any such entries are present, the configuration file is not used, as such entries would not function properly within pods that https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy[inherit name resolution configuration] from their node.
-If no usable resolv.conf is found, K3s prints a warning message to the logs, and generate a stub resolv.conf that uses `8.8.8.8` and `2001:4860:4860::8888` as the nameservers.
+在启动时，每个节点检查 `/etc/resolv.conf` 和 `/run/systemd/resolve/resolv.conf` 中的文件，以查找环回、多播或链路本地域名服务器。
+如果存在任何此类条目，则不使用配置文件，因为此类条目在 https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy[从其节点继承名称解析配置] 的 pod 中无法正常工作。
+如果未找到可用的 resolv.conf，K3s 会向日志打印警告信息，并生成一个使用 `8.8.8.8` 和 `2001:4860:4860::8888` 作为名称服务器的 stub resolv.conf。
 
-If you want to provide K3s with an alternative resolver configuration without modifying the system configuration files, you may use the `--resolv-conf` option to specify the path to a suitable file.
-Manually specified resolver configuration files are not subject to viability checks.
+如果您希望在不修改系统配置文件的情况下为 K3s 提供替代的解析器配置，可以使用 `--resolv-conf` 选项指定合适文件的路径。
+手动指定的解析器配置文件不受有效性检查。
 
-=== CoreDNS Custom Configuration Imports
+=== CoreDNS 自定义配置导入
 
-In order to customize the CoreDNS configuration, you may create a ConfigMap named `coredns-custom` in the `kube-system` namespace.
-Keys matching `+*.override+` are imported into the `:.53` Server Block.
-Additional Server Blocks may be placed in keys matching `+*.server+`.
-Additional content (zone files, etc) may also be present, and are mounted under `/etc/coredns/custom` in the coredns pods.
+为了自定义 CoreDNS 配置，您可以在 `kube-system` 名称空间中创建一个名为 `coredns-custom` 的 ConfigMap。
+与 `*.override` 匹配的键将被导入到 `:.53` 服务器块中。
+额外的服务器块可以放置在与 `*.server` 匹配的键中。
+额外的内容（区域文件等）也可以存在，并在 coredns pods 中挂载到 `/etc/coredns/custom` 下。
 
-Here is an example ConfigMap that forwards lookups to `example.com` to a nameserver at `10.0.0.1`, and serves `example.net` from an https://datatracker.ietf.org/doc/html/rfc1035#section-5[RFC 1035] compliant text file:
+以下是一个示例 ConfigMap，它将对 `example.com` 的查找转发到位于 `10.0.0.1` 的名称服务器，并从 `example.net`https://datatracker.ietf.org/doc/html/rfc1035#section-5[RFC 1035] 兼容的文本文件中提供：
 
 [,yaml]
 ----
@@ -73,21 +72,21 @@ data:
 
 == 配置 HTTP 代理
 
-如果你运行 K3s 的环境中只通过 HTTP 代理进行外部连接，你可以在 K3s 的 systemd 服务上配置代理。K3s 将使用这些代理设置，并向下传递到嵌入式 containerd 和 kubelet。
+如果您在一个仅通过 HTTP 代理具有外部连接的环境中运行 K3s，您可以在 K3s systemd 服务上配置代理设置。这些代理设置将被 K3s 使用，并传递给嵌入的 containerd 和 kubelet。
 
 [NOTE]
 ====
-Proxy configuration and other environment variables from the host are NOT passed into Pods.
+来自主机的代理配置和其他环境变量不会传递到 Pods 中。
 ====
 
-K3s 安装脚本会自动使用当前 shell 中的 `HTTP_PROXY`、`HTTPS_PROXY` 和 `NO_PROXY`，以及 `CONTAINERD_HTTP_PROXY`、`CONTAINERD_HTTPS_PROXY` 和 `CONTAINERD_NO_PROXY` 变量（如果存在），并将它们写入 systemd 服务的环境文件，通常是：
+K3s 安装脚本将自动从当前 shell 中获取 `HTTP_PROXY`、`HTTPS_PROXY` 和 `NO_PROXY` 变量，以及 `CONTAINERD_HTTP_PROXY`、`CONTAINERD_HTTPS_PROXY` 和 `CONTAINERD_NO_PROXY` 变量（如果存在），并将它们写入您的 systemd 服务的环境文件，通常是：
 
 * `/etc/systemd/system/k3s.service.env`
 * `/etc/systemd/system/k3s-agent.service.env`
 
-你也可以通过编辑这些文件来配置代理。
+当然，您也可以通过编辑这些文件来配置代理。
 
-K3s 会自动将集群内部 Pod 和 Service IP 范围以及集群 DNS 域添加到 `NO_PROXY` 条目列表中。你需要确保 Kubernetes 节点本身使用的 IP 地址范围（即节点的公共和私有 IP）包含在 `NO_PROXY` 列表中，或者可以通过代理访问节点。
+K3s 将自动将集群内部 Pod 和服务 IP 范围以及集群 DNS 域添加到 `NO_PROXY` 条目列表中。您应该确保 Kubernetes 节点本身使用的 IP 地址范围（即节点的公共和私有 IP）包含在 `NO_PROXY` 列表中，或者节点可以通过代理访问。
 
 ----
 HTTP_PROXY=http://your-proxy.example.com:8888
@@ -95,7 +94,7 @@ HTTPS_PROXY=http://your-proxy.example.com:8888
 NO_PROXY=127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
 ----
 
-如果你想在不影响 K3s 和 Kubelet 的情况下为 containerd 配置代理，你可以在变量前加上 `CONTAINERD_`：
+如果您希望为 containerd 配置代理设置而不影响 K3s 和 Kubelet，您可以在变量前加上 `CONTAINERD_`：
 
 ----
 CONTAINERD_HTTP_PROXY=http://your-proxy.example.com:8888
@@ -105,13 +104,13 @@ CONTAINERD_NO_PROXY=127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
 
 == 使用 Docker 作为容器运行时
 
-K3s 包含并默认为 https://containerd.io/[containerd]，它是一个行业标准的容器运行时。
+K3s 包含并默认使用 https://containerd.io/[containerd]，这是一个行业标准的容器运行时。
 从 Kubernetes 1.24 开始，Kubelet 不再包含 dockershim，该组件允许 kubelet 与 dockerd 通信。
-K3s 1.24 及更高版本包括了 https://github.com/Mirantis/cri-dockerd[cri-dockerd]，它允许你无缝升级旧的 K3s 版本，同时继续使用 Docker 容器运行时。
+K3s 1.24 及更高版本包含 https://github.com/Mirantis/cri-dockerd[cri-dockerd]，这使得可以无缝升级到之前版本的 K3s，同时继续使用 Docker 容器运行时。
 
 要使用 Docker 而不是 containerd：
 
-. 在 K3s 节点上安装 Docker。你可以使用 Rancher 的一个 https://github.com/rancher/install-docker[Docker 安装脚本]来安装 Docker：
+. 在 K3s 节点上安装 Docker。可以使用 Rancher 的 https://github.com/rancher/install-docker[Docker 安装脚本] 来安装 Docker：
 +
 [,bash]
 ----
@@ -160,9 +159,9 @@ c3675b87f96c        rancher/pause:3.1         "/pause"                 About a m
 
 == 使用 etcdctl
 
-etcdctl 提供了一个与 etcd 服务器交互的 CLI。K3s 附带 etcdctl。
+etcdctl 提供了与 etcd 服务器交互的 CLI。K3s 不捆绑 etcdctl。
 
-如果你想使用 etcdctl 与 K3s 的嵌入式 etcd 进行交互，请参阅link:https://etcd.io/docs/latest/install/[官方文档]安装 etcdctl。
+如果您想使用 etcdctl 与 K3s 的嵌入式 etcd 交互，请使用 https://etcd.io/docs/latest/install/[官方文档] 安装 etcdctl。
 
 [,bash]
 ----
@@ -171,7 +170,7 @@ ETCD_URL="https://github.com/etcd-io/etcd/releases/download/${ETCD_VERSION}/etcd
 curl -sL ${ETCD_URL} | sudo tar -zxv --strip-components=1 -C /usr/local/bin
 ----
 
-然后，你可以将 etcdctl 配置为使用 K3s 管理的证书和密钥来进行身份验证，从而使用 etcdctl：
+然后，您可以通过配置 etcdctl 使用 K3s 管理的证书和密钥进行身份验证：
 
 [,bash]
 ----
@@ -181,35 +180,35 @@ sudo etcdctl version \
   --key=/var/lib/rancher/k3s/server/tls/etcd/client.key
 ----
 
-== 配置 Containerd
+== 配置 containerd
 
 [IMPORTANT]
-.Version Gate
+.版本门控
 ====
-K3s includes containerd 2.0 as of the February 2025 releases: v1.31.6+k3s1 and v1.32.2+k3s1.  
-Be aware that containerd 2.0 prefers config version 3, while containerd 1.7 prefers config version 2.
+K3s 从 2025 年 2 月的版本开始包含 containerd 2.0：v1.31.6+k3s1 和 v1.32.2+k3s1。
+请注意，containerd 2.0 更倾向于配置版本 3，而 containerd 1.7 更倾向于配置版本 2。
 ====
 
-K3s will generate a configuration file for containerd at `/var/lib/rancher/k3s/agent/etc/containerd/config.toml`, using values specific to the current cluster and node configuration.
+K3s 将在 `/var/lib/rancher/k3s/agent/etc/containerd/config.toml` 为 containerd 生成一个配置文件，使用特定于当前集群和节点配置的值。
 
-For advanced customization, you can create a containerd config template in the same directory:
+对于高级自定义，您可以在同一目录中创建一个 containerd 配置模板：
 
-* For containerd 2.0, place a version 3 configuration template in `config-v3.toml.tmpl`.
+* 对于 containerd 2.0，请在 `config-v3.toml.tmpl` 中放置版本 3 的配置模板。
 +
-See the https://github.com/containerd/containerd/blob/release/2.0/docs/cri/config.md[containerd 2.0 documentation] for more information.
-* For containerd 1.7 and earlier, place a version 2 configuration template in `config.toml.tmpl`.
+请参阅https://github.com/containerd/containerd/blob/release/2.0/docs/cri/config.md[containerd 2.0 文档]以获取更多信息。
+* 对于 containerd 1.7 及更早版本，请在 `config.toml.tmpl` 中放置版本 2 配置模板。
 +
-See the https://github.com/containerd/containerd/blob/release/1.7/docs/cri/config.md[containerd 1.7 documentation] for more information.
+请参阅https://github.com/containerd/containerd/blob/release/1.7/docs/cri/config.md[containerd 1.7 文档]以获取更多信息。
 
-Containerd 2.0 is backwards compatible with prior config versions, and k3s will continue to render legacy version 2 configuration from `config.toml.tmpl` if `config-v3.toml.tmpl` is not found.
+Containerd 2.0 与之前的配置版本向后兼容，如果未找到 `config-v3.toml.tmpl`，k3s 将继续从 `config.toml.tmpl` 渲染旧版 2 配置。
 
-The template file is rendered into the containerd config using the https://pkg.go.dev/text/template[`text/template`] library.
-See `ContainerdConfigTemplateV3` and `ContainerdConfigTemplate` in https://github.com/k3s-io/k3s/blob/main/pkg/agent/templates/templates.go[`templates.go`] for the default template content.
-The template is executed with a https://github.com/k3s-io/k3s/blob/main/pkg/agent/templates/templates.go#L22-L33[`ContainerdConfig`] struct as its dot value (data argument).
+模板文件使用 https://pkg.go.dev/text/template[`text/template`] 库渲染到 containerd 配置中。
+请参阅 `ContainerdConfigTemplateV3` 和 `ContainerdConfigTemplate` 在 https://github.com/k3s-io/k3s/blob/main/pkg/agent/templates/templates.go[`templates.go`] 中的默认模板内容。
+模板使用 https://github.com/k3s-io/k3s/blob/main/pkg/agent/templates/templates.go#L22-L33[`ContainerdConfig`] 结构作为其点值（数据参数）执行。
 
-### Base template
+### 基础模板
 
-You can extend the K3s base template instead of copy-pasting the complete stock template out of the K3s source code. This is useful if you only need to build on the existing configuration by adding a few extra lines before or after the defaults.
+您可以扩展 K3s 基础模板，而不是从 K3s 源代码中复制粘贴完整的标准模板。如果您只需要通过在默认值之前或之后添加几行额外的内容来构建现有配置，这将非常有用。
 
 [,toml]
 ./var/lib/rancher/k3s/agent/etc/containerd/config-v3.toml.tmpl
@@ -225,30 +224,34 @@ You can extend the K3s base template instead of copy-pasting the complete stock 
 
 [WARNING]
 ====
-For best results, do NOT simply copy a prerendered `config.toml` into the template and make your desired changes. Use the base template, or provide a full template based on the k3s defaults linked above.
+为了获得最佳效果，请勿仅仅将预渲染的 `config.toml` 复制到模板中并进行所需的更改。使用基础模板，或提供基于上述 k3s 默认值的完整模板。
 ====
 
-== Alternative 容器运行时支持
+== 替代容器运行时支持
 
-K3s will automatically detect alternative container runtimes if they are present when K3s starts. Supported container runtimes are:
+如果在 K3s 启动时存在，K3s 将自动检测替代容器运行时。支持的容器运行时包括：
 
 ----
 crun, lunatic, nvidia, nvidia-cdi, nvidia-experimental, slight, spin, wasmedge, wasmer, wasmtime, wws
 ----
 
-NVIDIA GPUs require installation of the NVIDIA Container Runtime in order to schedule and run accelerated workloads in Pods. To use NVIDIA GPUs with K3s, perform the following steps:
+K3s 使用服务的 `PATH` 环境变量来搜索容器运行时可执行文件。
+如果 K3s 未检测到已安装的容器运行时，请确保它存在于系统路径中，通常包括： +
+`/usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin`
 
-. 按照以下说明在节点上安装 nvidia-container 包仓库：
-https://nvidia.github.io/libnvidia-container/
-. 安装 nvidia 容器运行时包。例如：
-`apt install -y nvidia-container-runtime cuda-drivers-fabricmanager-515 nvidia-headless-515-server`
-. xref:installation/installation.adoc[Install K3s], or restart it if already installed.
-. Confirm that the nvidia container runtime has been found by k3s: 
-`grep nvidia /var/lib/rancher/k3s/agent/etc/containerd/config.toml`
+=== NVIDIA 容器运行时
 
-K3s includes Kubernetes RuntimeClass definitions for all supported alternative runtimes. You can select one of these to replace `runc` as the default runtime on a node by setting the `--default-runtime` value via the k3s CLI or config file.
+NVIDIA GPU 需要安装 NVIDIA 容器运行时，以便在 Pods 中调度和运行加速工作负载。要在 K3s 中使用 NVIDIA GPU，请执行以下步骤：
 
-If you have not changed the default runtime on your GPU nodes, you must explicitly request the NVIDIA runtime by setting `runtimeClassName: nvidia` in the Pod spec:
+. 通过以下说明在节点上安装 nvidia-container 软件包存储库：https://nvidia.github.io/libnvidia-container/
+. 安装 NVIDIA 容器运行时软件包。例如：`apt install -y nvidia-container-runtime cuda-drivers-fabricmanager-515 nvidia-headless-515-server`
+. xref:installation/installation.adoc[安装 K3s]，或者如果已经安装则重新启动。
+. 确认 k3s 已找到 NVIDIA 容器运行时：`grep nvidia /var/lib/rancher/k3s/agent/etc/containerd/config.toml`
+
+如果这些步骤正确执行，K3s将根据找到的运行时可执行文件自动将NVIDIA运行时添加到containerd配置中。
+K3s包括所有支持的替代运行时的Kubernetes RuntimeClass定义。您可以通过在k3s CLI或配置文件中设置`runc`值，选择其中一个替代`--default-runtime`作为节点上的默认运行时。
+
+如果您没有更改GPU节点上的默认运行时，必须通过在Pod规格中设置`runtimeClassName: nvidia`来显式请求NVIDIA运行时：
 
 [,yaml]
 ----
@@ -274,213 +277,124 @@ spec:
       value: all
 ----
 
-请注意，NVIDIA Container Runtime 也经常与 https://github.com/NVIDIA/k8s-device-plugin/[NVIDIA Device Plugin] 和 https://github.com/NVIDIA/gpu-feature-discovery/[GPU Feature Discovery] 一起使用，它们必须单独安装，而且需要修改以确保 Pod 规范能包括 `runtimeClassName: nvidia`，如前所述。
+请注意，NVIDIA容器运行时通常与https://github.com/NVIDIA/k8s-device-plugin/[NVIDIA设备插件]一起使用，并进行修改以确保Pod规格包含`runtimeClassName: nvidia`，如上所述。
 
 [#_running_agentless_servers_experimental]
-== 运行无 Agent 的 Server（实验性）
+== 运行无代理服务器（实验性）
 
-____
-*警告*：此功能是实验性的。
-____
+WARNING: 此功能是实验性的。
 
-当使用 `--disable-agent` 标志启动时，Server 不运行 kubelet、容器运行时或 CNI。它们不会在集群中注册 Node 资源，也不会出现在 `kubectl get nodes` 输出中。
-因为它们不托管 kubelet，所以它们不能运行 pod，也不能由依赖枚举集群节点的 Operator 管理，包括嵌入式 etcd controller 和 system-upgrade-controller。
+当使用`--disable-agent`标志启动时，服务器不会运行kubelet、容器运行时或CNI。它们不会在集群中注册节点资源，并且不会出现在`kubectl get nodes`输出中。
+因为它们不托管kubelet，所以无法运行Pod或被依赖于枚举集群节点的操作员管理，包括嵌入式etcd控制器和系统升级控制器。
 
-如果你想让 control plane 节点不被 Agent 和工作负载发现，你可以运行无 Agent 的 Server，但是代价是由于缺乏集群 Operator 支持，管理开销会增加。
+如果您希望隐藏控制平面节点以避免被代理和工作负载发现，运行无代理服务器可能是有利的，但会增加由于缺乏集群操作员支持而导致的管理开销。
 
-== 使用 Rootless 模式运行 Server（实验性）
+默认情况下，无代理服务器上的 apiserver 将无法与集群内运行的准入 webhook 或聚合 api 服务建立外部连接。为了解决此问题，将`--egress-selector-mode`服务器标志设置为`pod`或`cluster`。如果您在现有集群上更改此标志，则需要重新启动集群中的所有节点以使选项生效。
 
-____
-*警告*：此功能是实验性的。
-____
+== 运行无根服务器（实验性）
 
-Rootless 模式允许非特权用户运行 K3s Server，这样可以保护主机上真正的 root 免受潜在的容器攻击。
+WARNING: 此功能是实验性的。
 
-有关 Rootless 模式 Kubernetes 的更多信息，请参阅link:https://rootlesscontaine.rs/[此处]。
+无根模式允许以非特权用户身份运行 K3s 服务器，从而保护主机上的真实 root 免受潜在的容器逃逸攻击。
+
+有关无根 Kubernetes 的更多信息，请参见 https://rootlesscontaine.rs/。
 
 [#_known_issues_with_rootless_mode]
-=== Rootless 模式的已知问题
+=== 无根模式的已知问题
 
 * *端口*
 +
-如果以 Rootless 模式运行，将创建一个新的网络命名空间。换言之，K3s 实例在网络与主机完全分离的情况下运行。
- 要从主机访问在 K3s 中运行的 Service，唯一的方法是设置转发到 K3s 网络命名空间的端口。
- Rootless 模式下的 K3s 包含控制器，它会自动将 6443 和低于 1024 的 Service 端口绑定到偏移量为 10000 的主机。
+在运行无根模式时，会创建一个新的网络名称空间。 这意味着 K3s 实例的网络与主机相对独立。
+从主机访问在 K3s 中运行的服务的唯一方法是设置端口转发到 K3s 网络名称空间。
+无根 K3s 包含控制器，将自动将 6443 和 1024 以下的服务端口绑定到主机，偏移量为 10000。
 +
-例如，端口 80 上的 Service 在主机上会变成 10080，但 8080 会变成 8080，没有任何偏移。目前只有 LoadBalancer Service 是自动绑定的。
+例如，端口 80 上的服务将在主机上变为 10080，但 8080 将保持为 8080，没有任何偏移。目前，只有负载均衡服务会自动绑定。
 
-* *Cgroups*
+* *控制组*
 +
-不支持 Cgroup v1 和 Hybrid v1/v2，仅支持纯 Cgroup v2。如果 K3s 在 Rootless 模式下运行时由于缺少 cgroup 而无法启动，很可能你的节点处于 Hybrid 模式，而且"`丢失`"的 cgroup 仍然绑定了 v1 控制器。
+不支持 Cgroup v1 和混合 v1/v2；仅支持纯 Cgroup v2。如果 K3s 在运行无根模式时因缺少控制组而无法启动，可能是您的节点处于混合模式，并且 "缺少" 的控制组仍绑定到 v1 控制器。
 
 * *多节点/多进程集群*
 +
-目前，我们不支持多节点无根集群或同一节点上的多个无根 k3s 进程。有关详细信息，请参阅 https://github.com/k3s-io/k3s/issues/6488#issuecomment-1314998091[#6488]。
+当前不支持多节点无根集群或同一节点上的多个无根 k3s 进程。有关更多详细信息，请参见 https://github.com/k3s-io/k3s/issues/6488#issuecomment-1314998091[#6488]。
 
-=== 启动 Rootless Server
+=== 启动无根服务器
 
-* 启用 cgroup v2 授权，请参阅 https://rootlesscontaine.rs/getting-started/common/cgroup2/。
- 此步骤是必需的。如果没有正确的 cgroups 授权，rootless kubelet 将无法启动。
-* 从 https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`+https://github.com/k3s-io/k3s/blob/<VERSION>/k3s-rootless.service+`] 下载 `k3s-rootless.service`。
- 确保使用了相同版本的 `k3s-rootless.service` 和 `k3s`。
+* 启用 cgroup v2 委托，请参见 https://rootlesscontaine.rs/getting-started/common/cgroup2/。
+此步骤是必需的；无根 kubelet 在没有适当的控制组委托时将无法启动。
+* 从 https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`https://github.com/k3s-io/k3s/blob/<VERSION>/k3s-rootless.service`] 下载 `k3s-rootless.service`。
+确保使用相同版本的 `k3s-rootless.service` 和 `k3s`。
 * 将 `k3s-rootless.service` 安装到 `~/.config/systemd/user/k3s-rootless.service`。
- 不支持将此文件安装为全系统服务 (`+/etc/systemd/...+`)。
- 根据 `k3s` 二进制文件的路径，你可能需要修改文件的 `+ExecStart=/usr/local/bin/k3s ...+` 行。
+不支持将此文件安装为系统范围的服务 (`/etc/systemd/...`)。
+根据 `k3s` 二进制文件的路径，您可能需要修改文件的 `ExecStart=/usr/local/bin/k3s ...` 行。
 * 运行 `systemctl --user daemon-reload`
 * 运行 `systemctl --user enable --now k3s-rootless`
 * 运行 `KUBECONFIG=~/.kube/k3s.yaml kubectl get pods -A`，并确保 Pod 正在运行。
 
-____
-*注意*：由于终端会话不允许 cgroup v2 授权，因此不要尝试在终端上运行 `k3s server --rootless`。
-如果你确实需要在终端上使用，请使用 `systemd-run --user -p Delegate=yes --tty k3s server --rooless` 将其包装在 systemd 范围内。
-____
+NOTE: 请勿尝试在终端上运行 `k3s server --rootless`，因为终端会话不允许 cgroup v2 委托。
+如果您确实需要在终端上尝试，请使用 `systemd-run --user -p Delegate=yes --tty k3s server --rootless` 将其包装在 systemd 范围内。
 
 === 高级无根配置
 
-Rootless K3s 使用 https://github.com/rootless-containers/rootlesskit[rootlesskit] 和 https://github.com/rootless-containers/slirp4netns[slirp4netns] 在主机和用户网络命名空间之间进行通信。
-rootlesskit 和 slirp4nets 使用的一些配置可以通过环境变量来设置。设置它们的最佳方法是将它们添加到 k3s-rootless systemd 单元的 `Environment` 字段中。
+无根 K3s 使用 https://github.com/rootless-containers/rootlesskit[rootlesskit] 和 https://github.com/rootless-containers/slirp4netns[slirp4netns] 在主机和用户网络名称空间之间进行通信。
+rootlesskit 和 slirp4netns 使用的一些配置可以通过环境变量设置。设置这些的最佳方法是将它们添加到 k3s-rootless systemd 单元的 `Environment` 字段中。
 
 |===
-| 变量 | 默认 | 描述
+| 变量 | 默认值 | 说明
 
 | `K3S_ROOTLESS_MTU`
 | 1500
-| 为 slirp4netns 虚拟接口设置 MTU。
+| 设置 slirp4netns 虚拟接口的 MTU。
 
 | `K3S_ROOTLESS_CIDR`
 | 10.41.0.0/16
 | 设置 slirp4netns 虚拟接口使用的 CIDR。
 
 | `K3S_ROOTLESS_ENABLE_IPV6`
-| autotedected
-| 启用 slirp4netns IPv6 支持。如果未指定，则在 K3s 配置为双栈时自动启用。
+| 自动检测
+| 启用 slirp4netns 的 IPv6 支持。如果未指定，如果 K3s 配置为双栈操作，则会自动启用。
 
 | `K3S_ROOTLESS_PORT_DRIVER`
-| builtin
-| 选择无根 port driver，可选值是 `builtin` 或 `slirp4netns`。`builtin` 速度更快，但会伪装入站数据包的原始源地址。
+| 内置
+| 选择无根端口驱动程序；可以是 `builtin` 或 `slirp4netns`。内置更快，但会伪装入站数据包的原始源地址。
 
 | `K3S_ROOTLESS_DISABLE_HOST_LOOPBACK`
 | true
-| 控制是否允许通过网关接口访问主机的环回地址。出于安全原因，建议不要更改此设置。
+| 控制是否通过网关接口启用对主机环回地址的访问。出于安全原因，建议不要更改此项。
 |===
 
-=== Rootless 模式故障排除
+=== 无根故障排除
 
-* 运行 `systemctl --user status k3s-rootless` 来检查 daemon 状态
-* 运行 `journalctl --user -f -u k3s-rootless` 来查看​​ daemon 日志
-* 另见 https://rootlesscontaine.rs/
+* 运行 `systemctl --user status k3s-rootless` 检查守护程序状态
+* 运行 `journalctl --user -f -u k3s-rootless` 查看守护程序日志
+* 另请参见 https://rootlesscontaine.rs/
 
 == 节点标签和污点
 
-K3s Agent 可以通过 `--node-label` 和 `--node-taint` 选项来配置，它们会为 kubelet 添加标签和污点。这两个选项仅在xref:cli/agent.adoc#_node_labels_and_taints_for_agents[注册时]添加标签和/或污点，因此只能在节点首次加入集群时设置。
+K3s 代理可以使用选项 `--node-label` 和 `--node-taint` 进行配置，这将为 kubelet 添加标签和污点。这两个选项仅在注册时添加标签和/或污点xref:cli/agent.adoc#_node_labels_and_taints_for_agents[at registration time]，因此只能在节点首次加入集群时设置。
 
-当前所有的 Kubernetes 版本都限制节点注册到带有 `kubernetes.io` 和 `k8s.io` 前缀的大部分标签，特别是 `kubernetes.io/role` 标签。如果你尝试启动带有不允许的标签的节点，K3s 将无法启动。正如 Kubernetes 作者所说：
+所有当前版本的 Kubernetes 限制节点使用 `kubernetes.io` 和 `k8s.io` 前缀注册大多数标签，特别包括 `kubernetes.io/role` 标签。如果您尝试启动带有不允许标签的节点，K3s 将无法启动。正如 Kubernetes 作者所述：
 
 ____
-不允许节点断言自己的角色标签。节点角色通常用于识别节点的特权或 control plane 类型，如果允许节点将自己标记到该池，那么受感染的节点将能吸引可授予更高特权凭证访问权限的工作负载（如 control plane 守护进程）。
+节点不允许声明自己的角色标签。节点角色通常用于识别特权或控制平面类型的节点，允许节点将自己标记为该池中的节点会使被攻陷的节点轻易吸引工作负载（如控制平面守护程序集），从而获得更高特权凭证的访问权限。
 ____
 
-有关详细信息，请参阅 https://github.com/kubernetes/enhancements/blob/master/keps/sig-auth/279-limit-node-access/README.md#proposal[SIG-Auth KEP 279]。
+有关更多信息，请参见 https://github.com/kubernetes/enhancements/blob/master/keps/sig-auth/279-limit-node-access/README.md#proposal[SIG-Auth KEP 279]。
 
-如果你想在节点注册后更改节点标签和污点，或者添加保留标签，请使用 `kubectl`。关于如何添加link:https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[污点]和link:https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[节点标签]的详细信息，请参阅官方 Kubernetes 文档。
+如果您想在节点注册后更改节点标签和污点，或添加保留标签，您应该使用 `kubectl`。有关如何添加 https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[污点] 和 https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[节点标签] 的详细信息，请参阅官方 Kubernetes 文档。
 
 == 使用安装脚本启动服务
 
-安装脚本将自动检测你的操作系统使用的是 systemd 还是 openrc，并在安装过程中启动该服务。
+安装脚本将自动检测您的操作系统是否使用 systemd 或 openrc，并在安装过程中启用并启动服务。
 
-* 使用 openrc 运行时，将在 `/var/log/k3s.log` 中创建日志。
-* 使用 systemd 运行时，将在 `/var/log/syslog` 中创建日志，你可以通过 `journalctl -u k3s`（Agent 上是 `journalctl -u k3s-agent`）查看日志。
+* 在使用 openrc 运行时，日志将创建在 `/var/log/k3s.log`。
+* 在使用 systemd 运行时，日志将创建在 `/var/log/syslog` 中，并使用 `journalctl -u k3s`（或在代理上使用 `journalctl -u k3s-agent`）查看。
 
-使用安装脚本禁用自动启动和服务启用的示例：
+以下是禁用自动启动和服务启用的安装脚本示例：
 
 [,bash]
 ----
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_SKIP_START=true INSTALL_K3S_SKIP_ENABLE=true sh -
-----
-
-== 其他操作系统准备
-
-=== 旧的 iptables 版本
-
-几个主流 Linux 发行版发布的 iptables 版本包含一个错误，该错误会导致重复规则的累积，从而对节点的性能和稳定性产生负面影响。有关如何确定你是否受此问题影响，请参阅 https://github.com/k3s-io/k3s/issues/3117[issue #3117]。
-
-K3s 具有一个可以正常运行的 iptables (v1.8.8) 版本。你可以通过使用 `--prefer-bundled-bin` 选项来启动 K3s，或从操作系统中卸载 iptables/nftables 包，从而让 K3s 使用捆绑的 iptables 版本。
-
-[IMPORTANT]
-.版本
-====
-
-`--prefer-bundled-bin` 标志从 2022-12 版本开始可用（v1.26.0+k3s1、v1.25.5+k3s1、v1.24.9+k3s1、v1.23.15+k3s1）。
-====
-
-
-=== Red Hat Enterprise Linux / CentOS
-
-建议关闭 firewalld：
-
-[,bash]
-----
-systemctl disable firewalld --now
-----
-
-如果要保持启用 firewalld，默认情况下需要以下规则：
-
-[,bash]
-----
-firewall-cmd --permanent --add-port=6443/tcp #apiserver
-firewall-cmd --permanent --zone=trusted --add-source=10.42.0.0/16 #pods
-firewall-cmd --permanent --zone=trusted --add-source=10.43.0.0/16 #services
-firewall-cmd --reload
-----
-
-你可能还需要打开其他端口。有关详细信息，请参阅xref:installation/requirements.adoc#_inbound_rules_for_k3s_nodes[入站规则]。如果更改了 pod 或服务的默认 CIDR，则需要相应地更新防火墙规则。
-
-如果启用，则需要禁用 nm-cloud-setup 并重新启动节点：
-
-[,bash]
-----
-systemctl disable nm-cloud-setup.service nm-cloud-setup.timer
-reboot
-----
-
-=== Ubuntu
-
-建议关闭 ufw（不复杂的防火墙）：
-
-[,bash]
-----
-ufw disable
-----
-
-如果要保持启用 ufw，默认情况下需要以下规则：
-
-[,bash]
-----
-ufw allow 6443/tcp #apiserver
-ufw allow from 10.42.0.0/16 to any #pods
-ufw allow from 10.43.0.0/16 to any #services
-----
-
-你可能还需要打开其他端口。有关详细信息，请参阅xref:installation/requirements.adoc#_inbound_rules_for_k3s_nodes[入站规则]。如果更改了 pod 或服务的默认 CIDR，则需要相应地更新防火墙规则。
-
-=== Raspberry Pi
-
-Raspberry Pi OS 基于 Debian，可能会受到旧 iptables 版本的影响。请参阅<<_旧的_iptables_版本,解决方法>>。
-旧的 iptables 版本
-
-标准 Raspberry Pi OS 不会在启用 `cgroups` 的情况下开始。*K3S* 需要 `cgroups` 来启动 systemd 服务。你可以通过将 `cgroup_memory=1 cgroup_enable=memory` 附加到 `/boot/cmdline.txt` 来启用 `cgroups` 。
-
-示例 cmdline.txt：
-
-----
-console=serial0,115200 console=tty1 root=PARTUUID=58b06195-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait cgroup_memory=1 cgroup_enable=memory
-----
-
-从 Ubuntu 21.10 开始，对 Raspberry Pi 的 vxlan 支持已移至单独的内核模块中。
-
-[,bash]
-----
-sudo apt install linux-modules-extra-raspi
 ----
 
 [#_running_k3s_in_docker]
@@ -493,17 +407,17 @@ sudo apt install linux-modules-extra-raspi
 K3d::
 +
 --
-https://github.com/k3d-io/k3d[k3d] 是一个用于在 Docker 中轻松运行多节点 K3s 集群的实用程序。
+https://github.com/k3d-io/k3d[k3d] 是一个旨在轻松在 Docker 中运行多节点 K3s 集群的工具。
 
-K3d 能让你轻松在 Docker 中>创建单节点和多节点 K3s 集群（例如 Kubernetes 上的本地开发）。
+k3d 使得在 Docker 中创建单节点和多节点 K3s 集群变得非常简单，例如用于 Kubernetes 的本地开发。
 
-有关如何安装和使用 K3d 的更多信息，请参阅link:https://k3d.io/#installation[安装]文档。
+有关如何安装和使用 k3d 的更多信息，请参见 https://k3d.io/#installation[安装] 文档。
 --
 
 Docker::
 +
 --
-要使用 Docker，你还可以使用 `rancher/k3s` 镜像来运行 K3s Server 和 Agent。
+要使用 Docker，`rancher/k3s` 还提供了运行 K3s 服务器和代理的镜像。
 使用 `docker run` 命令：
 
 [,bash]
@@ -519,10 +433,11 @@ sudo docker run \
 
 [NOTE]
 =====
-你必须指定一个有效的 K3s 版本作为标签；我们未维护 `latest` 标签。 Docker 镜像不支持在标签中使用 `+` 符号，因此，请在标签中使用 `-` 符号。
+您必须指定一个有效的 K3s 版本作为标签；`latest` 标签不再维护。 +
+Docker 镜像不允许在标签中使用 `+` 符号，请改用标签中的 `-`。
 =====
 
-K3s 运行后，你可以将 admin kubeconfig 从 Docker 容器中复制出来：
+一旦 K3s 启动并运行，您可以将管理员 kubeconfig 从 Docker 容器中复制出来以供使用：
 
 [,bash]
 ----
@@ -534,76 +449,76 @@ sudo docker cp k3s-server-1:/etc/rancher/k3s/k3s.yaml ~/.kube/config
 [#_selinux_support]
 == SELinux 支持
 
-如果你在默认启用 SELinux 的系统（例如 CentOS）上安装 K3s，则必须确保已安装正确的 SELinux 策略。
+如果您在默认启用 SELinux 的系统上安装 K3s（例如 CentOS），则必须确保已安装适当的 SELinux 策略。
 
 [tabs]
 ======
 自动安装::
 +
-如果系统兼容，而且没有进行离线安装，那么xref:installation/configuration.adoc#_configuration_with_install_script[安装脚本]将自动从 Rancher RPM 仓库安装 SELinux RPM。你通过设置 `INSTALL_K3S_SKIP_SELINUX_RPM=true` 来跳过自动安装。
+如果在兼容系统上进行非隔离安装，xref:installation/configuration.adoc#_configuration_with_install_script[安装脚本] 将自动从 Rancher RPM 储存库安装 SELinux RPM。通过设置 `INSTALL_K3S_SKIP_SELINUX_RPM=true` 可以跳过自动安装。
 
 手动安装::
 +
 --
-可以使用以下命令安装必要的策略：
+可以使用以下命令安装所需的策略：
 
 [,bash]
 ----
 yum install -y container-selinux selinux-policy-base
-yum install -y https://rpm.rancher.io/k3s/latest/common/centos/7/noarch/k3s-selinux-0.2-1.el7_8.noarch.rpm
+yum install -y https://rpm.rancher.io/k3s/latest/common/centos/9/noarch/k3s-selinux-1.6-1.el9.noarch.rpm
 ----
 
-要让安装脚本报告 warning 而不是 fail，你可以设置环境变量 `INSTALL_K3S_SELINUX_WARN=true`。
+要强制安装脚本记录警告而不是失败，您可以设置以下环境变量：`INSTALL_K3S_SELINUX_WARN=true`。
 --
 ======
 
 === 启用 SELinux 强制执行
 
-要利用 SELinux，请在启动 K3s Server 和 Agent 时指定 `--selinux` 标志。
+要利用 SELinux，在启动 K3s 服务器和代理时指定 `--selinux` 标志或设置 `K3S_SELINUX=true` 环境变量。
 
-你也可以在 K3s xref:installation/configuration.adoc#_configuration_file[配置文件]中指定此选项。
+此选项也可以在 K3s xref:installation/configuration.adoc#_configuration_file[配置文件] 中指定。
 
 ----
 selinux: true
 ----
 
-不支持在 SELinux 下使用自定义 `--data-dir`。要自定义它，你可能需要自行编写自定义策略。如需指导，你可以参考 https://github.com/containers/container-selinux[containers/container-selinux] 仓库，仓库包含 Container Runtime 的 SELinux 策略文件，同时你可以参考 https://github.com/k3s-io/k3s-selinux[k3s-io/k3s-selinux] 仓库，该仓库包含 K3s 的 SELinux 策略。
+在 SELinux 下使用自定义 `--data-dir` 是不支持的。要自定义它，您很可能需要编写自己的自定义策略。有关指导，您可以参考 https://github.com/containers/container-selinux[containers/container-selinux] 储存库，该储存库包含容器运行时的 SELinux 策略文件，以及 https://github.com/k3s-io/k3s-selinux[k3s-io/k3s-selinux] 储存库，该储存库包含 K3s 的 SELinux 策略。
 
-== 启用 eStargz 的 Lazy Pulling（实验性）
+== 启用懒惰拉取 eStargz（实验性）
 
-=== 什么是 Lazy Pulling 和 eStargz？
+=== 什么是懒惰拉取和 eStargz？
 
-拉取镜像是容器生命周期中比较耗时的步骤之一
-（根据 https://www.usenix.org/conference/fast16/technical-sessions/presentation/harter[Harter 等人]的说法）。
+拉取镜像被认为是容器生命周期中耗时的步骤之一。
+根据 https://www.usenix.org/conference/fast16/technical-sessions/presentation/harter[Harter, 等]，
 
 ____
-拉包占容器启动时间的 76%，但却只读取了 6.4% 的数据。
+拉取软件包占容器启动时间的 76%，但其中只有 6.4% 的数据被读取。
 ____
 
-为了解决这个问题，K3s 的实验功能支持镜像内容的 _lazy pulling_。
-这允许 K3s 在拉取整个镜像之前启动一个容器。
-必要的内容块（例如单个文件）是按需获取的。
-对于大镜像而言，这种技术可以缩短容器启动延迟。
+为了解决这个问题，k3s 实验性地支持 _懒惰拉取_ 镜像内容。
+这允许 k3s 在整个镜像被拉取之前启动容器。
+相反，必要的内容块（例如单个文件）是按需获取的。
+特别是对于大型镜像，这种技术可以缩短容器启动延迟。
 
-要启用 lazy pulling，你需要将目标镜像格式化为 https://github.com/containerd/stargz-snapshotter/blob/main/docs/stargz-estargz.md[_eStargz_]。
-这是 OCI 的一个替代品，但它 100% OCI 兼容镜像格式，用于 Lazy Pulling。
-由于兼容性，eStargz 可以推送到标准容器镜像仓库（例如 ghcr.io），并且即使在 eStargz-agnostic 运行时也__仍然可以运行__。
+要启用懒惰拉取，目标镜像需要格式化为 https://github.com/containerd/stargz-snapshotter/blob/main/docs/stargz-estargz.md[_eStargz_]。
+这是一种 OCI 替代方案，但 100% 兼容 OCI 的懒惰拉取镜像格式。
+由于兼容性，eStargz 可以推送到标准容器注册表（例如 ghcr.io），并且即使在 eStargz 无关的运行时上也 _仍然可运行_。
 
-eStargz 是基于 https://github.com/google/crfs[Google CRFS 项目提出的 stargz 格式]开发的，具有内容验证和性能优化等实用功能。
-有关 Lazy Pulling 和 eStargz 的更多信息，请参阅 https://github.com/containerd/stargz-snapshotter[Stargz Snapshotter 项目仓库]。
+eStargz 是基于 https://github.com/google/crfs[Google CRFS 项目提出的 stargz 格式] 开发的，但具有包括内容验证和性能优化在内的实用功能。
+有关懒惰拉取和 eStargz 的更多详细信息，请参考 https://github.com/containerd/stargz-snapshotter[Stargz Snapshotter 项目储存库]。
 
-=== 配置 K3s 进行 eStargz 的 Lazy Pulling
+=== 为 eStargz 配置 k3s 的懒惰拉取
 
-如下所示，K3s Server 和 Agent 需要 `--snapshotter=stargz` 选项。
+如以下所示，k3s 服务器和代理需要 `--snapshotter=stargz` 选项。
 
 [,bash]
 ----
 k3s server --snapshotter=stargz
 ----
 
-使用此配置，你可以对 eStargz 格式的镜像进行 Lazy Pulling。
-以下 Pod 清单示例使用 eStargz 格式的 `node:13.13.0` 镜像 (`ghcr.io/stargz-containers/node:13.13.0-esgz`)。
-当启用 stargz snapshotter 时，K3s 会对该镜像进行 lazy pulling。
+使用此配置，您可以对 eStargz 格式的镜像执行懒惰拉取。
+以下示例 Pod 清单使用 eStargz 格式的 `node:13.13.0` 镜像 (`ghcr.io/stargz-containers/node:13.13.0-esgz`)。
+当启用 stargz 快照时，K3s 会对该镜像执行懒惰拉取。
 
 [,yaml]
 ----
@@ -628,9 +543,9 @@ spec:
 ----
 
 [#_additional_logging_sources]
-== 其他日志来源
+== 附加日志记录源
 
-你可以在不使用 Rancher 的情况下为 K3s 安装 https://documentation.suse.com/cloudnative/rancher-manager/latest/en/observability/logging/logging-helm-chart-options.html[Rancher Logging]。为此，你可以执行以下命令：
+可以在不使用 Rancher 的情况下安装 https://documentation.suse.com/cloudnative/rancher-manager/latest/en/observability/logging/logging-helm-chart-options.html[Rancher logging] 以用于 K3s。应执行以下指令：
 
 [,bash]
 ----
@@ -640,19 +555,19 @@ helm install --create-namespace -n cattle-logging-system rancher-logging-crd ran
 helm install --create-namespace -n cattle-logging-system rancher-logging --set additionalLoggingSources.k3s.enabled=true rancher-charts/rancher-logging
 ----
 
-== 其他网络策略日志
+== 附加网络策略日志记录
 
-支持记录网络策略丢弃的数据包。数据包被发送到 iptables NFLOG 操作，它显示了数据包的详细信息，包括阻止它的网络策略。
+网络策略丢弃的数据包可以被记录。数据包被发送到 iptables NFLOG 动作，该动作显示数据包的详细信息，包括阻止它的网络策略。
 
-如果流量很大，日志消息的数量可能会非常多。要在每个策略上控制日志速率，你可以在 question 的网络策略中添加以下注释，从而设置 `limit` 和 `limit-burst` iptables 参数：
+如果流量很大，日志消息的数量可能会非常高。要按策略控制日志速率，请通过向相关网络策略添加以下注释来设置 `limit` 和 `limit-burst` iptables 参数：
 
 * `kube-router.io/netpol-nflog-limit=<LIMIT-VALUE>`
 * `kube-router.io/netpol-nflog-limit-burst=<LIMIT-BURST-VALUE>`
 
-默认值为 `limit=10/minute` 和 `limit-burst=10`。你可以查看 https://www.netfilter.org/documentation/HOWTO/packet-filtering-HOWTO-7.html#:~:text=restrict%20the%20rate%20of%20matches[iptables 手册]以进一步了解这些字段的格式和可选值。
+默认值为 `limit=10/minute` 和 `limit-burst=10`。有关这些字段格式和可能值的更多信息，请查看 https://www.netfilter.org/documentation/HOWTO/packet-filtering-HOWTO-7.html#:~:text=restrict%20the%20rate%20of%20matches[iptables 手册]。
 
-要将 NFLOG 数据包转换为日志条目，请安装 ulogd2 并将 `[log1]` 配置为在 `group=100` 上读取。然后，重启 ulogd2 服务以提交新配置。
-当数据包被网络策略规则阻止时，日志消息将出现在 `/var/log/ulog/syslogemu.log` 中。
+要将 NFLOG 数据包转换为日志条目，请安装 ulogd2 并配置 `[log1]` 以在 `group=100` 上读取。然后，重启 ulogd2 服务以使新配置生效。
+当数据包被网络策略规则阻止时，`/var/log/ulog/syslogemu.log` 中会出现日志消息。
 
 发送到 NFLOG netlink 套接字的数据包也可以使用 tcpdump 或 tshark 等命令行工具读取：
 
@@ -661,6 +576,6 @@ helm install --create-namespace -n cattle-logging-system rancher-logging --set a
 tcpdump -ni nflog:100
 ----
 
-虽然更容易获得，但 tcpdump 不会显示阻止数据包的网络策略的名称。你可以使用 wireshark 的 tshark 命令来显示完整的 NFLOG 数据包标头，其中包括包含了策略名称的 `nflog.prefix` 字段。
+虽然 tcpdump 更容易获取，但它不会显示阻止数据包的网络策略名称。请改用 wireshark 的 tshark 命令，以显示完整的 NFLOG 数据包头，包括包含策略名称的 `nflog.prefix` 字段。
 
-Network Policy logging of dropped packets does not support https://github.com/k3s-io/k3s/issues/8008[policies with an empty `podSelector`]. If you rely on logging dropped packets for diagnostic or audit purposes, ensure that your policies include a pod selector that matches the affected pods.
+丢弃数据包的网络策略日志记录不支持 https://github.com/k3s-io/k3s/issues/8008[具有空 `podSelector` 的策略]。如果您依赖于记录丢弃的数据包进行诊断或审计，请确保您的策略包括一个与受影响的 Pod 匹配的 Pod 选择器。

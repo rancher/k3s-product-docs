@@ -1,6 +1,6 @@
 = Requirements
-:page-languages: [en, ja, ko, zh]
 :revdate: 2026-03-31
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 
 K3s is very lightweight, but has some minimum requirements as outlined below.
@@ -193,7 +193,7 @@ xref:reference/resource-profiling.adoc[Resource Profiling] captures the results 
 
 === Disks
 
-K3s performance depends on the performance of the database. To ensure optimal speed, we recommend using an SSD when possible. 
+K3s performance depends on the performance of the database. To ensure optimal speed, we recommend using an SSD when possible.
 
 If deploying K3s on a Raspberry Pi or other ARM devices, it is recommended that you use an external SSD. etcd is write intensive; SD cards and eMMC cannot handle the IO load.
 

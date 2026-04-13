@@ -1,161 +1,203 @@
 = エアギャップインストール
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-03-03
 :page-revdate: {revdate}
 
-K3s can be installed in an air-gapped environment with two different methods. You can either deploy images via the xref:#_manually_deploy_images_method[k3s-airgap-images tarball release artifact] or by using a xref:#_private_registry_method[private registry]. It is also possible to use the xref:#_embedded_registry_mirror[embedded registry mirror] as long as there is at least one cluster member that has access to the required images.
+このガイドでは、エアギャップ(された)環境でK3sをインストールするための三段階プロセスを説明します。
 
-== イメージのロード
+[IMPORTANT]
+====
+これらの手順で言及されている資産については、Prime Artifacts URLにリストされている任意のK3s Primeバージョンを使用できます。Prime Artifacts URLの詳細については、https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime専用のドキュメント]をご覧ください。認証が必要です。https://scc.suse.com/home[SUSEカスタマーセンター（SCC）]の資格情報を使用してログインしてください。
+====
 
-[#_private_registry_method]
-=== プライベートレジストリ方式
+== イメージをロードする
 
-これらの手順は、エアギャップ環境でノードを既に作成し、コンテナランタイムとしてバンドルされたcontainerdを使用し、環境内にOCI準拠のプライベートレジストリが利用可能であることを前提としています。
+各イメージロード方法には異なる要件があり、異なるエアギャップ(された)シナリオに適しています。インフラストラクチャとセキュリティ要件に最も適した方法を選択してください。
 
-まだプライベートDockerレジストリを設定していない場合は、https://docs.docker.com/registry/deploying/#run-an-externally-accessible-registry[公式レジストリドキュメント]を参照してください。
+[tabs,sync-group-id=airgap-load-images]
+======
+プライベートレジストリ方式::
++
+--
+これらの手順は、すでにエアギャップ環境にノードを作成し、バンドルされたcontainerdをコンテナランタイムとして使用し、OCI準拠のプライベートレジストリが環境に利用可能であることを前提としています。
 
-==== レジストリYAMLの作成とイメージのプッシュ
+まだプライベートDockerレジストリを設定していない場合は、https://docs.docker.com/registry/deploying/#run-an-externally-accessible-registry[公式レジストリのドキュメント]を参照してください。
 
-. 実行するK3sのバージョンに対応するアーキテクチャ用のイメージアーカイブをlink:https://github.com/k3s-io/k3s/releases[リリース]ページから取得します。
-. ``docker image load k3s-airgap-images-amd64.tar.zst``を使用して、tarファイルからDockerにイメージをインポートします。
-. ``docker tag``と``docker push``を使用して、ロードしたイメージを再タグ付けし、プライベートレジストリにプッシュします。
-. xref:installation/private-registry.adoc[プライベートレジストリの設定]ガイドに従って、``registries.yaml``ファイルを作成および設定します。
-. 以下の<<_install_k3s,Install K3s>>セクションに進みます。
+[#_create_the_registry_yaml_and_push_images]
+[pass]
+<h3><a class="anchor" id="_create_the_registry_yaml_and_push_images" href="#_create_the_registry_yaml_and_push_images"></a>レジストリYAMLを作成し、イメージをプッシュする</h3>
 
-[#_manually_deploy_images_method]
-=== 手動デプロイ方式
 
-これらの手順は、エアギャップ環境でノードを既に作成し、コンテナランタイムとしてバンドルされたcontainerdを使用し、プライベートレジストリを使用できない、または使用したくない場合を前提としています。
+. 実行するK3sのバージョンに対して、https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL]ページからアーキテクチャ用のイメージアーカイブを取得してください。
+. `docker image load k3s-airgap-images-amd64.tar.zst`を使用して、tarファイルからdockerにイメージをインポートします。
+. `docker tag`と`docker push`を使用して、ロードしたイメージにタグを再付与し、プライベートレジストリにプッシュします。
+. xref:installation/private-registry.adoc[プライベートレジストリの設定]ガイドに従って、`registries.yaml`ファイルを作成および構成してください。
+. 以下の<<_install_k3s,K3sのインストール>>セクションに進んでください。
+--
 
-この方法では、必要なイメージを各ノードに手動でデプロイする必要があり、プライベートレジストリを実行するのが現実的でないエッジデプロイメントに適しています。
+手動でイメージをデプロイする方法::
++
+--
+これらの手順は、すでにエアギャップ環境でノードを作成し、バンドルされたcontainerdをコンテナランタイムとして使用しており、プライベートレジストリを使用できないか、使用したくないことを前提としています。
 
-==== イメージディレクトリとエアギャップイメージtarballの準備
+この方法では、必要なイメージを各ノードに手動でデプロイする必要があり、プライベートレジストリを運用することが実用的でないエッジデプロイメントに適しています。
 
-. 実行するK3sのバージョンに対応するアーキテクチャ用のイメージアーカイブをlink:https://github.com/k3s-io/k3s/releases[リリース]ページから取得します。
-. エージェントのイメージディレクトリにイメージアーカイブをダウンロードします。例：
+[#_prepare_the_images_directory_and_airgap_image_tarball]
+[pass]
+<h3><a class="anchor" id="_prepare_the_images_directory_and_airgap_image_tarball" href="#_prepare_the_images_directory_and_airgap_image_tarball"></a>イメージディレクトリとエアギャップイメージtarボールを準備します。</h3>
+
+. インターネットに接続可能なマシンで、インストール予定のK3sのバージョンに対するhttps://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL]ページから、アーキテクチャ用のイメージアーカイブをダウンロードします。次に例を示します。
++
+[,bash]
+----
+curl -L -o k3s-airgap-images-amd64.tar.zst "<PRIME-ARTIFACTS-URL>/k3s/v1.35.1%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
+----
+
+. イメージアーカイブをエアギャップノードに転送します。エージェントのイメージディレクトリに配置します。例えば、
 +
 [,bash]
 ----
 sudo mkdir -p /var/lib/rancher/k3s/agent/images/
-sudo curl -L -o /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst "https://github.com/k3s-io/k3s/releases/download/v1.33.1%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
+sudo curl -L -o /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst ""https://github.com/k3s-io/k3s/releases/download/v1.33.1%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
+sudo cp k3s-airgap-images-amd64.tar.zst /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst
 ----
 
-. 以下の<<_install_k3s,Install K3s>>セクションに進みます。
-
-==== Enable Conditional Image Imports
+. 以下の<<_install_k3s,K3sのインストール>>セクションに進んでください。
+ 
+[#_enable_conditional_image_imports]
+[pass]
+<h3><a class="anchor" id="_enable_conditional_image_imports" href="#_enable_conditional_image_imports"></a>条件付きイメージインポートを有効にします。</h3>
 
 [IMPORTANT]
-.Version Gate
+.バージョンゲート
 ====
-Conditional Image imports is available as of the May 2025 releases: v1.33.1+k3s1, v1.32.5+k3s1, v1.31.9+k3s1, v1.30.13+k3s1.
+条件付きイメージインポートは、2025年5月のリリースから利用可能です：v1.33.1+k3s1、v1.32.5+k3s1、v1.31.9+k3s1、v1.30.13+k3s1。
 ====
 
-Image archives are imported every time k3s starts. This is done to ensure that all the images are consistently available, even if some images have been removed or pruned since last startup. However, this delays startup as the kubelet is not started until after all archives have been processed. To alleviate this delay there is an option to only import tarballs that have changed since they were last imported, even across restarts.
+イメージアーカイブは、k3sが起動するたびにインポートされます。これは、すべてのイメージが一貫して利用可能であることを保証するために行われます。たとえ一部のイメージが前回の起動以降に削除またはプルーニングされていてもです。ただし、これはすべてのアーカイブが処理されるまでkubeletが起動しないため、起動を遅延させます。この遅延を軽減するために、最後にインポートされてから変更されたtarアーカイブのみをインポートするオプションがあります。再起動をまたいだ場合でも適用されます。
 
-To enable this feature, create a `.cache.json` file in the images directory:
+この機能を有効にするには、イメージディレクトリに`.cache.json`ファイルを作成します：
 
 [,bash]
 ----
 touch /var/lib/rancher/k3s/agent/images/.cache.json
 ----
 
-The cache file will store archive metadata as files are processed. Subsequent restarts of K3s will not import the images, as long as the size and modification time of the archive remains the same.
+キャッシュファイルは、アーカイブが処理される際にメタデータをファイルとして保存します。K3sのその後の再起動では、アーカイブのサイズと変更時間が同じである限り、イメージはインポートされません。
 
 [WARNING]
 ====
-When this feature is enabled, it will not be possible to ensure that all images are available every time k3s starts. If an image was removed or pruned since last startup, take manual action to reimport the image. Either:
+この機能が有効になっている場合、k3sが起動するたびにすべてのイメージが利用可能であることを保証することはできません。前回の起動以降にイメージが削除またはプルーニングされた場合は、手動でイメージを再インポートする必要があります。次のいずれかです。
 
-* Manually import the archive with `ctr image import`.
-* Use `touch` to modify the timestamp of the archive containing the image.
-* Clear the contents of the `.cache.json` file, and restart k3s.
+* `ctr image import`を使用して、アーカイブを手動でインポートします。
+* イメージを含むアーカイブのタイムスタンプを変更するには、`touch`を使用します。
+* `.cache.json`ファイルの内容をクリアし、k3sを再起動してください。
 ====
+--
 
-[#_embedded_registry_mirror]
-=== 埋め込みレジストリミラー
+埋め込みレジストリミラー::
++
+--
+K3sには、埋め込みの分散OCI準拠レジストリミラーが含まれています。
+有効にされ、適切に構成されている場合、任意のノードのcontainerdイメージストアにあるイメージは、外部イメージレジストリへのアクセスなしに他のクラスターのメンバーによってプルされることができます。
 
-K3sには、埋め込みの分散型OCI準拠のレジストリミラーが含まれています。
-有効化して適切に設定すると、任意のノードのcontainerdイメージストアにあるイメージを、
-外部イメージレジストリにアクセスせずに他のクラスターのメンバーがプルできます。
-
-ミラーリングされたイメージは、上流のレジストリ、レジストリミラー、またはエアギャップイメージtarballから取得できます。
-埋め込み分散レジストリミラーの有効化に関する詳細は、xref:installation/registry-mirror.adoc[埋め込みレジストリミラー]ドキュメントを参照してください。
+ミラーされたイメージは、アップストリームのレジストリ、レジストリミラー、またはエアギャップイメージのtarアーカイブから取得される場合があります。
+埋め込みの分散レジストリミラーを有効にする方法の詳細については、xref:installation/registry-mirror.adoc[埋め込みレジストリミラー]のドキュメントを参照してください。
+--
+======
 
 [#_install_k3s]
-== K3sのインストール
+== K3sをインストールする
 
 === 前提条件
 
-K3sをインストールする前に、上記の<<#_private_registry_method,プライベートレジストリ方式>>または<<#_manually_deploy_images_method,手動デプロイ方式>>を完了して、K3sのインストールに必要なイメージを事前に準備してください。
+K3sをインストールする前に、上記のxref:#_load_images[イメージをロードする]オプションのいずれかを選択して、K3sがインストールに必要なイメージを事前に配置してください。
 
-==== バイナリ
+==== バイナリとスクリプトをダウンロードする
 
-* https://github.com/k3s-io/k3s/releases[リリース]ページからK3sバイナリをダウンロードし、エアギャップノードごとに同じバージョンのバイナリを取得します。バイナリを``/usr/local/bin``に配置し、実行可能にします。
-* https://get.k3s.io[get.k3s.io]からK3sインストールスクリプトをダウンロードします。インストールスクリプトをエアギャップノードの任意の場所に配置し、``install.sh``と名付けます。
+* https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL]ページからK3sのバイナリをダウンロードし、エアギャップイメージを取得するために使用したのと同じバージョンに一致させてください。バイナリを各エアギャップ(された)ノードの`/usr/local/bin`に配置し、実行可能であることを確認してください。
++
+[,bash]
+----
+sudo curl -Lo /usr/local/bin/k3s <PRIME-ARTIFACTS-URL>/k3s/v1.35.1%2Bk3s1/k3s
+sudo chmod +x /usr/local/bin/k3s
+----
 
-==== デフォルトネットワークルート
+* https://get.k3s.io[get.k3s.io]でK3sインストールスクリプトをダウンロードしてください。インストールスクリプトを各エアギャップ(された)ノードの任意の場所に配置し、`install.sh`という名前を付けてください。
++
+[,bash]
+----
+curl -Lo install.sh https://get.k3s.io
+chmod +x install.sh
+----
 
-ノードにデフォルトルートを持つインターフェースがない場合は、デフォルトルートを設定する必要があります。ダミーインターフェースを介したブラックホールルートでも構いません。K3sはデフォルトルートを必要とし、ノードのプライマリIPを自動検出し、kube-proxyのClusterIPルーティングが正常に機能するためです。ダミールートを追加するには、以下を実行します：
+.**デフォルトネットワークルートを設定する** - デフォルトルートのないノードに必要です。
+[%collapsible]
+======
+ノードにデフォルトルートを持つインターフェースがない場合、デフォルトルートを構成する必要があります。ダミーインターフェースを介したブラックホールルートでも構いません。K3sは、ノードのプライマリIPを自動検出し、kube-proxyのClusterIPルーティングが正しく機能するためにデフォルトルートを必要とします。ダミールートを追加するには、次の手順を実行してください：
 
+[,bash]
 ----
 ip link add dummy0 type dummy
 ip link set dummy0 up
 ip addr add 203.0.113.254/31 dev dummy0
 ip route add default via 203.0.113.255 dev dummy0 metric 1000
 ----
+======
 
-``INSTALL_K3S_SKIP_DOWNLOAD``環境変数を使用してK3sスクリプトを実行すると、K3sはローカルバージョンのスクリプトとバイナリを使用します。
-
-==== SELinux RPM
-
-SELinuxを有効にしてK3sをデプロイする場合は、適切なk3s-selinux RPMをすべてのノードにインストールする必要があります。最新バージョンのRPMはlink:https://github.com/k3s-io/k3s-selinux/releases/latest[こちら]で見つけることができます。例えば、CentOS 8の場合：
+.**SELinux RPMをダウンロードする** - SELinuxが有効なエアギャップ(された)ノードに必要です。
+[%collapsible]
+======
+SELinuxが有効なエアギャップ(された)ノードで実行している場合、K3sをインストールする前にk3s-selinux RPMを手動でインストールする必要があります。このRPMには、K3sが正しく動作するために必要なSELinuxポリシーが含まれています。最新のRPMバージョンはhttps://github.com/k3s-io/k3s-selinux/releases/latest[こちら]で見つけることができます。例えば、CentOS 8の場合:
 
 [,bash]
 ----
-インターネットにアクセス可能なマシンで：
-curl -LO https://github.com/k3s-io/k3s-selinux/releases/download/v1.4.stable.1/k3s-selinux-1.4-1.el8.noarch.rpm
+# On an internet accessible machine:
+curl -LO https://github.com/k3s-io/k3s-selinux/releases/download/v1.6.stable.1/k3s-selinux-1.6-1.el8.noarch.rpm
 
-# RPMをエアギャップマシンに転送
-エアギャップマシンで：
-sudo yum install ./k3s-selinux-1.4-1.el8.noarch.rpm
+# Transfer RPM to air-gapped machine
+sudo yum install ./k3s-selinux-1.6-1.el8.noarch.rpm
 ----
 
-詳細はxref:advanced.adoc#_selinux_support[SELinux]セクションを参照してください。
+k3s-selinux RPMのインストールには、OSに以下の依存関係が必要です:
 
-=== エアギャップ環境でのK3sのインストール
+* container-selinux
+* policycoreutils
+* selinux-policy
 
-以下の手順に従って、1台以上のサーバーにK3sをインストールできます。
-
-[tabs]
+詳細については、xref:advanced.adoc#_selinux_support[SELinux]セクションを参照してください。
 ======
-シングルサーバー構成::
+
+=== インストールスクリプトの実行
+
+以下に説明するように、1台または複数のサーバーにK3sをインストールできます。
+
+[tabs,sync-group-id=airgap-install]
+======
+単一サーバーの構成::
 +
 --
-シングルサーバーにK3sをインストールするには、サーバーノードで以下を実行します：
+単一サーバーにK3sをインストールするには、サーバーノードで次の操作を行います:
 
 [,bash]
 ----
 INSTALL_K3S_SKIP_DOWNLOAD=true ./install.sh
 ----
 
-追加のエージェントを追加するには、各エージェントノードで以下を実行します：
+追加のエージェントを追加するには、各エージェントノードで次の操作を行います:
 
 [,bash]
 ----
 INSTALL_K3S_SKIP_DOWNLOAD=true K3S_URL=https://<SERVER_IP>:6443 K3S_TOKEN=<YOUR_TOKEN> ./install.sh
 ----
-
-[NOTE]
-====
-サーバーのトークンは通常、``/var/lib/rancher/k3s/server/token``にあります。
-====
 --
 
-高可用性構成::
+高可用性のための環境設定::
 +
 --
-xref:datastore/ha.adoc[外部DBを使用した高可用性]またはxref:datastore/ha-embedded.adoc[埋め込みDBを使用した高可用性]ガイドを参照してください。インストールコマンドを調整して``INSTALL_K3S_SKIP_DOWNLOAD=true``を指定し、インストールスクリプトをcurlではなくローカルで実行します。また、``INSTALL_K3S_EXEC='args'``を使用してk3sに引数を渡します。
+xref:datastore/ha.adoc[外部DBを使用した高可用性]またはxref:datastore/ha-embedded.adoc[組み込みDBを使用した高可用性]ガイドを参照してください。インストールコマンドを調整するため、`INSTALL_K3S_SKIP_DOWNLOAD=true`を指定し、curlを介さずにローカルでインストールスクリプトを実行します。また、k3sに引数を供給するために`INSTALL_K3S_EXEC='args'`を利用します。
 
-例えば、外部DBを使用した高可用性ガイドのステップ2では、以下のように記載されています：
+例えば、外部DBを使用した高可用性ガイドのステップ2では、以下のことが言及されています:
 
 [,bash]
 ----
@@ -164,7 +206,7 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3
   --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name"
 ----
 
-これを以下のように変更します：
+その代わりに、以下のようにそのような例を修正します:
 
 [,bash]
 ----
@@ -173,30 +215,35 @@ K3S_DATASTORE_ENDPOINT='mysql://username:password@tcp(hostname:3306)/database-na
 ./install.sh
 ----
 --
-====== 
+======
 
 [NOTE]
 ====
-K3sの``--resolv-conf``フラグはkubeletに渡され、ホストに上流のネームサーバーが設定されていないエアギャップネットワークでのポッドDNS解決の設定に役立つ場合があります。
+K3sの`--resolv-conf`フラグはkubeletに渡され、ホストにアップストリームのネームサーバーが設定されていないエアギャップネットワークでのポッドDNS解決の構成に役立つ可能性があります。
 ====
 
 == アップグレード
 
-=== インストールスクリプト方式
+[tabs,sync-group-id=airgap-upgrade]
+======
+手動アップグレード::
++
+--
+エアギャップ環境をアップグレードするには、次の方法で実行できます:
 
-エアギャップ環境のアップグレードは、以下の方法で行うことができます：
+. K3sのアップグレード対象のバージョンに対するhttps://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL]ページから新しいエアギャップイメージ（tarファイル）をダウンロードしてください。各ノードの`/var/lib/rancher/k3s/agent/images/`ディレクトリにtarを配置してください。古いtarファイルを削除してください。
+. 各ノードの`/usr/local/bin`にある古いK3sバイナリをコピーして置き換えてください。インストールスクリプトをhttps://get.k3s.ioにコピーしてください（前回のリリース以降に変更されている可能性があるため）。同じ環境変数を使用して、過去に行ったのと同様にスクリプトを再度実行してください。
+. K3sサービスを再起動してください（インストーラーによって自動的に再起動されない場合）。
+--
 
-. アップグレードするK3sのバージョンに対応する新しいエアギャップイメージ（tarファイル）をlink:https://github.com/k3s-io/k3s/releases[リリース]ページからダウンロードします。各ノードの``/var/lib/rancher/k3s/agent/images/``ディレクトリにtarファイルを配置し、古いtarファイルを削除します。
-. 各ノードの``/usr/local/bin``にある古いK3sバイナリを新しいものに置き換えます。link:https://get.k3s.ioからインストールスクリプトをコピーし、前回のリリース以降に変更があった可能性があるため、再度スクリプトを実行します。同じ環境変数を使用してスクリプトを実行します。
-. K3sサービスを再起動します（インストーラーによって自動的に再起動されない場合）。
+自動アップグレード方法::
++
+--
+K3sはxref:upgrades/automated.adoc[自動アップグレード]をサポートしています。エアギャップ(された)環境でこれを有効にするには、必要なイメージがプライベートレジストリに利用可能であることを確認する必要があります。
 
-=== 自動アップグレード方式
+アップグレード対象のK3sのバージョンに対応するrancher/k3s-upgradeのバージョンが必要です。注意してください。イメージタグはK3sリリースの`+`を`-`に置き換えます。Dockerイメージは`+`をサポートしていないためです。
 
-K3sはxref:upgrades/automated.adoc[自動アップグレード]をサポートしています。エアギャップ環境でこれを有効にするには、必要なイメージがプライベートレジストリにあることを確認する必要があります。
-
-アップグレードするK3sのバージョンに対応するrancher/k3s-upgradeのバージョンが必要です。注意点として、K3sリリースの``+``はDockerイメージではサポートされていないため、イメージタグでは``-``に置き換えられます。
-
-また、system-upgrade-controllerマニフェストYAMLに指定されているsystem-upgrade-controllerとkubectlのバージョンも必要です。最新のsystem-upgrade-controllerリリースはlink:https://github.com/rancher/system-upgrade-controller/releases/latest[こちら]で確認し、必要なバージョンをプライベートレジストリにプッシュします。例えば、system-upgrade-controllerのv0.4.0リリースでは、以下のイメージがマニフェストYAMLに指定されています：
+デプロイするsystem-upgrade-controllerマニフェストYAMLに指定されているsystem-upgrade-controllerとkubectlのバージョンも必要です。system-upgrade-controllerの最新リリースをhttps://github.com/rancher/system-upgrade-controller/releases/latest[こちら]で確認し、system-upgrade-controller.yamlをダウンロードして、プライベートレジストリにプッシュする必要があるバージョンを特定してください。例えば、system-upgrade-controllerのリリースv0.4.0では、これらのイメージがマニフェストYAMLに指定されています：
 
 ----
 rancher/system-upgrade-controller:v0.4.0
@@ -204,3 +251,5 @@ rancher/kubectl:v0.17.0
 ----
 
 必要なrancher/k3s-upgrade、rancher/system-upgrade-controller、およびrancher/kubectlイメージをプライベートレジストリに追加したら、xref:upgrades/automated.adoc[自動アップグレード]ガイドに従ってください。
+--
+======

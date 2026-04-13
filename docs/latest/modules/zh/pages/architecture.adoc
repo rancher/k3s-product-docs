@@ -1,67 +1,65 @@
-= 架构
-:page-languages: [en, ja, ko, zh]
+= 体系结构
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-01-06
 :page-revdate: {revdate}
 
-本文介绍了高可用（HA）K3s 服务器集群的架构，以及 K3s 与单节点服务器集群的区别。
+== 服务器和代理
 
-本文还描述了 Agent 节点是如何注册到 K3s Server 的。
-
-* Server 节点指的是运行 `k3s server` 命令的主机，control plane 和数据存储组件由 K3s 管理。
-* Agent 节点指的是运行 `k3s agent` 命令的主机，不具有任何数据存储或 control plane 组件。
-* Server 和 Agent 都运行 kubelet、容器运行时和 CNI。有关运行无 Agent 的 Server 的更多信息，请参阅xref:advanced.adoc#_running_agentless_servers_experimental[高级选项]。
+* 服务器节点被定义为运行`k3s server`命令的主机，控制平面和数据存储组件由K3s管理。
+* 代理节点被定义为运行`k3s agent`命令的主机，没有任何数据存储或控制平面组件。
+* 服务器和代理都运行kubelet、容器运行时和CNI。有关无代理服务器运行的更多信息，请参见xref:advanced.adoc#_running_agentless_servers_experimental[高级选项]文档。
 
 image:how-it-works-k3s-revised.svg[]
 
-== 带有嵌入式数据库的单服务器设置
+== 带嵌入式数据库的单服务器设置
 
-下图显示了具有嵌入式 SQLite 数据库的单节点 K3s Server 集群示例。
+下图显示了一个示例集群，该集群具有一个单节点K3s服务器和一个嵌入式SQLite数据库。
 
-在此配置中，每个 Agent 节点都注册到同一个 Server 节点。K3s 用户可以通过调用 Server 节点上的 K3s API 来操作 Kubernetes 资源。
+在此配置中，每个代理节点都注册到同一个服务器节点。K3s用户可以通过在服务器节点上调用K3s API来操作Kubernetes资源。
 
-image:k3s-architecture-single-server.svg[K3s Architecture with a Single Server]
+image:k3s-architecture-single-server.svg[单服务器的K3s架构]
 
 [#_high_availability_k3s]
-== 高可用 K3s
+== 高可用性K3s
 
-单服务器集群可以满足各种用例，但如果你的环境对 Kubernetes control plane 的正常运行时间有要求，你可以在 HA 配置中运行 K3s。一个高可用 K3s 集群包括：
+单服务器集群可以满足多种用例，但对于Kubernetes控制平面正常运行时间至关重要的环境，您可以以HA配置运行K3s。HA K3s集群包括：
 
 [tabs]
 ======
-嵌入式数据库::
+Embedded DB::
 +
 --
-* 三个或多个 **Server 节点**为 Kubernetes API 提供服务并运行其他 control plane 服务
-* *嵌入式 etcd 数据存储*（与单节点设置中使用的嵌入式 SQLite 数据存储相反）
+* 三个或更多*服务器节点*，将提供Kubernetes API并运行其他控制平面服务
+* 一个*嵌入式etcd数据存储*（与单服务器设置中使用的嵌入式SQLite数据存储相对）
 
-image:k3s-architecture-ha-embedded.svg[K3s Architecture with High-availability Servers]
+image:k3s-architecture-ha-embedded.svg[K3s架构与高可用性服务器]
 --
 
 外部数据库::
 +
 --
-* 两个或多个 **Server 节点**为 Kubernetes API 提供服务并运行其他 control plane 服务
-* *外部数据存储*（例如 MySQL、PostgreSQL 或 etcd）
+* 两个或更多*服务器节点*，将提供Kubernetes API并运行其他控制平面服务
+* 一个*外部数据存储*（例如 MySQL、PostgreSQL 或 etcd）
 
-image:k3s-architecture-ha-external.svg[K3s Architecture with High-availability Servers and an External DB]
+image:k3s-architecture-ha-external.svg[具有高可用性服务器和外部数据库的 K3s 架构]
 --
 ======
 
-== Agent 节点的固定注册地址
+== 代理节点的固定注册地址
 
-在 HA 服务器配置中，每个节点都能使用固定的注册地址向 Kubernetes API 注册，如下图所示。
+在高可用性服务器配置中，每个节点还可以通过使用固定注册地址向 Kubernetes API 注册，如下图所示。
 
-注册后，Agent 节点直接与其中一个 Server 节点建立连接。
+注册后，代理节点直接与其中一个服务器节点建立连接。
 
-image:k3s-production-setup.svg[Agent Registration HA]
+image:k3s-production-setup.svg[代理注册 HA]
 
 [#_how_agent_node_registration_works]
-== Agent 节点注册的工作原理
+== 代理节点注册的工作原理
 
-Agent 节点通过 `k3s agent` 进程发起的 WebSocket 连接进行注册，连接由作为 agent 进程一部分运行的客户端负载均衡器维护。最初，Agent 通过本地负载均衡器端口 6443 连接到 supervisor（和 kube-apiserver）。负载均衡器维护了一个要连接的可用端点列表。默认（也是最初唯一的）端点来源于 `--server` 地址中的主机名。连接到集群后，Agent 会从默认命名空间中的 Kubernetes Service 端点列表中检索 kube-apiserver 地址列表。这些端点添加到负载均衡器，然后负载均衡器将保持与集群中所有 Server 稳定连接，提供与 kube-apiserver 的连接，从而容忍单个 Server 的中断。
+代理节点通过 `k3s agent` 进程发起的 websocket 连接进行注册，连接由作为代理进程一部分运行的客户端负载均衡器维护。最初，代理通过本地负载均衡器在 6443 端口连接到主管（和 kube-apiserver）。负载均衡器维护可连接的可用端点列表。默认（并且最初唯一）端点由 `--server` 地址的主机名提供。一旦连接到集群，代理会从默认命名空间的 Kubernetes 服务端点列表中检索 kube-apiserver 地址列表。这些端点被添加到负载均衡器中，负载均衡器随后维护与集群中所有服务器的稳定连接，提供一个能够容忍单个服务器故障的 kube-apiserver 连接。
 
-Agent 将使用节点集群 Secret 以及随机生成的节点密码注册到 Server，密码存储在 `/etc/rancher/node/password` 中。Server 会将各个节点的密码存储为 Kubernetes Secret，后续的任何尝试都必须使用相同的密码。节点密码 Secret 存储在 `kube-system` 命名空间中，名称使用 `<host>.node-password.k3s` 模板。这样做是为了保护节点 ID 的完整性。
+代理将使用节点集群密钥和存储在 `/etc/rancher/node/password` 的随机生成的节点密码向服务器注册。服务器将把单个节点的密码存储为 Kubernetes 秘密，任何后续尝试必须使用相同的密码。节点密码秘密存储在 `kube-system` 名称空间中，名称使用模板 `<host>.node-password.k3s`。这样做是为了保护节点 ID 的完整性。
 
-如果 Agent 的 `/etc/rancher/node` 目录被删除，或者你希望使用现有名称重新加入节点，那么你需要从集群中删除该节点。这将清除旧节点条目和节点密码 Secret，并允许节点（重新）加入集群。
+如果代理的 `/etc/rancher/node` 目录被删除，或者您希望使用现有名称重新加入节点，则应从集群中删除该节点。这将清理旧的节点条目和节点密码秘密，并允许节点（重新）加入集群。
 
-如果你经常重复使用主机名，但无法删除节点密码 Secret，你可以使用 `--with-node-id` 标志启动 K3s Server 或 Agent，从而将唯一的节点 ID 自动附加到主机名。启用后，节点 ID 也存储在 `/etc/rancher/node/` 中。
+如果您经常重用主机名，但无法删除节点密码秘密，可以通过使用 `--with-node-id` 标志启动 K3s 服务器或代理，自动将唯一的节点 ID 附加到主机名。启用时，节点 ID 也会存储在 `/etc/rancher/node/` 中。

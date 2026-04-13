@@ -1,6 +1,6 @@
 = v1.33.X
-:page-languages: [en, ja, ko, zh]
 :revdate: 2026-03-31
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 :page-role: -toc
 
@@ -347,7 +347,7 @@ For more details on what's new, see the https://github.com/kubernetes/kubernetes
 ** Bump rancher libs: wrangler/lasso/remotedialer
 ** Wire cri-dockerd --log-level=debug up to k3s --debug flag
 ** Fix spegel logging and startup sequence
-** Update to runc v1.3.0 
+** Update to runc v1.3.0
 ** Do not bootstrap etcd-only nodes from existing supervisor
 ** Add retry on etcd MemberAdd timeout
 ** Bump containerd to v2.1.4
