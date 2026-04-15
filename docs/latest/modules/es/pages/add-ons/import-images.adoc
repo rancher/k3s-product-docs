@@ -10,7 +10,7 @@ Las imágenes de contenedor se almacenan en caché localmente en cada nodo por e
 
 Kubernetes, por defecto, extrae automáticamente las imágenes cuando un Pod las requiere si la imagen no está ya presente en el nodo. Este comportamiento se puede cambiar utilizando el campo https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[directiva de extracción de imágenes] del Pod. Al utilizar la directiva `IfNotPresent` por defecto, containerd extraerá la imagen de sentido ascendente (por defecto) o de tu xref:installation/private-registry.adoc[registro privado] y la almacenará en su almacén de imágenes. Los usuarios no necesitan aplicar ninguna configuración adicional para que la extracción de imágenes bajo demanda funcione.
 
-
+[#_pre_import_images]
 == Pre-importar imágenes
 
 [IMPORTANT]

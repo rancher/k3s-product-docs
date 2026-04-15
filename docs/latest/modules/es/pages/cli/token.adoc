@@ -9,6 +9,7 @@ K3s utiliza tokens para asegurar el proceso de unión de nodos y para cifrar inf
 
 Los tokens de K3s pueden especificarse en formato seguro o corto. Se prefiere el formato seguro, ya que permite al cliente autenticar la identidad del clúster al que se une, antes de enviar credenciales.
 
+[#_secure]
 === Seguro
 
 El formato de token seguro (a veces denominado "token completo") contiene las siguientes partes:
@@ -128,7 +129,7 @@ Un token en formato seguro, incluyendo el hash CA del clúster, se escribirá en
 | Indicadores | Descripción
 
 | `--data-dir` valor
-| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o ${HOME}/.rancher/k3s si no es root)
+| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o $\{HOME}/.rancher/k3s si no es root)
 
 | `--kubeconfig` valor
 | Servidor al que conectarse [$KUBECONFIG]
@@ -155,7 +156,7 @@ Eliminar uno o más tokens. Se puede proporcionar el token completo, o solo el I
 | Indicadores | Descripción
 
 | `--data-dir` valor
-| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o ${HOME}/.rancher/k3s si no es root)
+| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o $\{HOME}/.rancher/k3s si no es root)
 
 | `--kubeconfig` valor
 | Servidor al que conectarse [$KUBECONFIG]
@@ -172,7 +173,7 @@ No es necesario utilizar este comando para generar un token. Puedes hacerlo tú 
 | Indicadores | Descripción
 
 | `--data-dir` valor
-| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o ${HOME}/.rancher/k3s si no es root)
+| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o $\{HOME}/.rancher/k3s si no es root)
 
 | `--kubeconfig` valor
 | Servidor al que conectarse [$KUBECONFIG]
@@ -187,7 +188,7 @@ Listar tokens de arranque, mostrando su ID, descripción y el tiempo de vida res
 | Indicadores | Descripción
 
 | `--data-dir` valor
-| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o ${HOME}/.rancher/k3s si no es root)
+| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o $\{HOME}/.rancher/k3s si no es root)
 
 | `--kubeconfig` valor
 | Servidor al que conectarse [$KUBECONFIG]
@@ -214,7 +215,7 @@ Si no especificas un nuevo token, se generará uno para ti.
 | Indicadores | Descripción
 
 | `--data-dir` valor
-| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o ${HOME}/.rancher/k3s si no es root)
+| Carpeta para mantener el estado (por defecto: /var/lib/rancher/k3s o $\{HOME}/.rancher/k3s si no es root)
 
 | `--kubeconfig` valor
 | Servidor al que conectarse [$KUBECONFIG]

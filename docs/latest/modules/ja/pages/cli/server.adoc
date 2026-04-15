@@ -84,7 +84,7 @@
 
 | `--etcd-snapshot-dir` 値
 |
-| ${data-dir}/db/snapshots
+| $\{data-dir}/db/snapshots
 | dbスナップショットを保存するディレクトリ
 
 | `--etcd-s3`
@@ -272,7 +272,7 @@
 | フラグ | デフォルト | 説明
 
 | `--data-dir value, -d` 値
-| `/var/lib/rancher/k3s` または `${HOME}/.rancher/k3s` （ルートでない場合）
+| `/var/lib/rancher/k3s` または `+${HOME}/.rancher/k3s+` （ルートでない場合）
 | 状態を保持するフォルダー
 |===
 

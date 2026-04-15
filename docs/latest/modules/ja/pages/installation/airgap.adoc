@@ -10,6 +10,7 @@
 これらの手順で言及されている資産については、Prime Artifacts URLにリストされている任意のK3s Primeバージョンを使用できます。Prime Artifacts URLの詳細については、https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime専用のドキュメント]をご覧ください。認証が必要です。https://scc.suse.com/home[SUSEカスタマーセンター（SCC）]の資格情報を使用してログインしてください。
 ====
 
+[#_load_images]
 == イメージをロードする
 
 各イメージロード方法には異なる要件があり、異なるエアギャップ(された)シナリオに適しています。インフラストラクチャとセキュリティ要件に最も適した方法を選択してください。

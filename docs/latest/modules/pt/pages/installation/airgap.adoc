@@ -10,6 +10,7 @@ Este guia o orienta na instalação do K3s em um ambiente air-gapped usando um p
 Você pode usar qualquer versão do K3s Prime listada na URL de Artefatos Prime para os ativos mencionados nestes passos. Para saber mais sobre a URL de Artefatos Prime, consulte nossa https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[documentação exclusiva do Prime]. A autenticação é necessária. Use suas credenciais do https://scc.suse.com/home[Centro de Clientes SUSE (SCC)] para fazer login.
 ====
 
+[#_load_images]
 == Carregar Imagens
 
 Cada método de carregamento de imagem possui requisitos diferentes e é adequado para diferentes cenários air-gapped. Escolha o método que melhor se adapta à sua infraestrutura e requisitos de segurança.

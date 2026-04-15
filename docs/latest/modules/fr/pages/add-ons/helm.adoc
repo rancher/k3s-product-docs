@@ -151,7 +151,7 @@ Le champ `name` doit suivre les conventions de nommage des charts Helm, en plus 
 | `--values`
 |===
 
-Le contenu placé dans `/var/lib/rancher/k3s/server/static/` peut être accessible anonymement via le serveur APIServer Kubernetes depuis l'intérieur du cluster. Cette URL peut être modélisée en utilisant la variable spéciale `%{KUBERNETES_API}%` dans le champ `spec.chart`. Par exemple, le composant Traefik paquet charge son Chart depuis `https://%{KUBERNETES_API}%/static/charts/traefik-VERSION.tgz`.
+Le contenu placé dans `/var/lib/rancher/k3s/server/static/` peut être accessible anonymement via le serveur APIServer Kubernetes depuis l'intérieur du cluster. Cette URL peut être modélisée en utilisant la variable spéciale `+%{KUBERNETES_API}%+` dans le champ `spec.chart`. Par exemple, le composant Traefik paquet charge son Chart depuis `+https://%{KUBERNETES_API}%/static/charts/traefik-VERSION.tgz+`.
 
 Les valeurs du Chart sont utilisées dans l'ordre suivant, de la moindre à la plus grande priorité :
 

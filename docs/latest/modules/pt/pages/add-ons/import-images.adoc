@@ -10,7 +10,7 @@ As imagens de contêiner são armazenadas em cache localmente em cada nó pelo r
 
 O Kubernetes, por padrão, puxa automaticamente as imagens quando um Pod as requer, se a imagem não estiver presente no nó. Esse comportamento pode ser alterado usando o campo https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[política de pull de imagem] do Pod. Ao usar a política padrão `IfNotPresent`, o containerd puxará a imagem de upstream (padrão) ou do seu xref:installation/private-registry.adoc[registro privado] e a armazenará em seu repositório de imagens containerd. Os usuários não precisam aplicar nenhuma configuração adicional para que a puxada de imagem sob demanda funcione.
 
-
+[#_pre_import_images]
 == Pré-importar imagens
 
 [IMPORTANT]

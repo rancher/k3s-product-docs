@@ -79,6 +79,7 @@ ServiceLB 控制器监视 Kubernetes https://kubernetes.io/docs/concepts/service
 如果外部流量通过 NAT 到达节点（例如在公共云中），并且您需要 `externalTrafficPolicy=local` 以实现客户端源 IP 保留等目的，请不要为任何节点定义 k3s 配置 `node-external-ip`，因为那样将无法正常工作。
 ====
 
+[#_controlling_servicelb_node_selection]
 === 控制 ServiceLB 节点选择
 
 将 `svccontroller.k3s.cattle.io/enablelb=true` 标签添加到一个或多个节点会将 ServiceLB 控制器切换到允许列表模式，只有带有该标签的节点才有资格托管 LoadBalancer Pod。未标记的节点将被排除在 ServiceLB 的使用之外。

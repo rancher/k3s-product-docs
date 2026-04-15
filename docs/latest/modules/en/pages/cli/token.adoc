@@ -9,6 +9,7 @@ K3s uses tokens to secure the node join process and to encrypt confidential info
 
 K3s tokens can be specified in either secure or short format. The secure format is preferred, as it enables the client to authenticate the identity of the cluster it is joining, before sending credentials.
 
+[#_secure]
 === Secure
 
 The secure token format (occasionally referred to as a "full" token) contains the following parts:

@@ -441,6 +441,7 @@ spec:
 
 NOTE: As adições críticas do Kubernetes, como CNI, DNS e Ingress, são executadas como pods no namespace `kube-system`. Portanto, este namespace terá uma política que é menos restritiva para que esses componentes possam funcionar corretamente.
 
+[#_networkpolicies]
 === Políticas de Rede
 
 O CIS exige que todos os namespaces tenham uma política de rede aplicada que limite razoavelmente o tráfego para namespaces e pods.

@@ -80,6 +80,7 @@ kubectl get pvc
 
 O status deve ser Bound para cada um.
 
+[#_setting_up_longhorn]
 == Configurando o Longhorn
 
 [CAUTION]

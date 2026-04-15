@@ -79,6 +79,7 @@ K3sでhttps://kubernetes.io/docs/concepts/services-networking/service/#loadbalan
 外部トラフィックがNATを使用してノードに到達し（例：パブリッククラウドで）、クライアントのソースIP保持などの目的で`externalTrafficPolicy=local`が必要な場合、ノードのいずれかに対してk3s設定`node-external-ip`を定義しないでください。そうしないと正しく機能しません。
 ====
 
+[#_controlling_servicelb_node_selection]
 === ServiceLBノード選択の制御
 
 1つ以上のノードに`svccontroller.k3s.cattle.io/enablelb=true`ラベルを追加すると、ServiceLBコントローラーは許可リストモードに切り替わり、ラベルを持つノードのみがLoadBalancerポッドをホストする資格を持ちます。ラベルが付けられていないノードは、ServiceLBによる使用から除外されます。

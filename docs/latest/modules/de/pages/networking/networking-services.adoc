@@ -79,6 +79,7 @@ Erstellen Sie einen https://kubernetes.io/docs/concepts/services-networking/serv
 Wenn externer Verkehr den Knoten über ein NAT (z. B. in der Public Cloud) erreicht und Sie `externalTrafficPolicy=local` für Zwecke wie die Erhaltung der Quell-IP des Clients benötigen, definieren Sie bitte nicht die K3s-Konfiguration `node-external-ip` für einen der Knoten, da dies nicht korrekt funktioniert.
 ====
 
+[#_controlling_servicelb_node_selection]
 === Steuerung der Auswahl von ServiceLB-Knoten.
 
 Durch das Hinzufügen des `svccontroller.k3s.cattle.io/enablelb=true` Labels zu einem oder mehreren Knoten wechselt der ServiceLB-Controller in den Allow-List-Modus, in dem nur Knoten mit dem Label berechtigt sind, LoadBalancer-Pods zu hosten. Knoten, die unlabeled bleiben, werden von der Nutzung durch ServiceLB ausgeschlossen.

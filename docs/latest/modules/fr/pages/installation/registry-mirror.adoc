@@ -19,7 +19,7 @@ Cette option active le miroir intégré pour une utilisation sur tous les nœuds
 
 Lorsqu'il est activé au niveau du cluster, tous les nœuds hébergeront un registre OCI local sur le port 6443, et publieront une liste d'images disponibles via un réseau de pair à pair sur le port 5001.
 Toute image disponible dans le magasin d'images containerd sur n'importe quel nœud peut être récupérée par d'autres membres du cluster sans accès à un registre externe.
-Les images importées via xref:installation/airgap.adoc#_tabs_1_manually_deploy_images_method[fichiers tar d'images en isolation physique] sont fixées dans containerd pour garantir qu'elles restent disponibles et ne sont pas supprimées par la collecte des déchets de Kubelet.
+Les images importées via xref:installation/airgap.adoc#_tabs_1_méthode_de_déploiement_manuel_des_images[fichiers tar d'images en isolation physique] sont fixées dans containerd pour garantir qu'elles restent disponibles et ne sont pas supprimées par la collecte des déchets de Kubelet.
 
 Le port de pair à pair peut être changé de 5001 en définissant la variable d'environnement `K3S_P2P_PORT` pour le service K3s. Le port doit être défini sur la même valeur sur tous les nœuds.
 Changer le port n'est pas pris en charge et n'est pas recommandé.
@@ -136,7 +136,7 @@ Si l'intégrité de l'image est importante, vous devez utiliser des résumés d'
 == Partage d'images en isolation physique ou chargées manuellement
 
 Le partage d'images est contrôlé en fonction du registre source.
-Les images chargées directement dans containerd via xref:installation/airgap.adoc#_tabs_1_manually_deploy_images_method[tarballs en isolation physique], xref:add-ons/import-images.adoc#_pre_import_images[pré-importées] ou chargées directement dans le magasin d'images de containerd à l'aide de l'outil de ligne de commande `ctr` sont partagées entre les nœuds si elles sont étiquetées comme provenant d'un registre activé pour le mirroring.
+Les images chargées directement dans containerd via xref:installation/airgap.adoc#_tabs_1_méthode_de_déploiement_manuel_des_images[tarballs en isolation physique], xref:add-ons/import-images.adoc#_pre_import_images[pré-importées] ou chargées directement dans le magasin d'images de containerd à l'aide de l'outil de ligne de commande `ctr` sont partagées entre les nœuds si elles sont étiquetées comme provenant d'un registre activé pour le mirroring.
 
 Notez que le registre en amont dont les images semblent provenir n'a pas nécessairement à exister ou à être accessible.
 Par exemple, vous pourriez étiqueter des images comme provenant d'un registre en amont fictif et importer ces images dans le magasin d'images de containerd.

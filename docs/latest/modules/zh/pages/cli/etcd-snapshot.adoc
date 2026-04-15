@@ -118,6 +118,7 @@ k3s etcd-snapshot prune --snapshot-retention  <NUM-OF-SNAPSHOTS-TO-RETAIN>
 k3s etcd-snapshot prune --name etcd-snapshot --etcd-snapshot-retention <NUM-OF-SNAPSHOTS-TO-RETAIN>
 ----
 
+[#_s3_compatible_object_store_support]
 === S3 兼容对象存储支持
 
 K3s 支持将 etcd 快照复制到 S3 兼容对象存储，并从中恢复 etcd 快照。S3 支持适用于按需和计划快照。

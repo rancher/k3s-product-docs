@@ -19,7 +19,7 @@ Diese Option aktiviert den eingebetteten Spiegel zur Nutzung auf allen Knoten im
 
 Wenn auf Cluster-Ebene aktiviert, hosten alle Knoten ein lokales OCI-Registry auf Port 6443 und veröffentlichen eine Liste verfügbarer Images über ein Peer-to-Peer-Netzwerk auf Port 5001.
 Jedes Image, das im Containerd-Image-Speicher auf einem Knoten verfügbar ist, kann von anderen Cluster-Mitgliedern ohne Zugriff auf ein externes Registry abgerufen werden.
-Bilder, die über xref:installation/airgap.adoc#_tabs_1_manually_deploy_images_method[Air-Gap-Image-Tar-Dateien] importiert werden, werden in containerd fixiert, um sicherzustellen, dass sie verfügbar bleiben und nicht durch die Kubelet-Garbage-Collection entfernt werden.
+Bilder, die über xref:installation/airgap.adoc#_tabs_1_manuelle_bereitstellung_von_bildern[Air-Gap-Image-Tar-Dateien] importiert werden, werden in containerd fixiert, um sicherzustellen, dass sie verfügbar bleiben und nicht durch die Kubelet-Garbage-Collection entfernt werden.
 
 Der Peer-to-Peer-Port kann von 5001 geändert werden, indem die `K3S_P2P_PORT` Umgebungsvariable für den K3s-Dienst gesetzt wird. Der Port muss auf allen Knoten auf denselben Wert gesetzt werden.
 Die Änderung des Ports wird nicht unterstützt und ist nicht empfohlen.
@@ -136,7 +136,7 @@ Wenn die Integrität des Images wichtig ist, sollten Sie Image-Digests anstelle 
 == Teilen von Air Gap oder manuell geladenen Images
 
 Das Teilen von Images wird basierend auf dem Quell-Registry kontrolliert.
-Images, die direkt in containerd über xref:installation/airgap.adoc#_tabs_1_manually_deploy_images_method[Air-Gap-Tarballs], xref:add-ons/import-images.adoc#_pre_import_images[vorab importiert] oder direkt in den Image-Speicher von containerd mit dem `ctr` Kommandozeilenwerkzeug geladen werden, werden zwischen Knoten geteilt, wenn sie als von einem Registry, das für das Spiegeln aktiviert ist, stammend gekennzeichnet sind.
+Images, die direkt in containerd über xref:installation/airgap.adoc#_tabs_1_manuelle_bereitstellung_von_bildern[Air-Gap-Tarballs], xref:add-ons/import-images.adoc#_pre_import_images[vorab importiert] oder direkt in den Image-Speicher von containerd mit dem `ctr` Kommandozeilenwerkzeug geladen werden, werden zwischen Knoten geteilt, wenn sie als von einem Registry, das für das Spiegeln aktiviert ist, stammend gekennzeichnet sind.
 
 Beachten Sie, dass das Upstream-Registry, von dem die Images zu stammen scheinen, tatsächlich nicht existieren oder erreichbar sein muss.
 Zum Beispiel könnten Sie Images als von einem fiktiven Upstream-Registry stammend kennzeichnen und diese Images in den Image-Speicher von containerd importieren.

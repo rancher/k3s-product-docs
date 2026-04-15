@@ -10,7 +10,7 @@
 
 Kubernetesは、デフォルトで、ノードにイメージが存在しない場合、ポッドが必要とする際に自動的にイメージをプルします。この動作は、ポッドのhttps://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[イメージプルポリシー]フィールドを使用することで変更できます。デフォルトの`IfNotPresent`ポリシーを使用する場合、containerdは、アップストリーム（デフォルト）またはあなたのxref:installation/private-registry.adoc[プライベートレジストリ]からイメージをプルし、それをイメージストアに保存します。ユーザーは、オンデマンドイメージプルが機能するために、追加の設定を適用する必要はありません。
 
-
+[#_pre_import_images]
 == 事前にインポートされたイメージ
 
 [IMPORTANT]

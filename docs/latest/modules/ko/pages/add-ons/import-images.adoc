@@ -10,7 +10,7 @@ Container images are cached locally on each node by the containerd image store. 
 
 Kubernetes, by default, automatically pulls images when a Pod requires them if the image is not already present on the node. This behavior can be changed by using the https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[image pull policy] field of the Pod. When using the default `IfNotPresent` policy, containerd will pull the image from either upstream (default) or your xref:installation/private-registry.adoc[private registry] and store it in its image store. Users do not need to apply any additional configuration for on-demand image pulling to work.
 
-
+[#_pre_import_images]
 == Pre-import images
 
 [IMPORTANT]

@@ -441,6 +441,7 @@ spec:
 
 NOTE: Die kritischen Kubernetes-Erweiterungen wie CNI, DNS und Ingress werden als Pods im `kube-system` Namespace ausgeführt. Daher wird dieser Namespace eine Richtlinie haben, die weniger restriktiv ist, damit diese Komponenten ordnungsgemäß ausgeführt werden können.
 
+[#_networkpolicies]
 === NetworkPolicies
 
 CIS verlangt, dass alle Namespaces eine Netzwerkrichtlinie angewendet haben, die den Datenverkehr in Namespaces und Pods angemessen einschränkt.

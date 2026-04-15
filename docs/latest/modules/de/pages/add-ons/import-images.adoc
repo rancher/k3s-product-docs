@@ -10,7 +10,7 @@ Containerbilder werden lokal auf jedem Knoten vom Containerd-Image-Store zwische
 
 Kubernetes zieht standardmäßig automatisch Bilder, wenn ein Pod sie benötigt, sofern das Bild nicht bereits auf dem Knoten vorhanden ist. Dieses Verhalten kann durch die Verwendung des https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[Image-Pull-Richtlinie] Feldes des Pods geändert werden. Bei Verwendung der Standard-`IfNotPresent` Richtlinie zieht containerd das Bild entweder von Upstream (Standard) oder von Ihrer xref:installation/private-registry.adoc[privaten Registry] und speichert es im Containerd-Image-Store. Benutzer müssen keine zusätzliche Konfiguration vornehmen, damit der Bildabruf nach Bedarf funktioniert.
 
-
+[#_pre_import_images]
 == Bilder vorab importieren
 
 [IMPORTANT]

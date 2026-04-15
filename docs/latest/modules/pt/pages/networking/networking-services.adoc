@@ -79,6 +79,7 @@ Crie um https://kubernetes.io/docs/concepts/services-networking/service/#loadbal
 Se o tráfego externo atingir o nó usando um NAT (por exemplo, em nuvem pública) e você precisar de `externalTrafficPolicy=local` para fins como preservação do IP de origem do cliente, não defina a configuração k3s `node-external-ip` para nenhum dos nós, pois isso não funcionará corretamente.
 ====
 
+[#_controlling_servicelb_node_selection]
 === Controlando a Seleção de Nós do ServiceLB
 
 Adicionar o rótulo `svccontroller.k3s.cattle.io/enablelb=true` a um ou mais nós muda o controlador ServiceLB para o modo de lista de permissão, onde apenas nós com o rótulo são elegíveis para hospedar pods LoadBalancer. Nós que permanecerem sem rótulo serão excluídos do uso pelo ServiceLB.
