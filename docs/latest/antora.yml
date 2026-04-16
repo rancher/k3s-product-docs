@@ -7,7 +7,10 @@ asciidoc:
   attributes:
     longhorn_docs_version: 1.8
 nav:
-- modules/en/nav.adoc
-- modules/ja/nav.adoc
-- modules/ko/nav.adoc
-- modules/zh/nav.adoc
+  - modules/en/nav.adoc
+  - modules/de/nav.adoc
+  - modules/es/nav.adoc
+  - modules/fr/nav.adoc
+  - modules/ja/nav.adoc
+  - modules/pt/nav.adoc
+  - modules/zh/nav.adoc
