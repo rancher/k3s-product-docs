@@ -80,6 +80,7 @@ kubectl get pvc
 
 每个的状态应为已绑定。
 
+[#_setting_up_longhorn]
 == 设置 Longhorn
 
 [CAUTION]

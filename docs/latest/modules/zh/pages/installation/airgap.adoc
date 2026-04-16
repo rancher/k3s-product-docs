@@ -10,6 +10,7 @@
 您可以使用在 Prime Artifacts URL 上列出的任何 K3s Prime 版本来获取这些步骤中提到的资产。要了解有关 Prime Artifacts URL 的更多信息，请参阅我们的 https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[仅限 Prime 的文档]。需要身份验证。使用您的 https://scc.suse.com/home[SUSE 客户中心 (SCC)] 凭据登录。
 ====
 
+[#_load_images]
 == 加载镜像
 
 每种镜像加载方法有不同的要求，适用于不同的隔离场景。选择最适合您基础设施和安全要求的方法。

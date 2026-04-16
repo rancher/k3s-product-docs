@@ -441,6 +441,7 @@ spec:
 
 NOTE: The Kubernetes critical additions such as CNI, DNS, and Ingress are run as pods in the `kube-system` namespace. Therefore, this namespace will have a policy that is less restrictive so that these components can run properly.
 
+[#_networkpolicies]
 === NetworkPolicies
 
 CIS requires that all namespaces have a network policy applied that reasonably limits traffic into namespaces and pods.

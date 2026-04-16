@@ -80,6 +80,7 @@ kubectl get pvc
 
 Le statut doit être Lié pour chacun.
 
+[#_setting_up_longhorn]
 == Configuration de Longhorn
 
 [CAUTION]

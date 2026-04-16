@@ -441,6 +441,7 @@ spec:
 
 NOTE: Les ajouts critiques de Kubernetes tels que CNI, DNS et Ingress sont exécutés en tant que pods dans l'espace de noms `kube-system`. Par conséquent, cet espace de noms aura une politique moins restrictive afin que ces composants puissent fonctionner correctement.
 
+[#_networkpolicies]
 === Politiques Réseau
 
 Le CIS exige que tous les espaces de noms aient une politique réseau appliquée qui limite raisonnablement le trafic vers les espaces de noms et les pods.

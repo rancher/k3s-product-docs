@@ -10,7 +10,7 @@
 
 Kubernetes默认情况下，当Pod需要镜像而节点上尚不存在该镜像时，会自动拉取镜像。可以通过使用Pod的https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[镜像拉取策略]字段来更改此行为。使用默认的`IfNotPresent`策略时，containerd将从上游（默认）或您的xref:installation/private-registry.adoc[私有注册表]拉取镜像，并将其存储在其镜像存储中。用户无需为按需镜像拉取工作应用任何额外配置。
 
-
+[#_pre_import_images]
 == 预导入镜像
 
 [IMPORTANT]

@@ -10,6 +10,7 @@ Ce guide vous accompagne dans l'installation de K3s dans un environnement isolé
 Vous pouvez utiliser n'importe quelle version de K3s Prime répertoriée sur l'URL des artefacts Prime pour les ressources mentionnées dans ces étapes. Pour en savoir plus sur l'URL des artefacts Prime, consultez notre https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[documentation réservée aux Prime]. Une authentification est requise. Utilisez vos identifiants du https://scc.suse.com/home[Centre Client SUSE (SCC)] pour vous connecter.
 ====
 
+[#_load_images]
 == Charger des images
 
 Chaque méthode de chargement d’images a des exigences différentes et convient à différents scénarios isolés physiquement. Choisissez la méthode qui correspond le mieux à votre infrastructure et à vos exigences de sécurité.

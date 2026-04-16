@@ -80,6 +80,7 @@ kubectl get pvc
 
 El estado debería ser Vinculado para cada uno.
 
+[#_setting_up_longhorn]
 == Configurando Longhorn
 
 [CAUTION]

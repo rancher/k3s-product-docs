@@ -441,6 +441,7 @@ spec:
 
 NOTE: Kubernetes的关键组件，如CNI、DNS和Ingress，作为Pod在`kube-system`名称空间中运行。因此，该名称空间将具有一个不那么严格的策略，以便这些组件能够正常运行。
 
+[#_networkpolicies]
 === NetworkPolicies
 
 CIS要求所有名称空间都应用网络策略，以合理限制流量进入名称空间和Pod。

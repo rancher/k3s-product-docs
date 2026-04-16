@@ -2734,6 +2734,7 @@ kubelet-arg:
   - "pod-max-pids=<value>"
 ----
 
+[#_5_1_rbac_and_service_accounts]
 == 5.1 RBAC 和服务账户
 
 === 5.1.1 确保仅在需要时使用 cluster-admin 角色（手动）

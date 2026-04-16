@@ -84,7 +84,7 @@ Las siguientes opciones deben establecerse al mismo valor en todos los servidore
 
 | `--etcd-snapshot-dir` valor
 |
-| ${data-dir}/db/snapshots
+| $\{data-dir}/db/snapshots
 | Directorio para guardar las instantáneas de la base de datos
 
 | `--etcd-s3`
@@ -272,7 +272,7 @@ Tenga en cuenta que el rango de IP principal `service-cidr` debe ser de la misma
 | Indicadores | Default | Descripción
 
 | `--data-dir value, -d` valor
-| `/var/lib/rancher/k3s` o `${HOME}/.rancher/k3s` si no es root
+| `/var/lib/rancher/k3s` o `+${HOME}/.rancher/k3s+` si no es root
 | Carpeta para mantener el estado
 |===
 

@@ -84,7 +84,7 @@
 
 | `--etcd-snapshot-dir` 值
 |
-| ${data-dir}/db/snapshots
+| $\{data-dir}/db/snapshots
 | 保存数据库快照的目录
 
 | `--etcd-s3`
@@ -272,7 +272,7 @@
 | 标志 | 默认值 | 说明
 
 | `--data-dir value, -d` 值
-| `/var/lib/rancher/k3s` 或 `${HOME}/.rancher/k3s` 如果不是 root
+| `/var/lib/rancher/k3s` 或 `+${HOME}/.rancher/k3s+` 如果不是 root
 | 用于保存状态的文件夹
 |===
 

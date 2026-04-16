@@ -9,6 +9,7 @@ O K3s usa tokens para garantir o processo de junção do nó e para criptografar
 
 Tokens K3s podem ser especificados em formato seguro ou curto. O formato seguro é preferido, pois permite que o cliente autentique a identidade do cluster ao qual está se juntando, antes de enviar credenciais.
 
+[#_secure]
 === Seguro
 
 O formato de token seguro (ocasionalmente referido como um token "completo") contém as seguintes partes:
@@ -128,7 +129,7 @@ Um token em formato seguro, incluindo o hash CA do cluster, será escrito no std
 | Flag | Descrição
 
 | `--data-dir` valor
-| Pasta para manter o estado (padrão: /var/lib/rancher/k3s ou ${HOME}/.rancher/k3s se não for root)
+| Pasta para manter o estado (padrão: /var/lib/rancher/k3s ou $\{HOME}/.rancher/k3s se não for root)
 
 | `--kubeconfig` valor
 | Servidor para se conectar [$KUBECONFIG]
@@ -155,7 +156,7 @@ Excluir um ou mais tokens. O token completo pode ser fornecido, ou apenas o ID d
 | Flag | Descrição
 
 | `--data-dir` valor
-| Pasta para manter o estado (padrão: /var/lib/rancher/k3s ou ${HOME}/.rancher/k3s se não for root)
+| Pasta para manter o estado (padrão: /var/lib/rancher/k3s ou $\{HOME}/.rancher/k3s se não for root)
 
 | `--kubeconfig` valor
 | Servidor para se conectar [$KUBECONFIG]
@@ -172,7 +173,7 @@ Você não precisa usar este comando para gerar um token. Você pode fazer isso 
 | Flag | Descrição
 
 | `--data-dir` valor
-| Pasta para manter o estado (padrão: /var/lib/rancher/k3s ou ${HOME}/.rancher/k3s se não for root)
+| Pasta para manter o estado (padrão: /var/lib/rancher/k3s ou $\{HOME}/.rancher/k3s se não for root)
 
 | `--kubeconfig` valor
 | Servidor para se conectar [$KUBECONFIG]
@@ -187,7 +188,7 @@ Listar tokens de bootstrap, mostrando seu ID, descrição e tempo restante de vi
 | Flag | Descrição
 
 | `--data-dir` valor
-| Pasta para manter o estado (padrão: /var/lib/rancher/k3s ou ${HOME}/.rancher/k3s se não for root)
+| Pasta para manter o estado (padrão: /var/lib/rancher/k3s ou $\{HOME}/.rancher/k3s se não for root)
 
 | `--kubeconfig` valor
 | Servidor para se conectar [$KUBECONFIG]
@@ -214,7 +215,7 @@ Se você não especificar um novo token, um será gerado para você.
 | Flag | Descrição
 
 | `--data-dir` valor
-| Pasta para manter o estado (padrão: /var/lib/rancher/k3s ou ${HOME}/.rancher/k3s se não for root)
+| Pasta para manter o estado (padrão: /var/lib/rancher/k3s ou $\{HOME}/.rancher/k3s se não for root)
 
 | `--kubeconfig` valor
 | Servidor para se conectar [$KUBECONFIG]

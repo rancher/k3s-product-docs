@@ -19,7 +19,7 @@ Esta opção habilita o espelho embutido para uso em todos os nós do cluster.
 
 Quando habilitado em nível de cluster, todos os nós hospedarão um registro OCI local na porta 6443 e publicarão uma lista de imagens disponíveis via uma rede peer-to-peer na porta 5001.
 Qualquer imagem disponível no armazenamento de imagens containerd em qualquer nó pode ser puxada por outros membros do cluster sem acesso a um registro externo.
-Imagens importadas via xref:installation/airgap.adoc#_tabs_1_manually_deploy_images_method[arquivos tar de imagem air gap] são fixadas no containerd para garantir que permaneçam disponíveis e não sejam removidas pela coleta de lixo do Kubelet.
+Imagens importadas via xref:installation/airgap.adoc#_tabs_1_método_de_implantação_manual_de_imagens[arquivos tar de imagem air gap] são fixadas no containerd para garantir que permaneçam disponíveis e não sejam removidas pela coleta de lixo do Kubelet.
 
 A porta peer-to-peer pode ser alterada de 5001 definindo a variável de ambiente `K3S_P2P_PORT` para o serviço K3s. A porta deve ser definida com o mesmo valor em todos os nós.
 Alterar a porta não é suportado e não é recomendado.
@@ -136,7 +136,7 @@ Se a integridade da imagem for importante, você deve usar digests de imagem em 
 == Compartilhando Imagens Air Gap ou Carregadas Manualmente
 
 O compartilhamento de imagens é controlado com base no registro de origem.
-Imagens carregadas diretamente no containerd via xref:installation/airgap.adoc#_tabs_1_manually_deploy_images_method[arquivos tar air gap], xref:add-ons/import-images.adoc#_pre_import_images[pré-importadas] ou carregadas diretamente no armazenamento de imagens do containerd usando a ferramenta de linha de comando `ctr` são compartilhadas entre os nós se forem marcadas como sendo de um registro que está habilitado para espelhamento.
+Imagens carregadas diretamente no containerd via xref:installation/airgap.adoc#_tabs_1_método_de_implantação_manual_de_imagens[arquivos tar air gap], xref:add-ons/import-images.adoc#_pre_import_images[pré-importadas] ou carregadas diretamente no armazenamento de imagens do containerd usando a ferramenta de linha de comando `ctr` são compartilhadas entre os nós se forem marcadas como sendo de um registro que está habilitado para espelhamento.
 
 Observe que o registro upstream do qual as imagens parecem vir não precisa realmente existir ou ser acessível.
 Por exemplo, você poderia marcar imagens como sendo de um registro upstream fictício e importar essas imagens para o armazenamento de imagens do containerd.

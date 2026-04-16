@@ -10,7 +10,7 @@ Les images de conteneur sont mises en cache localement sur chaque nœud par le m
 
 Kubernetes, par défaut, tire automatiquement les images lorsqu'un Pod en a besoin si l'image n'est pas déjà présente sur le nœud. Ce comportement peut être modifié en utilisant le champ https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[stratégie de tirage d'images] du Pod. Lors de l'utilisation de la stratégie par défaut `IfNotPresent`, containerd tirera l'image soit en amont (par défaut) soit depuis votre xref:installation/private-registry.adoc[registre privé] et la stockera dans son magasin d'images. Les utilisateurs n'ont pas besoin d'appliquer de configuration supplémentaire pour que le tirage d'images à la demande fonctionne.
 
-
+[#_pre_import_images]
 == Pré-importer des images
 
 [IMPORTANT]

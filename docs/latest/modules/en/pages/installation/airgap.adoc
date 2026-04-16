@@ -10,6 +10,7 @@ This guide walks you through installing K3s in an air-gapped environment using a
 You can use any K3s Prime version listed on the Prime Artifacts URL for the assets mentioned in these steps. To learn more about the Prime Artifacts URL, see our https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime-only documentation]. Authentication is required. Use your https://scc.suse.com/home[SUSE Customer Center (SCC)] credentials to log in.
 ====
 
+[#_load_images]
 == Load Images
 
 Each image loading method has different requirements and is suited for different air-gapped scenarios. Choose the method that best fits your infrastructure and security requirements.

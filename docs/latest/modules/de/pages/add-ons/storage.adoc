@@ -80,6 +80,7 @@ kubectl get pvc
 
 Der Status sollte für beide auf 'Bound' stehen.
 
+[#_setting_up_longhorn]
 == Einrichten von Longhorn
 
 [CAUTION]

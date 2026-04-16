@@ -118,6 +118,7 @@ Prune "scheduled" snapshots down to a smaller amount:
 k3s etcd-snapshot prune --name etcd-snapshot --etcd-snapshot-retention <NUM-OF-SNAPSHOTS-TO-RETAIN>
 ----
 
+[#_s3_compatible_object_store_support]
 === S3 Compatible Object Store Support
 
 K3s supports replicating etcd snapshots to and restoring etcd snapshots from S3-compatible object stores. S3 support is available for both on-demand and scheduled snapshots.

@@ -57,6 +57,7 @@ Flags can be passed in with the command line, or in the xref:installation/config
 |  Snapshot interval time in cron spec. eg. every 5 hours `0 */5 * * *` (default: `0 */12 * * *`)
 |===
 
+[#_s3_compatible_object_store_support]
 === S3 Compatible Object Store Support
 
 K3s supports writing etcd snapshots to and restoring etcd snapshots from S3-compatible object stores. S3 support is available for both on-demand and scheduled snapshots.

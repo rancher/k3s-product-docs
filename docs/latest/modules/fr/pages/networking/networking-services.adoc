@@ -79,6 +79,7 @@ Créez un https://kubernetes.io/docs/concepts/services-networking/service/#loadb
 Si le trafic externe atteint le nœud en utilisant un NAT (par exemple dans les clouds publics) et que vous avez besoin de `externalTrafficPolicy=local` pour des raisons telles que la préservation de l'IP source du client, veuillez ne pas définir la configuration de K3s `node-external-ip` sur aucun des nœuds, car cela ne fonctionnera pas correctement.
 ====
 
+[#_controlling_servicelb_node_selection]
 === Contrôle de la sélection des nœuds ServiceLB
 
 Ajouter l'étiquette `svccontroller.k3s.cattle.io/enablelb=true` à un ou plusieurs nœuds met le contrôleur ServiceLB en mode liste autorisée, où seuls les nœuds portant l'étiquette sont éligibles pour héberger des pods LoadBalancer. Les nœuds qui restent sans étiquette seront exclus de l'utilisation par ServiceLB.

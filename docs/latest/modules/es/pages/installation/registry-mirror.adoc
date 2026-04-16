@@ -19,7 +19,7 @@ Esta opción habilita el espejo embebido para su uso en todos los nodos del clú
 
 Cuando se habilita a nivel de clúster, todos los nodos alojarán un registro OCI local en el puerto 6443, y publicarán una lista de imágenes disponibles a través de una red peer to peer en el puerto 5001.
 Cualquier imagen disponible en el almacén de imágenes de containerd en cualquier nodo, puede ser descargada por otros miembros del clúster sin acceso a un registro externo.
-Las imágenes importadas a través de xref:installation/airgap.adoc#_tabs_1_manually_deploy_images_method[archivos tar de imágenes de entorno aislado] están fijadas en containerd para asegurar que permanezcan disponibles y no sean eliminadas por la recolección de basura de Kubelet.
+Las imágenes importadas a través de xref:installation/airgap.adoc#_tabs_1_método_de_despliegue_manual_de_imágenes[archivos tar de imágenes de entorno aislado] están fijadas en containerd para asegurar que permanezcan disponibles y no sean eliminadas por la recolección de basura de Kubelet.
 
 El puerto peer to peer puede cambiarse de 5001 configurando la variable de entorno `K3S_P2P_PORT` para el servicio K3s. El puerto debe establecerse al mismo valor en todos los nodos.
 Cambiar el puerto no está soportado y no se recomienda.
@@ -136,7 +136,7 @@ Si la integridad de la imagen es importante, debería usar resúmenes de imagen 
 == Compartiendo Imágenes de Entorno Aislado o Cargadas Manualmente
 
 El intercambio de imágenes se controla en función del registro de origen.
-Las imágenes cargadas directamente en containerd a través de xref:installation/airgap.adoc#_tabs_1_manually_deploy_images_method[tarballs de air-gap], xref:add-ons/import-images.adoc#_pre_import_images[pre-importadas] o cargadas directamente en el almacén de imágenes de containerd utilizando la herramienta shell `ctr` se comparten entre nodos si están etiquetadas como provenientes de un registro que está habilitado para la replicación.
+Las imágenes cargadas directamente en containerd a través de xref:installation/airgap.adoc#_tabs_1_método_de_despliegue_manual_de_imágenes[tarballs de air-gap], xref:add-ons/import-images.adoc#_pre_import_images[pre-importadas] o cargadas directamente en el almacén de imágenes de containerd utilizando la herramienta shell `ctr` se comparten entre nodos si están etiquetadas como provenientes de un registro que está habilitado para la replicación.
 
 Tenga en cuenta que el registro de sentido ascendente del que las imágenes parecen provenir no tiene que existir o ser accesible.
 Por ejemplo, podría etiquetar imágenes como si provinieran de un registro de sentido ascendente ficticio e importar esas imágenes al almacén de imágenes de containerd.

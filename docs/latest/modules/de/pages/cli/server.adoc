@@ -84,7 +84,7 @@ Die folgenden Optionen müssen auf allen Servern im Cluster auf denselben Wert g
 
 | `--etcd-snapshot-dir` Wert
 |
-| ${data-dir}/db/snapshots
+| $\{data-dir}/db/snapshots
 | Verzeichnis zum Speichern der db-Snapshots
 
 | `--etcd-s3`
@@ -272,7 +272,7 @@ Beachten Sie, dass der primäre `service-cidr`-IP-Bereich zur selben Adressfamil
 | Flaggen | Standard | Beschreibung
 
 | `--data-dir value, -d` Wert
-| `/var/lib/rancher/k3s` oder `${HOME}/.rancher/k3s`, wenn nicht root
+| `/var/lib/rancher/k3s` oder `+${HOME}/.rancher/k3s+`, wenn nicht root
 | Ordner zur Speicherung des Zustands
 |===
 

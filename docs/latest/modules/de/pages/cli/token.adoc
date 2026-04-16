@@ -9,6 +9,7 @@ K3s verwendet Tokens, um den Beitrittsprozess des Knotens zu sichern und um vert
 
 K3s Token können entweder im sicheren oder im kurzen Format angegeben werden. Das sichere Format wird bevorzugt, da es dem Client ermöglicht, die Identität des Clusters, dem er beitritt, zu authentifizieren, bevor er Anmeldeinformationen sendet.
 
+[#_secure]
 === Sicher
 
 Das sichere Token-Format (gelegentlich als "vollständiges" Token bezeichnet) enthält die folgenden Teile:
@@ -128,7 +129,7 @@ Ein Token im sicheren Format, einschließlich des Cluster-CA-Hashes, wird auf st
 | Flaggen | Beschreibung
 
 | `--data-dir` Wert
-| Ordner zur Speicherung des Status (Standard: /var/lib/rancher/k3s oder ${HOME}/.rancher/k3s, wenn nicht [Root])
+| Ordner zur Speicherung des Status (Standard: /var/lib/rancher/k3s oder $\{HOME}/.rancher/k3s, wenn nicht [Root])
 
 | `--kubeconfig` Wert
 | Server, mit dem verbunden werden soll [$KUBECONFIG]
@@ -155,7 +156,7 @@ Löschen Sie ein oder mehrere Token. Das vollständige Token kann bereitgestellt
 | Flaggen | Beschreibung
 
 | `--data-dir` Wert
-| Ordner zur Speicherung des Status (Standard: /var/lib/rancher/k3s oder ${HOME}/.rancher/k3s, wenn nicht root)
+| Ordner zur Speicherung des Status (Standard: /var/lib/rancher/k3s oder $\{HOME}/.rancher/k3s, wenn nicht root)
 
 | `--kubeconfig` Wert
 | Server, mit dem verbunden werden soll [$KUBECONFIG]
@@ -172,7 +173,7 @@ Sie müssen diesen Befehl nicht verwenden, um ein Token zu generieren. Sie könn
 | Flaggen | Beschreibung
 
 | `--data-dir` Wert
-| Ordner zur Speicherung des Status (Standard: /var/lib/rancher/k3s oder ${HOME}/.rancher/k3s, wenn nicht [Root])
+| Ordner zur Speicherung des Status (Standard: /var/lib/rancher/k3s oder $\{HOME}/.rancher/k3s, wenn nicht [Root])
 
 | `--kubeconfig` Wert
 | Server, mit dem verbunden werden soll [$KUBECONFIG]
@@ -187,7 +188,7 @@ Listen Sie Bootstrap-Token auf, zeigen Sie deren ID, Beschreibung und verbleiben
 | Flaggen | Beschreibung
 
 | `--data-dir` Wert
-| Ordner zur Speicherung des Status (Standard: /var/lib/rancher/k3s oder ${HOME}/.rancher/k3s, wenn nicht [Root])
+| Ordner zur Speicherung des Status (Standard: /var/lib/rancher/k3s oder $\{HOME}/.rancher/k3s, wenn nicht [Root])
 
 | `--kubeconfig` Wert
 | Server, mit dem verbunden werden soll [$KUBECONFIG]
@@ -214,7 +215,7 @@ Wenn Sie kein neues Token angeben, wird eines für Sie generiert.
 | Flaggen | Beschreibung
 
 | `--data-dir` Wert
-| Ordner zur Speicherung des Status (Standard: /var/lib/rancher/k3s oder ${HOME}/.rancher/k3s, wenn nicht [Root])
+| Ordner zur Speicherung des Status (Standard: /var/lib/rancher/k3s oder $\{HOME}/.rancher/k3s, wenn nicht [Root])
 
 | `--kubeconfig` Wert
 | Server, mit dem verbunden werden soll [$KUBECONFIG]

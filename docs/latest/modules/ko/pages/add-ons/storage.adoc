@@ -10,7 +10,7 @@
 
 K3s, as a compliant Kubernetes distribution, uses the https://github.com/container-storage-interface/spec/blob/master/spec.md[Container Storage Interface (CSI)] and https://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/[Cloud Provider Interface (CPI)] to manage persistent storage.
 
-이 페이지는 로컬 스토리지 제공자 또는 <<_longhorn_구성하기,Longhorn>>을 사용하여 퍼시스턴트 스토리지를 설정하는 방법을 설명합니다.
+이 페이지는 로컬 스토리지 제공자 또는 <<#_setting_up_longhorn,Longhorn>>을 사용하여 퍼시스턴트 스토리지를 설정하는 방법을 설명합니다.
 
 [#_setting_up_the_local_storage_provider]
 == 로컬 스토리지 공급자 설정하기
@@ -80,6 +80,7 @@ kubectl get pvc
 
 상태는 각각 ``Bound``여야 합니다.
 
+[#_setting_up_longhorn]
 == Longhorn 구성하기
 
 [CAUTION]

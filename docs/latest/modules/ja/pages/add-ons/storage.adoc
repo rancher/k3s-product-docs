@@ -80,6 +80,7 @@ kubectl get pvc
 
 それぞれのステータスはBoundであるべきです。
 
+[#_setting_up_longhorn]
 == Longhornの設定
 
 [CAUTION]
