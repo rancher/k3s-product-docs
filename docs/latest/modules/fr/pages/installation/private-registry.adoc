@@ -18,7 +18,7 @@ Notez que les nœuds serveurs sont planifiables par défaut. Si vous n'avez pas 
 Containerd a un « point de terminaison par défaut » implicite pour tous les registres.
 Le point de terminaison par défaut est toujours essayé en dernier recours, même s'il existe d'autres points de terminaison listés pour ce registre dans `registries.yaml`.
 Les réécritures ne sont pas appliquées lors de l'extraction depuis le point de terminaison par défaut.
-Par exemple, lors de l'extraction de `registry.example.com:5000/rancher/mirrored-pause:3.6`, containerd utilisera le point de terminaison par défaut `https://registry.example.com:5000/v2`.
+Par exemple, lors de l'extraction de `registry.example.com:5000/rancher/mirrored-pause:3.6`, containerd utilisera le point de terminaison par défaut `\https://registry.example.com:5000/v2`.
 
 * Le point de terminaison par défaut pour `docker.io` est `\https://index.docker.io/v2`.
 * Le point de terminaison par défaut pour tous les autres registres est `\https://<REGISTRY>/v2`, où `<REGISTRY>` désigne le nom d'hôte du registre et le port optionnel.

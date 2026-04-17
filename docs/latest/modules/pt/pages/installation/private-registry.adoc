@@ -18,7 +18,7 @@ Observe que os nós do servidor são agendáveis por padrão. Se você não apli
 O Containerd tem um "endpoint padrão" implícito para todos os registros.
 O endpoint padrão é sempre tentado como último recurso, mesmo que haja outros endpoints listados para esse registro em `registries.yaml`.
 Reescritas não são aplicadas a puxadas contra o endpoint padrão.
-Por exemplo, ao puxar `registry.example.com:5000/rancher/mirrored-pause:3.6`, o containerd usará um endpoint padrão de `https://registry.example.com:5000/v2`.
+Por exemplo, ao puxar `registry.example.com:5000/rancher/mirrored-pause:3.6`, o containerd usará um endpoint padrão de `\https://registry.example.com:5000/v2`.
 
 * O endpoint padrão para `docker.io` é `\https://index.docker.io/v2`.
 * O endpoint padrão para todos os outros registros é `\https://<REGISTRY>/v2`, onde `<REGISTRY>` é o nome do host do registro e a porta opcional.

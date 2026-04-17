@@ -340,7 +340,7 @@ include <tunables/global>
 EOF
 sudo systemctl restart apparmor.service
 ----
-* Download `k3s-rootless.service` from https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`+https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service+`].
+* Download `k3s-rootless.service` from https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service`].
 * Install `k3s-rootless.service` to `~/.config/systemd/user/k3s-rootless.service`.
 Installing this file as a system-wide service (`+/etc/systemd/...+`) is not supported.
 Depending on the path to the `k3s` binary, you might need to modify the `ExecStart=/usr/local/bin/k3s ...` line of the file.

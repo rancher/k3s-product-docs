@@ -18,7 +18,7 @@ Containerdはプライベートレジストリに接続し、kubeletが必要に
 Containerdにはすべてのレジストリに対して暗黙の「デフォルトエンドポイント」があります。
 デフォルトエンドポイントは、`registries.yaml`にそのレジストリの他のエンドポイントがリストされていても、常に最後の手段として試みられます。
 デフォルトエンドポイントに対するプルにはリライトは適用されません。
-例えば、`registry.example.com:5000/rancher/mirrored-pause:3.6`をプルする際、containerdは`https://registry.example.com:5000/v2`のデフォルトエンドポイントを使用します。
+例えば、`registry.example.com:5000/rancher/mirrored-pause:3.6`をプルする際、containerdは`\https://registry.example.com:5000/v2`のデフォルトエンドポイントを使用します。
 
 * `docker.io`のデフォルトエンドポイントは`\https://index.docker.io/v2`です。
 * 他のすべてのレジストリのデフォルトエンドポイントは`\https://<REGISTRY>/v2`であり、`<REGISTRY>`はレジストリのホスト名とオプションのポートです。

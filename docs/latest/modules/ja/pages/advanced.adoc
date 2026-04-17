@@ -322,7 +322,7 @@ Cgroup v1およびハイブリッドv1/v2はサポートされていません。
 
 * cgroup v2の委任を有効にします。詳しくはhttps://rootlesscontaine.rs/getting-started/common/cgroup2/をご覧ください。
 このステップは必須です。適切なcgroupsが委任されていないと、ルートレスkubeletは起動に失敗します。
-* `k3s-rootless.service`をhttps://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`https://github.com/k3s-io/k3s/blob/<VERSION>/k3s-rootless.service`]からダウンロードしてください。
+* `k3s-rootless.service`をhttps://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service`]からダウンロードしてください。
 `k3s-rootless.service`と`k3s`の同じバージョンを使用することを確認してください。
 * `k3s-rootless.service`を`~/.config/systemd/user/k3s-rootless.service`にインストールします。
 このファイルをシステム全体のサービス（`/etc/systemd/...`）としてインストールすることはサポートされていません。

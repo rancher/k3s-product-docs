@@ -18,7 +18,7 @@ Beachten Sie, dass Serverknoten standardmäßig planbar sind. Wenn Sie die Serve
 Containerd hat einen impliziten "Standard-Endpunkt" für alle Registries.
 Der Standard-Endpunkt wird immer als letzte Möglichkeit versucht, selbst wenn andere Endpunkte für diese Registry in `registries.yaml` aufgeführt sind.
 Umschreibungen werden nicht auf Abrufe gegen den Standard-Endpunkt angewendet.
-Zum Beispiel, wenn `registry.example.com:5000/rancher/mirrored-pause:3.6` abgerufen wird, verwendet Containerd einen Standard-Endpunkt von `https://registry.example.com:5000/v2`.
+Zum Beispiel, wenn `registry.example.com:5000/rancher/mirrored-pause:3.6` abgerufen wird, verwendet Containerd einen Standard-Endpunkt von `\https://registry.example.com:5000/v2`.
 
 * Der Standard-Endpunkt für `docker.io` ist `\https://index.docker.io/v2`.
 * Der Standard-Endpunkt für alle anderen Registries ist `\https://<REGISTRY>/v2`, wobei `<REGISTRY>` der Hostname der Registry und der optionale Port ist.

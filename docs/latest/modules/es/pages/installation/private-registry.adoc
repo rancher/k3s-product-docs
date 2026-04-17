@@ -18,7 +18,7 @@ Ten en cuenta que, por defecto, los nodos del servidor son programables. Si no h
 Containerd tiene un "endpoint predeterminado" implícito para todos los registros.
 El endpoint predeterminado siempre se intenta como último recurso, incluso si hay otros endpoints listados para ese registro en `registries.yaml`.
 Las reescrituras no se aplican a las descargas contra el endpoint predeterminado.
-Por ejemplo, al descargar `registry.example.com:5000/rancher/mirrored-pause:3.6`, containerd utilizará un endpoint predeterminado de `https://registry.example.com:5000/v2`.
+Por ejemplo, al descargar `registry.example.com:5000/rancher/mirrored-pause:3.6`, containerd utilizará un endpoint predeterminado de `\https://registry.example.com:5000/v2`.
 
 * El endpoint predeterminado para `docker.io` es `\https://index.docker.io/v2`.
 * El endpoint predeterminado para todos los demás registros es `\https://<REGISTRY>/v2`, donde `<REGISTRY>` es el nombre del host del registro y el puerto opcional.
