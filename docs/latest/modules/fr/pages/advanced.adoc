@@ -325,7 +325,7 @@ Les clusters sans racine multi-nœuds, ou plusieurs processus k3s sans racine su
 
 * Activez la délégation de cgroup v2, voir https://rootlesscontaine.rs/getting-started/common/cgroup2/.
 Cette étape est requise ; le kubelet sans racine échouera à démarrer sans les cgroups appropriés délégués.
-* Téléchargez `k3s-rootless.service` depuis https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`https://github.com/k3s-io/k3s/blob/<VERSION>/k3s-rootless.service`].
+* Téléchargez `k3s-rootless.service` depuis https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service`].
 Assurez-vous d'utiliser la même version de `k3s-rootless.service` et `k3s`.
 * Installez `k3s-rootless.service` pour `~/.config/systemd/user/k3s-rootless.service`.
 L'installation de ce fichier en tant que service à l'échelle du système (`/etc/systemd/...`) n'est pas prise en charge.

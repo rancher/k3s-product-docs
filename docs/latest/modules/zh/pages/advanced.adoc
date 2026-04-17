@@ -322,7 +322,7 @@ WARNING: 此功能是实验性的。
 
 * 启用 cgroup v2 委托，请参见 https://rootlesscontaine.rs/getting-started/common/cgroup2/。
 此步骤是必需的；无根 kubelet 在没有适当的控制组委托时将无法启动。
-* 从 https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`https://github.com/k3s-io/k3s/blob/<VERSION>/k3s-rootless.service`] 下载 `k3s-rootless.service`。
+* 从 https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service`] 下载 `k3s-rootless.service`。
 确保使用相同版本的 `k3s-rootless.service` 和 `k3s`。
 * 将 `k3s-rootless.service` 安装到 `~/.config/systemd/user/k3s-rootless.service`。
 不支持将此文件安装为系统范围的服务 (`/etc/systemd/...`)。

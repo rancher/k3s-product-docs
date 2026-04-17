@@ -322,7 +322,7 @@ Clusters sem raiz de múltiplos nós, ou múltiplos processos k3s sem raiz no me
 
 * Ative a delegação de cgroup v2, consulte https://rootlesscontaine.rs/getting-started/common/cgroup2/.
 Esta etapa é necessária; o kubelet sem raiz falhará ao iniciar sem os cgroups adequadamente delegados.
-* Baixe `k3s-rootless.service` de https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`https://github.com/k3s-io/k3s/blob/<VERSION>/k3s-rootless.service`].
+* Baixe `k3s-rootless.service` de https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service`].
 Certifique-se de usar a mesma versão de `k3s-rootless.service` e `k3s`.
 * Instale `k3s-rootless.service` em `~/.config/systemd/user/k3s-rootless.service`.
 Instalar este arquivo como um serviço em todo o sistema (`/etc/systemd/...`) não é suportado.

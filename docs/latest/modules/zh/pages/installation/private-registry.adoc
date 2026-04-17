@@ -18,7 +18,7 @@ Containerd 可以配置为连接到私有注册表，并根据 kubelet 的需要
 Containerd 对所有注册表都有一个隐式的 "默认端点"。
 即使在 `registries.yaml` 中列出了该注册表的其他端点，默认端点也始终作为最后的手段进行尝试。
 重写不会应用于对默认端点的拉取。
-例如，当拉取 `registry.example.com:5000/rancher/mirrored-pause:3.6` 时，containerd 将使用默认端点 `https://registry.example.com:5000/v2`。
+例如，当拉取 `registry.example.com:5000/rancher/mirrored-pause:3.6` 时，containerd 将使用默认端点 `\https://registry.example.com:5000/v2`。
 
 * `docker.io` 的默认端点是 `\https://index.docker.io/v2`。
 * 所有其他注册表的默认端点是 `\https://<REGISTRY>/v2`，其中 `<REGISTRY>` 是注册表主机名和可选端口。

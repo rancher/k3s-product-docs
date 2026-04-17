@@ -322,7 +322,7 @@ Multi-Node rootlose Cluster oder mehrere rootlose K3s-Prozesse auf demselben Kno
 
 * Aktivieren Sie die Delegation von cgroup v2, siehe https://rootlesscontaine.rs/getting-started/common/cgroup2/.
 Dieser Schritt ist erforderlich; der rootlose Kubelet wird ohne die ordnungsgemäß delegierten cgroups nicht starten.
-* Laden Sie `k3s-rootless.service` von https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`https://github.com/k3s-io/k3s/blob/<VERSION>/k3s-rootless.service`] herunter.
+* Laden Sie `k3s-rootless.service` von https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service[`https://github.com/k3s-io/k3s/blob/main/k3s-rootless.service`] herunter.
 Stellen Sie sicher, dass Sie die gleiche Version von `k3s-rootless.service` und `k3s` verwenden.
 * Installieren Sie `k3s-rootless.service` in `~/.config/systemd/user/k3s-rootless.service`.
 Die Installation dieser Datei als systemweiten Dienst (`/etc/systemd/...`) wird nicht unterstützt.
