@@ -1,5 +1,5 @@
 = v1.33.X
-:revdate: 2026-03-31
+:revdate: 2026-05-25
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 :page-role: -toc
@@ -12,6 +12,21 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
+
+| xref:#_release_v1_33_10k3s1[v1.33.10+k3s1]
+| Mar 28 2026
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.33.md#v13310[v1.33.10]
+| https://github.com/k3s-io/kine/releases/tag/v0.14.14[v0.14.14]
+| https://sqlite.org/releaselog/3_51_2.html[3.51.2]
+| https://github.com/k3s-io/etcd/releases/tag/v3.5.26-k3s1[v3.5.26-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v2.2.2-k3s1.33[v2.2.2-k3s1.33]
+| https://github.com/opencontainers/runc/releases/tag/v1.4.1[v1.4.1]
+| https://github.com/flannel-io/flannel/releases/tag/v0.28.2[v0.28.2]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.8.1[v0.8.1]
+| https://github.com/traefik/traefik/releases/tag/v3.6.10[v3.6.10]
+| https://github.com/coredns/coredns/releases/tag/v1.14.2[v1.14.2]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.16.17[v0.16.17]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.35[v0.0.35]
 
 | xref:#_release_v1_33_9k3s1[v1.33.9+k3s1]
 | Mar 04 2026
@@ -178,6 +193,28 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.16.10[v0.16.10]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31]
 |===
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.33.10+k3s1[v1.33.10+k3s1]
+// v1.33.10+k3s1
+
+This release updates Kubernetes to v1.33.10, and fixes a number of issues.
+
+For more details on what’s new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.33.md#changelog-since-v1339[Kubernetes release notes].
+
+=== Changes since v1.33.9+k3s1:
+
+* Bump to coredns 1.14.2 https://github.com/k3s-io/k3s/pull/13759[(#13759)]
+* Save cluster state before reencyrpting secrets with newly created key https://github.com/k3s-io/k3s/pull/13773[(#13773)]
+* Backports for 2026-03 https://github.com/k3s-io/k3s/pull/13791[(#13791)]
+* Bump runc to v1.4.1 https://github.com/k3s-io/k3s/pull/13799[(#13799)]
+* Bump Traefik helm chart version https://github.com/k3s-io/k3s/pull/13813[(#13813)]
+* Bump cni plugins to v1.9.1 https://github.com/k3s-io/k3s/pull/13824[(#13824)]
+* Simplify snapshot compress/decompress logic https://github.com/k3s-io/k3s/pull/13829[(#13829)]
+* Update to v1.33.10-k3s1 and Go 1.24.13 https://github.com/k3s-io/k3s/pull/13833[(#13833)]
+* Chore: Update Trivy version in Dockerfile.dapper https://github.com/k3s-io/k3s/pull/13849[(#13849)]
+* Update to flannel v0.28.2 https://github.com/k3s-io/k3s/pull/13870[(#13870)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.33.9+k3s1[v1.33.9+k3s1]
 // v1.33.9+k3s1
