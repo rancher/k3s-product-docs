@@ -1,5 +1,5 @@
 = v1.32.X
-:revdate: 2026-03-31
+:revdate: 2026-05-25
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 :page-role: -toc
