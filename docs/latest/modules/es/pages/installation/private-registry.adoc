@@ -121,7 +121,7 @@ Antes de estas versiones, las reescrituras también se aplicaban al endpoint pre
 Si deseas aplicar reescrituras al extraer directamente de un registro – cuando no se utiliza como espejo para un registro de origen diferente – debes proporcionar un endpoint espejo que no coincida con el endpoint predeterminado.
 Los endpoints espejo en `registries.yaml` que coinciden con el endpoint predeterminado se ignoran; el endpoint predeterminado siempre se intenta al final sin reescrituras, si la opción de reserva no ha sido desactivada.
 
-Por ejemplo, si tienes un registro en `https://registry.example.com/`, y deseas aplicar reescrituras al extraer explícitamente `registry.example.com/rancher/mirrored-pause:3.6`, puedes añadir un endpoint espejo con el puerto listado.
+Por ejemplo, si tienes un registro en `\https://registry.example.com/`, y deseas aplicar reescrituras al extraer explícitamente `registry.example.com/rancher/mirrored-pause:3.6`, puedes añadir un endpoint espejo con el puerto listado.
 Debido a que el endpoint espejo no coincide con el endpoint predeterminado - **`"https://registry.example.com:443/v2" != "https://registry.example.com/v2"`** - el endpoint es aceptado como espejo y se aplican las reescrituras, a pesar de que sea efectivamente lo mismo que el predeterminado.
 
 [,yaml]

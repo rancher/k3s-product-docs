@@ -121,7 +121,7 @@ Avant ces versions, les réécritures étaient également appliquées au point d
 Si vous souhaitez appliquer des réécritures lors de l'extraction directement depuis un registre - lorsqu'il n'est pas utilisé comme miroir pour un autre registre en amont - vous devez fournir un point de terminaison miroir qui ne correspond pas au point de terminaison par défaut.
 Les points de terminaison miroir dans `registries.yaml` qui correspondent au point de terminaison par défaut sont ignorés ; le point de terminaison par défaut est toujours essayé en dernier sans réécritures, si le repli n'a pas été désactivé.
 
-Par exemple, si vous avez un registre à `https://registry.example.com/`, et que vous souhaitez appliquer des réécritures lors de l'extraction explicite de `registry.example.com/rancher/mirrored-pause:3.6`, vous pouvez ajouter un point de terminaison miroir avec le port indiqué.
+Par exemple, si vous avez un registre à `\https://registry.example.com/`, et que vous souhaitez appliquer des réécritures lors de l'extraction explicite de `registry.example.com/rancher/mirrored-pause:3.6`, vous pouvez ajouter un point de terminaison miroir avec le port indiqué.
 Parce que le point de terminaison miroir ne correspond pas au point de terminaison par défaut - **`"https://registry.example.com:443/v2" != "https://registry.example.com/v2"`** - le point de terminaison est accepté comme un miroir et les réécritures sont appliquées, bien qu'il soit effectivement le même que le point de terminaison par défaut.
 
 [,yaml]

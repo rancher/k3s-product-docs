@@ -122,7 +122,7 @@ mirrors:
 如果您希望在直接从注册表拉取时应用重写 - 当它不作为不同上游注册表的镜像使用时 - 您必须提供一个与默认端点不匹配的镜像端点。
 在 `registries.yaml` 中与默认端点匹配的镜像端点将被忽略；如果未禁用回退，默认端点总是最后尝试且不进行重写。
 
-例如，如果您在 `https://registry.example.com/` 处有一个注册表，并希望在明确拉取 `registry.example.com/rancher/mirrored-pause:3.6` 时应用重写，您可以添加一个列出端口的镜像端点。
+例如，如果您在 `\https://registry.example.com/` 处有一个注册表，并希望在明确拉取 `registry.example.com/rancher/mirrored-pause:3.6` 时应用重写，您可以添加一个列出端口的镜像端点。
 因为镜像端点与默认端点不匹配 - **`"https://registry.example.com:443/v2" != "https://registry.example.com/v2"`** - 所以该端点被接受为镜像并应用重写，尽管它实际上与默认端点相同。
 
 [,yaml]

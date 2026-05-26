@@ -121,7 +121,7 @@ Vor diesen Veröffentlichungen wurden Umschreibungen auch auf den Standard-Endpu
 Wenn Sie Umschreibungen anwenden möchten, wenn Sie direkt von einer Registry abrufen – wenn sie nicht als Mirror für eine andere Upstream-Registry verwendet wird – müssen Sie einen Mirror-Endpunkt angeben, der nicht mit dem Standard-Endpunkt übereinstimmt.
 Mirror-Endpunkte in `registries.yaml`, die mit dem Standard-Endpunkt übereinstimmen, werden ignoriert; der Standard-Endpunkt wird immer zuletzt ohne Umschreibungen versucht, wenn der Fallback nicht deaktiviert wurde.
 
-Zum Beispiel, wenn Sie eine Registry unter `https://registry.example.com/` haben und Umschreibungen anwenden möchten, wenn Sie explizit `registry.example.com/rancher/mirrored-pause:3.6` abrufen, können Sie einen Mirror-Endpunkt mit dem angegebenen Port hinzufügen.
+Zum Beispiel, wenn Sie eine Registry unter `\https://registry.example.com/` haben und Umschreibungen anwenden möchten, wenn Sie explizit `registry.example.com/rancher/mirrored-pause:3.6` abrufen, können Sie einen Mirror-Endpunkt mit dem angegebenen Port hinzufügen.
 Da der Mirror-Endpunkt nicht mit dem Standard-Endpunkt übereinstimmt - **`"https://registry.example.com:443/v2" != "https://registry.example.com/v2"`** - wird der Endpunkt als Mirror akzeptiert und Umschreibungen werden angewendet, obwohl er effektiv derselbe wie der Standard-Endpunkt ist.
 
 [,yaml]

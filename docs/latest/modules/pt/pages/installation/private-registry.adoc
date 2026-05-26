@@ -121,7 +121,7 @@ Antes dessas versões, as reescritas também eram aplicadas ao endpoint padrão,
 Se você quiser aplicar reescritas ao puxar diretamente de um registro - quando não estiver sendo usado como um espelho para um registro upstream diferente - você deve fornecer um endpoint de espelho que não corresponda ao endpoint padrão.
 Endpoints de espelho em `registries.yaml` que correspondem ao endpoint padrão são ignorados; o endpoint padrão é sempre tentado por último sem reescritas, se a opção de fallback não tiver sido desativada.
 
-Por exemplo, se você tiver um registro em `https://registry.example.com/`, e quiser aplicar reescritas ao puxar explicitamente `registry.example.com/rancher/mirrored-pause:3.6`, você pode adicionar um endpoint de espelho com a porta listada.
+Por exemplo, se você tiver um registro em `\https://registry.example.com/`, e quiser aplicar reescritas ao puxar explicitamente `registry.example.com/rancher/mirrored-pause:3.6`, você pode adicionar um endpoint de espelho com a porta listada.
 Como o endpoint de espelho não corresponde ao endpoint padrão - **`"https://registry.example.com:443/v2" != "https://registry.example.com/v2"`** - o endpoint é aceito como um espelho e as reescritas são aplicadas, apesar de ser efetivamente o mesmo que o padrão.
 
 [,yaml]
