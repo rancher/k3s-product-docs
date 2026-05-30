@@ -54,7 +54,7 @@ spec:
 #       experimentalChannel: true (read warning below)
 ----
 
-Traefik is compatible with https://gateway-api.sigs.k8s.io/reference/1.4/spec/[Gateway API v1.4].
+Traefik is compatible with https://gateway-api.sigs.k8s.io/reference/api-spec/1.4/spec/[Gateway API v1.4].
 
 [WARNING]
 .Gateway API resources

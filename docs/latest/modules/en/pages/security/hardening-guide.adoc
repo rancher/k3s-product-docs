@@ -1,5 +1,5 @@
 = CIS Hardening Guide
-:revdate: 2026-04-01
+:revdate: 2026-05-29
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 
@@ -721,4 +721,4 @@ kubectl patch serviceaccount --namespace kube-public default --patch '{"automoun
 
 == Conclusion
 
-If you have followed this guide, your K3s cluster will be configured to comply with the CIS Kubernetes Benchmark. You can review the xref:security/self-assessment-1.11.adoc[CIS 1.11 Self-Assessment Guide] to understand the expectations of each of the benchmark's checks and how you can do the same on your cluster.
+If you have followed this guide, your K3s cluster will be configured to comply with the CIS Kubernetes Benchmark. You can review the xref:security/self-assessment-1.12.adoc[CIS 1.12 Self-Assessment Guide] to understand the expectations of each of the benchmark's checks and how you can do the same on your cluster.
