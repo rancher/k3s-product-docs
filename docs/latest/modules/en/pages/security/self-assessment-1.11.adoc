@@ -1,13 +1,13 @@
 = CIS 1.11 Self Assessment Guide
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2025-12-31
+:revdate: 2026-05-29
 :page-revdate: {revdate}
 
 == Overview
 
 This document is a companion to the xref:security/hardening-guide.adoc[K3s security hardening guide]. The hardening guide provides prescriptive guidance for hardening a production installation of K3s, and this benchmark guide is meant to help you evaluate the level of security of the hardened cluster against each control in the CIS Kubernetes Benchmark. It is to be used by K3s operators, security teams, auditors, and decision-makers.
 
-This guide is specific to the **v1.29-v1.34** release line of K3s and the **v1.11** release of the CIS Kubernetes Benchmark.
+This guide is specific to the **v1.29-v1.32** release line of K3s and the **v1.11** release of the CIS Kubernetes Benchmark.
 
 For more information about each control, including detailed descriptions and remediations for failing tests, you can refer to the corresponding section of the CIS Kubernetes Benchmark v1.9. You can download the benchmark, after creating a free account, in https://www.cisecurity.org/benchmark/kubernetes[Center for Internet Security (CIS)].
 
@@ -19,9 +19,9 @@ Where control audits differ from the original CIS benchmark, the audit commands 
 
 These are the possible results for each control:
 
-- **Pass** - The K3s cluster under test passed the audit outlined in the benchmark.
-- **Not Applicable** - The control is not applicable to K3s because of how it is designed to operate. The remediation section will explain why this is so.
-- **Warn** - The control is manual in the CIS benchmark and it depends on the cluster's use case or some other factor that must be determined by the cluster operator. These controls have been evaluated to ensure K3s does not prevent their implementation, but no further configuration or auditing of the cluster under test has been performed.
+* **Pass** - The K3s cluster under test passed the audit outlined in the benchmark.
+* **Not Applicable** - The control is not applicable to K3s because of how it is designed to operate. The remediation section will explain why this is so.
+* **Warn** - The control is manual in the CIS benchmark and it depends on the cluster's use case or some other factor that must be determined by the cluster operator. These controls have been evaluated to ensure K3s does not prevent their implementation, but no further configuration or auditing of the cluster under test has been performed.
 
 This guide makes the assumption that K3s is running as a Systemd unit. Your installation may vary and will require you to adjust the "audit" commands to fit your scenario.
 
