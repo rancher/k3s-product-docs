@@ -25,7 +25,7 @@ Run the installer, where `INSTALL_K3S_ARTIFACT_URL` is the https://scc.suse.com/
 ----
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s INSTALL_K3S_CHANNEL="latest" sh -
 ----
-If you want to specify a version, set the `INSTALL_RKE2_VERSION` environment variable:
+If you want to specify a version, set the `INSTALL_K3S_VERSION` environment variable:
 
 [,bash]
 ----
