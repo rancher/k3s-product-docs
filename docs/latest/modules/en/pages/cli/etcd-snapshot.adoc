@@ -1,5 +1,5 @@
 = k3s etcd-snapshot
-:revdate: 2026-04-01
+:revdate: 2026-07-22
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 
@@ -228,7 +228,7 @@ S3 configuration must be passed via the CLI when restoring a snapshot stored on 
 
 [NOTE]
 ====
-Pass only the the `--etcd-s3` and `--etcd-s3-config-secret` flags to enable the Secret.
+Pass only the `--etcd-s3` and `--etcd-s3-config-secret` flags to enable the Secret.
 If any other S3 configuration flags are set, the Secret will be ignored.
 ====
 
