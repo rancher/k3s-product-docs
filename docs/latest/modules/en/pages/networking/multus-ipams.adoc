@@ -1,6 +1,6 @@
 = Multus and IPAM plugins
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2025-09-16
+:revdate: 2026-07-24
 :page-revdate: {revdate}
 
 https://github.com/k8snetworkplumbingwg/multus-cni[Multus CNI] is a CNI plugin that enables attaching multiple network interfaces to pods. Multus does not replace CNI plugins, instead it acts as a CNI plugin multiplexer. Multus is useful in certain use cases, especially when pods are network intensive and require extra network interfaces that support dataplane acceleration techniques such as SR-IOV.
@@ -8,12 +8,6 @@ https://github.com/k8snetworkplumbingwg/multus-cni[Multus CNI] is a CNI plugin t
 For more information about Multus, refer to the https://github.com/k8snetworkplumbingwg/multus-cni/tree/master/docs[multus-cni] documentation.
 
 Multus can not be deployed standalone. It always requires at least one conventional CNI plugin that fulfills the Kubernetes cluster network requirements. That CNI plugin becomes the default for Multus, and will be used to provide the primary interface for all pods. When deploying K3s with default options, that CNI plugin is Flannel.
-
-[NOTE]
-.Version Gate
-====
-K3s uses a fixed CNI binary path as of the October 2024 releases: v1.28.15+k3s1, v1.29.10+k3s1, v1.30.6+k3s1, v1.31.2+k3s1.
-====
 
 K3s looks at `$DATA_DIR/data/cni` for CNI plugin binaries. By default this is `/var/lib/rancher/k3s/data/cni`. Additional CNI plugins should be installed to this location.
 
