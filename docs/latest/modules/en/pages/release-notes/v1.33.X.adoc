@@ -1,5 +1,5 @@
 = v1.33.X
-:revdate: 2026-05-25
+:revdate: 2026-07-22
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 :page-role: -toc
@@ -12,6 +12,21 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
+
+| xref:#_release_v1_33_13k3s1[v1.33.13+k3s1]
+| Jun 24 2026
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.33.md#v13313[v1.33.13]
+| https://github.com/k3s-io/kine/releases/tag/v0.16.1[v0.16.1]
+| https://sqlite.org/releaselog/3_53_0.html[3.53.0]
+| https://github.com/k3s-io/etcd/releases/tag/v3.6.12-k3s1[v3.6.12-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v2.2.5-k3s1.33[v2.2.5-k3s1.33]
+| https://github.com/opencontainers/runc/releases/tag/v1.4.2[v1.4.2]
+| https://github.com/flannel-io/flannel/releases/tag/v0.28.4[v0.28.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.8.1[v0.8.1]
+| https://github.com/traefik/traefik/releases/tag/v3.7.4[v3.7.4]
+| https://github.com/coredns/coredns/releases/tag/v1.14.4[v1.14.4]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.17.1[v0.17.1]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.36[v0.0.36]
 
 | xref:#_release_v1_33_12k3s1[v1.33.12+k3s1]
 | May 20 2026
@@ -223,6 +238,28 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.16.10[v0.16.10]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.31[v0.0.31]
 |===
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.33.13+k3s1[v1.33.13+k3s1]
+// v1.33.13+k3s1
+
+[WARNING]
+====
+This release upgrades Traefik chart to v40.x which includes a breaking change for the ingress-nginx migration: the provider name changes from `kubernetesIngressNginx` to `kubernetesIngressNGINX`. Check https://github.com/traefik/traefik-helm-chart/releases/tag/v40.0.0 for more details.
+====
+
+This release updates Kubernetes to v1.33.13, and fixes a number of issues.
+
+For more details on what’s new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.33.md#changelog-since-v13312[Kubernetes release notes].
+
+=== Changes since v1.33.12+k3s1:
+
+* Backports for 2026-06 https://github.com/k3s-io/k3s/pull/14155[(#14155)]
+* Bump v3.7.4 Traefik https://github.com/k3s-io/k3s/pull/14196[(#14196)]
+* More backports for 2026-06 https://github.com/k3s-io/k3s/pull/14218[(#14218)]
+* Testing Backports 2026-06 https://github.com/k3s-io/k3s/pull/14217[(#14217)]
+* Bump klipper-helm for CVE reasons https://github.com/k3s-io/k3s/pull/14238[(#14238)]
+* Update to v1.33.13-k3s1 and Go 1.25.11 https://github.com/k3s-io/k3s/pull/14227[(#14227)]
+* Bump containerd to v2.2.5-k3s1.33 https://github.com/k3s-io/k3s/pull/14256[(#14256)]
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.33.12+k3s1[v1.33.12+k3s1]
 // v1.33.12+k3s1
