@@ -1,7 +1,7 @@
 = k3s server
 :revdate: 2026-03-31
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-07-24
+:revdate: 2026-08-28
 :page-revdate: {revdate}
 
 In this section, you'll learn how to configure the K3s server.
@@ -369,7 +369,7 @@ a| Must be one of the following:
 | Flag | Description
 
 | `--default-local-storage-path` value
-| Default local storage path for local provisioner storage class
+| Default local storage path for local provisioner storage class (default: `/var/lib/rancher/k3s/storage`)
 |===
 
 === Kubernetes Components
