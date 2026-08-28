@@ -1,6 +1,6 @@
 = Private Registry Configuration
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-07-24
+:revdate: 2026-08-28
 :page-revdate: {revdate}
 
 Containerd can be configured to connect to private registries and use them to pull images as needed by the kubelet.
@@ -52,7 +52,7 @@ configs:
     auth:
       username: <BASIC AUTH USERNAME>
       password: <BASIC AUTH PASSWORD>
-      token: <BEARER TOKEN>
+      auth: <BASE64 USERNAME:PASSWORD>
     tls:
       ca_file: <PATH TO SERVER CA>
       cert_file: <PATH TO CLIENT CERT>
@@ -161,7 +161,7 @@ The `auth` part consists of either username/password or authentication token:
 | user password of the private registry basic auth
 
 | `auth`
-| authentication token of the private registry basic auth
+| base64 encode of the username:password
 |===
 
 Below are basic examples of using private registries in different modes:
@@ -234,7 +234,7 @@ Below are examples showing how you may configure `/etc/rancher/k3s/registries.ya
 
 [tabs]
 ======
-With Authentication::
+Private Registry With Authentication::
 +
 [,yaml]
 ----
@@ -247,6 +247,21 @@ configs:
     auth:
       username: xxxxxx # this is the registry username
       password: xxxxxx # this is the registry password
+----
+
+Docker Hub With Authentication::
++
+[,yaml]
+----
+mirrors:
+  docker.io:
+    endpoint:
+      - "https://index.docker.io/v2"
+configs:
+  "https://index.docker.io/v2":
+    auth:
+      username: xxxxxx # Docker Hub username
+      password: xxxxxx # Docker Hub password or PAT (Personal Access Token)
 ----
 
 Without Authentication::
