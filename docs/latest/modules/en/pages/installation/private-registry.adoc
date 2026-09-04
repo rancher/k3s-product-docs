@@ -37,6 +37,7 @@ or if you wish to have only some nodes pull from the upstream registry.
 Disabling the default registry endpoint applies only to registries configured via `registries.yaml`.
 If the registry is not explicitly configured via mirror entry in `registries.yaml`, the default fallback behavior will still be used.
 
+[#_registries_configuration_file]
 == Registries Configuration File
 
 The file consists of two top-level keys, with subkeys for each registry:
@@ -60,6 +61,7 @@ configs:
       insecure_skip_verify: <SKIP TLS CERT VERIFICATION BOOLEAN>
 ----
 
+[#_mirrors]
 === Mirrors
 
 The mirrors section defines the names and endpoints of registries, for example:
@@ -73,6 +75,7 @@ mirrors:
 
 Each mirror must have a name and set of endpoints. When pulling an image from a registry, containerd will try these endpoint URLs, plus the default endpoint, and use the first working one.
 
+[#_redirects]
 ==== Redirects
 
 If the private registry is used as a mirror for another registry, such as when configuring a https://docs.docker.com/registry/recipes/mirror/[pull through cache],
@@ -90,6 +93,7 @@ mirrors:
 
 Then pulling `docker.io/rancher/mirrored-pause:3.6` will transparently pull the image as `registry.example.com:5000/rancher/mirrored-pause:3.6`.
 
+[#_rewrites]
 ==== Rewrites
 
 Each mirror can have a set of rewrites, which use regular expressions to match and transform the name of an image when it is pulled from a mirror.
@@ -127,6 +131,7 @@ mirrors:
 Note that when using mirrors and rewrites, images will still be stored under the original name.
 For example, `crictl image ls` will show `docker.io/rancher/mirrored-pause:3.6` as available on the node, even if the image was pulled from a mirror with a different name.
 
+[#_configs]
 === Configs
 
 The `configs` section defines the TLS and credential configuration for each mirror. For each mirror you can define `auth` and/or `tls`.
@@ -166,6 +171,7 @@ The `auth` part consists of either username/password or authentication token:
 
 Below are basic examples of using private registries in different modes:
 
+[#_wildcard_support]
 === Wildcard Support
 
 The `"*"` wildcard entry can be used in the `mirrors` and `configs` sections to provide default configuration for all registries.
@@ -186,6 +192,7 @@ configs:
       insecure_skip_verify: true
 ----
 
+[#_with_tls]
 === With TLS
 
 Below are examples showing how you may configure `/etc/rancher/k3s/registries.yaml` on each node when using TLS.
@@ -228,6 +235,7 @@ configs:
 ----
 ======
 
+[#_without_tls]
 === Without TLS
 
 Below are examples showing how you may configure `/etc/rancher/k3s/registries.yaml` on each node when _not_ using TLS.
@@ -266,6 +274,7 @@ ____
 
 In order for the registry changes to take effect, you need to restart K3s on each node.
 
+[#_troubleshooting_image_pulls]
 == Troubleshooting Image Pulls
 
 When Kubernetes experiences problems pulling an image, the error displayed by the kubelet may only reflect the terminal error returned
@@ -273,6 +282,7 @@ by the pull attempt made against the default endpoint, making it appear that the
 
 Check the containerd log on the node at `/var/lib/rancher/k3s/agent/containerd/containerd.log` for detailed information on the root cause of the failure. Note that you must look at the logs on the node where the pod is scheduled. You can check which node your pod is scheduled to by issuing `kubectl get pod -o wide -n NAMESPACE POD` and checking the NODE column.
 
+[#_adding_images_to_the_private_registry]
 == Adding Images to the Private Registry
 
 Mirroring images to a private registry requires a host with Docker or other 3rd party tooling that is capable of pulling and pushing images. +

@@ -16,6 +16,7 @@ This made it difficult to deploy additional CNI plugins, as the path would chang
 
 If deploying Multus to an older release of K3s, you should use `/var/lib/rancher/k3s/data/current/bin/` as the CNI bin dir, but expect that the plugins will need to be re-deployed whenever K3s is upgraded.
 
+[#_deploy_with_an_ipam_plugin]
 == Deploy with an IPAM plugin
 
 An IP Address Manager (IPAM) plugin is required to assign IP addresses on the extra interfaces created by Multus. One or more IPAMs can be installed; the examples below each show use of a single IPAM plugin but they may be combined as needed.
@@ -149,6 +150,7 @@ spec:
 --
 ======
 
+[#_using_multus]
 === Using Multus
 
 Once Multus has been deployed, you can create NetworkAttachmentDefinition resources, and reference these in Pod specs to attach additional interfaces.

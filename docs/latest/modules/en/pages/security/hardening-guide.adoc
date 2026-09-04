@@ -12,16 +12,19 @@ K3s has a number of security mitigations applied and turned on by default and wi
 
 The first section (1.1) of the CIS Benchmark concerns itself primarily with pod manifest permissions and ownership. K3s doesn't utilize these for the core components since everything is packaged into a single binary.
 
+[#_host_level_requirements]
 == Host-level Requirements
 
 There are two areas of host-level requirements: kernel parameters and etcd process/directory configuration. These are outlined in this section.
 
+[#_ensure_protect_kernel_defaults_is_set]
 === Ensure `protect-kernel-defaults` is set
 
 This is a kubelet flag that will cause the kubelet to exit if the required kernel parameters are unset or are set to values that are different from the kubelet's defaults.
 
 NOTE: `protect-kernel-defaults` is exposed as a top-level flag for K3s.
 
+[#_set_kernel_parameters]
 ==== Set kernel parameters
 
 Create a file called `/etc/sysctl.d/90-kubelet.conf` and add the snippet below. Then run `sysctl -p /etc/sysctl.d/90-kubelet.conf`.
@@ -34,6 +37,7 @@ kernel.panic=10
 kernel.panic_on_oops=1
 ----
 
+[#_configuration_for_kubernetes_components]
 == Configuration for Kubernetes Components
 
 The configuration below should be placed in the xref:installation/configuration.adoc#_configuration_file[configuration file], and contains all the necessary remediations to harden the Kubernetes components.
@@ -105,12 +109,14 @@ kubelet-arg:
 ----
 ======
 
+[#_kubernetes_runtime_requirements]
 == Kubernetes Runtime Requirements
 
 The runtime requirements to comply with the CIS Benchmark are centered around pod security (via PSP or PSA), network policies and API Server auditing logs. These are outlined in this section.
 
 By default, K3s does not include any pod security or network policies. However, K3s ships with a controller that will enforce network policies, if any are created. K3s doesn't enable auditing by default, so audit log configuration and audit policy must be created manually. By default, K3s runs with the both the `PodSecurity` and `NodeRestriction` admission controllers enabled, among others.
 
+[#_pod_security]
 === Pod Security
 
 [tabs,sync-group-id=pod-sec]
@@ -543,6 +549,7 @@ Operators must manage network policies as normal for additional namespaces that 
 ====
 
 
+[#_api_server_audit_configuration]
 === API Server audit configuration
 
 CIS requirements 1.2.22 to 1.2.25 are related to configuring audit logs for the API Server. K3s doesn't create by default the log directory and audit policy, as auditing requirements are specific to each user's policies and environment.
@@ -598,9 +605,11 @@ sudo systemctl daemon-reload
 sudo systemctl restart k3s.service
 ----
 
+[#_manual_operations]
 == Manual Operations
 The following are controls that K3s currently does not pass by with the above configuration applied. These controls require manual intervention to fully comply with the CIS Benchmark.
 
+[#_control_1_1_20]
 === Control 1.1.20
 
 Ensure that the Kubernetes PKI certificate file permissions are set to 600 or more restrictive (Manual)
@@ -617,6 +626,7 @@ chmod -R 600 /var/lib/rancher/k3s/server/tls/*.crt
 ----
 ======
 
+[#_control_1_2_9]
 === Control 1.2.9
 
 Ensure that the admission control plugin EventRateLimit is set
@@ -636,6 +646,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_control_1_2_11]
 === Control 1.2.11
 
 Ensure that the admission control plugin AlwaysPullImages is set
@@ -656,6 +667,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_control_1_2_21]
 === Control 1.2.21
 
 Ensure that the --request-timeout argument is set as appropriate
@@ -675,6 +687,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_control_4_2_13]
 === Control 4.2.13
 
 Ensure that a limit is set on pod PIDs
@@ -692,12 +705,14 @@ kubelet-arg:
 ----
 ======
 
+[#_control_5_x]
 === Control 5.X
 
 All the 5.X Controls are related to Kubernetes policy configuration. These controls are not enforced by K3s by default.
 
 Refer to xref:security/self-assessment-1.8.adoc#_5_1_rbac_and_service_accounts[CIS 1.8 Section 5] for more information on how to create and apply these policies.
 
+[#_control_5_1_5]
 ==== Control 5.1.5
 
 [NOTE]
@@ -719,6 +734,7 @@ kubectl patch serviceaccount --namespace kube-public default --patch '{"automoun
 ----
 ======
 
+[#_conclusion]
 == Conclusion
 
 If you have followed this guide, your K3s cluster will be configured to comply with the CIS Kubernetes Benchmark. You can review the xref:security/self-assessment-1.12.adoc[CIS 1.12 Self-Assessment Guide] to understand the expectations of each of the benchmark's checks and how you can do the same on your cluster.

@@ -5,6 +5,7 @@
 
 To allow high availability during upgrades, the K3s containers continue running when the K3s service is stopped.
 
+[#_k3s_service]
 == K3s Service
 
 Stopping and restarting K3s is supported by the installation script for systemd and OpenRC.
@@ -76,6 +77,7 @@ sudo rc-service k3s-agent restart
 --
 ======
 
+[#_killall_script]
 == Killall Script
 
 To stop all of the K3s containers and reset the containerd state, the `k3s-killall.sh` script can be used.

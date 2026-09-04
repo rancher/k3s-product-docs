@@ -15,6 +15,7 @@ You can use any K3s Prime version listed on the Prime Artifacts URL for the asse
 ====
 
 
+[#_install_script]
 == Install Script
 
 {k3s-product-name} provides an installation script that is a convenient way to install it as a service on systemd or openrc based systems. This script is available at https://get.k3s.io. To install {k3s-product-name} using this method, do the following:

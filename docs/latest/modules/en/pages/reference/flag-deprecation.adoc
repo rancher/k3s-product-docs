@@ -5,6 +5,7 @@
 
 K3s is a fast-moving project, and as such, we need a way to deprecate flags and configuration options. This page outlines the process for deprecating flags and configuration options. In order to ensure that users are not surprised by the removal of flags, the process is similar to the https://kubernetes.io/docs/reference/using-api/deprecation-policy/[Kubernetes Deprecation Policy].
 
+[#_process]
 == Process
 
 . Flags can be declared as "To Be Deprecated" at any time.
@@ -13,6 +14,7 @@ K3s is a fast-moving project, and as such, we need a way to deprecate flags and 
 . In the following minor release branch, deprecated flags will become "nonoperational", causing a fatal error if used. This error must explain to the user any new flags or configuration that replace this flag.
 . In the next minor release, the nonoperational flags will be removed from documentation and code.
 
+[#_example]
 == Example
 
 An example of the process:

@@ -115,10 +115,12 @@ For more information on enabling the embedded distributed registry mirror, see t
 [#_install_k3s]
 == Install K3s
 
+[#_prerequisites]
 === Prerequisites
 
 Before installing K3s, choose one of the xref:#_load_images[Load Images] options above to prepopulate the images that K3s needs to install.
 
+[#_download_the_binary_and_script]
 ==== Download the binary and script
 
 * Download the K3s binary from the https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL] page, matching the same version used to get the airgap images. Place the binary in `/usr/local/bin` on each air-gapped node and ensure it is executable.
@@ -174,6 +176,7 @@ The k3s-selinux RPM installation requires the following dependencies to be avail
 See the xref:advanced.adoc#_selinux_support[SELinux] section for more information.
 ======
 
+[#_running_install_script]
 === Running Install Script
 
 You can install K3s on one or more servers as described below.
@@ -228,6 +231,7 @@ K3S_DATASTORE_ENDPOINT='mysql://username:password@tcp(hostname:3306)/database-na
 K3s's `--resolv-conf` flag is passed through to the kubelet, which may help with configuring pod DNS resolution in air-gap networks where the host does not have upstream nameservers configured.
 ====
 
+[#_upgrading]
 == Upgrading
 
 [tabs,sync-group-id=airgap-upgrade]

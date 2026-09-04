@@ -10,6 +10,7 @@ Note that servers also run an agent, so all of the configuration options listed 
 
 Options are documented on this page as CLI flags, but can also be passed as configuration file options. See the xref:installation/configuration.adoc#_configuration_file[Configuration File] documentation for more information on using YAML configuration files.
 
+[#_critical_configuration_values]
 == Critical Configuration Values
 
 The following options must be set to the same value on all servers in the cluster. Failure to do so will cause new servers to fail to join the cluster when using embedded etcd, or incorrect operation of the cluster when using an external datastore.
@@ -31,8 +32,10 @@ The following options must be set to the same value on all servers in the cluste
 * `--secrets-encryption-provider`
 * `--service-cidr`
 
+[#_commonly_used_options]
 == Commonly Used Options
 
+[#_database]
 === Database
 
 |===
@@ -89,6 +92,7 @@ The following options must be set to the same value on all servers in the cluste
 | Directory to save db snapshots
 |===
 
+[#_s3_etcd_snapshot_storage]
 === S3 etcd Snapshot Storage
 
 |===
@@ -211,6 +215,7 @@ The following options must be set to the same value on all servers in the cluste
 | Forget all peers and become sole member of a new cluster
 |===
 
+[#_admin_kubeconfig_options]
 === Admin Kubeconfig Options
 
 |===
@@ -229,8 +234,10 @@ The following options must be set to the same value on all servers in the cluste
 | Write kubeconfig group. Combining with `--write-kubeconfig-mode`, it will allow your k3s administrators accessing the kubeconfig file but keeping the file owned by root.
 |===
 
+[#_advanced_options]
 == Advanced Options
 
+[#_logging]
 === Logging
 
 |===
@@ -257,6 +264,7 @@ The following options must be set to the same value on all servers in the cluste
 | Log to standard error as well as file (if set)
 |===
 
+[#_listeners]
 === Listeners
 
 |===
@@ -288,6 +296,7 @@ Note that the primary `service-cidr` IP range must be of the same address family
 | Protect the server TLS cert by refusing to add Subject Alternative Names not associated with the kubernetes apiserver service, server nodes, or values of the tls-san option
 |===
 
+[#_data]
 === Data
 
 |===
@@ -298,6 +307,7 @@ Note that the primary `service-cidr` IP range must be of the same address family
 | Folder to hold state
 |===
 
+[#_secrets_encryption]
 === Secrets Encryption
 
 |===
@@ -312,6 +322,7 @@ Note that the primary `service-cidr` IP range must be of the same address family
 | Encryption provider to use
 |===
 
+[#_networking]
 === Networking
 
 |===
@@ -363,6 +374,7 @@ a| Must be one of the following:
 * cluster: The apiserver uses agent tunnels to communicate with nodes and service endpoints, routing endpoint connections to the correct agent by watching Endpoints. Nodes allow the tunnel connection from loopback addresses, or the configured cluster CIDR range.
 |===
 
+[#_storage_class]
 === Storage Class
 
 |===
@@ -372,6 +384,7 @@ a| Must be one of the following:
 | Default local storage path for local provisioner storage class
 |===
 
+[#_kubernetes_components]
 === Kubernetes Components
 
 |===
@@ -396,6 +409,7 @@ a| Must be one of the following:
 | Disable Helm controller
 |===
 
+[#_customized_flags_for_kubernetes_processes]
 === Customized Flags for Kubernetes Processes
 
 |===
@@ -423,6 +437,7 @@ a| Must be one of the following:
 | Customized flag for kube-proxy process
 |===
 
+[#_experimental_options]
 === Experimental Options
 
 |===
@@ -453,6 +468,7 @@ a| Must be one of the following:
 | See "xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[Integration with the Tailscale VPN provider]"
 |===
 
+[#_deprecated_options]
 === Deprecated Options
 
 |===
@@ -479,6 +495,7 @@ a| Must be one of the following:
 | Use `--flannel-conf` to specify the flannel config file with the backend config
 |===
 
+[#_k3s_server_cli_help]
 == K3s Server CLI Help
 
 ____

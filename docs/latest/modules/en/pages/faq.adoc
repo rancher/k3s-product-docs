@@ -5,26 +5,32 @@
 
 The FAQ is updated periodically and designed to answer the questions our users most frequently ask about K3s.
 
+[#_is_k3s_a_suitable_replacement_for_kubernetes]
 == Is K3s a suitable replacement for Kubernetes?
 
 K3s is a CNCF-certified Kubernetes distribution, and can do everything required of a standard Kubernetes cluster. It is just a more lightweight version. See the xref:introduction.adoc[main] docs page for more details.
 
+[#_how_can_i_use_my_own_ingress_instead_of_traefik]
 == How can I use my own Ingress instead of Traefik?
 
 Simply start K3s server with `--disable=traefik` and deploy your ingress.
 
+[#_does_k3s_support_windows]
 == Does K3s support Windows?
 
 At this time K3s does not natively support Windows, however we are open to the idea in the future.
 
+[#_what_exactly_are_servers_and_agents]
 == What exactly are Servers and Agents?
 
 For a breakdown on the components that make up a server and agent, see the xref:architecture.adoc[Architecture page].
 
+[#_how_can_i_build_from_source]
 == How can I build from source?
 
 Please reference the K3s https://github.com/k3s-io/k3s/blob/main/BUILDING.md[BUILDING.md] with instructions.
 
+[#_where_are_the_k3s_logs]
 == Where are the K3s logs?
 
 The location of K3s logs will vary depending on how you run K3s and the node's OS.
@@ -43,20 +49,24 @@ Use of the `-v=<level>` or `--vmodule=<module>=<level>` component args will like
 
 See xref:advanced.adoc#_additional_logging_sources[Additional Logging Sources] for even more log options.
 
+[#_can_i_run_k3s_in_docker]
 == Can I run K3s in Docker?
 
 Yes, there are multiple ways to run K3s in Docker. See xref:advanced.adoc#_running_k3s_in_docker[Advanced Options] for more details.
 
+[#_what_is_the_difference_between_k3s_server_and_agent_tokens]
 == What is the difference between K3s Server and Agent Tokens?
 
 For more information on managing K3s join tokens, see the xref:cli/token.adoc[`k3s token` command documentation].
 
+[#_how_compatible_are_different_versions_of_k3s]
 == How compatible are different versions of K3s?
 
 In general, the https://kubernetes.io/docs/setup/release/version-skew-policy/[Kubernetes version skew policy] applies.
 
 In short, servers can be newer than agents, but agents cannot be newer than servers.
 
+[#_im_having_an_issue_where_can_i_get_help]
 == I'm having an issue, where can I get help?
 
 If you are having an issue with deploying K3s, you should:
