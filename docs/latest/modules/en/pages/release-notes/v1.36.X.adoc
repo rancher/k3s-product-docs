@@ -1,6 +1,6 @@
 = v1.36.X
 :page-languages: [en, ja, ko, zh]
-:revdate: 2026-07-22
+:revdate: 2026-08-28
 :page-revdate: {revdate}
 :page-role: -toc
 
@@ -12,6 +12,21 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
+
+| xref:#_release_v1_36_3k3s1[v1.36.3+k3s1]
+| Aug 04 2026
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.36.md#v1363[v1.36.3]
+| https://github.com/k3s-io/kine/releases/tag/v0.16.3[v0.16.3]
+| https://sqlite.org/releaselog/3_53_2.html[3.53.2]
+| https://github.com/k3s-io/etcd/releases/tag/v3.6.14-k3s1[v3.6.14-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v2.3.2-k3s2[v2.3.2-k3s2]
+| https://github.com/opencontainers/runc/releases/tag/v1.4.2[v1.4.2]
+| https://github.com/flannel-io/flannel/releases/tag/v0.28.4[v0.28.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.9.0[v0.9.0]
+| https://github.com/traefik/traefik/releases/tag/v3.7.8[v3.7.8]
+| https://github.com/coredns/coredns/releases/tag/v1.14.6[v1.14.6]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.17.7[v0.17.7]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.36[v0.0.36]
 
 | xref:#_release_v1_36_2k3s1[v1.36.2+k3s1]
 | Jun 24 2026
@@ -60,6 +75,41 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.35[v0.0.35]
 |===
 
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.36.3+k3s1[v1.36.3+k3s1]
+// v1.36.3+k3s1
+
+[WARNING]
+====
+This release upgrades Traefik chart to v40.x which includes a breaking change for the ingress-nginx migration: the provider name changes from `kubernetesIngressNginx` to `kubernetesIngressNGINX`. Check https://github.com/traefik/traefik-helm-chart/releases/tag/v40.0.0 for more details.
+====
+
+This release updates Kubernetes to v1.36.3, and fixes a number of issues.
+
+For more details on what’s new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.36.md#changelog-since-v1362[Kubernetes release notes].
+
+=== Changes since v1.36.2+k3s1:
+
+* Bump dynamiclistener to v0.9.0-rc.2 for wildcard tls-san support https://github.com/k3s-io/k3s/pull/14312[(#14312)]
+** Add support for wildcard domains in `--tls-san` (e.g. `--tls-san=*.example.com`).
+* July Testing Backports https://github.com/k3s-io/k3s/pull/14328[(#14328)]
+* July K3s Build Rework + GHA bumps https://github.com/k3s-io/k3s/pull/14332[(#14332)]
+* Backports for 2026-07 https://github.com/k3s-io/k3s/pull/14348[(#14348)]
+* Bump mirrored-pause to 3.10.2 https://github.com/k3s-io/k3s/pull/14389[(#14389)]
+* Bump Traefik to v3.7.7 https://github.com/k3s-io/k3s/pull/14381[(#14381)]
+* More backports for 2026-07 https://github.com/k3s-io/k3s/pull/14406[(#14406)]
+* Fix typo in snapshot prune event https://github.com/k3s-io/k3s/pull/14411[(#14411)]
+* Bump rancher/mirrored-coredns-coredns image version https://github.com/k3s-io/k3s/pull/14424[(#14424)]
+* Bump golang:alpine image version https://github.com/k3s-io/k3s/pull/14432[(#14432)]
+* Bump rancher/mirrored-metrics-server image version https://github.com/k3s-io/k3s/pull/14437[(#14437)]
+* Use new Traefik v3.7.8 https://github.com/k3s-io/k3s/pull/14426[(#14426)]
+* Bump helm-controller and klipper-helm for `--force-conflicts` support https://github.com/k3s-io/k3s/pull/14442[(#14442)]
+* Bump k3s-io/kubernetes and Go references https://github.com/k3s-io/k3s/pull/14456[(#14456)]
+* Bump etcd to v3.6.14 https://github.com/k3s-io/k3s/pull/14461[(#14461)]
+* Fix production builds always enabling Go coverage instrumentation https://github.com/k3s-io/k3s/pull/14466[(#14466)]
+* Bump helm-controller and klipper-helm https://github.com/k3s-io/k3s/pull/14475[(#14475)]
+
+'''
+
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.36.2+k3s1[v1.36.2+k3s1]
 // v1.36.2+k3s1
 
@@ -84,6 +134,8 @@ For more details on what’s new, see the https://github.com/kubernetes/kubernet
 * Update to v1.36.2-k3s1 and Go 1.26.4 https://github.com/k3s-io/k3s/pull/14230[(#14230)]
 * Bump containerd to v2.3.2-k3s1 https://github.com/k3s-io/k3s/pull/14254[(#14254)]
 * Bump cri-api and containerd for upstream env string fix https://github.com/k3s-io/k3s/pull/14277[(#14277)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.36.1+k3s1[v1.36.1+k3s1]
 // v1.36.1+k3s1
