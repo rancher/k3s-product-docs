@@ -60,7 +60,7 @@ spec:
       storage: 2Gi
 ----
 
-=== pod.yaml
+==== pod.yaml
 
 [,yaml]
 ----
