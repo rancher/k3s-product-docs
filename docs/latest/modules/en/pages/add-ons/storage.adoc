@@ -42,7 +42,7 @@ default-local-storage-path: "/opt/local-path-provisioner"
 
 Create a hostPath backed persistent volume claim and a pod to utilize it:
 
-=== pvc.yaml
+==== pvc.yaml
 
 [,yaml]
 ----
