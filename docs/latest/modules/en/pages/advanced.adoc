@@ -5,28 +5,34 @@
 
 This section contains advanced information describing the different ways you can run and manage K3s, as well as steps necessary to prepare the host OS for K3s use.
 
+[#_certificate_management]
 == Certificate Management
 
+[#_certificate_authority_certificates]
 === Certificate Authority Certificates
 
 K3s generates self-signed Certificate Authority (CA) Certificates during startup of the first server node. These CA certificates are valid for 10 years, and are not automatically renewed.
 
 For information on using custom CA certificates, or renewing the self-signed CA certificates, see the xref:cli/certificate.adoc#_certificate_authority_ca_certificates[`k3s certificate rotate-ca` command documentation].
 
+[#_client_and_server_certificates]
 === Client and Server certificates
 
 K3s client and server certificates are valid for 365 days from their date of issuance. Any certificates that are expired, or within 90 days of expiring, are automatically renewed every time K3s starts.
 
 For information on manually rotating client and server certificates, see the xref:cli/certificate.adoc#_client_and_server_certificates[`k3s certificate rotate` command documentation].
 
+[#_token_management]
 == Token Management
 
 By default, K3s uses a single static token for both servers and agents. With care, this token can be rotated once the cluster has been created.
 It is also possible to enable a second static token that can only be used to join agents, or to create temporary `kubeadm` style join tokens that expire automatically.
 For more information, see the xref:cli/token.adoc#_k3s_token_1[`k3s token` command documentation].
 
+[#_configuring_dns_resolution]
 == Configuring DNS Resolution
 
+[#_nameserver_viability_checks]
 === Nameserver Viability Checks
 
 On startup, each node checks the files at `/etc/resolv.conf` and `/run/systemd/resolve/resolv.conf` for loopback, multicast, or link-local nameservers.
@@ -37,6 +43,7 @@ If no usable resolv.conf is found, K3s prints a warning message to the logs, and
 If you want to provide K3s with an alternative resolver configuration without modifying the system configuration files, you may use the `--resolv-conf` option to specify the path to a suitable file.
 Manually specified resolver configuration files are not subject to viability checks.
 
+[#_coredns_custom_configuration_imports]
 === CoreDNS Custom Configuration Imports
 
 In order to customize the CoreDNS configuration, you may create a ConfigMap named `coredns-custom` in the `kube-system` namespace.
@@ -71,6 +78,7 @@ data:
                  IN AAAA   ::1
 ----
 
+[#_configuring_an_http_proxy]
 == Configuring an HTTP proxy
 
 If you are running K3s in an environment, which only has external connectivity through an HTTP proxy, you can configure your proxy settings on the K3s systemd service. These proxy settings will then be used in K3s and passed down to the embedded containerd and kubelet.
@@ -103,6 +111,7 @@ CONTAINERD_HTTPS_PROXY=http://your-proxy.example.com:8888
 CONTAINERD_NO_PROXY=127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
 ----
 
+[#_using_docker_as_the_container_runtime]
 == Using Docker as the Container Runtime
 
 K3s includes and defaults to https://containerd.io/[containerd], an industry-standard container runtime.
@@ -158,6 +167,7 @@ c3675b87f96c        rancher/pause:3.1         "/pause"                 About a m
 64d3517d4a95        rancher/pause:3.1         "/pause"
 ----
 
+[#_using_etcdctl]
 == Using etcdctl
 
 etcdctl provides a CLI for interacting with etcd servers. K3s does not bundle etcdctl.
@@ -181,6 +191,7 @@ sudo etcdctl version \
   --key=/var/lib/rancher/k3s/server/tls/etcd/client.key
 ----
 
+[#_configuring_containerd]
 == Configuring containerd
 
 [IMPORTANT]
@@ -228,6 +239,7 @@ You can extend the K3s base template instead of copy-pasting the complete stock 
 For best results, do NOT simply copy a prerendered `config.toml` into the template and make your desired changes. Use the base template, or provide a full template based on the k3s defaults linked above.
 ====
 
+[#_alternative_container_runtime_support]
 == Alternative Container Runtime Support
 
 K3s will automatically detect alternative container runtimes if they are present when K3s starts. Supported container runtimes are:
@@ -240,6 +252,7 @@ K3s uses the service's `PATH` environment variable to search for container runti
 If an installed container runtime is not detected by K3s, ensure it is present in a system path, which generally includes:
 `/usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin`
 
+[#_nvidia_container_runtime]
 === NVIDIA Container Runtime
 
 NVIDIA GPUs require installation of the NVIDIA Container Runtime in order to schedule and run accelerated workloads in Pods. To use NVIDIA GPUs with K3s, perform the following steps:
@@ -296,6 +309,7 @@ Running agentless servers may be advantageous if you want to obscure your contro
 
 By default, the apiserver on agentless servers will not be able to make outgoing connections to admission webhooks or aggregated apiservices running within the cluster. To remedy this, set the `--egress-selector-mode` server flag to either `pod` or `cluster`. If you are changing this flag on an existing cluster, you'll need to restart all nodes in the cluster for the option to take effect.
 
+[#_running_rootless_servers_experimental]
 == Running Rootless Servers (Experimental)
 
 WARNING: This feature is experimental.
@@ -323,6 +337,7 @@ Cgroup v1 and Hybrid v1/v2 are not supported; only pure Cgroup v2 is supported. 
 +
 Multi-node rootless clusters, or multiple rootless k3s processes on the same node, are not currently supported. See https://github.com/k3s-io/k3s/issues/6488#issuecomment-1314998091[#6488] for more details.
 
+[#_starting_rootless_servers]
 === Starting Rootless Servers
 
 * Enable cgroup v2 delegation, see https://rootlesscontaine.rs/getting-started/common/cgroup2/ .
@@ -352,6 +367,7 @@ Depending on the path to the `k3s` binary, you might need to modify the `ExecSta
 NOTE: Don't try to run `k3s server --rootless` on a terminal, as terminal sessions do not allow cgroup v2 delegation.
 If you really need to try it on a terminal, use `systemd-run --user -p Delegate=yes --tty k3s server --rootless` to wrap it in a systemd scope.
 
+[#_advanced_rootless_configuration]
 === Advanced Rootless Configuration
 
 Rootless K3s uses https://github.com/rootless-containers/rootlesskit[rootlesskit] and https://github.com/rootless-containers/slirp4netns[slirp4netns] to communicate between host and user network namespaces.
@@ -381,12 +397,14 @@ Some of the configuration used by rootlesskit and slirp4nets can be set by envir
 | Controls whether or not access to the hosts's loopback address via the gateway interface is enabled. It is recommended that this not be changed, for security reasons.
 |===
 
+[#_troubleshooting_rootless]
 === Troubleshooting Rootless
 
 * Run `systemctl --user status k3s-rootless` to check the daemon status
 * Run `journalctl --user -f -u k3s-rootless` to see the daemon log
 * See also https://rootlesscontaine.rs/
 
+[#_node_labels_and_taints]
 == Node Labels and Taints
 
 K3s agents can be configured with the options `--node-label` and `--node-taint` which adds a label and taint to the kubelet. The two options only add labels and/or taints xref:cli/agent.adoc#_node_labels_and_taints_for_agents[at registration time], so they can only be set when the node is first joined to the cluster.
@@ -401,6 +419,7 @@ See https://github.com/kubernetes/enhancements/blob/master/keps/sig-auth/279-lim
 
 If you want to change node labels and taints after node registration, or add reserved labels, you should use `kubectl`. Refer to the official Kubernetes documentation for details on how to add https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[taints] and https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[node labels.]
 
+[#_starting_the_service_with_the_installation_script]
 == Starting the Service with the Installation Script
 
 The installation script will auto-detect if your OS is using systemd or openrc and enable and start the service as part of the installation process.
@@ -490,6 +509,7 @@ To force the install script to log a warning rather than fail, you can set the f
 --
 ======
 
+[#_enabling_selinux_enforcement]
 === Enabling SELinux Enforcement
 
 To leverage SELinux, specify the `--selinux` flag when starting K3s servers and agents or setting the `K3S_SELINUX=true` environment variable..
@@ -502,8 +522,10 @@ selinux: true
 
 Using a custom `--data-dir` under SELinux is not supported. To customize it, you would most likely need to write your own custom policy. For guidance, you could refer to the https://github.com/containers/container-selinux[containers/container-selinux] repository, which contains the SELinux policy files for Container Runtimes, and the https://github.com/k3s-io/k3s-selinux[k3s-io/k3s-selinux] repository, which contains the SELinux policy for K3s.
 
+[#_enabling_lazy_pulling_of_estargz_experimental]
 == Enabling Lazy Pulling of eStargz (Experimental)
 
+[#_whats_lazy_pulling_and_estargz]
 === What's lazy pulling and eStargz?
 
 Pulling images is known as one of the time-consuming steps in the container lifecycle.
@@ -525,6 +547,7 @@ Because of the compatibility, eStargz can be pushed to standard container regist
 eStargz is developed based on the https://github.com/google/crfs[stargz format proposed by Google CRFS project] but comes with practical features including content verification and performance optimization.
 For more details about lazy pulling and eStargz, please refer to https://github.com/containerd/stargz-snapshotter[Stargz Snapshotter project repository].
 
+[#_configure_k3s_for_lazy_pulling_of_estargz]
 === Configure k3s for lazy pulling of eStargz
 
 As shown in the following, `--snapshotter=stargz` option is needed for k3s server and agent.
@@ -573,6 +596,7 @@ helm install --create-namespace -n cattle-logging-system rancher-logging-crd ran
 helm install --create-namespace -n cattle-logging-system rancher-logging --set additionalLoggingSources.k3s.enabled=true rancher-charts/rancher-logging
 ----
 
+[#_additional_network_policy_logging]
 == Additional Network Policy Logging
 
 Packets dropped by network policies can be logged. The packet is sent to the iptables NFLOG action, which shows the packet details, including the network policy that blocked it.

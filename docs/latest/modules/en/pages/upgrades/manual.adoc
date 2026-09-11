@@ -36,6 +36,7 @@ When attempting to upgrade to a new version of K3s, the https://kubernetes.io/do
 ====
 
 
+[#_upgrade_k3s_using_the_installation_script]
 == Upgrade K3s Using the Installation Script
 
 To upgrade K3s from an older version you can re-run the installation script using the same configuration options you originally used when running the install script.
@@ -89,6 +90,7 @@ If you want to download the new version of k3s, but not start it, you can use th
 ====
 
 
+[#_upgrade_k3s_using_the_binary]
 == Upgrade K3s Using the Binary
 
 To upgrade K3s manually, you can download the desired version of the K3s binary and replace the existing binary with the new one.

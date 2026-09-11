@@ -3,12 +3,14 @@
 :revdate: 2024-09-11
 :page-revdate: {revdate}
 
+[#_upgrading_your_k3s_cluster]
 == Upgrading your K3s cluster
 
 xref:upgrades/manual.adoc[Manual Upgrades] describes several techniques for upgrading your cluster manually. It can also be used as a basis for upgrading through third-party Infrastructure-as-Code tools like https://www.terraform.io/[Terraform].
 
 xref:upgrades/automated.adoc[Automated Upgrades] describes how to perform Kubernetes-native automated upgrades using Rancher's https://github.com/rancher/system-upgrade-controller[system-upgrade-controller].
 
+[#_version_specific_caveats]
 == Version-specific caveats
 
 * *Traefik:* If Traefik is not disabled, K3s versions 1.20 and earlier will install Traefik v1, while K3s versions 1.21 and later will install Traefik v2, if v1 is not already present. To upgrade from the older Traefik v1 to Traefik v2, please refer to the https://doc.traefik.io/traefik/migrate/v1-to-v2/[Traefik documentation] and use the https://github.com/traefik/traefik-migration-tool[migration tool].

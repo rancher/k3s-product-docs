@@ -13,6 +13,7 @@ External load-balancers can be used to provide a fixed registration address for 
 ====
 
 
+[#_prerequisites]
 == Prerequisites
 
 All nodes in this example are running Ubuntu 20.04.
@@ -45,6 +46,7 @@ Three additional nodes exist with hostnames and IPs of:
 * agent-2: `10.10.10.102`
 * agent-3: `10.10.10.103`
 
+[#_setup_load_balancer]
 == Setup Load Balancer
 
 [tabs,sync-group-id=ext-load-balancer]

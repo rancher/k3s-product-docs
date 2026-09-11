@@ -10,6 +10,7 @@ K3s does not require any special configuration to support Helm. Just be sure you
 
 K3s includes a https://github.com/k3s-io/helm-controller/[Helm Controller] that manages installing, upgrading/reconfiguring, and uninstalling Helm charts using a HelmChart Custom Resource Definition (CRD). Paired with xref:installation/packaged-components.adoc[auto-deploying AddOn manifests], installing a Helm chart on your cluster can be automated by creating a single file on disk.
 
+[#_using_the_helm_controller]
 == Using the Helm Controller
 
 The https://github.com/k3s-io/helm-controller#helm-controller[HelmChart Custom Resource] captures most of the options you would normally pass to the `helm` command-line tool.
@@ -34,6 +35,7 @@ You can specify `helm-controller-arg` multiple times in CLI form, or as a YAML l
 The `helm-controller-arg` flag is available since the K3s July 2026 releases: v1.36.3+k3s1, v1.35.7+k3s1, v1.34.10+k3s1, v1.33.13+k3s2
 ====
 
+[#_helmchart_field_definitions]
 === HelmChart Field Definitions
 
 [NOTE]
@@ -255,6 +257,7 @@ data:
     -----END CERTIFICATE-----
 ----
 
+[#_chart_values_from_secrets]
 === Chart Values from Secrets
 
 Chart values can be read from externally-managed Secrets, instead of storing the values in the `spec.set` or `spec.valuesContent` fields. This should be done when passing confidential information such as credentials in to Charts that do not support referring to existing Secrets via the `existingSecret` pattern.

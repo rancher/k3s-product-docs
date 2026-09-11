@@ -25,6 +25,7 @@ K3s etcd snapshots are stored on the node file system, and may optionally be upl
 
 For additional information on the etcd snapshot subcommands, run `k3s etcd-snapshot --help`.
 
+[#_creating_snapshots]
 == Creating Snapshots
 
 [tabs,sync-group-id=snapshots]
@@ -91,6 +92,7 @@ On-demand snapshots are saved to the path set by the server's `--etcd-snapshot-d
 --
 ======
 
+[#_deleting_snapshots]
 == Deleting Snapshots
 
 Scheduled snapshots are deleted automatically when the number of snapshots exceeds the configured retention count (5 by default). The oldest snapshots are removed first.
@@ -200,6 +202,7 @@ $ k3s etcd-snapshot --s3 --s3-bucket=test-bucket --s3-access-key=test --s3-secre
 Name                              Location                                                                          Size    Created
 ----
 
+[#_s3_configuration_secret_support]
 === S3 Configuration Secret Support
 
 K3s supports reading etcd S3 snapshot configuration from a Kubernetes Secret.
@@ -242,6 +245,7 @@ stringData:
   etcd-s3-proxy: ""
 ----
 
+[#_restoring_snapshots]
 == Restoring Snapshots
 
 K3s runs through several steps when restoring a snapshot:
@@ -363,6 +367,7 @@ As a safety mechanism, when K3s resets the cluster, it creates an empty file at 
 --
 ======
 
+[#_restoring_to_new_hosts]
 ==== Restoring To New Hosts
 
 It is possible to restore an etcd snapshot to a different host than it was taken on. When doing so, you must pass the xref:cli/token.adoc#_server[server token] that was originally used when taking the snapshot, as it is used to decrypt the bootstrap data inside the snapshot. The process is the same as above but changing step 2 to:
@@ -388,6 +393,7 @@ The token value can also be set in the K3s config file.
 . If there is a token set in the K3s config file, make sure it is the same as the `<BACKED-UP-TOKEN-VALUE>`, otherwise K3s fails to start.
 ======
 
+[#_security]
 === Security
 
 Snapshots contain a complete copy of the etcd datastore, along with cluster certificate authority (CA) certificates and private keys.
@@ -404,6 +410,7 @@ Snapshots stored locally on the node are protected via normal Unix filesystem pe
 It is recommended that administrators safely store snapshots to a S3-compatible service that supports bucket access controls, server-side encryption, and retention controls.
 Validating the integrity and chain of custody of datastore snapshots is the responsibility of the administrator.
 
+[#_etcdsnapshotfile_custom_resources]
 == ETCDSnapshotFile Custom Resources
 
 Snapshots can be viewed remotely using any Kubernetes client by listing or describing cluster-scoped `ETCDSnapshotFile` resources. Unlike the `k3s etcd-snapshot list` command, which only shows snapshots visible to that node, `ETCDSnapshotFile` resources track all snapshots present on cluster members.

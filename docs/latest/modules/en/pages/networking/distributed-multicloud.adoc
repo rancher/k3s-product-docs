@@ -17,6 +17,7 @@ Embedded etcd is not supported in this type of deployment. If using embedded etc
 ====
 
 
+[#_embedded_k3s_multicloud_solution]
 == Embedded k3s multicloud solution
 
 K3s uses wireguard to establish a VPN mesh for cluster traffic. Nodes must each have a unique IP through which they can be reached (usually a public IP). K3s supervisor traffic will use a websocket tunnel, and cluster (CNI) traffic will use a wireguard tunnel.

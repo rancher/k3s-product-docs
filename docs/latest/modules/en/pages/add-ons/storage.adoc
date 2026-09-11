@@ -19,6 +19,7 @@ K3s comes with Rancher's Local Path Provisioner and this enables the ability to 
 
 Create a hostPath backed persistent volume claim and a pod to utilize it:
 
+[#_pvc_yaml]
 === pvc.yaml
 
 [,yaml]
@@ -37,6 +38,7 @@ spec:
       storage: 2Gi
 ----
 
+[#_pod_yaml]
 === pod.yaml
 
 [,yaml]
@@ -104,6 +106,7 @@ Longhorn will be installed in the namespace `longhorn-system`.
 
 Create a persistent volume claim and a pod to utilize it:
 
+[#_pvc_yaml_1]
 === pvc.yaml
 
 [,yaml]
@@ -121,6 +124,7 @@ spec:
       storage: 2Gi
 ----
 
+[#_pod_yaml_1]
 === pod.yaml
 
 [,yaml]

@@ -11,6 +11,7 @@ This document is only relevant when using embedded etcd. When not using embedded
 ====
 
 
+[#_dedicated_etcd_nodes]
 == Dedicated `etcd` Nodes
 
 To create a server with only the `etcd` role, start K3s with all the control-plane components disabled:
@@ -22,6 +23,7 @@ Where `INSTALL_K3S_ARTIFACT_URL` is the https://scc.suse.com/rancher-docs/ranche
 
 This first node will start etcd, and wait for additional `etcd` and/or `control-plane` nodes to join. The cluster will not be usable until you join an additional server with the `control-plane` components enabled.
 
+[#_dedicated_control_plane_nodes]
 == Dedicated `control-plane` Nodes
 
 [NOTE]
@@ -47,10 +49,12 @@ k3s-server-1   Ready    etcd                        5h39m   v1.20.4+k3s1
 k3s-server-2   Ready    control-plane,master        5h39m   v1.20.4+k3s1
 ----
 
+[#_adding_roles_to_existing_servers]
 == Adding Roles To Existing Servers
 
 Roles can be added to existing dedicated nodes by restarting K3s with the disable flags removed. For example ,if you want to add the `control-plane` role to a dedicated `etcd` node, you can remove the `--disable-apiserver --disable-controller-manager --disable-scheduler` flags from the systemd unit or config file, and restart the service.
 
+[#_configuration_file_syntax]
 == Configuration File Syntax
 
 As with all other CLI flags, you can use the  xref:installation/configuration.adoc#_configuration_file[Configuration File] to disable components, instead of passing the options as CLI flags. For example, to create a dedicated `etcd` node, you can place the following values in `/etc/rancher/k3s/config.yaml`:

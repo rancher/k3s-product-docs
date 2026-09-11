@@ -5,6 +5,7 @@
 
 This section captures the results of tests to determine minimum resource requirements for K3s.
 
+[#_minimum_resource_requirements_for_k3s]
 == Minimum Resource Requirements for K3s
 
 The results are summarized as follows:
@@ -49,6 +50,7 @@ The results are summarized as follows:
 | 268 M
 |===
 
+[#_scope_of_resource_testing]
 === Scope of Resource Testing
 
 The resource tests were intended to address the following problem statements:
@@ -56,6 +58,7 @@ The resource tests were intended to address the following problem statements:
 * On a single-node cluster, determine the legitimate minimum amount of CPU, memory, and IOPs that should be set aside to run the entire K3s stack server stack, assuming that a real workload will be deployed on the cluster.
 * On an agent (worker) node, determine the legitimate minimum amount of CPU, memory, and IOPs that should be set aside for the Kubernetes and K3s control plane components (the kubelet and k3s agent).
 
+[#_components_included_for_baseline_measurements]
 === Components Included for Baseline Measurements
 
 The tested components are:
@@ -68,6 +71,7 @@ These are baseline figures for a stable system using only K3s packaged component
 
 Resource figures including IOPS are for the Kubernetes datastore and control plane only, and do not include overhead for system-level management agents or logging, container image management, or any workload-specific requirements.
 
+[#_methodology]
 === Methodology
 
 A standalone instance of Prometheus v2.43.0 was used to collect host CPU, memory, and disk IO statistics using `prometheus-node-exporter` installed via apt.
@@ -78,6 +82,7 @@ Additional detailed K3s memory utilization data was collected from `kubectl top 
 
 Utilization figures were based on 95th percentile readings from steady state operation on nodes running the described workloads.
 
+[#_environment]
 === Environment
 
 |===
@@ -98,10 +103,12 @@ Utilization figures were based on 95th percentile readings from steady state ope
 | UHS-III SDXC
 |===
 
+[#_baseline_resource_requirements]
 === Baseline Resource Requirements
 
 This section captures the results of tests to determine minimum resource requirements for basic K3s operation.
 
+[#_k3s_server_with_a_workload]
 ==== K3s Server with a Workload
 
 These are the requirements for a single-node cluster in which the K3s server shares resources with a https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/[simple workload].
@@ -156,10 +163,12 @@ The Disk requirements are:
 | < 5 ms
 |===
 
+[#_k3s_cluster_with_a_single_agent]
 ==== K3s Cluster with a Single Agent
 
 These are the baseline requirements for a K3s cluster with a K3s server node and a K3s agent, but no workload.
 
+[#_k3s_server]
 ===== K3s Server
 
 The CPU requirements are:
@@ -196,6 +205,7 @@ The Memory Requirements are:
 | 1413 M
 |===
 
+[#_k3s_agent]
 ===== K3s Agent
 
 The requirements are:
@@ -212,12 +222,14 @@ The requirements are:
 | 268 M
 |===
 
+[#_analysis_of_primary_resource_utilization_drivers]
 === Analysis of Primary Resource Utilization Drivers
 
 K3s server utilization figures are primarily driven by support of the Kubernetes datastore (kine or etcd), API Server, Controller-Manager, and Scheduler control loops, as well as any management tasks necessary to effect changes to the state of the system. Operations that place additional load on the Kubernetes control plane, such as creating/modifying/deleting resources, will cause temporary spikes in utilization. Using operators or apps that make extensive use of the Kubernetes datastore (such as Rancher or other Operator-type applications) will increase the server's resource requirements. Scaling up the cluster by adding additional nodes or creating many cluster resources will increase the server's resource requirements.
 
 K3s agent utilization figures are primarily driven by support of container lifecycle management control loops. Operations that involve managing images, provisioning storage, or creating/destroying containers will cause temporary spikes in utilization. Image pulls in particular are typically highly CPU and IO bound, as they involve decompressing image content to disk. If possible, workload storage (pod ephemeral storage and volumes) should be isolated from the agent components (/var/lib/rancher/k3s/agent) to ensure that there are no resource conflicts.
 
+[#_preventing_agents_and_workloads_from_interfering_with_the_cluster_datastore]
 === Preventing Agents and Workloads from Interfering with the Cluster Datastore
 
 When running in an environment where the server is also hosting workload pods, care should be taken to ensure that agent and workload IOPS do not interfere with the datastore.
@@ -231,12 +243,14 @@ Failure to meet datastore throughput and latency requirements may result in dela
 [#_server_sizing_requirements_for_k3s]
 == Server Sizing Requirements for K3s
 
+[#_environment_1]
 === Environment
 
 * All agents were t3.medium AWS ec2 instances.
 ** A single agent was a c5.4xlarge instance. This hosted the grafana monitoring stack and prevented it from interfering with the control-plane resources.
 * The Server was a c5 AWS ec2 instance. As the number of agents increased, the server was upgraded to larger c5 instances.
 
+[#_methodology_1]
 === Methodology
 
 This data was retrieved under specific test conditions. It will vary depending upon environment and workloads. The steps below give an overview of the test that was run to retrieve this. It was last performed on v1.31.0+k3s1. All the machines were provisioned in AWS with standard 20 GiB gp3 volumes. The test was run with the following steps:
@@ -249,11 +263,13 @@ This data was retrieved under specific test conditions. It will vary depending u
 . Join agent nodes in batches of 50-100 at a time.
 . Stop adding agents when server CPU spikes above 90% utilization on agent joining, or if RAM was above 80% utilization. 
 
+[#_observations]
 === Observations
 
 * When joining agents, server CPU saw spikes of ~20% over baseline.
 * Typically, the limiting factor was CPU, not RAM. For most of the tests, when the CPU hit 90% utilization, RAM utilization was around 60%.
 
+[#_a_note_on_high_availability_ha]
 ==== A note on High Availability (HA)
 
 At the end of each test, two additional servers were joined (forming a basic 3 node HA cluster) to observe what effect this had on the original server resources. The effect was:

@@ -5,6 +5,7 @@
 
 This page describes K3s network configuration options, including configuration or replacement of Flannel, and configuring IPv6 or dualStack.
 
+[#_flannel_options]
 == Flannel Options
 
 https://github.com/flannel-io/flannel/blob/master/README.md[Flannel] is a lightweight provider of layer 3 network fabric that implements the Kubernetes Container Network Interface (CNI). It is what is commonly referred to as a CNI Plugin.
@@ -41,6 +42,7 @@ You must ensure that WireGuard kernel modules are available on every node, both 
 | Disable Flannel entirely.
 |===
 
+[#_flannel_agent_options]
 === Flannel Agent Options
 
 These options are available for each agent and are specific to the Flannel instance running on that node.
@@ -58,6 +60,7 @@ These options are available for each agent and are specific to the Flannel insta
 | Override default flannel cni config file
 |===
 
+[#_custom_cni]
 == Custom CNI
 
 Start K3s with `--flannel-backend=none` and install your CNI of choice. Most CNI plugins come with their own network policy engine, so it is recommended to set `--disable-network-policy` as well to avoid conflicts. Some important information to take into consideration:
@@ -134,6 +137,7 @@ ip6tables-save | grep -iv cilium | ip6tables-restore
 --
 ======
 
+[#_control_plane_egress_selector_configuration]
 == Control-Plane Egress Selector configuration
 
 K3s agents and servers maintain websocket tunnels between nodes that are used to encapsulate bidirectional communication between the control-plane (apiserver) and agent (kubelet and containerd) components.
@@ -152,6 +156,7 @@ This mode requires that the servers also run the kubelet, CNI, and kube-proxy, o
 *NOTE*: This mode will not work when using a CNI that uses its own IPAM and does not respect the node's PodCIDR allocation. `cluster` or `agent` mode should be used with these CNIs instead.
 * `cluster`: The apiserver uses agent tunnels to communicate with kubelets and service endpoints, routing endpoint connections to the correct agent by watching Pods and Endpoints. This mode has the highest portability across different cluster configurations, at the cost of increased overhead.
 
+[#_dual_stack_ipv4_ipv6_networking]
 == Dual-stack (IPv4 + IPv6) Networking
 
 Dual-stack networking must be configured when the cluster is first created. It cannot be enabled on an existing cluster once it has been started as IPv4-only.
@@ -175,6 +180,7 @@ If you are using a custom CNI plugin, i.e. a CNI plugin other than Flannel, the 
 When defining cluster-cidr and service-cidr with IPv6 as the primary family, the node-ip of all cluster members should be explicitly set, placing node's desired IPv6 address as the first address. By default, the kubelet always uses IPv4 as the primary address family.
 ====
 
+[#_single_stack_ipv6_networking]
 == Single-stack IPv6 Networking
 
 [CAUTION]
@@ -193,6 +199,7 @@ Single-stack IPv6 clusters (clusters without IPv4) are supported on K3s using th
 
 When using IPv6 addresses that are not publicly routed, for example in the ULA range, you might want to add the `--flannel-ipv6-masq` option to enable IPv6 NAT, as per default pods use their pod IPv6 address for outgoing traffic.
 
+[#_nodes_without_a_hostname]
 == Nodes Without a Hostname
 
 Some cloud providers, such as Linode, will create machines with "localhost" as the hostname and others may not have a hostname set at all. This can cause problems with domain name resolution. You can run K3s with the `--node-name` flag or `K3S_NODE_NAME` environment variable and this will pass the node name to resolve this issue.

@@ -49,6 +49,7 @@ If you want your configuration to be independent from the install script, you sh
 ====
 
 
+[#_configuration_with_binary]
 == Configuration with binary
 
 The installation script is primarily concerned with configuring K3s to run as a system service. If you choose to not use the install script, you can run K3s simply by downloading the binary from our https://github.com/k3s-io/k3s/releases/latest[GitHub release page], placing it on your path, and executing it. This is not particularly useful for permanent installations, but may be useful when performing quick tests that do not merit managing K3s as a system service.
@@ -92,6 +93,7 @@ It is important to match critical flags on your server nodes. For example, if yo
 See the Server Configuration documentation (linked above) for more information on which flags must be set identically on server nodes.
 ====
 
+[#_configuration_with_container_image]
 == Configuration with container image
 
 The K3s container image (https://hub.docker.com/r/rancher/k3s[`docker.io/rancher/k3s`]) supports the same configuration methods as the binary available on the GitHub release page.
@@ -135,6 +137,7 @@ In general, CLI arguments map to their respective YAML key, with repeatable CLI 
 
 It is also possible to use both a configuration file and CLI arguments. In these situations, values will be loaded from both sources, but CLI arguments will take precedence. For repeatable arguments such as `--node-label`, the CLI arguments will overwrite all values in the list.
 
+[#_value_merge_behavior]
 === Value merge behavior
 
 If present in multiple files, the last value found for a given key will be used. A `+` can be appended to the key to append the value to the existing string or slice, instead of replacing it. All occurrences of this key in subsequent files will also require a `+` to prevent overwriting the accumulated value.
@@ -183,6 +186,7 @@ node-taint:
   - charlie=delta:NoSchedule
 ----
 
+[#_putting_it_all_together]
 == Putting it all together
 
 All of the above options can be combined into a single example.
@@ -216,6 +220,7 @@ This results in a server with:
 * The token set to `secret`
 * Debug logging enabled
 
+[#_kubelet_configuration_files]
 == Kubelet configuration files
 
 Kubernetes supports configuring the kubelet via both CLI flags, and configuration files. Configuring the kubelet via CLI flags has long been deprecated, but it is still supported, and is the easiest way to set basic options. Some advanced kubelet configuration can only be set via a config file. For more information, see the Kubernetes documentation for the https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/[kubelet] and https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/[setting kubelet parameters via a configuration file].

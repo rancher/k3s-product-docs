@@ -3,6 +3,7 @@
 :revdate: 2025-09-16
 :page-revdate: {revdate}
 
+[#_overview]
 == Overview
 
 This document is a companion to the xref:security/hardening-guide.adoc[K3s security hardening guide]. The hardening guide provides prescriptive guidance for hardening a production installation of K3s, and this benchmark guide is meant to help you evaluate the level of security of the hardened cluster against each control in the CIS Kubernetes Benchmark. It is to be used by K3s operators, security teams, auditors, and decision-makers.
@@ -11,6 +12,7 @@ This guide is specific to the *v1.27-v1.29* release line of K3s and the *v1.9* r
 
 For more information about each control, including detailed descriptions and remediations for failing tests, you can refer to the corresponding section of the CIS Kubernetes Benchmark v1.9. You can download the benchmark, after creating a free account, in https://www.cisecurity.org/benchmark/kubernetes[Center for Internet Security (CIS)].
 
+[#_testing_controls_methodology]
 === Testing controls methodology
 
 Each control in the CIS Kubernetes Benchmark was evaluated against a K3s cluster that was configured according to the accompanying hardening guide.
@@ -25,8 +27,10 @@ These are the possible results for each control:
 
 This guide makes the assumption that K3s is running as a Systemd unit. Your installation may vary and will require you to adjust the "audit" commands to fit your scenario.
 
+[#_1_1_control_plane_node_configuration_files]
 == 1.1 Control Plane Node Configuration Files
 
+[#_1_1_1_ensure_that_the_api_server_pod_specification_file_permissions_are_set_to_600_or_more_restrictive_automated]
 === 1.1.1 Ensure that the API server pod specification file permissions are set to 600 or more restrictive (Automated)
 
 *Result:* Not Applicable
@@ -35,6 +39,7 @@ This guide makes the assumption that K3s is running as a Systemd unit. Your inst
 
 By default, K3s embeds the api server within the k3s process. There is no API server pod specification file.
 
+[#_1_1_2_ensure_that_the_api_server_pod_specification_file_ownership_is_set_to_root_root_automated]
 === 1.1.2 Ensure that the API server pod specification file ownership is set to root:root (Automated)
 
 *Result:* Not Applicable
@@ -43,6 +48,7 @@ By default, K3s embeds the api server within the k3s process. There is no API se
 
 By default, K3s embeds the api server within the k3s process. There is no API server pod specification file.
 
+[#_1_1_3_ensure_that_the_controller_manager_pod_specification_file_permissions_are_set_to_600_or_more_restrictive_automated]
 === 1.1.3 Ensure that the controller manager pod specification file permissions are set to 600 or more restrictive (Automated)
 
 *Result:* Not Applicable
@@ -51,6 +57,7 @@ By default, K3s embeds the api server within the k3s process. There is no API se
 
 By default, K3s embeds the controller manager within the k3s process. There is no controller manager pod specification file.
 
+[#_1_1_4_ensure_that_the_controller_manager_pod_specification_file_ownership_is_set_to_root_root_automated]
 === 1.1.4 Ensure that the controller manager pod specification file ownership is set to root:root (Automated)
 
 *Result:* Not Applicable
@@ -59,6 +66,7 @@ By default, K3s embeds the controller manager within the k3s process. There is n
 
 By default, K3s embeds the controller manager within the k3s process. There is no controller manager pod specification file.
 
+[#_1_1_5_ensure_that_the_scheduler_pod_specification_file_permissions_are_set_to_600_or_more_restrictive_automated]
 === 1.1.5 Ensure that the scheduler pod specification file permissions are set to 600 or more restrictive (Automated)
 
 *Result:* Not Applicable
@@ -67,6 +75,7 @@ By default, K3s embeds the controller manager within the k3s process. There is n
 
 By default, K3s embeds the scheduler within the k3s process. There is no scheduler pod specification file.
 
+[#_1_1_6_ensure_that_the_scheduler_pod_specification_file_ownership_is_set_to_root_root_automated]
 === 1.1.6 Ensure that the scheduler pod specification file ownership is set to root:root (Automated)
 
 *Result:* Not Applicable
@@ -75,6 +84,7 @@ By default, K3s embeds the scheduler within the k3s process. There is no schedul
 
 By default, K3s embeds the scheduler within the k3s process. There is no scheduler pod specification file.
 
+[#_1_1_7_ensure_that_the_etcd_pod_specification_file_permissions_are_set_to_600_or_more_restrictive_automated]
 === 1.1.7 Ensure that the etcd pod specification file permissions are set to 600 or more restrictive (Automated)
 
 *Result:* Not Applicable
@@ -83,6 +93,7 @@ By default, K3s embeds the scheduler within the k3s process. There is no schedul
 
 By default, K3s embeds etcd within the k3s process. There is no etcd pod specification file.
 
+[#_1_1_8_ensure_that_the_etcd_pod_specification_file_ownership_is_set_to_root_root_automated]
 === 1.1.8 Ensure that the etcd pod specification file ownership is set to root:root (Automated)
 
 *Result:* Not Applicable
@@ -91,6 +102,7 @@ By default, K3s embeds etcd within the k3s process. There is no etcd pod specifi
 
 By default, K3s embeds etcd within the k3s process. There is no etcd pod specification file.
 
+[#_1_1_9_ensure_that_the_container_network_interface_file_permissions_are_set_to_600_or_more_restrictive_automated]
 === 1.1.9 Ensure that the Container Network Interface file permissions are set to 600 or more restrictive (Automated)
 
 *Result:* PASS
@@ -124,6 +136,7 @@ permissions=600
 By default, K3s sets the CNI file permissions to 600. Note that for many CNIs, a lock file is created with permissions 750. This is expected and can be ignored. If you modify your CNI configuration, ensure that the permissions are set to 600. For example, `chmod 600 /var/lib/cni/networks/<filename>`
 ======
 
+[#_1_1_10_ensure_that_the_container_network_interface_file_ownership_is_set_to_root_root_automated]
 === 1.1.10 Ensure that the Container Network Interface file ownership is set to root:root (Automated)
 
 *Result:* PASS
@@ -158,6 +171,7 @@ root:root
 Run the below command (based on the file location on your system) on the control plane node. For example, `chown root:root /var/lib/cni/networks/<filename>`
 ======
 
+[#_1_1_11_ensure_that_the_etcd_data_directory_permissions_are_set_to_700_or_more_restrictive_manual]
 === 1.1.11 Ensure that the etcd data directory permissions are set to 700 or more restrictive (Manual)
 
 *Result:* PASS
@@ -186,12 +200,14 @@ permissions=700
 Not applicable for the non-etcd cluster. If running master only with no etcd role, this check is not applicable. If controlplane and etcd roles are present on the same nodes but this check is warn then On the etcd server node, get the etcd data directory, passed as an argument --data-dir, from the command 'ps -ef | grep etcd'. Run the below command (based on the etcd data directory found above). For example, `chmod 700 /var/lib/rancher/k3s/server/db/etcd`
 ======
 
+[#_1_1_12_ensure_that_the_etcd_data_directory_ownership_is_set_to_etcd_etcd_automated]
 === 1.1.12 Ensure that the etcd data directory ownership is set to etcd:etcd (Automated)
 
 *Result:* Not Applicable
 
 *Rationale:* For K3s, etcd is embedded within the k3s process. There is no separate etcd process. Therefore the etcd data directory ownership is managed by the k3s process and should be root:root.
 
+[#_1_1_13_ensure_that_the_admin_conf_file_permissions_are_set_to_600_or_more_restrictive_automated]
 === 1.1.13 Ensure that the admin.conf file permissions are set to 600 or more restrictive (Automated)
 
 *Result:* PASS
@@ -220,6 +236,7 @@ permissions=600
 Run the below command (based on the file location on your system) on the control plane node. For example, `chmod 600 /var/lib/rancher/k3s/server/cred/admin.kubeconfig`
 ======
 
+[#_1_1_14_ensure_that_the_admin_conf_file_ownership_is_set_to_root_root_automated]
 === 1.1.14 Ensure that the admin.conf file ownership is set to root:root (Automated)
 
 *Result:* PASS
@@ -248,6 +265,7 @@ root:root
 Run the below command (based on the file location on your system) on the control plane node. For example, `chown root:root /var/lib/rancher/k3s/server/cred/admin.kubeconfig`
 ======
 
+[#_1_1_15_ensure_that_the_scheduler_conf_file_permissions_are_set_to_600_or_more_restrictive_automated]
 === 1.1.15 Ensure that the scheduler.conf file permissions are set to 600 or more restrictive (Automated)
 
 *Result:* PASS
@@ -276,6 +294,7 @@ permissions=600
 Run the below command (based on the file location on your system) on the control plane node. For example, `chmod 600 /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig`
 ======
 
+[#_1_1_16_ensure_that_the_scheduler_conf_file_ownership_is_set_to_root_root_automated]
 === 1.1.16 Ensure that the scheduler.conf file ownership is set to root:root (Automated)
 
 *Result:* PASS
@@ -304,6 +323,7 @@ root:root
 Run the below command (based on the file location on your system) on the control plane node. For example, `chown root:root /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig`
 ======
 
+[#_1_1_17_ensure_that_the_controller_manager_conf_file_permissions_are_set_to_600_or_more_restrictive_automated]
 === 1.1.17 Ensure that the controller-manager.conf file permissions are set to 600 or more restrictive (Automated)
 
 *Result:* PASS
@@ -332,6 +352,7 @@ permissions=600
 Run the below command (based on the file location on your system) on the control plane node. For example, `chmod 600 /var/lib/rancher/k3s/server/cred/controller.kubeconfig`
 ======
 
+[#_1_1_18_ensure_that_the_controller_manager_conf_file_ownership_is_set_to_root_root_automated]
 === 1.1.18 Ensure that the controller-manager.conf file ownership is set to root:root (Automated)
 
 *Result:* PASS
@@ -360,6 +381,7 @@ root:root
 Run the below command (based on the file location on your system) on the control plane node. For example, `chown root:root /var/lib/rancher/k3s/server/cred/controller.kubeconfig`
 ======
 
+[#_1_1_19_ensure_that_the_kubernetes_pki_directory_and_file_ownership_is_set_to_root_root_automated]
 === 1.1.19 Ensure that the Kubernetes PKI directory and file ownership is set to root:root (Automated)
 
 *Result:* PASS
@@ -388,12 +410,14 @@ root:root
 Run the below command (based on the file location on your system) on the control plane node. For example, `chown -R root:root /var/lib/rancher/k3s/server/tls`
 ======
 
+[#_1_1_20_ensure_that_the_kubernetes_pki_certificate_file_permissions_are_set_to_600_or_more_restrictive_manual]
 === 1.1.20 Ensure that the Kubernetes PKI certificate file permissions are set to 600 or more restrictive (Manual)
 
 *Result:* WARN
 
 *Remediation:* Run the below command (based on the file location on your system) on the master node. For example, `chmod -R 600 /var/lib/rancher/k3s/server/tls/*.crt`
 
+[#_1_1_21_ensure_that_the_kubernetes_pki_key_file_permissions_are_set_to_600_automated]
 === 1.1.21 Ensure that the Kubernetes PKI key file permissions are set to 600 (Automated)
 
 *Result:* PASS
@@ -438,8 +462,10 @@ permissions=600
 Run the below command (based on the file location on your system) on the master node. For example, `chmod -R 600 /var/lib/rancher/k3s/server/tls/*.key`
 ======
 
+[#_1_2_api_server]
 == 1.2 API Server
 
+[#_1_2_1_ensure_that_the_anonymous_auth_argument_is_set_to_false_automated]
 === 1.2.1 Ensure that the --anonymous-auth argument is set to false (Automated)
 
 *Result:* PASS
@@ -472,6 +498,7 @@ kube-apiserver-arg: - "anonymous-auth=true"
 ----
 ======
 
+[#_1_2_2_ensure_that_the_token_auth_file_parameter_is_not_set_automated]
 === 1.2.2 Ensure that the --token-auth-file parameter is not set (Automated)
 
 *Result:* PASS
@@ -505,6 +532,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_3_ensure_that_the_denyserviceexternalips_is_set_manual]
 === 1.2.3 Ensure that the --DenyServiceExternalIPs is set (Manual)
 
 *Result:* WARN
@@ -516,6 +544,7 @@ kube-apiserver-arg:
   - "enable-admission-plugins=DenyServiceExternalIPs"
 ----
 
+[#_1_2_4_ensure_that_the_kubelet_client_certificate_and_kubelet_client_key_arguments_are_set_as_appropriate_automated]
 === 1.2.4 Ensure that the --kubelet-client-certificate and --kubelet-client-key arguments are set as appropriate (Automated)
 
 *Result:* PASS
@@ -549,6 +578,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_5_ensure_that_the_kubelet_certificate_authority_argument_is_set_as_appropriate_automated]
 === 1.2.5 Ensure that the --kubelet-certificate-authority argument is set as appropriate (Automated)
 
 *Result:* PASS
@@ -582,6 +612,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_6_ensure_that_the_authorization_mode_argument_is_not_set_to_alwaysallow_automated]
 === 1.2.6 Ensure that the --authorization-mode argument is not set to AlwaysAllow (Automated)
 
 *Result:* PASS
@@ -615,6 +646,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_7_ensure_that_the_authorization_mode_argument_includes_node_automated]
 === 1.2.7 Ensure that the --authorization-mode argument includes Node (Automated)
 
 *Result:* PASS
@@ -643,6 +675,7 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 By default, K3s sets the --authorization-mode to Node and RBAC. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml, ensure that you are not overriding authorization-mode.
 ======
 
+[#_1_2_8_ensure_that_the_authorization_mode_argument_includes_rbac_automated]
 === 1.2.8 Ensure that the --authorization-mode argument includes RBAC (Automated)
 
 *Result:* PASS
@@ -671,6 +704,7 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 By default, K3s sets the --authorization-mode to Node and RBAC. If this check fails, edit the K3s config file /etc/rancher/k3s/config.yaml, ensure that you are not overriding authorization-mode.
 ======
 
+[#_1_2_9_ensure_that_the_admission_control_plugin_eventratelimit_is_set_manual]
 === 1.2.9 Ensure that the admission control plugin EventRateLimit is set (Manual)
 
 *Result:* WARN
@@ -682,6 +716,7 @@ kube-apiserver-arg:
   - "enable-admission-plugins=\...,EventRateLimit,\..." - "admission-control-config-file=<path/to/configuration/file>"
 ----
 
+[#_1_2_10_ensure_that_the_admission_control_plugin_alwaysadmit_is_not_set_automated]
 === 1.2.10 Ensure that the admission control plugin AlwaysAdmit is not set (Automated)
 
 *Result:* PASS
@@ -715,6 +750,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_11_ensure_that_the_admission_control_plugin_alwayspullimages_is_set_manual]
 === 1.2.11 Ensure that the admission control plugin AlwaysPullImages is set (Manual)
 
 *Result:* WARN
@@ -726,6 +762,7 @@ kube-apiserver-arg:
   - "enable-admission-plugins=\...,AlwaysPullImages,\..."
 ----
 
+[#_1_2_12_ensure_that_the_admission_control_plugin_serviceaccount_is_set_automated]
 === 1.2.12 Ensure that the admission control plugin ServiceAccount is set (Automated)
 
 *Result:* PASS
@@ -759,6 +796,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_13_ensure_that_the_admission_control_plugin_namespacelifecycle_is_set_automated]
 === 1.2.13 Ensure that the admission control plugin NamespaceLifecycle is set (Automated)
 
 *Result:* PASS
@@ -792,6 +830,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_14_ensure_that_the_admission_control_plugin_noderestriction_is_set_automated]
 === 1.2.14 Ensure that the admission control plugin NodeRestriction is set (Automated)
 
 *Result:* PASS
@@ -825,6 +864,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_15_ensure_that_the_profiling_argument_is_set_to_false_automated]
 === 1.2.15 Ensure that the --profiling argument is set to false (Automated)
 
 *Result:* PASS
@@ -858,6 +898,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_16_ensure_that_the_audit_log_path_argument_is_set_manual]
 === 1.2.16 Ensure that the --audit-log-path argument is set (Manual)
 
 *Result:* PASS
@@ -891,6 +932,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_17_ensure_that_the_audit_log_maxage_argument_is_set_to_30_or_as_appropriate_manual]
 === 1.2.17 Ensure that the --audit-log-maxage argument is set to 30 or as appropriate (Manual)
 
 *Result:* PASS
@@ -924,6 +966,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_18_ensure_that_the_audit_log_maxbackup_argument_is_set_to_10_or_as_appropriate_manual]
 === 1.2.18 Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate (Manual)
 
 *Result:* PASS
@@ -957,6 +1000,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_19_ensure_that_the_audit_log_maxsize_argument_is_set_to_100_or_as_appropriate_manual]
 === 1.2.19 Ensure that the --audit-log-maxsize argument is set to 100 or as appropriate (Manual)
 
 *Result:* PASS
@@ -990,6 +1034,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_20_ensure_that_the_request_timeout_argument_is_set_as_appropriate_manual]
 === 1.2.20 Ensure that the --request-timeout argument is set as appropriate (Manual)
 
 *Result:* WARN
@@ -1001,6 +1046,7 @@ kube-apiserver-arg:
   - "request-timeout=300s"
 ----
 
+[#_1_2_21_ensure_that_the_service_account_lookup_argument_is_set_to_true_automated]
 === 1.2.21 Ensure that the --service-account-lookup argument is set to true (Automated)
 
 *Result:* PASS
@@ -1036,6 +1082,7 @@ kube-apiserver-arg:
 Alternatively, you can delete the service-account-lookup parameter from this file so that the default takes effect.
 ======
 
+[#_1_2_22_ensure_that_the_service_account_key_file_argument_is_set_as_appropriate_automated]
 === 1.2.22 Ensure that the --service-account-key-file argument is set as appropriate (Automated)
 
 *Result:* PASS
@@ -1069,6 +1116,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_23_ensure_that_the_etcd_certfile_and_etcd_keyfile_arguments_are_set_as_appropriate_automated]
 === 1.2.23 Ensure that the --etcd-certfile and --etcd-keyfile arguments are set as appropriate (Automated)
 
 *Result:* PASS
@@ -1106,6 +1154,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_24_ensure_that_the_tls_cert_file_and_tls_private_key_file_arguments_are_set_as_appropriate_automated]
 === 1.2.24 Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate (Automated)
 
 *Result:* PASS
@@ -1139,6 +1188,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_25_ensure_that_the_client_ca_file_argument_is_set_as_appropriate_automated]
 === 1.2.25 Ensure that the --client-ca-file argument is set as appropriate (Automated)
 
 *Result:* PASS
@@ -1172,6 +1222,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_26_ensure_that_the_etcd_cafile_argument_is_set_as_appropriate_automated]
 === 1.2.26 Ensure that the --etcd-cafile argument is set as appropriate (Automated)
 
 *Result:* PASS
@@ -1205,6 +1256,7 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_2_27_ensure_that_the_encryption_provider_config_argument_is_set_as_appropriate_manual]
 === 1.2.27 Ensure that the --encryption-provider-config argument is set as appropriate (Manual)
 
 *Result:* PASS
@@ -1233,6 +1285,7 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 K3s can be configured to use encryption providers to encrypt secrets at rest. Edit the K3s config file /etc/rancher/k3s/config.yaml on the control plane node and set the below parameter. secrets-encryption: true Secrets encryption can then be managed with the k3s secrets-encrypt command line tool. If needed, you can find the generated encryption config at /var/lib/rancher/k3s/server/cred/encryption-config.json.
 ======
 
+[#_1_2_28_ensure_that_encryption_providers_are_appropriately_configured_manual]
 === 1.2.28 Ensure that encryption providers are appropriately configured (Manual)
 
 *Result:* PASS
@@ -1262,6 +1315,7 @@ provider=aescbc
 K3s can be configured to use encryption providers to encrypt secrets at rest. K3s will utilize the aescbc provider. Edit the K3s config file /etc/rancher/k3s/config.yaml on the control plane node and set the below parameter. secrets-encryption: true Secrets encryption can then be managed with the k3s secrets-encrypt command line tool. If needed, you can find the generated encryption config at /var/lib/rancher/k3s/server/cred/encryption-config.json
 ======
 
+[#_1_2_29_ensure_that_the_api_server_only_makes_use_of_strong_cryptographic_ciphers_automated]
 === 1.2.29 Ensure that the API Server only makes use of Strong Cryptographic Ciphers (Automated)
 
 *Result:* PASS
@@ -1295,8 +1349,10 @@ kube-apiserver-arg:
 ----
 ======
 
+[#_1_3_controller_manager]
 == 1.3 Controller Manager
 
+[#_1_3_1_ensure_that_the_terminated_pod_gc_threshold_argument_is_set_as_appropriate_manual]
 === 1.3.1 Ensure that the --terminated-pod-gc-threshold argument is set as appropriate (Manual)
 
 *Result:* PASS
@@ -1329,6 +1385,7 @@ kube-controller-manager-arg: - "terminated-pod-gc-threshold=10"
 ----
 ======
 
+[#_1_3_2_ensure_that_the_profiling_argument_is_set_to_false_automated]
 === 1.3.2 Ensure that the --profiling argument is set to false (Automated)
 
 *Result:* PASS
@@ -1361,6 +1418,7 @@ kube-controller-manager-arg: - "profiling=true"
 ----
 ======
 
+[#_1_3_3_ensure_that_the_use_service_account_credentials_argument_is_set_to_true_automated]
 === 1.3.3 Ensure that the --use-service-account-credentials argument is set to true (Automated)
 
 *Result:* PASS
@@ -1393,6 +1451,7 @@ kube-controller-manager-arg: - "use-service-account-credentials=false"
 ----
 ======
 
+[#_1_3_4_ensure_that_the_service_account_private_key_file_argument_is_set_as_appropriate_automated]
 === 1.3.4 Ensure that the --service-account-private-key-file argument is set as appropriate (Automated)
 
 *Result:* PASS
@@ -1425,6 +1484,7 @@ kube-controller-manager-arg: - "service-account-private-key-file=<path>"
 ----
 ======
 
+[#_1_3_5_ensure_that_the_root_ca_file_argument_is_set_as_appropriate_automated]
 === 1.3.5 Ensure that the --root-ca-file argument is set as appropriate (Automated)
 
 *Result:* PASS
@@ -1457,6 +1517,7 @@ kube-controller-manager-arg: - "root-ca-file=<path>"
 ----
 ======
 
+[#_1_3_6_ensure_that_the_rotatekubeletservercertificate_argument_is_set_to_true_automated]
 === 1.3.6 Ensure that the RotateKubeletServerCertificate argument is set to true (Automated)
 
 *Result:* PASS
@@ -1489,6 +1550,7 @@ kube-controller-manager-arg: - "feature-gate=RotateKubeletServerCertificate"
 ----
 ======
 
+[#_1_3_7_ensure_that_the_bind_address_argument_is_set_to_127_0_0_1_automated]
 === 1.3.7 Ensure that the --bind-address argument is set to 127.0.0.1 (Automated)
 
 *Result:* PASS
@@ -1521,8 +1583,10 @@ kube-controller-manager-arg: - "bind-address=<IP>"
 ----
 ======
 
+[#_1_4_scheduler]
 == 1.4 Scheduler
 
+[#_1_4_1_ensure_that_the_profiling_argument_is_set_to_false_automated]
 === 1.4.1 Ensure that the --profiling argument is set to false (Automated)
 
 *Result:* PASS
@@ -1555,6 +1619,7 @@ kube-scheduler-arg: - "profiling=true"
 ----
 ======
 
+[#_1_4_2_ensure_that_the_bind_address_argument_is_set_to_127_0_0_1_automated]
 === 1.4.2 Ensure that the --bind-address argument is set to 127.0.0.1 (Automated)
 
 *Result:* PASS
@@ -1587,8 +1652,10 @@ kube-scheduler-arg: - "bind-address=<IP>"
 ----
 ======
 
+[#_2_etcd_node_configuration]
 == 2 Etcd Node Configuration
 
+[#_2_1_ensure_that_the_cert_file_and_key_file_arguments_are_set_as_appropriate_manual]
 === 2.1 Ensure that the --cert-file and --key-file arguments are set as appropriate (Manual)
 
 *Result:* PASS
@@ -1643,6 +1710,7 @@ snapshot-count: 10000
 If running on with sqlite or a external DB, etcd checks are Not Applicable. When running with embedded-etcd, K3s generates cert and key files for etcd. These are located in /var/lib/rancher/k3s/server/tls/etcd/. If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config has not been modified to use custom cert and key files.
 ======
 
+[#_2_2_ensure_that_the_client_cert_auth_argument_is_set_to_true_manual]
 === 2.2 Ensure that the --client-cert-auth argument is set to true (Manual)
 
 *Result:* PASS
@@ -1697,6 +1765,7 @@ snapshot-count: 10000
 If running on with sqlite or a external DB, etcd checks are Not Applicable. When running with embedded-etcd, K3s sets the --client-cert-auth parameter to true. If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config has not been modified to disable client certificate authentication.
 ======
 
+[#_2_3_ensure_that_the_auto_tls_argument_is_not_set_to_true_manual]
 === 2.3 Ensure that the --auto-tls argument is not set to true (Manual)
 
 *Result:* PASS
@@ -1751,6 +1820,7 @@ snapshot-count: 10000
 If running on with sqlite or a external DB, etcd checks are Not Applicable. When running with embedded-etcd, K3s does not set the --auto-tls parameter. If this check fails, edit the etcd pod specification file /var/lib/rancher/k3s/server/db/etcd/config on the master node and either remove the --auto-tls parameter or set it to false. client-transport-security: auto-tls: false
 ======
 
+[#_2_4_ensure_that_the_peer_cert_file_and_peer_key_file_arguments_are_set_as_appropriate_manual]
 === 2.4 Ensure that the --peer-cert-file and --peer-key-file arguments are set as appropriate (Manual)
 
 *Result:* PASS
@@ -1805,6 +1875,7 @@ snapshot-count: 10000
 If running on with sqlite or a external DB, etcd checks are Not Applicable. When running with embedded-etcd, K3s generates peer cert and key files for etcd. These are located in /var/lib/rancher/k3s/server/tls/etcd/. If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config has not been modified to use custom peer cert and key files.
 ======
 
+[#_2_5_ensure_that_the_peer_client_cert_auth_argument_is_set_to_true_manual]
 === 2.5 Ensure that the --peer-client-cert-auth argument is set to true (Manual)
 
 *Result:* PASS
@@ -1859,6 +1930,7 @@ snapshot-count: 10000
 If running on with sqlite or a external DB, etcd checks are Not Applicable. When running with embedded-etcd, K3s sets the --peer-cert-auth parameter to true. If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config has not been modified to disable peer client certificate authentication.
 ======
 
+[#_2_6_ensure_that_the_peer_auto_tls_argument_is_not_set_to_true_manual]
 === 2.6 Ensure that the --peer-auto-tls argument is not set to true (Manual)
 
 *Result:* PASS
@@ -1913,6 +1985,7 @@ snapshot-count: 10000
 If running on with sqlite or a external DB, etcd checks are Not Applicable. When running with embedded-etcd, K3s does not set the --peer-auto-tls parameter. If this check fails, edit the etcd pod specification file /var/lib/rancher/k3s/server/db/etcd/config on the master node and either remove the --peer-auto-tls parameter or set it to false. peer-transport-security: auto-tls: false
 ======
 
+[#_2_7_ensure_that_a_unique_certificate_authority_is_used_for_etcd_manual]
 === 2.7 Ensure that a unique Certificate Authority is used for etcd (Manual)
 
 *Result:* PASS
@@ -1967,20 +2040,24 @@ snapshot-count: 10000
 If running on with sqlite or a external DB, etcd checks are Not Applicable. When running with embedded-etcd, K3s generates a unique certificate authority for etcd. This is located at /var/lib/rancher/k3s/server/tls/etcd/peer-ca.crt. If this check fails, ensure that the configuration file /var/lib/rancher/k3s/server/db/etcd/config has not been modified to use a shared certificate authority.
 ======
 
+[#_4_1_worker_node_configuration_files]
 == 4.1 Worker Node Configuration Files
 
+[#_4_1_1_ensure_that_the_kubelet_service_file_permissions_are_set_to_600_or_more_restrictive_automated]
 === 4.1.1 Ensure that the kubelet service file permissions are set to 600 or more restrictive (Automated)
 
 *Result:* Not Applicable
 
 *Rationale:* The kubelet is embedded in the k3s process. There is no kubelet service file, all configuration is passed in as arguments at runtime.
 
+[#_4_1_2_ensure_that_the_kubelet_service_file_ownership_is_set_to_root_root_automated]
 === 4.1.2 Ensure that the kubelet service file ownership is set to root:root (Automated)
 
 *Result:* Not Applicable
 
 *Rationale:* The kubelet is embedded in the k3s process. There is no kubelet service file, all configuration is passed in as arguments at runtime. All configuration is passed in as arguments at container run time.
 
+[#_4_1_3_if_proxy_kubeconfig_file_exists_ensure_permissions_are_set_to_600_or_more_restrictive_automated]
 === 4.1.3 If proxy kubeconfig file exists ensure permissions are set to 600 or more restrictive (Automated)
 
 *Result:* PASS
@@ -2009,6 +2086,7 @@ permissions=600
 Run the below command (based on the file location on your system) on the each worker node. For example, `chmod 600 /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig`
 ======
 
+[#_4_1_4_if_proxy_kubeconfig_file_exists_ensure_ownership_is_set_to_root_root_automated]
 === 4.1.4 If proxy kubeconfig file exists ensure ownership is set to root:root (Automated)
 
 *Result:* PASS
@@ -2037,6 +2115,7 @@ root:root
 Run the below command (based on the file location on your system) on the each worker node. For example, `chown root:root /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig`
 ======
 
+[#_4_1_5_ensure_that_the_kubeconfig_kubelet_conf_file_permissions_are_set_to_600_or_more_restrictive_automated]
 === 4.1.5 Ensure that the --kubeconfig kubelet.conf file permissions are set to 600 or more restrictive (Automated)
 
 *Result:* PASS
@@ -2065,6 +2144,7 @@ permissions=600
 Run the below command (based on the file location on your system) on the each worker node. For example, `chmod 600 /var/lib/rancher/k3s/agent/kubelet.kubeconfig`
 ======
 
+[#_4_1_6_ensure_that_the_kubeconfig_kubelet_conf_file_ownership_is_set_to_root_root_automated]
 === 4.1.6 Ensure that the --kubeconfig kubelet.conf file ownership is set to root:root (Automated)
 
 *Result:* PASS
@@ -2093,6 +2173,7 @@ root:root
 Run the below command (based on the file location on your system) on the each worker node. For example, `chown root:root /var/lib/rancher/k3s/agent/kubelet.kubeconfig`
 ======
 
+[#_4_1_7_ensure_that_the_certificate_authorities_file_permissions_are_set_to_600_or_more_restrictive_automated]
 === 4.1.7 Ensure that the certificate authorities file permissions are set to 600 or more restrictive (Automated)
 
 *Result:* PASS
@@ -2121,6 +2202,7 @@ permissions=600
 Run the following command to modify the file permissions of the --client-ca-file `chmod 600 /var/lib/rancher/k3s/agent/client-ca.crt`
 ======
 
+[#_4_1_8_ensure_that_the_client_certificate_authorities_file_ownership_is_set_to_root_root_automated]
 === 4.1.8 Ensure that the client certificate authorities file ownership is set to root:root (Automated)
 
 *Result:* PASS
@@ -2149,18 +2231,21 @@ root:root
 Run the following command to modify the ownership of the --client-ca-file. `chown root:root /var/lib/rancher/k3s/agent/client-ca.crt`
 ======
 
+[#_4_1_9_ensure_that_the_kubelet_config_configuration_file_has_permissions_set_to_600_or_more_restrictive_automated]
 === 4.1.9 Ensure that the kubelet --config configuration file has permissions set to 600 or more restrictive (Automated)
 
 *Result:* Not Applicable
 
 *Rationale:* The kubelet is embedded in the k3s process. There is no kubelet config file, all configuration is passed in as arguments at runtime.
 
+[#_4_1_10_ensure_that_the_kubelet_config_configuration_file_ownership_is_set_to_root_root_automated]
 === 4.1.10 Ensure that the kubelet --config configuration file ownership is set to root:root (Automated)
 
 *Result:* Not Applicable
 
 *Rationale:* The kubelet is embedded in the k3s process. There is no kubelet config file, all configuration is passed in as arguments at runtime. ## 4.2 Kubelet
 
+[#_4_2_1_ensure_that_the_anonymous_auth_argument_is_set_to_false_automated]
 === 4.2.1 Ensure that the --anonymous-auth argument is set to false (Automated)
 
 *Result:* PASS
@@ -2196,6 +2281,7 @@ kubelet-arg:
 If using the command line, edit the K3s service file and remove the below argument. --kubelet-arg="anonymous-auth=true" Based on your system, restart the k3s service. For example, systemctl daemon-reload systemctl restart k3s.service
 ======
 
+[#_4_2_2_ensure_that_the_authorization_mode_argument_is_not_set_to_alwaysallow_automated]
 === 4.2.2 Ensure that the --authorization-mode argument is not set to AlwaysAllow (Automated)
 
 *Result:* PASS
@@ -2231,6 +2317,7 @@ kubelet-arg:
 If using the command line, edit the K3s service file and remove the below argument. --kubelet-arg="authorization-mode=AlwaysAllow" Based on your system, restart the k3s service. For example, systemctl daemon-reload systemctl restart k3s.service
 ======
 
+[#_4_2_3_ensure_that_the_client_ca_file_argument_is_set_as_appropriate_automated]
 === 4.2.3 Ensure that the --client-ca-file argument is set as appropriate (Automated)
 
 *Result:* PASS
@@ -2259,6 +2346,7 @@ Jul 29 19:36:14 server-0 k3s[2235]: time="2025-07-29T19:36:14Z" level=info msg="
 By default, K3s automatically provides the client ca certificate for the Kubelet. It is generated and located at /var/lib/rancher/k3s/agent/client-ca.crt
 ======
 
+[#_4_2_4_verify_that_the_read_only_port_argument_is_set_to_0_automated]
 === 4.2.4 Verify that the --read-only-port argument is set to 0 (Automated)
 
 *Result:* PASS
@@ -2294,6 +2382,7 @@ kubelet-arg:
 If using the command line, edit the K3s service file and remove the below argument. --kubelet-arg="read-only-port=XXXX" Based on your system, restart the k3s service. For example, systemctl daemon-reload systemctl restart k3s.service
 ======
 
+[#_4_2_5_ensure_that_the_streaming_connection_idle_timeout_argument_is_not_set_to_0_manual]
 === 4.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0 (Manual)
 
 *Result:* PASS
@@ -2329,6 +2418,7 @@ kubelet-arg:
 If using the command line, run K3s with --kubelet-arg="streaming-connection-idle-timeout=5m". Based on your system, restart the k3s service. For example, systemctl restart k3s.service
 ======
 
+[#_4_2_6_ensure_that_the_make_iptables_util_chains_argument_is_set_to_true_automated]
 === 4.2.6 Ensure that the --make-iptables-util-chains argument is set to true (Automated)
 
 *Result:* PASS
@@ -2364,12 +2454,14 @@ kubelet-arg:
 If using the command line, run K3s with --kubelet-arg="make-iptables-util-chains=true". Based on your system, restart the k3s service. For example, systemctl restart k3s.service
 ======
 
+[#_4_2_7_ensure_that_the_hostname_override_argument_is_not_set_automated]
 === 4.2.7 Ensure that the --hostname-override argument is not set (Automated)
 
 *Result:* Not Applicable
 
 *Rationale:* By default, K3s does set the --hostname-override argument. Per CIS guidelines, this is to comply with cloud providers that require this flag to ensure that hostname matches node names.
 
+[#_4_2_8_ensure_that_the_eventrecordqps_argument_is_set_to_a_level_which_ensures_appropriate_event_capture_manual]
 === 4.2.8 Ensure that the eventRecordQPS argument is set to a level which ensures appropriate event capture (Manual)
 
 *Result:* PASS
@@ -2405,6 +2497,7 @@ kubelet-arg:
 If using the command line, run K3s with --kubelet-arg="event-qps=<value>". Based on your system, restart the k3s service. For example, systemctl restart k3s.service
 ======
 
+[#_4_2_9_ensure_that_the_tls_cert_file_and_tls_private_key_file_arguments_are_set_as_appropriate_automated]
 === 4.2.9 Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate (Automated)
 
 *Result:* PASS
@@ -2438,6 +2531,7 @@ kubelet-arg:
 ----
 ======
 
+[#_4_2_10_ensure_that_the_rotate_certificates_argument_is_not_set_to_false_automated]
 === 4.2.10 Ensure that the --rotate-certificates argument is not set to false (Automated)
 
 *Result:* PASS
@@ -2466,6 +2560,7 @@ Jul 29 19:36:16 server-0 k3s[2235]: time="2025-07-29T19:36:16Z" level=info msg="
 By default, K3s does not set the --rotate-certificates argument. If you have set this flag with a value of `false`, you should either set it to `true` or completely remove the flag. If using the K3s config file /etc/rancher/k3s/config.yaml, remove any rotate-certificates parameter. If using the command line, remove the K3s flag --kubelet-arg="rotate-certificates". Based on your system, restart the k3s service. For example, systemctl restart k3s.service
 ======
 
+[#_4_2_11_verify_that_the_rotatekubeletservercertificate_argument_is_set_to_true_automated]
 === 4.2.11 Verify that the RotateKubeletServerCertificate argument is set to true (Automated)
 
 *Result:* PASS
@@ -2494,6 +2589,7 @@ Jul 29 19:36:16 server-0 k3s[2235]: time="2025-07-29T19:36:16Z" level=info msg="
 By default, K3s does not set the RotateKubeletServerCertificate feature gate. If you have enabled this feature gate, you should remove it. If using the K3s config file /etc/rancher/k3s/config.yaml, remove any feature-gate=RotateKubeletServerCertificate parameter. If using the command line, remove the K3s flag --kubelet-arg="feature-gate=RotateKubeletServerCertificate". Based on your system, restart the k3s service. For example, systemctl restart k3s.service
 ======
 
+[#_4_2_12_ensure_that_the_kubelet_only_makes_use_of_strong_cryptographic_ciphers_manual]
 === 4.2.12 Ensure that the Kubelet only makes use of Strong Cryptographic Ciphers (Manual)
 
 *Result:* PASS
@@ -2529,6 +2625,7 @@ kubelet-arg:
 or to a subset of these values. If using the command line, add the K3s flag --kubelet-arg="tls-cipher-suites=<same values as above>" Based on your system, restart the k3s service. For example, systemctl restart k3s.service
 ======
 
+[#_4_2_13_ensure_that_a_limit_is_set_on_pod_pids_manual]
 === 4.2.13 Ensure that a limit is set on pod PIDs (Manual)
 
 *Result:* WARN
@@ -2540,8 +2637,10 @@ kubelet-arg:
   - "pod-max-pids=<value>"
 ----
 
+[#_4_3_kube_proxy]
 == 4.3 kube-proxy
 
+[#_4_3_1_ensure_that_the_kube_proxy_metrics_service_is_bound_to_localhost_automated]
 === 4.3.1 Ensure that the kube-proxy metrics service is bound to localhost (Automated)
 
 *Result:* PASS
@@ -2570,8 +2669,10 @@ Jul 29 19:36:16 server-0 k3s[2235]: time="2025-07-29T19:36:16Z" level=info msg="
 Modify or remove any values which bind the metrics service to a non-localhost address. The default value is 127.0.0.1:10249.
 ======
 
+[#_5_1_rbac_and_service_accounts]
 == 5.1 RBAC and Service Accounts
 
+[#_5_1_1_ensure_that_the_cluster_admin_role_is_only_used_where_required_automated]
 === 5.1.1 Ensure that the cluster-admin role is only used where required (Automated)
 
 *Result:* PASS
@@ -2604,12 +2705,14 @@ kubectl delete clusterrolebinding [name]
 ----
 ======
 
+[#_5_1_2_minimize_access_to_secrets_automated]
 === 5.1.2 Minimize access to secrets (Automated)
 
 *Result:* WARN
 
 *Remediation:* Where possible, remove get, list and watch access to Secret objects in the cluster.
 
+[#_5_1_3_minimize_wildcard_use_in_roles_and_clusterroles_automated]
 === 5.1.3 Minimize wildcard use in Roles and ClusterRoles (Automated)
 
 *Result:* PASS
@@ -2740,12 +2843,14 @@ done
 Where possible replace any use of wildcards in clusterroles and roles with specific objects or actions. K3s gives exceptions for following cluster roles, which are required for regular operations: - k3s-cloud-controller-manager, local-path-provisioner-role, cluster-admin - system:kube-controller-manager, system:kubelet-api-admin, system:controller:namespace-controller, - system:controller:disruption-controller, system:controller:generic-garbage-collector, - system:controller:horizontal-pod-autoscaler, system:controller:resourcequota-controller
 ======
 
+[#_5_1_4_minimize_access_to_create_pods_automated]
 === 5.1.4 Minimize access to create pods (Automated)
 
 *Result:* WARN
 
 *Remediation:* Where possible, remove create access to pod objects in the cluster.
 
+[#_5_1_5_ensure_that_default_service_accounts_are_not_actively_used_automated]
 === 5.1.5 Ensure that default service accounts are not actively used. (Automated)
 
 *Result:* FAIL
@@ -2793,6 +2898,7 @@ kubectl patch serviceaccount --namespace <NAMESPACE> default --patch '{"automoun
 ----
 ======
 
+[#_5_1_6_ensure_that_service_account_tokens_are_only_mounted_where_necessary_automated]
 === 5.1.6 Ensure that Service Account Tokens are only mounted where necessary (Automated)
 
 *Result:* PASS
@@ -2839,174 +2945,203 @@ done
 Modify the definition of ServiceAccounts and Pods which do not need to mount service account tokens to disable it, with `automountServiceAccountToken: false`. If both the ServiceAccount and the Pod's .spec specify a value for automountServiceAccountToken, the Pod spec takes precedence. Condition: Pod is_compliant to true when - ServiceAccount is automountServiceAccountToken: false and Pod is automountServiceAccountToken: false or notset - ServiceAccount is automountServiceAccountToken: true notset and Pod is automountServiceAccountToken: false K3s gives exceptions to the following service-accounts, which are required for regular operations: - coredns, helm-traefik, helm-traefik-crd, traefik, metrics-server, svclb, local-path-provisioner-service-account
 ======
 
+[#_5_1_7_avoid_use_of_system_masters_group_manual]
 === 5.1.7 Avoid use of system:masters group (Manual)
 
 *Result:* WARN
 
 *Remediation:* Remove the system:masters group from all users in the cluster.
 
+[#_5_1_8_limit_use_of_the_bind_impersonate_and_escalate_permissions_in_the_kubernetes_cluster_manual]
 === 5.1.8 Limit use of the Bind, Impersonate and Escalate permissions in the Kubernetes cluster (Manual)
 
 *Result:* WARN
 
 *Remediation:* Where possible, remove the impersonate, bind and escalate rights from subjects.
 
+[#_5_1_9_minimize_access_to_create_persistent_volumes_manual]
 === 5.1.9 Minimize access to create persistent volumes (Manual)
 
 *Result:* WARN
 
 *Remediation:* Where possible, remove create access to PersistentVolume objects in the cluster.
 
+[#_5_1_10_minimize_access_to_the_proxy_sub_resource_of_nodes_manual]
 === 5.1.10 Minimize access to the proxy sub-resource of nodes (Manual)
 
 *Result:* WARN
 
 *Remediation:* Where possible, remove access to the proxy sub-resource of node objects.
 
+[#_5_1_11_minimize_access_to_the_approval_sub_resource_of_certificatesigningrequests_objects_manual]
 === 5.1.11 Minimize access to the approval sub-resource of certificatesigningrequests objects (Manual)
 
 *Result:* WARN
 
 *Remediation:* Where possible, remove access to the approval sub-resource of certificatesigningrequest objects.
 
+[#_5_1_12_minimize_access_to_webhook_configuration_objects_manual]
 === 5.1.12 Minimize access to webhook configuration objects (Manual)
 
 *Result:* WARN
 
 *Remediation:* Where possible, remove access to the validatingwebhookconfigurations or mutatingwebhookconfigurations objects
 
+[#_5_1_13_minimize_access_to_the_service_account_token_creation_manual]
 === 5.1.13 Minimize access to the service account token creation (Manual)
 
 *Result:* WARN
 
 *Remediation:* Where possible, remove access to the token sub-resource of serviceaccount objects. ## 5.2 Pod Security Standards
 
+[#_5_2_1_ensure_that_the_cluster_has_at_least_one_active_policy_control_mechanism_in_place_manual]
 === 5.2.1 Ensure that the cluster has at least one active policy control mechanism in place (Manual)
 
 *Result:* WARN
 
 *Remediation:* Ensure that either Pod Security Admission or an external policy control system is in place for every namespace which contains user workloads.
 
+[#_5_2_2_minimize_the_admission_of_privileged_containers_manual]
 === 5.2.2 Minimize the admission of privileged containers (Manual)
 
 *Result:* WARN
 
 *Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of privileged containers.
 
+[#_5_2_3_minimize_the_admission_of_containers_wishing_to_share_the_host_process_id_namespace_manual]
 === 5.2.3 Minimize the admission of containers wishing to share the host process ID namespace (Manual)
 
 *Result:* WARN
 
 *Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of `hostPID` containers.
 
+[#_5_2_4_minimize_the_admission_of_containers_wishing_to_share_the_host_ipc_namespace_manual]
 === 5.2.4 Minimize the admission of containers wishing to share the host IPC namespace (Manual)
 
 *Result:* WARN
 
 *Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of `hostIPC` containers.
 
+[#_5_2_5_minimize_the_admission_of_containers_wishing_to_share_the_host_network_namespace_manual]
 === 5.2.5 Minimize the admission of containers wishing to share the host network namespace (Manual)
 
 *Result:* WARN
 
 *Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of `hostNetwork` containers.
 
+[#_5_2_6_minimize_the_admission_of_containers_with_allowprivilegeescalation_manual]
 === 5.2.6 Minimize the admission of containers with allowPrivilegeEscalation (Manual)
 
 *Result:* WARN
 
 *Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of containers with `.spec.allowPrivilegeEscalation` set to `true`.
 
+[#_5_2_7_minimize_the_admission_of_root_containers_manual]
 === 5.2.7 Minimize the admission of root containers (Manual)
 
 *Result:* WARN
 
 *Remediation:* Create a policy for each namespace in the cluster, ensuring that either `MustRunAsNonRoot` or `MustRunAs` with the range of UIDs not including 0, is set.
 
+[#_5_2_8_minimize_the_admission_of_containers_with_the_net_raw_capability_manual]
 === 5.2.8 Minimize the admission of containers with the NET_RAW capability (Manual)
 
 *Result:* WARN
 
 *Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of containers with the `NET_RAW` capability.
 
+[#_5_2_9_minimize_the_admission_of_containers_with_added_capabilities_manual]
 === 5.2.9 Minimize the admission of containers with added capabilities (Manual)
 
 *Result:* WARN
 
 *Remediation:* Ensure that `allowedCapabilities` is not present in policies for the cluster unless it is set to an empty array.
 
+[#_5_2_10_minimize_the_admission_of_containers_with_capabilities_assigned_manual]
 === 5.2.10 Minimize the admission of containers with capabilities assigned (Manual)
 
 *Result:* WARN
 
 *Remediation:* Review the use of capabilities in applications running on your cluster. Where a namespace contains applications which do not require any Linux capabities to operate consider adding a PSP which forbids the admission of containers which do not drop all capabilities.
 
+[#_5_2_11_minimize_the_admission_of_windows_hostprocess_containers_manual]
 === 5.2.11 Minimize the admission of Windows HostProcess containers (Manual)
 
 *Result:* WARN
 
 *Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of containers that have `.securityContext.windowsOptions.hostProcess` set to `true`.
 
+[#_5_2_12_minimize_the_admission_of_hostpath_volumes_manual]
 === 5.2.12 Minimize the admission of HostPath volumes (Manual)
 
 *Result:* WARN
 
 *Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of containers with `hostPath` volumes.
 
+[#_5_2_13_minimize_the_admission_of_containers_which_use_hostports_manual]
 === 5.2.13 Minimize the admission of containers which use HostPorts (Manual)
 
 *Result:* WARN
 
 *Remediation:* Add policies to each namespace in the cluster which has user workloads to restrict the admission of containers which use `hostPort` sections. ## 5.3 Network Policies and CNI
 
+[#_5_3_1_ensure_that_the_cni_in_use_supports_networkpolicies_manual]
 === 5.3.1 Ensure that the CNI in use supports NetworkPolicies (Manual)
 
 *Result:* WARN
 
 *Remediation:* If the CNI plugin in use does not support network policies, consideration should be given to making use of a different plugin, or finding an alternate mechanism for restricting traffic in the Kubernetes cluster.
 
+[#_5_3_2_ensure_that_all_namespaces_have_networkpolicies_defined_manual]
 === 5.3.2 Ensure that all Namespaces have NetworkPolicies defined (Manual)
 
 *Result:* WARN
 
 *Remediation:* Follow the documentation and create NetworkPolicy objects as you need them. ## 5.4 Secrets Management
 
+[#_5_4_1_prefer_using_secrets_as_files_over_secrets_as_environment_variables_manual]
 === 5.4.1 Prefer using Secrets as files over Secrets as environment variables (Manual)
 
 *Result:* WARN
 
 *Remediation:* If possible, rewrite application code to read Secrets from mounted secret files, rather than from environment variables.
 
+[#_5_4_2_consider_external_secret_storage_manual]
 === 5.4.2 Consider external secret storage (Manual)
 
 *Result:* WARN
 
 *Remediation:* Refer to the Secrets management options offered by your cloud provider or a third-party secrets management solution. ## 5.5 Extensible Admission Control
 
+[#_5_5_1_configure_image_provenance_using_imagepolicywebhook_admission_controller_manual]
 === 5.5.1 Configure Image Provenance using ImagePolicyWebhook admission controller (Manual)
 
 *Result:* WARN
 
 *Remediation:* Follow the Kubernetes documentation and setup image provenance. ## 5.7 General Policies
 
+[#_5_7_1_create_administrative_boundaries_between_resources_using_namespaces_manual]
 === 5.7.1 Create administrative boundaries between resources using namespaces (Manual)
 
 *Result:* WARN
 
 *Remediation:* Follow the documentation and create namespaces for objects in your deployment as you need them.
 
+[#_5_7_2_ensure_that_the_seccomp_profile_is_set_to_docker_default_in_your_pod_definitions_manual]
 === 5.7.2 Ensure that the seccomp profile is set to docker/default in your Pod definitions (Manual)
 
 *Result:* WARN
 
 *Remediation:* Use `securityContext` to enable the docker/default seccomp profile in your pod definitions. An example is as below: securityContext: seccompProfile: type: RuntimeDefault
 
+[#_5_7_3_apply_securitycontext_to_your_pods_and_containers_manual]
 === 5.7.3 Apply SecurityContext to your Pods and Containers (Manual)
 
 *Result:* WARN
 
 *Remediation:* Follow the Kubernetes documentation and apply SecurityContexts to your Pods. For a suggested list of SecurityContexts, you may refer to the CIS Security Benchmark for Docker Containers.
 
+[#_5_7_4_the_default_namespace_should_not_be_used_manual]
 === 5.7.4 The default namespace should not be used (Manual)
 
 *Result:* WARN

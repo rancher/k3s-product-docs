@@ -13,6 +13,7 @@ If you do not use the same token value when restoring, the snapshot will be unus
 ====
 
 
+[#_backup_and_restore_with_sqlite]
 == Backup and Restore with SQLite
 
 No special commands are required to back up or restore the SQLite datastore.
@@ -20,6 +21,7 @@ No special commands are required to back up or restore the SQLite datastore.
 * To back up the SQLite datastore, take a copy of `/var/lib/rancher/k3s/server/db/`.
 * To restore the SQLite datastore, restore the contents of `/var/lib/rancher/k3s/server/db` (and the token, as discussed above).
 
+[#_backup_and_restore_with_external_datastore]
 == Backup and Restore with External Datastore
 
 When an external datastore is used, backup and restore operations are handled outside of K3s. The database administrator will need to back up the external database, or restore it from a snapshot or dump.
@@ -32,6 +34,7 @@ For details on taking database snapshots and restoring your database from them, 
 * https://www.postgresql.org/docs/8.3/backup-dump.html[Official PostgreSQL documentation]
 * https://etcd.io/docs/latest/op-guide/recovery/[Official etcd documentation]
 
+[#_backup_and_restore_with_embedded_etcd_datastore]
 == Backup and Restore with Embedded etcd Datastore
 
 See the xref:cli/etcd-snapshot.adoc[`k3s etcd-snapshot` command documentation] for information on performing backup and restore operations on the embedded etcd datastore.
