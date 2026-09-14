@@ -1,4 +1,5 @@
 = k3s server
+:description: Configure the K3s server using CLI flags or configuration files to set critical options for cluster operation
 :revdate: 2026-03-31
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-07-24

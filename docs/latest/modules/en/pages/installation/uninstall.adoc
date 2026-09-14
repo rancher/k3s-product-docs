@@ -1,4 +1,5 @@
 = Uninstalling K3s
+:description: Uninstall K3s from a server or agent node by running the uninstall script to stop the service and delete local cluster data
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-01-05
 :page-revdate: {revdate}

@@ -1,4 +1,5 @@
 = v1.35.X
+:description: Find updates and fixes for k3s v1.35.X releases, including Kubernetes version changes and issue resolutions
 :page-languages: [en, ja, ko, zh]
 :revdate: 2026-08-28
 :page-revdate: {revdate}

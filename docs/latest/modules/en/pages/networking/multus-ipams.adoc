@@ -1,4 +1,5 @@
 = Multus and IPAM plugins
+:description: Learn how to use Multus with IPAM plugins to configure multiple network interfaces on Kubernetes pods
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-07-24
 :page-revdate: {revdate}

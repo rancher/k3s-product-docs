@@ -1,4 +1,5 @@
 = Requirements
+:description: Learn the minimum system requirements for K3s, including supported architectures, OS-specific configurations, and hostname rules
 :revdate: 2026-07-22
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}

@@ -1,4 +1,5 @@
 = Managing Packaged Components
+:description: Manage packaged components by deploying, disabling, and organizing Kubernetes resources using manifests and AddOns
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-01-05
 :page-revdate: {revdate}

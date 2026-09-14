@@ -1,4 +1,5 @@
 = Automated Upgrades
+:description: Automate K3s cluster upgrades using Rancher's system-upgrade-controller to manage node upgrades with plans, label selectors, version policies, and channel
 :revdate: 2026-07-22
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}

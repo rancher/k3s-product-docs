@@ -1,4 +1,5 @@
 = Known Issues
+:description: Describe the known issues that may affect K3s, including how to check for updates on the K3s Project Issue Tracker and apply schema migrations to databases
 :revdate: 2026-03-31
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}

@@ -1,4 +1,5 @@
 = Import images
+:description: Import images into the containerd image store using text files or image tarballs to make them available for pods
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-01-05
 :page-revdate: {revdate}

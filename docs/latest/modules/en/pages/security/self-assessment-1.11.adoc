@@ -1,4 +1,5 @@
 = CIS 1.11 Self Assessment Guide
+:description: Assess the security of a hardened K3s cluster against the CIS Kubernetes Benchmark v1.11 using this guide
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-05-29
 :page-revdate: {revdate}

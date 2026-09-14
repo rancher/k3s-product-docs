@@ -1,4 +1,5 @@
 = High Availability External DB
+:description: Install a high-availability K3s cluster with an external database by setting up a datastore, launching server nodes, and configuring the cluster
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-03-03
 :page-revdate: {revdate}

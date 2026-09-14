@@ -1,4 +1,5 @@
 = Private Registry Configuration
+:description: Configure private registry settings by editing the registries.yaml file to define mirrors, redirects, rewrites, and specify authentication or custom TLS
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-08-28
 :page-revdate: {revdate}

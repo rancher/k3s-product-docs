@@ -1,4 +1,5 @@
 = k3s certificate
+:description: Manage k3s client and server certificates by checking expiration dates, rotating them manually when needed, and understanding how automatic renewal extends their validity
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-12-30
 :page-revdate: {revdate}

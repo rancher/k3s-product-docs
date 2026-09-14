@@ -1,4 +1,5 @@
 = CIS Hardening Guide
+:description: Follow steps in the CIS Hardening Guide to configure K3s, set kernel parameters, and apply security controls to meet CIS Benchmark requirements
 :revdate: 2026-05-29
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}

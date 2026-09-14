@@ -1,4 +1,5 @@
 = v1.34.X
+:description: Find updates and fixes for k3s v1.34.X releases including Kubernetes version changes component updates and backports from main and other branches
 :revdate: 2026-08-28
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}

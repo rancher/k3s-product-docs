@@ -1,4 +1,5 @@
 = k3s agent
+:description: Configure the K3s agent using CLI flags or configuration files to set options like logging, cluster settings, node labels, and networking
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-01-15
 :page-revdate: {revdate}

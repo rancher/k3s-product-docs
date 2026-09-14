@@ -1,4 +1,5 @@
 = Networking Services
+:description: Learn how CoreDNS, Traefik Ingress controller, Network Policy controller, and ServiceLB work in K3s
 :revdate: 2026-05-29
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}

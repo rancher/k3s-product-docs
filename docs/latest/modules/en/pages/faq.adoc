@@ -1,4 +1,5 @@
 = FAQ
+:description: Find answers to common questions about K3s, such as its use as a Kubernetes replacement, Ingress configuration, and log locations
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2024-09-11
 :page-revdate: {revdate}

@@ -1,4 +1,5 @@
 = Air-Gap Install
+:description: Install K3s in an air-gapped environment using a private registry or manually deploying images to nodes
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-03-03
 :page-revdate: {revdate}

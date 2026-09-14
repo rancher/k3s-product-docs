@@ -1,4 +1,5 @@
 = v1.26.X
+:description: Discover updates, fixes, and changes in the v1.26.X release series including Kubernetes version upgrades and other improvements
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2024-09-09
 :page-revdate: {revdate}

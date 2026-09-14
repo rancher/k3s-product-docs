@@ -1,4 +1,5 @@
 = CIS 1.10 Self Assessment Guide
+:description: Use the CIS 1.10 Self Assessment Guide to evaluate the security of a hardened K3s cluster against the CIS Kubernetes Benchmark
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-12-31
 :page-revdate: {revdate}
