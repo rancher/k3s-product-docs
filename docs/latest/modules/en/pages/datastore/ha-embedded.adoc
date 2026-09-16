@@ -1,4 +1,5 @@
 = High Availability Embedded etcd
+:description: Set up a high availability K3s cluster with embedded etcd, three or more server nodes, and a shared secret to join additional servers and agents
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-03-03
 :page-revdate: {revdate}

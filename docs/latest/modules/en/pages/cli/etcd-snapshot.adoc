@@ -1,4 +1,5 @@
 = k3s etcd-snapshot
+:description: Manage etcd snapshots with the k3s etcd-snapshot CLI tool by creating, deleting, and restoring scheduled or on-demand backups stored on the node's file system
 :revdate: 2026-07-24
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}

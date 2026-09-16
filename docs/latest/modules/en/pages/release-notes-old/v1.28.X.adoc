@@ -1,4 +1,5 @@
 = v1.28.X
+:description: Upgrade to v1.28.X to update Kubernetes to version 1.28.15 fix multiple issues and add improvements for network configuration and container runtime support
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2024-12-10
 :page-revdate: {revdate}

@@ -1,4 +1,5 @@
 = Architecture
+:description: Learn about K3s architecture, including server and agent node roles, single-server and high-availability configurations, agent registration, load balancer
 :revdate: 2026-04-01
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}

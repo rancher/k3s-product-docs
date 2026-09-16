@@ -1,4 +1,5 @@
 = Flag Deprecation
+:description: Understand the process for deprecating flags in K3s, including labeling, warning users, and eventual removal from code and documentation
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2024-09-09
 :page-revdate: {revdate}

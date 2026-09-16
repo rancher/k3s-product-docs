@@ -1,4 +1,5 @@
 = Backup and Restore
+:description: Backup and restore operations for K3s depend on the type of datastore used, requiring copying specific directories for SQLite and handling external databases
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2024-09-11
 :page-revdate: {revdate}

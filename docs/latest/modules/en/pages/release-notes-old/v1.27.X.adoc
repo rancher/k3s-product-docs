@@ -1,4 +1,5 @@
 = v1.27.X
+:description: Upgrade the k3s v1.27.X to update Kubernetes to v1.27.16, fix flannel, etcd, and containerd issues, and apply security patches
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-04-10
 :page-revdate: {revdate}

@@ -1,4 +1,5 @@
 = Quick-Start Guide
+:description: Launch a Kubernetes cluster using the K3s install script, which automatically configures the service, installs utilities, and creates a kubeconfig file
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-03-03
 :page-revdate: {revdate}

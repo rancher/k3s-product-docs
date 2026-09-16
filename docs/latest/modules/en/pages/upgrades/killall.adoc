@@ -1,4 +1,5 @@
 = Stopping K3s
+:description: Stop K3s from using the systemd or OpenRC installation scripts, or the killall script, to manage containers, reset containerd's state, and preserve cluster data
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2024-09-26
 :page-revdate: {revdate}

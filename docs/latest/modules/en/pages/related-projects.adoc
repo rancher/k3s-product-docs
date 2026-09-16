@@ -1,4 +1,5 @@
 = Related Projects
+:description: Find projects that expand the K3s community, simplify HA cluster setup, and provide tools for deploying K3s on various platforms
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-03-31
 :page-revdate: {revdate}

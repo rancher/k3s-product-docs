@@ -1,4 +1,5 @@
 = k3s token
+:description: Learn how k3s tokens secure node joins, encrypt data, and use secure or short formats for server, agent, or bootstrap types of authentication, including TLS,
 :revdate: 2026-03-31
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}

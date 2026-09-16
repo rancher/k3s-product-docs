@@ -1,4 +1,5 @@
 = Managing Server Roles
+:description: Manage server roles by disabling or enabling K3s control-plane components and etcd on dedicated nodes using configuration files
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-03-03
 :page-revdate: {revdate}

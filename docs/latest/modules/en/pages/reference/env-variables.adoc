@@ -1,4 +1,5 @@
 = Environment Variables
+:description: Configure K3s installation with environment variables to set service options, modify the PATH for container runtimes, and edit systemd or OpenRC service files
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-07-24
 :page-revdate: {revdate}

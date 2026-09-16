@@ -1,4 +1,5 @@
 = v1.29.X
+:description: Update Kubernetes to v1.29.15 for v1.29.X releases and fix issues by reviewing backports, component updates such as etcd and traefik, and changes in containerd
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-03-31
 :page-revdate: {revdate}

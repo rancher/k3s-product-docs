@@ -1,4 +1,5 @@
 = Configuration Options
+:description: Configure K3s using environment variables, install scripts, binaries, container images, and configuration files
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-03-03
 :page-revdate: {revdate}

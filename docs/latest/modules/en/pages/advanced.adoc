@@ -1,4 +1,5 @@
 = Advanced Options / Configuration
+:description: Configure K3s advanced options for certificate management, token rotation, DNS resolution, and HTTP proxy settings
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-08-28
 :page-revdate: {revdate}

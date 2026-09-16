@@ -1,4 +1,5 @@
 = Volumes and Storage
+:description: Set up persistent storage using Kubernetes persistent volumes (PVs) and persistent volume claims (PVCs) with K3s
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-01-05
 :page-revdate: {revdate}
