@@ -1,4 +1,5 @@
 = Security
+:description: Secure a K3s cluster by following hardening guides and using self-assessments against CIS benchmarks to validate its security configuration and ensure compliance
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-12-31
 :page-revdate: {revdate}

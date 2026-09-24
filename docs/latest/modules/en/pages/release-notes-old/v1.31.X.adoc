@@ -1,4 +1,5 @@
 = v1.31.X
+:description: Upgrade to v1.31.X to update Kubernetes to v1.31.14, apply fixes for CLI, network plugins, etcd, and other components, and review the release notes
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-12-31
 :page-revdate: {revdate}

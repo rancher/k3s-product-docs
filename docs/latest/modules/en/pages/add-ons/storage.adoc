@@ -1,4 +1,5 @@
 = Volumes and Storage
+:description: Set up persistent storage using Kubernetes persistent volumes (PVs) and persistent volume claims (PVCs) with K3s
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-08-28
 :page-revdate: {revdate}
@@ -127,6 +128,7 @@ Longhorn will be installed in the namespace `longhorn-system`.
 
 Create a persistent volume claim and a pod to utilize it:
 
+[#_pvc_yaml_1]
 === pvc.yaml
 
 [,yaml]
@@ -144,6 +146,7 @@ spec:
       storage: 2Gi
 ----
 
+[#_pod_yaml_1]
 === pod.yaml
 
 [,yaml]

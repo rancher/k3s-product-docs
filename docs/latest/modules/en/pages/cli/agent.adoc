@@ -1,4 +1,5 @@
 = k3s agent
+:description: Configure the K3s agent using CLI flags or configuration files to set options like logging, cluster settings, node labels, and networking
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-01-15
 :page-revdate: {revdate}
@@ -9,6 +10,7 @@ Note that servers also run an agent, so all flags listed on this page are also v
 
 Options are documented on this page as CLI flags, but can also be passed as configuration file options. See the xref:installation/configuration.adoc#_configuration_file[Configuration File] documentation for more information on using YAML configuration files.
 
+[#_logging]
 == Logging
 
 |===
@@ -31,6 +33,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Log to standard error as well as file (if set)
 |===
 
+[#_cluster_options]
 == Cluster Options
 
 |===
@@ -49,6 +52,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Server to connect to
 |===
 
+[#_listener]
 == Listener
 
 |===
@@ -58,6 +62,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | k3s bind address
 |===
 
+[#_data]
 == Data
 
 |===
@@ -68,6 +73,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Folder to hold state
 |===
 
+[#_node]
 == Node
 
 |===
@@ -102,6 +108,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Local port for supervisor client load-balancer. If the supervisor and apiserver are not colocated an additional port 1 less than this port will also be used for the apiserver client load-balancer. (default: 6444)
 |===
 
+[#_runtime]
 == Runtime
 
 |===
@@ -128,6 +135,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Private registry configuration file
 |===
 
+[#_networking]
 == Networking
 
 |===
@@ -166,6 +174,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Override default flannel cni config file
 |===
 
+[#_customized_flags]
 == Customized Flags
 
 |===
@@ -178,6 +187,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | Customized flag for kube-proxy process
 |===
 
+[#_experimental]
 == Experimental
 
 |===
@@ -205,6 +215,7 @@ Options are documented on this page as CLI flags, but can also be passed as conf
 | See "xref:networking/distributed-multicloud.adoc#_integration_with_the_tailscale_vpn_provider_experimental[Integration with the Tailscale VPN provider]"
 |===
 
+[#_deprecated]
 == Deprecated
 
 |===
@@ -235,6 +246,7 @@ Below is an example showing how to add labels and a taint:
 
 If you want to change node labels and taints after node registration you should use `kubectl`. Refer to the official Kubernetes documentation for details on how to add https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[taints] and https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/#add-a-label-to-a-node[node labels.]
 
+[#_k3s_agent_cli_help]
 == K3s Agent CLI Help
 
 ____

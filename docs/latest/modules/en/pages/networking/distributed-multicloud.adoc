@@ -1,4 +1,5 @@
 = Distributed hybrid or multicloud cluster
+:description: Deploy a distributed hybrid or multicloud cluster using K3s with either the embedded multicloud solution or Tailscale integration
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2025-05-26
 :page-revdate: {revdate}
@@ -17,6 +18,7 @@ Embedded etcd is not supported in this type of deployment. If using embedded etc
 ====
 
 
+[#_embedded_k3s_multicloud_solution]
 == Embedded k3s multicloud solution
 
 K3s uses wireguard to establish a VPN mesh for cluster traffic. Nodes must each have a unique IP through which they can be reached (usually a public IP). K3s supervisor traffic will use a websocket tunnel, and cluster (CNI) traffic will use a wireguard tunnel.

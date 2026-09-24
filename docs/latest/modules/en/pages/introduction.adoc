@@ -1,4 +1,5 @@
 = {k3s-product-name}
+:description: Deploy Kubernetes clusters using K3s, a lightweight certified distribution for resource-constrained and IoT environments
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2024-10-23
 :page-revdate: {revdate}
@@ -6,6 +7,7 @@
 
 K3s is an official https://www.cncf.io[CNCF] sandbox project that delivers a lightweight yet powerful certified Kubernetes distribution designed for production workloads across resource-restrained, remote locations or on IoT devices. When used with SUSE® Rancher Prime, K3s is simple to install, lightweight yet high availability Kubernetes distribution that can be easily managed within the Rancher orchestration platform.
 
+[#_key_features]
 == Key Features
 
 * Distributed as a single binary or minimal container image.
@@ -25,6 +27,7 @@ K3s is an official https://www.cncf.io[CNCF] sandbox project that delivers a lig
  ** Spegel distributed container image registry mirror
  ** Host utilities (iptables, socat, etc)
 
+[#_great_for]
 == Great for:
 
 * Edge
