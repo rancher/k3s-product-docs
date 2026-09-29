@@ -1,6 +1,6 @@
 = v1.36.X
 :description: Upgrade to v1.36.X updates Kubernetes to v1.36.3, adds wildcard TLS SAN support, applies security fixes, and includes backports for July 2026 changes
-:page-languages: [en, ja, ko, zh]
+:page-languages: [en, de, es, fr, ja, pt, zh]
 :revdate: 2026-09-17
 :page-revdate: {revdate}
 :page-role: -toc
