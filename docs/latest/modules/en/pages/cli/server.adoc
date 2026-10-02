@@ -1,10 +1,9 @@
 = k3s server
 :description: Configure the K3s server using CLI flags or configuration files to set critical options for cluster operation
-:revdate: 2026-03-31
+:revdate: 2026-10-02
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-08-28
 :page-revdate: {revdate}
-
+:page-role: -toc
 In this section, you'll learn how to configure the K3s server.
 
 Note that servers also run an agent, so all of the configuration options listed in the xref:cli/agent.adoc[`k3s agent` documentation] are also supported on servers.
@@ -85,7 +84,7 @@ The following options must be set to the same value on all servers in the cluste
 | `--etcd-snapshot-retention` value
 |
 | 5
-| Number of snapshots to retain
+| Number of local snapshots to retain on each server node
 
 | `--etcd-snapshot-dir` value
 |
@@ -157,7 +156,7 @@ The following options must be set to the same value on all servers in the cluste
 | `--etcd-s3-retention` value
 |
 | 5
-| S3 retention limit
+| Number of S3 snapshots to retain in the configured region, bucket, and prefix
 
 | `--etcd-s3-proxy`
 |
