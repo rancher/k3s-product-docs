@@ -1,0 +1,124 @@
+= v1.37.X
+:description: Find release details for k3s v1.37.x including Kubernetes updates, new features, and issue fixes
+:revdate: 2026-10-02
+:page-languages: [en, de, es, fr, ja, pt, zh]
+:page-revdate: {revdate}
+:page-role: -toc
+
+[CAUTION]
+.Upgrade Notice
+====
+Before upgrading from earlier releases, be sure to read the Kubernetes https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.37.md#urgent-upgrade-notes[Urgent Upgrade Notes].
+====
+
+|===
+| Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
+
+| xref:#_release_v1_37_1k3s1[v1.37.1+k3s1]
+| Sep 30 2026
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.37.md#v1371[v1.37.1]
+| https://github.com/k3s-io/kine/releases/tag/v0.17.1[v0.17.1]
+| https://sqlite.org/releaselog/3_53_4.html[3.53.4]
+| https://github.com/k3s-io/etcd/releases/tag/v3.7.1-k3s3[v3.7.1-k3s3]
+| https://github.com/k3s-io/containerd/releases/tag/v2.3.4-k3s1[v2.3.4-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.4.2[v1.4.2]
+| https://github.com/flannel-io/flannel/releases/tag/v0.28.4[v0.28.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.9.0[v0.9.0]
+| https://github.com/traefik/traefik/releases/tag/v3.7.13[v3.7.13]
+| https://github.com/coredns/coredns/releases/tag/v1.14.7[v1.14.7]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.17.9[v0.17.9]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.37[v0.0.37]
+
+| xref:#_release_v1_37_0k3s1[v1.37.0+k3s1]
+| Sep 14 2026
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.37.md#v1370[v1.37.0]
+| https://github.com/k3s-io/kine/releases/tag/v0.17.0[v0.17.0]
+| https://sqlite.org/releaselog/3_53_4.html[3.53.4]
+| https://github.com/k3s-io/etcd/releases/tag/v3.7.1-k3s1[v3.7.1-k3s1]
+| https://github.com/k3s-io/containerd/releases/tag/v2.3.4-k3s1[v2.3.4-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.4.2[v1.4.2]
+| https://github.com/flannel-io/flannel/releases/tag/v0.28.4[v0.28.4]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.9.0[v0.9.0]
+| https://github.com/traefik/traefik/releases/tag/v3.7.13[v3.7.13]
+| https://github.com/coredns/coredns/releases/tag/v1.14.7[v1.14.7]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.17.7[v0.17.7]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.37[v0.0.37]
+|===
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.37.1+k3s1[v1.37.1+k3s1]
+// v1.37.1+k3s1
+
+This release updates Kubernetes to v1.37.1, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.37.md#changelog-since-v1370[Kubernetes release notes].
+
+=== Changes since v1.37.0+k3s1:
+
+* Backports for 2026-09 https://github.com/k3s-io/k3s/pull/14631[(#14631)]
+** Fix restore from compressed etcd snapshot #14528
+** Enable seccomp in riscv64 builds #14529
+** Use ginkgo CLI to run tests #14531
+** Bump kine to v0.17.1 #14627
+* Bump helm-controller https://github.com/k3s-io/k3s/pull/14684[(#14684)]
+* Bump k3s-io/kubernetes and Go references https://github.com/k3s-io/k3s/pull/14695[(#14695)]
+* Bump cadvisor to v0.60.5-k3s1 https://github.com/k3s-io/k3s/pull/14698[(#14698)]
+* Reject anonymous access to supervisor router (spegel/pprof/metrics) https://github.com/k3s-io/k3s/pull/14701[(#14701)]
+* Improve CA hash validation https://github.com/k3s-io/k3s/pull/14705[(#14705)]
+
+'''
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.37.0+k3s1[v1.37.0+k3s1]
+// v1.37.0+k3s1
+
+This release updates Kubernetes to v1.37.0, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.37.md#changelog-since-v1360[Kubernetes release notes].
+
+=== Changes since v1.36.3+k3s1:
+
+* Bump mirrored-pause to 3.10.2 https://github.com/k3s-io/k3s/pull/14339[(#14339)]
+* Build(deps): bump the action-deps group with 14 updates https://github.com/k3s-io/k3s/pull/14394[(#14394)]
+* Bump dynamiclistener for atomic write fix https://github.com/k3s-io/k3s/pull/14382[(#14382)]
+* Bump helm-controller/klipper-helm https://github.com/k3s-io/k3s/pull/14403[(#14403)]
+* Simplify WriteSubnetFile cleanup and make atomic https://github.com/k3s-io/k3s/pull/14405[(#14405)]
+* Fix typo in snapshot prune event https://github.com/k3s-io/k3s/pull/14410[(#14410)]
+* Bump rancher/mirrored-coredns-coredns image version https://github.com/k3s-io/k3s/pull/14415[(#14415)]
+* Add updatecli manifest to bump Kubernetes across multiple release branches https://github.com/k3s-io/k3s/pull/14402[(#14402)]
+* Bump metrics-server to v0.9.0 https://github.com/k3s-io/k3s/pull/14416[(#14416)]
+* Updatecli: relax metrics-server semver filter et al. https://github.com/k3s-io/k3s/pull/14429[(#14429)]
+* Updatecli: add missing requiredEnv https://github.com/k3s-io/k3s/pull/14434[(#14434)]
+* Bump helm-controller and klipper-helm for `--force-conflicts` support https://github.com/k3s-io/k3s/pull/14446[(#14446)]
+* Bump k3s-io/kubernetes and Go references https://github.com/k3s-io/k3s/pull/14457[(#14457)]
+* Bump etcd to v3.6.14 https://github.com/k3s-io/k3s/pull/14460[(#14460)]
+* Fix production builds always enabling Go coverage instrumentation https://github.com/k3s-io/k3s/pull/14465[(#14465)]
+* Feat: support custom kubeconfig name https://github.com/k3s-io/k3s/pull/14440[(#14440)]
+** Added `--write-kubeconfig-name` server flag to set the name for cluster, user and context in generated kubeconfig.
+* Require node password informer sync before using cache https://github.com/k3s-io/k3s/pull/14459[(#14459)]
+* Bump helm-controller and klipper-helm https://github.com/k3s-io/k3s/pull/14474[(#14474)]
+* Enable unit tests https://github.com/k3s-io/k3s/pull/14480[(#14480)]
+* Fix: change sles to use slemicro rpms instead of microos https://github.com/k3s-io/k3s/pull/14472[(#14472)]
+* Tests: make rootless uidmap install robust against stale apt cache https://github.com/k3s-io/k3s/pull/14490[(#14490)]
+* Update stable channel to v1.36.3+k3s1 https://github.com/k3s-io/k3s/pull/14492[(#14492)]
+* Etcd client locking https://github.com/k3s-io/k3s/pull/14488[(#14488)]
+* Tests: Install rke2-multus-crd chart for multus e2e test https://github.com/k3s-io/k3s/pull/14489[(#14489)]
+* Filter large untemplated issues https://github.com/k3s-io/k3s/pull/14435[(#14435)]
+* Fix typo in spegel deferred store comment https://github.com/k3s-io/k3s/pull/14485[(#14485)]
+* Make explicit where coredns customizations should be made https://github.com/k3s-io/k3s/pull/14503[(#14503)]
+* Bump docker version in CI to 29 https://github.com/k3s-io/k3s/pull/14506[(#14506)]
+* Don't retag images for a registry they are already hosted by https://github.com/k3s-io/k3s/pull/14484[(#14484)]
+** Fixed an issue where airgap image imports could fail with an "already exists" error, or accumulate duplicate image tags on every restart, when system-default-registry matched the registry the images were already tagged for.
+* Tidy dockerfile and build stages https://github.com/k3s-io/k3s/pull/14511[(#14511)]
+* Add advertise-address to SANs before generating apiserver cert https://github.com/k3s-io/k3s/pull/14516[(#14516)]
+** Fixed the apiserver serving certificate not including the value of --advertise-address in its subject alternative names.
+* Bump Local Path Provisioner version https://github.com/k3s-io/k3s/pull/14496[(#14496)]
+* Bump containerd to v2.3.4-k3s1.36 https://github.com/k3s-io/k3s/pull/14510[(#14510)]
+* Bump kine to v0.16.4 for nats replay fix https://github.com/k3s-io/k3s/pull/14521[(#14521)]
+* Feat: Add Project Bluefin to adopters list https://github.com/k3s-io/k3s/pull/14549[(#14549)]
+* Bump k8s to v1.37 https://github.com/k3s-io/k3s/pull/14509[(#14509)]
+* Bump Traefik and bundle gateway-api crds https://github.com/k3s-io/k3s/pull/14573[(#14573)]
+* Bump rancher/mirrored-coredns-coredns image version https://github.com/k3s-io/k3s/pull/14577[(#14577)]
+* Bump critools to v1.37 https://github.com/k3s-io/k3s/pull/14579[(#14579)]
+* Bump gateway-api-crd version 3, which includes the keep annotation https://github.com/k3s-io/k3s/pull/14586[(#14586)]
+* Bump Traefik to v3.7.13 https://github.com/k3s-io/k3s/pull/14606[(#14606)]
+* Bump google.golang.org/grpc to v1.83.2 for CVE-2026-84445 https://github.com/k3s-io/k3s/pull/14614[(#14614)]
+* Bump google.golang.org/grpc to v1.83.2, not v1.82.2 https://github.com/k3s-io/k3s/pull/14619[(#14619)]
