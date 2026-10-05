@@ -1,9 +1,10 @@
 = v1.33.X
 :description: Update Kubernetes to v1.33.13, fix issues, and modify components like Traefik, etcd, and mirrored-pause in release v1.33
-:revdate: 2026-08-28
+:revdate: 2026-10-02
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 :page-role: -toc
+:page-aliases: release-notes/v1.33.X.adoc
 
 [CAUTION]
 .Upgrade Notice
