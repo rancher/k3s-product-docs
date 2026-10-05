@@ -4,6 +4,7 @@
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 :page-role: -toc
+:page-aliases: release-notes/v1.33.X.adoc
 
 [CAUTION]
 .Upgrade Notice
