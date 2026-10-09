@@ -1,6 +1,6 @@
 = k3s etcd-snapshot
 :description: Manage etcd snapshots with the k3s etcd-snapshot CLI tool by creating, deleting, and restoring scheduled or on-demand backups stored on the node's file system
-:revdate: 2026-10-02
+:revdate: 2026-10-09
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 
@@ -34,7 +34,7 @@ For additional information on the etcd snapshot subcommands, run `k3s etcd-snaps
 Scheduled::
 +
 --
-Scheduled snapshots are enabled by default, at 00:00 and 12:00 system time, with 5 snapshots retained *per server node* on local disk. Scheduled snapshots have a name that starts with `etcd-snapshot`, followed by the node name and timestamp.
+Scheduled snapshots are enabled by default, at 00:00 and 12:00 system time, with 5 snapshots retained. Scheduled snapshots have a name that starts with `etcd-snapshot`, followed by the node name and timestamp.
 
 The following options control the operation of scheduled snapshots:
 
@@ -54,7 +54,7 @@ The following options control the operation of scheduled snapshots:
 | Directory to save db snapshots. (Default location: `$<data-dir>/db/snapshots`)
 
 | `--etcd-snapshot-retention`
-| Number of local snapshots to retain on each server node (default: 5).
+| Number of snapshots to retain. (Default: 5)
 
 | `--etcd-snapshot-schedule-cron`
 | Snapshot interval time in cron spec. For example, every 5 hours `0 */5 * * *` (default: `0 */12 * * *`).
@@ -96,7 +96,7 @@ On-demand snapshots are saved to the path set by the server's `--etcd-snapshot-d
 [#_deleting_snapshots]
 == Deleting Snapshots
 
-Scheduled snapshots are deleted automatically when the number of snapshots exceeds the configured retention count (5 by default). For local snapshots, retention is applied *per server node*. The oldest snapshots are removed first.
+Scheduled snapshots are deleted automatically when the number of snapshots exceeds the configured retention count (5 by default). The oldest snapshots are removed first.
 
 To manually delete scheduled snapshot(s) or on-demand snapshot(s), you can use the `k3s etcd-snapshot delete` command:
 
@@ -163,7 +163,7 @@ K3s supports replicating etcd snapshots to and restoring etcd snapshots from S3-
 | S3 folder
 
 | `--etcd-s3-retention`
-| Number of S3 snapshots to retain in the configured region, bucket, and prefix (default: `5`).
+| S3 retention limit (default: 5)
 
 | `--etcd-s3-proxy`
 | Proxy server to use when connecting to S3, overriding any proxy-releated environment variables
@@ -180,7 +180,7 @@ K3s supports replicating etcd snapshots to and restoring etcd snapshots from S3-
 
 [NOTE]
 ====
-`--etcd-snapshot-retention` sets `--etcd-s3-retention`, if it is not explicitly set in the config. The defaults match, but the *scope differs* — see xref:#_s3_retention[S3 Retention].
+`--etcd-snapshot-retention` sets `--etcd-s3-retention`, if it is not explicitly set in the config.
 ====
 
 For example, this is how the creation and deletion of on-demand etcd snapshots in S3 would work:
@@ -203,34 +203,6 @@ $ k3s etcd-snapshot --s3 --s3-bucket=test-bucket --s3-access-key=test --s3-secre
 Name                              Location                                                                          Size    Created
 ----
 
-[#_s3_retention]
-=== S3 Retention
-
-K3s includes a dedicated flag for S3 retention. It has the same default value as the local snapshot retention, but the *scope differs*:
-
-|===
-| | Local (`--etcd-snapshot-retention`) | S3 (`--etcd-s3-retention`)
-
-| Default
-| `5`
-| `5`
-
-| Scope
-| Per server/etcd node: each node prunes the local snapshot directory to retain no more than N snapshots on disk
-| Cluster-wide: each node prunes the configured S3 bucket+prefix to retain no more than N snapshots, regardless of what node uploaded the object
-|===
-
-S3 retention is intentionally not per node. All etcd nodes upload into the same bucket/folder; applying a single global count prevents orphaned snapshots from accumulating when nodes are replaced or removed.
-
-*Sizing tip:* With `N` etcd nodes, each snapshot schedule cycle typically uploads `N` objects. To keep about `C` cycles in S3, set `--etcd-s3-retention` to approximately `N × C` (for example, 3 etcd nodes and 2 cycles → retention `6`).
-
-|===
-| Flag | Description
-
-| `--etcd-s3-retention`
-| Number of S3 snapshots to retain in the configured region, bucket, and prefix (default: `5`).
-|===
-
 [#_s3_configuration_secret_support]
 === S3 Configuration Secret Support
 
@@ -248,48 +220,46 @@ Pass only the `--etcd-s3` and `--etcd-s3-config-secret` flags to enable the Secr
 If any other S3 configuration flags are set, the Secret will be ignored.
 ====
 
-Keys in the Secret correspond to the `--etcd-s3-*` CLI flags listed above.
-The `etcd-s3-endpoint-ca` key accepts a PEM-encoded CA bundle, or the `etcd-s3-endpoint-ca-name` key may be used to specify the name of a ConfigMap in the `kube-system` namespace containing one or more PEM-encoded CA bundles.
-
-[,yaml]
-----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: k3s-etcd-snapshot-s3-config
-  namespace: kube-system
-type: etcd.k3s.cattle.io/s3-config-secret
-stringData:
-  etcd-s3-endpoint: ""
-  etcd-s3-endpoint-ca: ""
-  etcd-s3-endpoint-ca-name: ""
-  etcd-s3-skip-ssl-verify: "false"
-  etcd-s3-access-key: "AWS_ACCESS_KEY_ID"
-  etcd-s3-secret-key: "AWS_SECRET_ACCESS_KEY"
-  etcd-s3-bucket: "bucket"
-  etcd-s3-folder: "folder"
-  etcd-s3-region: "us-east-1"
-  etcd-s3-insecure: "false"
-  etcd-s3-timeout: "5m"
-  etcd-s3-proxy: ""
-----
-
 [#_restoring_snapshots]
 == Restoring Snapshots
 
+When K3s is restored from an etcd snapshot, the previous data directory is moved and a new data directory is created.
+
+The following options control the operation of restoring snapshots:
+
+|===
+| Flag | Default | Description
+
+| `--cluster-reset`
+| false
+| Forget all peers and become a single-member cluster
+
+| `--cluster-reset-restore-path`
+|
+| Path to snapshot file to be restored
+|===
+
+[NOTE]
+====
+Single-node clusters do not strictly require `--cluster-reset` when restoring from a snapshot, but it is recommended as it cleans up existing cluster state and initializes a new cluster with the restored data.
+====
+
 K3s runs through several steps when restoring a snapshot:
 
-. If the snapshot is stored on S3, the file is downloaded into the snapshot directory.
-. If the snapshot is compressed, it is decompressed.
-. If present, the current etcd database files are moved to `<data-dir>/server/db/etcd-old-$TIMESTAMP/`.
-. The snapshot's contents are extracted out to disk, and the checksum is verified.
-. Etcd is started, and all etcd cluster members except the current node are removed from the cluster.
-. CA Certificates and other confidential data are extracted from the datastore and written to disk, for later use.
+. K3s stops running on the node where the restore is being performed.
+. If the server is part of an HA cluster:
+.. K3s must be stopped on all other servers in the cluster.
+.. Existing database files are moved to a backup directory.
+.. A new database is initialized using the snapshot data.
+. The cluster is reset to a single-node cluster using the restored database.
 . The restore is complete, and K3s can be restarted and used normally on the server where the restore was performed.
 . (optional) Agents and control-plane servers can be started normally.
 . (optional) Etcd servers can be restarted to rejoin to the cluster after removing old database files.
 
-When restoring a snapshot, you do not need to use the same K3s version that created it; a higher minor version is also acceptable.
+When restoring a snapshot, you do not need to use the exact same K3s version that created it.
+A higher patch or minor version is also acceptable, as long as the Kubernetes https://kubernetes.io/releases/version-skew-policy/#supported-component-upgrade-order[Version Skew Policy] is respected.
+Do not restore a snapshot from an older version of K3s that you could not upgrade directly from.
+Doing so may cause the apiserver to fail to decode resource versions that are no longer supported by your current version of Kubernetes.
 
 [#_snapshot_restore_steps]
 === Snapshot Restore Steps
@@ -308,13 +278,7 @@ Single Server::
 systemctl stop k3s
 ----
 
-. Run `k3s server` with the `--cluster-reset` flag, and `--cluster-reset-restore-path` indicating the path to the snapshot to restore.
-   If the snapshot is stored on S3, provide S3 configuration flags (`--etcd-s3`, `--etcd-s3-bucket`, and so on), and give only the filename name of the snapshot as the restore path.
-+
-[NOTE]
-====
-Using the `--cluster-reset` flag without specifying a snapshot to restore simply resets the etcd cluster to a single member without restoring a snapshot.
-====
+. Run the restore command with the `--cluster-reset` flag:
 +
 [,bash]
 ----
@@ -323,40 +287,31 @@ k3s server \
   --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
 ----
 +
-**Result:** K3s restores the snapshot and resets cluster membership, then prints a message indicating that it is ready to be restarted:
-`Managed etcd cluster membership has been reset, restart without --cluster-reset flag now.`
+[NOTE]
+.Result
+====
+K3s will output log messages as it restores the database, moves old data directories, and resets the cluster.
+====
 
-. Start K3s again:
+. When the restore is finished, start the K3s service:
 +
 [,bash]
 ----
 systemctl start k3s
 ----
-
-If an etcd-s3 backup configuration is defined within the K3s config file, the K3s restore attempts to pull the snapshot file from the configured S3 bucket. In this instance only the snapshot filename should be passed in the argument `--cluster-reset-restore-path`. To restore from a local snapshot file, where an etcd-s3 backup configuration is present, add the argument `--etcd-s3=false` and pass the full path to the local snapshot file in the argument `--cluster-reset-restore-path`.
-
-As a safety mechanism, when K3s resets the cluster, it creates an empty file at `/var/lib/rancher/k3s/server/db/reset-flag` that prevents users from accidentally running multiple cluster resets in succession. This file is deleted when K3s starts normally.
 --
 
-Multiple Servers::
+High Availability (HA)::
 +
 --
-In this example there are 3 servers, `S1`, `S2`, and `S3`. The snapshot is located on `S1`.
-
-. Stop K3s on all servers:
+. Stop K3s on all server nodes:
 +
 [,bash]
 ----
 systemctl stop k3s
 ----
 
-. On S1, run `k3s server` with the `--cluster-reset` option, and `--cluster-reset-restore-path` indicating the path to the snapshot to restore.
-   If the snapshot is stored on S3, provide S3 configuration flags (`--etcd-s3`, `--etcd-s3-bucket`, and so on), and give only the filename name of the snapshot as the restore path.
-+
-[NOTE]
-====
-Using the `--cluster-reset` flag without specifying a snapshot to restore simply resets the etcd cluster to a single member without restoring a snapshot.
-====
+. On the server node where the restore is being performed, run the restore command with the `--cluster-reset` flag:
 +
 [,bash]
 ----
@@ -365,106 +320,185 @@ k3s server \
   --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
 ----
 +
-**Result:** K3s restores the snapshot and resets cluster membership, then prints a message indicating that it is ready to be restarted:
-`Managed etcd cluster membership has been reset, restart without --cluster-reset flag now.`
-`Backup and delete $\{datadir}/server/db on each peer etcd server and rejoin the nodes.`
+[NOTE]
+.Result
+====
+K3s will output log messages as it restores the database, moves old data directories, and resets the cluster to a single member.
+====
 
-. On S1, start K3s again:
+. On the remaining server nodes, remove the etcd data directory:
++
+[,bash]
+----
+rm -rf /var/lib/rancher/k3s/server/db/etcd
+----
+
+. On the server node where the restore was performed, start the K3s service:
 +
 [,bash]
 ----
 systemctl start k3s
 ----
 
-. On S2 and S3, delete the data directory, `/var/lib/rancher/k3s/server/db/`:
-+
-[,bash]
-----
-rm -rf /var/lib/rancher/k3s/server/db/
-----
-
-. On S2 and S3, start K3s again to join the restored cluster:
+. Once K3s is up and running, start the K3s service on the remaining server nodes one at a time to allow them to rejoin the cluster:
 +
 [,bash]
 ----
 systemctl start k3s
 ----
-
-If an etcd-s3 backup configuration is defined within the K3s config file, the K3s restore attempts to pull the snapshot file from the configured S3 bucket. In this instance only the snapshot filename should be passed in the argument `--cluster-reset-restore-path`. To restore from a local snapshot file, where an etcd-s3 backup configuration is present, add the argument `--etcd-s3=false` and pass the full path to the local snapshot file in the argument `--cluster-reset-restore-path`.
-
-As a safety mechanism, when K3s resets the cluster, it creates an empty file at `/var/lib/rancher/k3s/server/db/reset-flag` that prevents users from accidentally running multiple cluster resets in succession. This file is deleted when K3s starts normally.
 --
 ======
 
-[#_restoring_to_new_hosts]
-==== Restoring To New Hosts
+[#_custom_snapshot_and_restore_paths]
+== Custom Snapshot and Restore Paths
 
-It is possible to restore an etcd snapshot to a different host than it was taken on. When doing so, you must pass the xref:cli/token.adoc#_server[server token] that was originally used when taking the snapshot, as it is used to decrypt the bootstrap data inside the snapshot. The process is the same as above but changing step 2 to:
+By default, snapshots are saved to and restored from the directory defined by the `--etcd-snapshot-dir` flag, which defaults to `$<data-dir>/db/snapshots`.
 
-. In the node that took the snapshot save the value of: `/var/lib/rancher/k3s/server/token`. This is `<BACKED-UP-TOKEN-VALUE>` in step 3.
-. Copy the snapshot to the new node. The path in the node is `<PATH-TO-SNAPSHOT>` in step 3.
-. Initiate the restore from the snapshot on the first server node with the following commands:
+To save a snapshot to a custom directory, set the `--etcd-snapshot-dir` flag when running the `k3s etcd-snapshot save` command:
+
+[,bash]
+----
+k3s etcd-snapshot save --etcd-snapshot-dir <CUSTOM-PATH>
+----
+
+To restore from a snapshot saved to a custom directory, provide the full path to the snapshot file in the `--cluster-reset-restore-path` flag:
+
+[,bash]
+----
+k3s server \
+  --cluster-reset \
+  --cluster-reset-restore-path=<FULL-PATH-TO-SNAPSHOT>
+----
+
+[#_s3_snapshot_restore_steps]
+== S3 Snapshot Restore Steps
+
+Snapshots stored in S3 compatible object stores can be restored by passing the required S3 configuration flags in addition to the `--cluster-reset` and `--cluster-reset-restore-path` flags.
+
+Select the tab below that matches your cluster configuration.
+
+[tabs,sync-group-id=s3snap]
+======
+Single Server::
++
+--
+. Stop the K3s service:
++
+[,bash]
+----
+systemctl stop k3s
+----
+
+. Run the restore command with the `--cluster-reset` flag and the required S3 flags:
 +
 [,bash]
 ----
 k3s server \
   --cluster-reset \
-  --cluster-reset-restore-path=<PATH-TO-SNAPSHOT>
-  --token=<BACKED-UP-TOKEN-VALUE>
+  --etcd-s3 \
+  --etcd-s3-bucket=<S3-BUCKET-NAME> \
+  --etcd-s3-access-key=<S3-ACCESS-KEY> \
+  --etcd-s3-secret-key=<S3-SECRET-KEY> \
+  --cluster-reset-restore-path=<SNAPSHOT-NAME>
 ----
 +
-The token value can also be set in the K3s config file.
+[NOTE]
+.Result
+====
+K3s will download the snapshot from S3, restore the database, move old data directories, and reset the cluster.
+====
 
+. When the restore is finished, start the K3s service:
++
+[,bash]
+----
+systemctl start k3s
+----
+--
 
-[WARNING]
+High Availability (HA)::
++
+--
+. Stop K3s on all server nodes:
++
+[,bash]
+----
+systemctl stop k3s
+----
+
+. On the server node where the restore is being performed, run the restore command with the `--cluster-reset` flag and the required S3 flags:
++
+[,bash]
+----
+k3s server \
+  --cluster-reset \
+  --etcd-s3 \
+  --etcd-s3-bucket=<S3-BUCKET-NAME> \
+  --etcd-s3-access-key=<S3-ACCESS-KEY> \
+  --etcd-s3-secret-key=<S3-SECRET-KEY> \
+  --cluster-reset-restore-path=<SNAPSHOT-NAME>
+----
++
+[NOTE]
+.Result
+====
+K3s will download the snapshot from S3, restore the database, move old data directories, and reset the cluster to a single member.
+====
+
+. On the remaining server nodes, remove the etcd data directory:
++
+[,bash]
+----
+rm -rf /var/lib/rancher/k3s/server/db/etcd
+----
+
+. On the server node where the restore was performed, start the K3s service:
++
+[,bash]
+----
+systemctl start k3s
+----
+
+. Once K3s is up and running, start the K3s service on the remaining server nodes one at a time to allow them to rejoin the cluster:
++
+[,bash]
+----
+systemctl start k3s
+----
+--
 ======
-. Node resources are also included in the etcd snapshot. If restoring to a new set of nodes, you need to manually delete any old nodes that are no longer present in the cluster.
-. If there is a token set in the K3s config file, make sure it is the same as the `<BACKED-UP-TOKEN-VALUE>`, otherwise K3s fails to start.
-======
 
-[#_security]
-=== Security
+[#_etcd_snapshot_custom_resources]
+== etcd Snapshot Custom Resources
 
-Snapshots contain a complete copy of the etcd datastore, along with cluster certificate authority (CA) certificates and private keys.
-If xref:cli/secrets-encrypt.adoc[secrets encryption] is enabled, snapshots also include the secrets encryption configuration and keys.
-This information is encrypted with an AES-256 key derived from the server’s join token using PBKDF2.
+K3s creates custom resources for etcd snapshots. These custom resources can be used to view information about snapshots taken in the cluster.
 
-Administrators should be aware of the following concerns when backing up or restoring snapshots:
+To list snapshot custom resources, run:
 
-* Any attacker who can convince you to restore a snapshot under their control can gain complete control of the cluster and nodes via multiple attack vectors - it is now their cluster, not yours.
-* Any attacker who possesses a copy of the etcd snapshot file can extract all unencrypted Kubernetes resources.
-* Any attacker who possesses a copy of the etcd snapshot file AND the server join token can extract encrypted resources, along with private keys to the cluster CAs.
-
-Snapshots stored locally on the node are protected via normal Unix filesystem permissions and access controls.
-It is recommended that administrators safely store snapshots to a S3-compatible service that supports bucket access controls, server-side encryption, and retention controls.
-Validating the integrity and chain of custody of datastore snapshots is the responsibility of the administrator.
-
-[#_etcdsnapshotfile_custom_resources]
-== ETCDSnapshotFile Custom Resources
-
-Snapshots can be viewed remotely using any Kubernetes client by listing or describing cluster-scoped `ETCDSnapshotFile` resources. Unlike the `k3s etcd-snapshot list` command, which only shows snapshots visible to that node, `ETCDSnapshotFile` resources track all snapshots present on cluster members.
-
-[,shell-session]
+[,bash]
 ----
-$ kubectl get etcdsnapshotfile
-NAME                                             SNAPSHOTNAME                        NODE           LOCATION                                                                            SIZE      CREATIONTIME
-local-on-demand-k3s-server-1-1730308816-3e9290   on-demand-k3s-server-1-1730308816   k3s-server-1   file:///var/lib/rancher/k3s/server/db/snapshots/on-demand-k3s-server-1-1730308816   2891808   2024-10-30T17:20:16Z
-s3-on-demand-k3s-server-1-1730308816-79b15c      on-demand-k3s-server-1-1730308816   s3             s3://etcd/k3s-test/on-demand-k3s-server-1-1730308816                                2891808   2024-10-30T17:20:16Z
+kubectl get etcdsnapshotfile
 ----
 
-[,shell-session]
+To view detailed information about a snapshot, run:
+
+[,bash]
 ----
-$ kubectl describe etcdsnapshotfile s3-on-demand-k3s-server-1-1730308816-79b15c
-Name:         s3-on-demand-k3s-server-1-1730308816-79b15c
+kubectl describe etcdsnapshotfile <SNAPSHOT-NAME>
+----
+
+Example output of an etcd snapshot custom resource:
+
+[,yaml]
+----
+Name:         on-demand-k3s-server-1-1730308816
 Namespace:
-Labels:       etcd.k3s.cattle.io/snapshot-storage-node=s3
-Annotations:  etcd.k3s.cattle.io/snapshot-token-hash: b4b83cda3099
+Labels:       <none>
+Annotations:  <none>
 API Version:  k3s.cattle.io/v1
 Kind:         ETCDSnapshotFile
 Metadata:
-  Creation Timestamp:  2024-10-30T17:20:16Z
-  Finalizers:
-    wrangler.cattle.io/managed-etcd-snapshots-controller
+  Creation Timestamp:  2024-10-30T17:20:17Z
   Generation:        1
   Resource Version:  790
   UID:               bec9a51c-dbbe-4746-922e-a5136bef53fc
@@ -487,3 +521,42 @@ Events:
   ----    ------               ----  ----            -------
   Normal  ETCDSnapshotCreated  113s  k3s-supervisor  Snapshot on-demand-k3s-server-1-1730308816 saved on S3
 ----
+
+[#_restricting_snapshot_destinations]
+== Restricting Snapshot Destinations
+
+[IMPORTANT]
+.Version Gate
+====
+Snapshot Restrictions are available as of the October 2026 releases: v1.37.2+k3s1, v1.36.6+k3s1, v1.35.10+k3s1, v1.34.13+k3s1
+====
+
+By default, K3s applies no restrictions on where snapshots are stored to or deleted from.
+When using the `k3s etcd-snapshot` CLI to create or delete snapshots, snapshots may be saved to or deleted from any path on the host, or any valid S3 endpoint.
+The CLI inherits its defaults from the server configuration, but options may be overridden via CLI flags to save or delete snapshots from custom locations.
+The CLI, and the server-side snapshot management API that the CLI interacts with, do not make any effort to validate target paths or confirm that files/objects targeted for deletion are actually etcd snapshots.
+
+Administrators who wish to restrict snapshot management operations (both save of on-demand snapshots, and deletion of existing snapshots) can use the `etcd-snapshot-restrictions` option.
+This option applies one or more restriction to snapshot management operations by disabling override of server-side settings by CLI flags.
+
+|===
+| Value | Effect
+
+| `all`
+| All of the effects listed below.
+
+| `snapshot-dir`
+| Prevents overriding `etcd-snapshot-dir`, which restricts save/delete of local snapshots to operating within the server's configured path.
+
+| `s3-endpoint`
+| Prevents overriding `etcd-s3-endpoint`, which restricts save/delete of S3 snapshots to operating against the server's configured endpoint.
+
+| `s3-bucket`
+| Prevents overriding `etcd-s3-bucket`, which restricts save/delete of S3 snapshots to operating against the server's configured bucket.
+
+| `s3-folder`
+| Prevents overriding `etcd-s3-folder`, which restricts save/delete of S3 snapshots to operating against the server's configured prefix within the bucket.
+
+| `s3-proxy`
+| Prevents overriding `etcd-s3-proxy`, which restricts save/delete of S3 snapshots to using the server's configured HTTP proxy when connecting to the S3 endpoint.
+|===
