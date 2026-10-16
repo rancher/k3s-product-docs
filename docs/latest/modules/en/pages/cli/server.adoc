@@ -90,6 +90,11 @@ The following options must be set to the same value on all servers in the cluste
 |
 | $\{data-dir}/db/snapshots
 | Directory to save db snapshots
+
+| `--etcd-snapshot-restrictions` value
+|
+|
+| Enforce restrictions on snapshot configuration; when set the selected defaults cannot be overridden via 'etcd-snapshot' options (valid values: zero or more of 'snapshot-dir', 's3-endpoint', 's3-bucket', 's3-folder', 's3-proxy', 'all')
 |===
 
 [#_s3_etcd_snapshot_storage]
