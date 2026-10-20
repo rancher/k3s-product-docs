@@ -1,7 +1,7 @@
 = Private Registry Configuration
 :description: Configure private registry settings by editing the registries.yaml file to define mirrors, redirects, rewrites, and specify authentication or custom TLS
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-08-28
+:revdate: 2026-10-11
 :page-revdate: {revdate}
 
 Containerd can be configured to connect to private registries and use them to pull images as needed by the kubelet.
@@ -122,11 +122,11 @@ Because the mirror endpoint does not match the default endpoint - **`"https://re
 [,yaml]
 ----
 mirrors:
- registry.example.com
-   endpoint:
-     - "https://registry.example.com:443"
-   rewrite:
-     "^rancher/(.*)": "mirrorproject/rancher-images/$1"
+  registry.example.com:
+    endpoint:
+      - "https://registry.example.com:443"
+    rewrite:
+      "^rancher/(.*)": "mirrorproject/rancher-images/$1"
 ----
 
 Note that when using mirrors and rewrites, images will still be stored under the original name.

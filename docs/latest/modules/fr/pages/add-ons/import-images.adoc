@@ -1,6 +1,6 @@
 = Importer des images
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-01-05
+:revdate: 2026-10-11
 :page-revdate: {revdate}
 :page-aliases: import-images.adoc
 
@@ -60,8 +60,8 @@ Par exemple :
 
 [,bash]
 ----
-mkdir /var/lib/rancher/k3s/agent/images
-curl  https://github.com/k3s-io/k3s/releases/download/v1.33.1%2Bk3s1/k3s-airgap-images-amd64.tar.zst -O  /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst
+sudo mkdir -p /var/lib/rancher/k3s/agent/images
+sudo curl -L -o /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst https://github.com/k3s-io/k3s/releases/download/v1.33.1%2Bk3s1/k3s-airgap-images-amd64.tar.zst
 ----
 
 Après quelques secondes, les images incluses dans le tarball d'images sont disponibles dans le magasin d'images containerd du nœud. 
