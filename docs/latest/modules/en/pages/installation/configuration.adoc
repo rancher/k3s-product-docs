@@ -1,7 +1,7 @@
 = Configuration Options
 :description: Configure K3s using environment variables, install scripts, binaries, container images, and configuration files
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-03-03
+:revdate: 2026-10-27
 :page-revdate: {revdate}
 
 This page focuses on the options that are commonly used when setting up K3s for the first time. Refer to the documentation on xref:advanced.adoc[Advanced Options and Configuration] and the xref:cli/server.adoc[server] and xref:cli/agent.adoc[agent] command documentation for more in-depth coverage.
@@ -53,7 +53,7 @@ If you want your configuration to be independent from the install script, you sh
 [#_configuration_with_binary]
 == Configuration with binary
 
-The installation script is primarily concerned with configuring K3s to run as a system service. If you choose to not use the install script, you can run K3s simply by downloading the binary from our https://github.com/k3s-io/k3s/releases/latest[GitHub release page], placing it on your path, and executing it. This is not particularly useful for permanent installations, but may be useful when performing quick tests that do not merit managing K3s as a system service.
+The installation script is primarily concerned with configuring K3s to run as a system service. If you choose to not use the install script, you can run K3s simply by downloading the binary from the https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL], placing it on your path, and executing it. This is not particularly useful for permanent installations, but may be useful when performing quick tests that do not merit managing K3s as a system service.
 
 [,bash]
 ----

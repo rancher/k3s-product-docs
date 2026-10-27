@@ -1,7 +1,7 @@
 = FAQ
 :description: Find answers to common questions about K3s, such as its use as a Kubernetes replacement, Ingress configuration, and log locations
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2024-09-11
+:revdate: 2026-10-27
 :page-revdate: {revdate}
 
 The FAQ is updated periodically and designed to answer the questions our users most frequently ask about K3s.
@@ -74,6 +74,5 @@ If you are having an issue with deploying K3s, you should:
 
 . Check the xref:known-issues.adoc[Known Issues] page.
 . Check that you have resolved any xref:installation/requirements.adoc#_operating_systems[Additional OS Preparation]. Run `k3s check-config` and ensure that it passes.
-. Search the K3s https://github.com/k3s-io/k3s/issues[Issues] and https://github.com/k3s-io/k3s/discussions[Discussions] for one that matches your problem.
-. Join the https://slack.rancher.io/[Rancher Slack] K3s channel to get help.
-. Submit a https://github.com/k3s-io/k3s/issues/new/choose[New Issue] on the K3s Github describing your setup and the issue you are experiencing.
+. Search the https://www.suse.com/support/kb/[SUSE Knowledgebase] for an article that matches your problem.
+. Open a support case in the https://scc.suse.com/[SUSE Customer Center] describing your setup and the issue you are experiencing.
