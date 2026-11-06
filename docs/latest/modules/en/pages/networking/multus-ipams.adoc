@@ -1,7 +1,7 @@
 = Multus and IPAM plugins
 :description: Learn how to use Multus with IPAM plugins to configure multiple network interfaces on Kubernetes pods
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-07-24
+:revdate: 2026-10-11
 :page-revdate: {revdate}
 
 https://github.com/k8snetworkplumbingwg/multus-cni[Multus CNI] is a CNI plugin that enables attaching multiple network interfaces to pods. Multus does not replace CNI plugins, instead it acts as a CNI plugin multiplexer. Multus is useful in certain use cases, especially when pods are network intensive and require extra network interfaces that support dataplane acceleration techniques such as SR-IOV.
@@ -51,8 +51,8 @@ spec:
         confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
         binDir: /var/lib/rancher/k3s/data/cni/
         kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
-	      # Comment the following line when using rke2-multus < v4.2.202
-	      multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+        # Comment the following line when using rke2-multus < v4.2.202
+        multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
 ----
 --
 
@@ -81,8 +81,8 @@ spec:
         confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
         binDir: /var/lib/rancher/k3s/data/cni/
         kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
-	      # Comment the following line when using rke2-multus < v4.2.202
-	      multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+        # Comment the following line when using rke2-multus < v4.2.202
+        multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
     rke2-whereabouts:
       fullnameOverride: whereabouts
       enabled: true
@@ -143,8 +143,8 @@ spec:
         confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
         binDir: /var/lib/rancher/k3s/data/cni/
         kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
-	      # Comment the following line when using rke2-multus < v4.2.202
-	      multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+        # Comment the following line when using rke2-multus < v4.2.202
+        multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
     manifests:
       dhcpDaemonSet: true
 ----

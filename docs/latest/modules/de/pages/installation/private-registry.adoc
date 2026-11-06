@@ -1,6 +1,6 @@
 = Private Registry-Konfiguration
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2025-12-30
+:revdate: 2026-10-11
 :page-revdate: {revdate}
 
 Containerd kann so konfiguriert werden, dass es sich mit privaten Registries verbindet und diese verwendet, um Bilder nach Bedarf vom Kubelet abzurufen.
@@ -127,11 +127,11 @@ Da der Mirror-Endpunkt nicht mit dem Standard-Endpunkt übereinstimmt - **`"http
 [,yaml]
 ----
 mirrors:
- registry.example.com
-   endpoint:
-     - "https://registry.example.com:443"
-   rewrite:
-     "^rancher/(.*)": "mirrorproject/rancher-images/$1"
+  registry.example.com:
+    endpoint:
+      - "https://registry.example.com:443"
+    rewrite:
+      "^rancher/(.*)": "mirrorproject/rancher-images/$1"
 ----
 
 Beachten Sie, dass Bilder beim Verwenden von Mirrors und Umschreibungen weiterhin unter dem ursprünglichen Namen gespeichert werden.

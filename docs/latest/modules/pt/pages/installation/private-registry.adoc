@@ -1,6 +1,6 @@
 = Configuração de Registro Privado
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2025-12-30
+:revdate: 2026-10-11
 :page-revdate: {revdate}
 
 O Containerd pode ser configurado para se conectar a registros privados e usá-los para puxar imagens conforme necessário pelo kubelet.
@@ -127,11 +127,11 @@ Como o endpoint de espelho não corresponde ao endpoint padrão - **`"https://re
 [,yaml]
 ----
 mirrors:
- registry.example.com
-   endpoint:
-     - "https://registry.example.com:443"
-   rewrite:
-     "^rancher/(.*)": "mirrorproject/rancher-images/$1"
+  registry.example.com:
+    endpoint:
+      - "https://registry.example.com:443"
+    rewrite:
+      "^rancher/(.*)": "mirrorproject/rancher-images/$1"
 ----
 
 Observe que ao usar espelhos e reescritas, as imagens ainda serão armazenadas sob o nome original.
