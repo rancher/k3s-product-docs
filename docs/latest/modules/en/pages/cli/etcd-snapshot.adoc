@@ -1,6 +1,6 @@
 = k3s etcd-snapshot
 :description: Manage etcd snapshots with the k3s etcd-snapshot CLI tool by creating, deleting, and restoring scheduled or on-demand backups stored on the node's file system
-:revdate: 2026-10-02
+:revdate: 2026-11-06
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 
@@ -51,7 +51,7 @@ The following options control the operation of scheduled snapshots:
 | Compress etcd snapshots.
 
 | `--etcd-snapshot-dir`
-| Directory to save db snapshots. (Default location: `$<data-dir>/db/snapshots`)
+| Directory to save db snapshots. (Default location: `$<data-dir>/server/db/snapshots`)
 
 | `--etcd-snapshot-retention`
 | Number of local snapshots to retain on each server node (default: 5).
@@ -82,7 +82,7 @@ The following options control the operation of on-demand snapshots:
 | Compress etcd snapshots.
 
 | `--etcd-snapshot-dir`
-| Directory to save db snapshots. (Default location: `$<data-dir>/db/snapshots`)
+| Directory to save db snapshots. (Default location: `$<data-dir>/server/db/snapshots`)
 |===
 
 The data-dir value defaults to `/var/lib/rancher/k3s` and can be changed independently by setting the `--data-dir` flag.
