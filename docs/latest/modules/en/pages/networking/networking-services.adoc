@@ -1,6 +1,6 @@
 = Networking Services
 :description: Learn how CoreDNS, Traefik Ingress controller, Network Policy controller, and ServiceLB work in K3s
-:revdate: 2026-10-30
+:revdate: 2026-11-06
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 
@@ -22,7 +22,7 @@ If you don't install CoreDNS, you will need to install a cluster DNS provider yo
 
 https://traefik.io/[Traefik] is a modern HTTP reverse proxy and load balancer made to deploy microservices with ease. It simplifies networking complexity while designing, deploying, and running applications.
 
-The Traefik ingress controller deploys a LoadBalancer Service that uses ports 80 and 443, advertises the LoadBalancer Service's External IPs in the Status of Ingress resources it manages.
+The Traefik ingress controller deploys a LoadBalancer Service that uses ports 80 and 443, and advertises the LoadBalancer Service's External IPs in the Status of Ingress resources it manages.
 
 By default, ServiceLB will use all nodes in the cluster to host the Traefik LoadBalancer Service, meaning ports 80 and 443 will not be usable for other HostPort or NodePort pods, and Ingress resources' Status will show all cluster members' node IPs.
 
@@ -164,7 +164,7 @@ To select a particular subset of nodes to host pods for a LoadBalancer, add the 
 
 . Label Node A and Node B with `svccontroller.k3s.cattle.io/lbpool=pool1` and `svccontroller.k3s.cattle.io/enablelb=true`
 . Label Node C and Node D with `svccontroller.k3s.cattle.io/lbpool=pool2` and `svccontroller.k3s.cattle.io/enablelb=true`
-. Create one LoadBalancer Service on port 443 with label `svccontroller.k3s.cattle.io/lbpool=pool1`. The DaemonSet for this service only deploy Pods to Node A and Node B.
+. Create one LoadBalancer Service on port 443 with label `svccontroller.k3s.cattle.io/lbpool=pool1`. The DaemonSet for this service will only deploy Pods to Node A and Node B.
 . Create another LoadBalancer Service on port 443 with label `svccontroller.k3s.cattle.io/lbpool=pool2`. The DaemonSet will only deploy Pods to Node C and Node D.
 
 [#_disabling_servicelb]

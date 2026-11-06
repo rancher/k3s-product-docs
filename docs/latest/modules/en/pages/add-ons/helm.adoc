@@ -1,7 +1,7 @@
 = Helm
 :description: Use Helm to manage Kubernetes packages, create configurable charts, and deploy applications with the Helm Controller
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-07-24
+:revdate: 2026-11-06
 :page-revdate: {revdate}
 :page-aliases: helm.adoc
 
@@ -89,7 +89,7 @@ The `name` field should follow the Helm chart naming conventions, in addition to
 
 | spec.repoCAConfigMap
 |
-| Reference to a ConfigMap containing CA Certificates to be be trusted by Helm. Can be used along with or instead of `repoCA`
+| Reference to a ConfigMap containing CA Certificates to be trusted by Helm. Can be used along with or instead of `repoCA`
 | `--ca-file`
 
 | spec.plainHTTP
@@ -139,7 +139,7 @@ The `name` field should follow the Helm chart naming conventions, in addition to
 
 | spec.failurePolicy
 | reinstall
-| Set to `abort` which case the Helm operation is aborted, pending manual intervention by the operator.
+| Set to `abort`, in which case the Helm operation is aborted, pending manual intervention by the operator.
 |
 
 | spec.authSecret
@@ -261,7 +261,7 @@ data:
 [#_chart_values_from_secrets]
 === Chart Values from Secrets
 
-Chart values can be read from externally-managed Secrets, instead of storing the values in the `spec.set` or `spec.valuesContent` fields. This should be done when passing confidential information such as credentials in to Charts that do not support referring to existing Secrets via the `existingSecret` pattern.
+Chart values can be read from externally-managed Secrets, instead of storing the values in the `spec.set` or `spec.valuesContent` fields. This should be done when passing confidential information such as credentials into Charts that do not support referring to existing Secrets via the `existingSecret` pattern.
 
 As with other Secrets (`spec.authSecret` and `spec.dockerRegistrySecret`), Secrets referenced in `spec.valuesSecrets` must be in the same namespace as the HelmChart.
 
@@ -329,7 +329,7 @@ stringData:
 [#_customizing_packaged_components_with_helmchartconfig]
 == Customizing Packaged Components with HelmChartConfig
 
-To allow overriding values for packaged components that are deployed as HelmCharts (such as Traefik), K3s supports customizing deployments via a HelmChartConfig resources. The HelmChartConfig resource must match the name and namespace of its corresponding HelmChart, and it supports providing additional `valuesContent`, which is passed to the `helm` command as an additional value file.
+To allow overriding values for packaged components that are deployed as HelmCharts (such as Traefik), K3s supports customizing deployments via HelmChartConfig resources. The HelmChartConfig resource must match the name and namespace of its corresponding HelmChart, and it supports providing additional `valuesContent`, which is passed to the `helm` command as an additional value file.
 
 ### HelmChartConfig Field Definitions
 
@@ -343,10 +343,10 @@ To allow overriding values for packaged components that are deployed as HelmChar
 | Override complex default Chart values via YAML file content.
 
 | spec.valuesSecrets
-| Override complect default Chart values via external Secrets.
+| Override complex default Chart values via external Secrets.
 
 | spec.failurePolicy
-| Set to `abort` which case the Helm operation is aborted, pending manual intervention by the operator.
+| Set to `abort`, in which case the Helm operation is aborted, pending manual intervention by the operator.
 |===
 
 [NOTE]

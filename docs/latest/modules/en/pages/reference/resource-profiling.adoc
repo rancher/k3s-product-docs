@@ -1,7 +1,7 @@
 = Resource Profiling
 :description: This page determines minimum resource requirements for K3s by testing CPU, memory, and IOPS needed to run the K3s stack, monitoring tools, and example workloads
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2025-01-06
+:revdate: 2026-11-06
 :page-revdate: {revdate}
 
 This section captures the results of tests to determine minimum resource requirements for K3s.
@@ -56,7 +56,7 @@ The results are summarized as follows:
 
 The resource tests were intended to address the following problem statements:
 
-* On a single-node cluster, determine the legitimate minimum amount of CPU, memory, and IOPs that should be set aside to run the entire K3s stack server stack, assuming that a real workload will be deployed on the cluster.
+* On a single-node cluster, determine the legitimate minimum amount of CPU, memory, and IOPs that should be set aside to run the entire K3s server stack, assuming that a real workload will be deployed on the cluster.
 * On an agent (worker) node, determine the legitimate minimum amount of CPU, memory, and IOPs that should be set aside for the Kubernetes and K3s control plane components (the kubelet and k3s agent).
 
 [#_components_included_for_baseline_measurements]

@@ -1,7 +1,7 @@
 = Managing Packaged Components
 :description: Manage packaged components by deploying, disabling, and organizing Kubernetes resources using manifests and AddOns
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-01-05
+:revdate: 2026-11-06
 :page-revdate: {revdate}
 
 [#_auto_deploying_manifests_addons]
@@ -9,7 +9,7 @@
 
 On server nodes, any file found in `/var/lib/rancher/k3s/server/manifests` will automatically be deployed to Kubernetes in a manner similar to `kubectl apply`, both on startup and when the file is changed on disk. Deleting files out of this directory will not delete the corresponding resources from the cluster.
 
-Manifests are tracked as `AddOn` custom resources in the `kube-system` namespace. Any errors or warnings encountered when applying the manifest file may seen by using `kubectl describe` on the corresponding `AddOn`, or by using `kubectl get event -n kube-system` to view all events for that namespace, including those from the deploy controller.
+Manifests are tracked as `AddOn` custom resources in the `kube-system` namespace. Any errors or warnings encountered when applying the manifest file may be seen by using `kubectl describe` on the corresponding `AddOn`, or by using `kubectl get event -n kube-system` to view all events for that namespace, including those from the deploy controller.
 
 [#_packaged_components]
 === Packaged Components
@@ -30,7 +30,7 @@ The `AddOn` name for each file in the manifest directory is derived from the fil
 Ensure that all files within the manifests directory (or within any subdirectories) have names that are unique, and adhere to Kubernetes https://kubernetes.io/docs/concepts/overview/working-with-objects/names/[object naming restrictions].
 Care should also be taken not to conflict with names in use by the default K3s packaged components, even if those components are disabled.
 
-Here is en example of an error that would be reported if the file name contains underscores:
+Here is an example of an error that would be reported if the file name contains underscores:
 
 ____
 `Failed to process config: failed to process /var/lib/rancher/k3s/server/manifests/example_manifest.yaml:

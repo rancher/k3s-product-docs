@@ -1,6 +1,6 @@
 = Cluster Load Balancer
 :description: Install an external load balancer in front of a High Availability K3s cluster server nodes to distribute traffic and ensure redundancy using Nginx or HAProxy
-:revdate: 2026-07-22
+:revdate: 2026-11-06
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 
@@ -19,7 +19,7 @@ External load-balancers can be used to provide a fixed registration address for 
 
 All nodes in this example are running Ubuntu 20.04.
 
-For both examples, assume that a xref:datastore/ha-embedded.adoc[HA K3s cluster with embedded etcd] has been installed on 3 nodes.
+For both examples, assume that an xref:datastore/ha-embedded.adoc[HA K3s cluster with embedded etcd] has been installed on 3 nodes.
 
 Each k3s server is configured with:
 
@@ -131,7 +131,7 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3
 ----
 Where `INSTALL_K3S_ARTIFACT_URL` is the https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL]
 +
-You can now use `kubectl` from server node to interact with the cluster.
+You can now use `kubectl` from a server node to interact with the cluster.
 +
 [,bash]
 ----
@@ -156,7 +156,7 @@ Nginx does not natively support a High Availability (HA) configuration. If setti
 
 http://nginx.org/[Nginx Open Source] provides a TCP load balancer. See https://nginx.org/en/docs/http/load_balancing.html[Using nginx as HTTP load balancer] for more info.
 
-. Create a `nginx.conf` file on lb-1 with the following contents:
+. Create an `nginx.conf` file on lb-1 with the following contents:
 +
 ----
 events {}
@@ -202,7 +202,7 @@ systemctl start nginx
 curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s K3S_TOKEN=lb-cluster-gd sh -s - agent --server https://10.10.10.98:6443
 ----
 +
-You can now use `kubectl` from server node to interact with the cluster.
+You can now use `kubectl` from a server node to interact with the cluster.
 +
 [,bash]
 ----

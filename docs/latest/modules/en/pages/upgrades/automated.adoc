@@ -1,6 +1,6 @@
 = Automated Upgrades
 :description: Automate K3s cluster upgrades using Rancher's system-upgrade-controller to manage node upgrades with plans, label selectors, version policies, and channel
-:revdate: 2026-07-22
+:revdate: 2026-11-06
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 
@@ -59,7 +59,7 @@ The controller can be configured and customized via the previously mentioned con
 
 Server nodes should always be upgraded before agent nodes. For this reason, it is recommended you create at least two plans: a plan for upgrading server (control-plane) nodes, and a plan for upgrading agent nodes. You can create additional plans as needed to control the rollout of the upgrade across nodes. After the plans are created, the controller picks them up and begins to upgrade your cluster.
 
-The following two example plans continuously keep your your cluster upgraded to the current stable release, by targeting the stable xref:upgrades/manual.adoc#_release_channels[release channel]:
+The following two example plans continuously keep your cluster upgraded to the current stable release, by targeting the stable xref:upgrades/manual.adoc#_release_channels[release channel]:
 
 [,yaml]
 ----
@@ -111,7 +111,7 @@ There are a few important things to call out regarding these plans:
 
 . The plans must be created in the same namespace where the controller is deployed.
 . The `concurrency` field indicates how many nodes can be upgraded at the same time.
-. The server-plan targets server nodes by specifying a label selector that selects nodes with the `node-role.kubernetes.io/control-plane` label. The agent-plan targets agent nodes by specifying a label selector that select nodes without that label.
+. The server-plan targets server nodes by specifying a label selector that selects nodes with the `node-role.kubernetes.io/control-plane` label. The agent-plan targets agent nodes by specifying a label selector that selects nodes without that label.
 . The `prepare` step in the agent-plan causes upgrade jobs for that plan to wait for the server-plan to complete before they execute. This logic is built into the image used for the prepare step, and is not part of system-upgrade-controller itself.
 . Both plans have the `channel` field set to the stable release channel URL. This causes the controller to monitor that URL and upgrade the cluster any time it resolves to a new release. This works well with the xref:upgrades/manual.adoc#_release_channels[release channels]. Thus, you can configure your plans with the following channel to ensure your cluster is always automatically upgraded to the newest stable release of K3s. Alternatively, you can omit the `channel` field and set the `version` field to a specific release of K3s:
 +

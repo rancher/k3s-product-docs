@@ -1,15 +1,15 @@
 = CLI Tools
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2024-09-11
+:revdate: 2026-11-06
 :page-revdate: {revdate}
 
-The K3s binary contains a number of additional tools the help you manage your cluster.
+The K3s binary contains a number of additional tools that help you manage your cluster.
 
 |===
 | Command | Description
 
 | `k3s server`
-| Run a K3s server node, which launches the Kubernetes `apiserver`, `scheduler`, `controller-manager`, and `cloud-controller-manager` components, in addition a datastore and the agent components. See the xref:cli/server.adoc[`k3s server` command documentation] for more information.
+| Run a K3s server node, which launches the Kubernetes `apiserver`, `scheduler`, `controller-manager`, and `cloud-controller-manager` components, in addition to a datastore and the agent components. See the xref:cli/server.adoc[`k3s server` command documentation] for more information.
 
 | `k3s agent`
 | Run the K3s agent node, which launches `containerd`, `flannel`, `kube-router` network policy controller, and the Kubernetes `kubelet` and `kube-proxy` components. See the xref:cli/agent.adoc[`k3s agent` command documentation] for more information.

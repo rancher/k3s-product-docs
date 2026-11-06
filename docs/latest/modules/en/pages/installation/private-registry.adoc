@@ -1,7 +1,7 @@
 = Private Registry Configuration
 :description: Configure private registry settings by editing the registries.yaml file to define mirrors, redirects, rewrites, and specify authentication or custom TLS
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-08-28
+:revdate: 2026-11-06
 :page-revdate: {revdate}
 
 Containerd can be configured to connect to private registries and use them to pull images as needed by the kubelet.
@@ -36,7 +36,7 @@ This may be desired if your cluster is in a true air-gapped environment where th
 or if you wish to have only some nodes pull from the upstream registry.
 
 Disabling the default registry endpoint applies only to registries configured via `registries.yaml`.
-If the registry is not explicitly configured via mirror entry in `registries.yaml`, the default fallback behavior will still be used.
+If the registry is not explicitly configured via a mirror entry in `registries.yaml`, the default fallback behavior will still be used.
 
 [#_registries_configuration_file]
 == Registries Configuration File
@@ -305,7 +305,7 @@ Mirroring images to a private registry requires a host with Docker or other 3rd 
 The steps below assume you have a host with dockerd and the docker CLI tools, and access to both docker.io and your private registry.
 
 . Obtain the `k3s-images.txt` file from GitHub for the release you are working with.
-. Pull each of the K3s images listed on the k3s-images.txt file from docker.io. +
+. Pull each of the K3s images listed in the k3s-images.txt file from docker.io. +
 Example: `docker pull docker.io/rancher/mirrored-pause:3.6`
 . Retag the images to the private registry. +
 Example: `docker tag docker.io/rancher/mirrored-pause:3.6 registry.example.com:5000/rancher/mirrored-pause:3.6`
