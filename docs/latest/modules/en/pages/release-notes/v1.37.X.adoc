@@ -1,6 +1,6 @@
 = v1.37.X
 :description: Find release details for k3s v1.37.x including Kubernetes updates, new features, and issue fixes
-:revdate: 2026-10-02
+:revdate: 2026-11-13
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 :page-role: -toc
@@ -13,6 +13,21 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 
 |===
 | Version | Release date | Kubernetes | Kine | SQLite | Etcd | Containerd | Runc | Flannel | Metrics-server | Traefik | CoreDNS | Helm-controller | Local-path-provisioner
+
+| xref:#_release_v1_37_2k3s1[v1.37.2+k3s1]
+| Nov 03 2026
+| https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.37.md#v1372[v1.37.2]
+| https://github.com/k3s-io/kine/releases/tag/v0.17.1[v0.17.1]
+| https://sqlite.org/releaselog/3_53_4.html[3.53.4]
+| https://github.com/k3s-io/etcd/releases/tag/v3.7.1-k3s3[v3.7.1-k3s3]
+| https://github.com/k3s-io/containerd/releases/tag/v2.3.7-k3s1[v2.3.7-k3s1]
+| https://github.com/opencontainers/runc/releases/tag/v1.4.2[v1.4.2]
+| https://github.com/flannel-io/flannel/releases/tag/v0.28.10[v0.28.10]
+| https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.9.0[v0.9.0]
+| https://github.com/traefik/traefik/releases/tag/v3.7.15[v3.7.15]
+| https://github.com/coredns/coredns/releases/tag/v1.14.7[v1.14.7]
+| https://github.com/k3s-io/helm-controller/releases/tag/v0.17.9[v0.17.9]
+| https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.37[v0.0.37]
 
 | xref:#_release_v1_37_1k3s1[v1.37.1+k3s1]
 | Sep 30 2026
@@ -44,6 +59,48 @@ Before upgrading from earlier releases, be sure to read the Kubernetes https://g
 | https://github.com/k3s-io/helm-controller/releases/tag/v0.17.7[v0.17.7]
 | https://github.com/rancher/local-path-provisioner/releases/tag/v0.0.37[v0.0.37]
 |===
+
+== Release https://github.com/k3s-io/k3s/releases/tag/v1.37.2+k3s1[v1.37.2+k3s1]
+// v1.37.2+k3s1
+
+This release updates Kubernetes to v1.37.2, and fixes a number of issues.
+
+For more details on what's new, see the https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.37.md#changelog-since-v1371[Kubernetes release notes].
+
+=== Changes since v1.37.1+k3s1:
+
+* Add gateway-api-crd to help https://github.com/k3s-io/k3s/pull/14727[(#14727)]
+* Run snapshotrestore test entries in parallel https://github.com/k3s-io/k3s/pull/14733[(#14733)]
+* Deps: bump containerd to v2.3.6 https://github.com/k3s-io/k3s/pull/14744[(#14744)]
+* Bump Traefik to v3.7.14 and gateway-api to 1.6.2 https://github.com/k3s-io/k3s/pull/14757[(#14757)]
+* Bump gateway-api to 1.6.3 https://github.com/k3s-io/k3s/pull/14769[(#14769)]
+* Bump K3s-root version to v0.15.3 https://github.com/k3s-io/k3s/pull/14782[(#14782)]
+* Bump flannel to v0.28.10 https://github.com/k3s-io/k3s/pull/14796[(#14796)]
+* Bump containerd to v2.3.7 https://github.com/k3s-io/k3s/pull/14805[(#14805)]
+* Update kube-roter to v2.11.1 https://github.com/k3s-io/k3s/pull/14762[(#14762)]
+* Remove unused replace directives https://github.com/k3s-io/k3s/pull/14821[(#14821)]
+* Bump Klipper Helm and Helm Controller version https://github.com/k3s-io/k3s/pull/14814[(#14814)]
+* Backports for 2026-10 https://github.com/k3s-io/k3s/pull/14825[(#14825)]
+** Prevent systemd restart loop when no default route is present by waiting 60 seconds for default route to appear #14527
+** Exclude kms-providers from apiserver readiness check #14635
+** Clarify etcd local vs S3 snapshot retention flag help #14716
+** Update ServiceLB status when node addresses change #14550
+** Omit default SA key flags when service-account-signing-endpoint is set #14719
+** Fix local-path PV deletion with SELinux enforcing #14740
+** Feature/14562 etcd snapshot restrictions #14678
+** Report image list read errors when pre-pulling images #14732
+** Migrate CI from docker to GHCR #14603
+** Fix etcd member removal when etcd is disabled on an existing server #14801
+** Docker tests: add gateway-api test #14802
+** Fix goroutine leak in the proxy #14811
+** Make etcdsnapshot restrictions integration test respect the test lock #14820
+* Bump rancher/mirrored-library-traefik image version https://github.com/k3s-io/k3s/pull/14833[(#14833)]
+* Bump Klipper Helm and Helm Controller version https://github.com/k3s-io/k3s/pull/14874[(#14874)]
+* Pin runners to ubuntu-24.04 https://github.com/k3s-io/k3s/pull/14918[(#14918)]
+* Bump k3s-io/kubernetes and Go references https://github.com/k3s-io/k3s/pull/14925[(#14925)]
+* Bump x/net and pass `golang.org/x/` replacements through when building bundled binaries https://github.com/k3s-io/k3s/pull/14935[(#14935)]
+
+'''
 
 == Release https://github.com/k3s-io/k3s/releases/tag/v1.37.1+k3s1[v1.37.1+k3s1]
 // v1.37.1+k3s1
