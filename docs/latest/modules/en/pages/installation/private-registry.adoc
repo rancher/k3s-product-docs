@@ -1,7 +1,7 @@
 = Private Registry Configuration
 :description: Configure private registry settings by editing the registries.yaml file to define mirrors, redirects, rewrites, and specify authentication or custom TLS
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-08-28
+:revdate: 2026-10-27
 :page-revdate: {revdate}
 
 Containerd can be configured to connect to private registries and use them to pull images as needed by the kubelet.
@@ -122,11 +122,11 @@ Because the mirror endpoint does not match the default endpoint - **`"https://re
 [,yaml]
 ----
 mirrors:
- registry.example.com
-   endpoint:
-     - "https://registry.example.com:443"
-   rewrite:
-     "^rancher/(.*)": "mirrorproject/rancher-images/$1"
+  registry.example.com:
+    endpoint:
+      - "https://registry.example.com:443"
+    rewrite:
+      "^rancher/(.*)": "mirrorproject/rancher-images/$1"
 ----
 
 Note that when using mirrors and rewrites, images will still be stored under the original name.
@@ -302,12 +302,22 @@ Check the containerd log on the node at `/var/lib/rancher/k3s/agent/containerd/c
 == Adding Images to the Private Registry
 
 Mirroring images to a private registry requires a host with Docker or other 3rd party tooling that is capable of pulling and pushing images. +
-The steps below assume you have a host with dockerd and the docker CLI tools, and access to both docker.io and your private registry.
+The steps below assume you have a host with dockerd and the docker CLI tools, and access to both registry.rancher.com and your private registry.
 
-. Obtain the `k3s-images.txt` file from GitHub for the release you are working with.
-. Pull each of the K3s images listed on the k3s-images.txt file from docker.io. +
-Example: `docker pull docker.io/rancher/mirrored-pause:3.6`
+. Obtain the `k3s-images.txt` file for the release you are working with from the https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL], at `<PRIME-ARTIFACTS-URL>/k3s/<VERSION>/k3s-images.txt`. It lists the images in the SUSE Rancher Prime registry.
+. Pull each of the K3s images listed on the k3s-images.txt file from registry.rancher.com. +
+Example: `docker pull registry.rancher.com/rancher/mirrored-pause:3.10.2`
 . Retag the images to the private registry. +
-Example: `docker tag docker.io/rancher/mirrored-pause:3.6 registry.example.com:5000/rancher/mirrored-pause:3.6`
+Example: `docker tag registry.rancher.com/rancher/mirrored-pause:3.10.2 registry.example.com:5000/rancher/mirrored-pause:3.10.2`
 . Push the images to the private registry. +
-Example: `docker push registry.example.com:5000/rancher/mirrored-pause:3.6`
+Example: `docker push registry.example.com:5000/rancher/mirrored-pause:3.10.2`
+
+If the server nodes set `system-default-registry: registry.rancher.com`, as described in the xref:quick-start.adoc#_prime_configuration[Quick Start], all the nodes pull the system images as `registry.rancher.com/rancher/...`. In that case, configure the private registry as a mirror for `registry.rancher.com` instead of `docker.io` in `registries.yaml`:
+
+[,yaml]
+----
+mirrors:
+  registry.rancher.com:
+    endpoint:
+      - "https://registry.example.com:5000"
+----

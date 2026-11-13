@@ -1,7 +1,7 @@
 = Volumes and Storage
 :description: Set up persistent storage using Kubernetes persistent volumes (PVs) and persistent volume claims (PVCs) with K3s
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-08-28
+:revdate: 2026-10-27
 :page-revdate: {revdate}
 :page-aliases: storage.adoc
 
@@ -28,7 +28,7 @@ This can be configured via the command line flag when installing or running the 
 
 [,bash]
 ----
-curl -sfL https://get.k3s.io | sh -s - server --default-local-storage-path /opt/local-path-provisioner
+curl -sfL https://get.k3s.io | INSTALL_K3S_ARTIFACT_URL=<PRIME-ARTIFACTS-URL>/k3s sh -s - server --default-local-storage-path /opt/local-path-provisioner
 ----
 
 Or by defining it in the `/etc/rancher/k3s/config.yaml` configuration file:
@@ -113,18 +113,40 @@ Longhorn does not support ARM32.
 ====
 
 
-K3s supports https://github.com/longhorn/longhorn[Longhorn], an open-source distributed block storage system for Kubernetes.
+K3s supports SUSE Storage (Longhorn), a distributed block storage system for Kubernetes.
 
-Below we cover a simple example. For more information, refer to the https://documentation.suse.com/cloudnative/storage/{longhorn_docs_version}/en/longhorn-documentation.html[official documentation].
+Below we cover a simple example. For more information, including the installation requirements of each node, refer to the https://documentation.suse.com/cloudnative/storage/{longhorn_docs_version}/en/longhorn-documentation.html[official documentation].
 
-Apply the longhorn.yaml to install Longhorn:
+SUSE Storage is distributed through the https://apps.rancher.io[SUSE Application Collection]. See the https://docs.apps.rancher.io/get-started/authentication/[Application Collection authentication documentation] for how to obtain your credentials.
+
+Log in to the Application Collection registry, and create the `longhorn-system` namespace and an image pull secret:
 
 [,bash]
 ----
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.8.1/deploy/longhorn.yaml
+helm registry login dp.apps.rancher.io \
+  --username <your-username> \
+  --password <your-token>
+
+kubectl create namespace longhorn-system
+
+kubectl create secret docker-registry application-collection \
+  --namespace longhorn-system \
+  --docker-server=dp.apps.rancher.io \
+  --docker-username=<your-username> \
+  --docker-password=<your-token>
 ----
 
-Longhorn will be installed in the namespace `longhorn-system`.
+Install the `suse-storage` Helm chart:
+
+[,bash]
+----
+helm install longhorn oci://dp.apps.rancher.io/charts/suse-storage \
+  --namespace longhorn-system \
+  --version 1.10.4 \
+  --set global.imagePullSecrets={application-collection}
+----
+
+SUSE Storage will be installed in the namespace `longhorn-system`.
 
 Create a persistent volume claim and a pod to utilize it:
 

@@ -1,6 +1,6 @@
 = Configuration du registre privé
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2025-12-30
+:revdate: 2026-10-11
 :page-revdate: {revdate}
 
 Containerd peut être configuré pour se connecter à des registres privés et les utiliser pour extraire des images au besoin du kubelet.
@@ -127,11 +127,11 @@ Parce que le point de terminaison miroir ne correspond pas au point de terminais
 [,yaml]
 ----
 mirrors:
- registry.example.com
-   endpoint:
-     - "https://registry.example.com:443"
-   rewrite:
-     "^rancher/(.*)": "mirrorproject/rancher-images/$1"
+  registry.example.com:
+    endpoint:
+      - "https://registry.example.com:443"
+    rewrite:
+      "^rancher/(.*)": "mirrorproject/rancher-images/$1"
 ----
 
 Notez que lors de l'utilisation de miroirs et de réécritures, les images seront toujours stockées sous le nom d'origine.
