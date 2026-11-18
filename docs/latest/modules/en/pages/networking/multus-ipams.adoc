@@ -1,7 +1,7 @@
 = Multus and IPAM plugins
 :description: Learn how to use Multus with IPAM plugins to configure multiple network interfaces on Kubernetes pods
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-10-11
+:revdate: 2026-10-27
 :page-revdate: {revdate}
 
 https://github.com/k8snetworkplumbingwg/multus-cni[Multus CNI] is a CNI plugin that enables attaching multiple network interfaces to pods. Multus does not replace CNI plugins, instead it acts as a CNI plugin multiplexer. Multus is useful in certain use cases, especially when pods are network intensive and require extra network interfaces that support dataplane acceleration techniques such as SR-IOV.
@@ -45,6 +45,8 @@ spec:
   chart: rke2-multus
   targetNamespace: kube-system
   valuesContent: |-
+    global:
+      systemDefaultRegistry: registry.rancher.com
     config:
       fullnameOverride: multus
       cni_conf:
@@ -75,6 +77,8 @@ spec:
   chart: rke2-multus
   targetNamespace: kube-system
   valuesContent: |-
+    global:
+      systemDefaultRegistry: registry.rancher.com
     config:
       fullnameOverride: multus
       cni_conf:
@@ -137,6 +141,8 @@ spec:
   chart: rke2-multus
   targetNamespace: kube-system
   valuesContent: |-
+    global:
+      systemDefaultRegistry: registry.rancher.com
     config:
       fullnameOverride: multus
       cni_conf:
@@ -179,7 +185,7 @@ spec:
     spec:
       containers:
       - name: shell
-        image: docker.io/rancher/mirrored-library-busybox:1.36.1
+        image: registry.rancher.com/rancher/mirrored-library-busybox:1.36.1
         imagePullPolicy: IfNotPresent
         command:
           - sleep

@@ -1,7 +1,7 @@
 = Manual Upgrades
 :description: Upgrade K3s manually by replacing the existing binary with a new one, copying it to /usr/local/bin/k3s, and restarting the service
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2025-12-30
+:revdate: 2026-10-27
 :page-revdate: {revdate}
 
 You can upgrade K3s by using the installation script, or by manually installing the binary of the desired version.
@@ -96,7 +96,7 @@ If you want to download the new version of k3s, but not start it, you can use th
 
 To upgrade K3s manually, you can download the desired version of the K3s binary and replace the existing binary with the new one.
 
-. Download the desired version of the K3s binary from https://github.com/k3s-io/k3s/releases[releases]
+. Download the desired version of the K3s binary from the https://scc.suse.com/rancher-docs/rancherprime/latest/en/reference-guide.html#prime-artifacts-url[Prime Artifacts URL], at `<PRIME-ARTIFACTS-URL>/k3s/<VERSION>/k3s`
 . Copy the downloaded binary to `/usr/local/bin/k3s` (or your desired location)
 . Restart the k3s or k3s-agent service or restart the k3s process (binary)
 

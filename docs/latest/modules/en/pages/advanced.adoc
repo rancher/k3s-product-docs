@@ -1,7 +1,7 @@
 = Advanced Options / Configuration
 :description: Configure K3s advanced options for certificate management, token rotation, DNS resolution, and HTTP proxy settings
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-10-11
+:revdate: 2026-10-27
 :page-revdate: {revdate}
 
 This section contains advanced information describing the different ways you can run and manage K3s, as well as steps necessary to prepare the host OS for K3s use.
@@ -455,7 +455,7 @@ See the https://k3d.io/#installation[Installation] documentation for more inform
 Docker::
 +
 --
-To use Docker, `rancher/k3s` images are also available to run the K3s server and agent.
+To use Docker, `rancher/k3s` images are also available in the SUSE Rancher Prime registry to run the K3s server and agent.
 Using the `docker run` command:
 
 [,bash]
@@ -465,8 +465,9 @@ sudo docker run \
   --name k3s-server-1 \
   --hostname k3s-server-1 \
   -p 6443:6443 \
-  -d rancher/k3s:v1.24.10-k3s1 \
-  server
+  -d registry.rancher.com/rancher/k3s:v1.35.1-k3s1 \
+  server \
+  --system-default-registry registry.rancher.com
 ----
 
 [NOTE]
@@ -594,7 +595,7 @@ https://documentation.suse.com/cloudnative/rancher-manager/latest/en/observabili
 helm repo add rancher-charts https://charts.rancher.io
 helm repo update
 helm install --wait --create-namespace -n cattle-logging-system rancher-logging-crd rancher-charts/rancher-logging-crd
-helm install --create-namespace -n cattle-logging-system rancher-logging --set additionalLoggingSources.k3s.enabled=true rancher-charts/rancher-logging
+helm install --create-namespace -n cattle-logging-system rancher-logging --set additionalLoggingSources.k3s.enabled=true --set global.cattle.systemDefaultRegistry=registry.rancher.com rancher-charts/rancher-logging
 ----
 
 [#_additional_network_policy_logging]

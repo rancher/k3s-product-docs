@@ -1,7 +1,7 @@
 = Air-Gap Install
 :description: Install K3s in an air-gapped environment using a private registry or manually deploying images to nodes
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-10-11
+:revdate: 2026-10-27
 :page-revdate: {revdate}
 
 This guide walks you through installing K3s in an air-gapped environment using a three-step process.
@@ -66,6 +66,15 @@ curl -L -o k3s-airgap-images-amd64.tar.zst "<PRIME-ARTIFACTS-URL>/k3s/v1.35.1%2B
 sudo mkdir -p /var/lib/rancher/k3s/agent/images/
 sudo cp k3s-airgap-images-amd64.tar.zst /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar.zst
 ----
+
+. Set the Prime configuration on each server node, so that {k3s-product-name} uses the images of the SUSE Rancher Prime registry. The images archive from the Prime Artifacts URL contains them, so the nodes don't need access to the registry. Agent nodes get this setting from the server; don't set it on agent nodes:
++
+[,bash]
+----
+sudo mkdir -p /etc/rancher/k3s
+echo "system-default-registry: registry.rancher.com" | sudo tee -a /etc/rancher/k3s/config.yaml
+----
+
 
 . Proceed to the <<_install_k3s,Install K3s>> section below.
  
