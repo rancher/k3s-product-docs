@@ -1,7 +1,7 @@
 = Volumes and Storage
 :description: Set up persistent storage using Kubernetes persistent volumes (PVs) and persistent volume claims (PVCs) with K3s
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-08-28
+:revdate: 2026-11-20
 :page-revdate: {revdate}
 :page-aliases: storage.adoc
 
@@ -113,7 +113,7 @@ Longhorn does not support ARM32.
 ====
 
 
-K3s supports https://github.com/longhorn/longhorn[Longhorn], an open-source distributed block storage system for Kubernetes.
+K3s supports https://github.com/longhorn/longhorn[Longhorn], an open-source distributed block storage system for Kubernetes. To use it, you must first meet the https://documentation.suse.com/cloudnative/storage/{longhorn_docs_version}/en/installation-setup/requirements.html[installation requirements] on every node in your cluster.
 
 Below we cover a simple example. For more information, refer to the https://documentation.suse.com/cloudnative/storage/{longhorn_docs_version}/en/longhorn-documentation.html[official documentation].
 
@@ -121,7 +121,7 @@ Apply the longhorn.yaml to install Longhorn:
 
 [,bash]
 ----
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.8.1/deploy/longhorn.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.13.0/deploy/longhorn.yaml
 ----
 
 Longhorn will be installed in the namespace `longhorn-system`.
