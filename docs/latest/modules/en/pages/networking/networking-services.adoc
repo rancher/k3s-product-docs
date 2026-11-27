@@ -1,6 +1,6 @@
 = Networking Services
 :description: Learn how CoreDNS, Traefik Ingress controller, Network Policy controller, and ServiceLB work in K3s
-:revdate: 2026-11-06
+:revdate: 2026-11-27
 :page-languages: [en, de, es, fr, ja, pt, zh]
 :page-revdate: {revdate}
 
@@ -88,6 +88,12 @@ spec:
 ----
 
 Traefik is compatible with https://gateway-api.sigs.k8s.io/reference/api-spec/1.4/spec/[Gateway API v1.4].
+
+[NOTE]
+.TCPRoute and UDPRoute
+====
+Whilst K3s include the standard v1 TCPRoute and UDPRoute CRDs, these are not currently supported by Traefik. Support for TCPRoute will be introduced in Traefik v3.8, whilst support for UDPRoute is currently unscheduled upstream, per https://github.com/traefik/traefik/issues/12322[Traefik GitHub Issue #12322].
+====
 
 [WARNING]
 .Gateway API resources
