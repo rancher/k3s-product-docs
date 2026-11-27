@@ -1,7 +1,7 @@
 = Private Registry Configuration
 :description: Configure private registry settings by editing the registries.yaml file to define mirrors, redirects, rewrites, and specify authentication or custom TLS
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-11-06
+:revdate: 2026-11-27
 :page-revdate: {revdate}
 
 Containerd can be configured to connect to private registries and use them to pull images as needed by the kubelet.
@@ -192,6 +192,12 @@ configs:
     tls:
       insecure_skip_verify: true
 ----
+
+[NOTE]
+====
+Only the `tls` settings of the `"*"` entry in `configs` are used as defaults. The `auth` section is *not* supported on the wildcard entry: credentials are looked up by the name of the registry being pulled from, and are never inherited from `"*"`.
+To authenticate to a registry, add a `configs` entry with `auth` for that specific registry hostname (including the port, if any).
+====
 
 [#_with_tls]
 === With TLS
