@@ -1,7 +1,7 @@
 = Basic Network Options
 :description: Configure K3s network options including Flannel, IPv6, dual-stack, custom CNI, and egress selectors
 :page-languages: [en, de, es, fr, ja, pt, zh]
-:revdate: 2026-11-06
+:revdate: 2026-11-27
 :page-revdate: {revdate}
 
 This page describes K3s network configuration options, including configuration or replacement of Flannel, and configuring IPv6 or dualStack.
@@ -35,9 +35,6 @@ You must ensure that WireGuard kernel modules are available on every node, both 
 
 | `--flannel-backend=wireguard-native`
 | Use WireGuard to encapsulate and encrypt network traffic. May require additional kernel modules.
-
-| `--flannel-backend=ipsec`
-| Use strongSwan IPSec via the `swanctl` binary to encrypt network traffic. (Deprecated; will be removed in v1.27.0)
 
 | `--flannel-backend=none`
 | Disable Flannel entirely.
